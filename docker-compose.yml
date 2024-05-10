@@ -1,0 +1,16 @@
+version: '2.1'
+
+services:
+  pingpong:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # environment:
+      # to be changed
+    ports:
+      - 8000:8000
+
+# networks:
+#   inception:
+#     driver: bridge
+
