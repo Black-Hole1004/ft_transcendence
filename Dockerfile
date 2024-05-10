@@ -11,9 +11,11 @@ RUN pip install -r requirements.txt
 
 # Copy the Django project code into the container
 COPY . /app/
+COPY entrypoint.sh /entrypoint.sh
 
+RUN chmod +x /entrypoint.sh
 # Expose the port your Django application will run on
 EXPOSE 8000
 
 # Define the command to run your Django application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT [ "/entrypoint.sh" ]

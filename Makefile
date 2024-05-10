@@ -13,6 +13,6 @@ down:
 	docker-compose down
 
 prune:
-	docker system prune --volumes --force
+	docker system prune -af --volumes --force
 
 .PHONY: up down prune
