@@ -1,10 +1,23 @@
-# myapp/views.py
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
+
+
+@api_view(['GET'])
+def getRoutes(request):
+    routes = [
+        '/api/token',
+        '/api/token/refresh',
+        '/api/token/verify',
+    ]
+
+    return Response(routes)
+
 
 def display_text(request):
     text = request.GET.get('text', '')

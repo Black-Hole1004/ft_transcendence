@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ping Pong Landing Page</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pingpong-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .pingpong {
+            position: relative;
+            height: 200px;
+            width: 200px;
+        }
+
+        .ping,
+        .pong {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            animation-name: pingpong-animation;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+
+        .ping {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes pingpong-animation {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 32px;
+            color: #333;
+        }
+
+        p {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="pingpong-container">
+        <div class="pingpong">
+            <div class="ping"></div>
+            <div class="pong"></div>
+        </div>
+        <h1>Welcome to Ping Pong Land</h1>
+        <p>Enjoy our ping pong-themed landing page!</p>
+    </div>
+    <script>
+        // No JavaScript code is currently required for this example.
+        // You can add your own custom JavaScript functionality if needed.
+    </script>
+</body>
+</html>
