@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-ROOT_URLCONF = 'backend.urls'
+ROOT_URLCONF = 'ft_transcendence.urls'
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+WSGI_APPLICATION = 'ft_transcendence.wsgi.application'
 
 ADMIN_USERNAME=environ.get('ADMIN_USERNAME')
 ADMIN_PASSWORD=environ.get('ADMIN_PASSWORD')
