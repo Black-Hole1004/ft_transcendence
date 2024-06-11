@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+	width: 100vw;
+	height: 100vh;
+	background-size: cover;
+	background-position: 50% 37%;
+	background-image: url("/assets/images/background.png");
+}
