@@ -1,11 +1,13 @@
 import React from 'react';
+import Hero from '../../components/Home/Hero' 
+import Header from '../../components/Home/Header' 
 
 const Home = () => {
 	return (
-		<div className='text-sky-400 hh'>
-			Home
-			<img></img>
-		</div>
+		<>
+			<Header />
+			<Hero />
+		</>
 	);
 }
 

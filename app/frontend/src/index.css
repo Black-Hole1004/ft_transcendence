@@ -2,10 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+@font-face {
+	font-family: 'Dreamscape';
+	src: url('/Dreamscape/Dreamscape.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+  }
+
+  @font-face {
+	font-family: 'Medium';
+	src: url('/assets/fonts/Avenir/Avenir-Medium.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+  }
+
+  @font-face {
+	font-family: 'Heavy';
+	src: url('/assets/fonts/Avenir/Avenir-Heavy.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+  }
+
+body {
 	width: 100vw;
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
 	background-size: cover;
 	background-position: 50% 37%;
 	background-image: url("/assets/images/background.png");
+}
+
+.responsive-font {
+	font-size: clamp(3.125rem, 2.017rem + 5.9091vw, 11.25rem);
+}
+
+.responsive-button-text {
+	font-size: clamp(0.875rem, 0.8409rem + 0.1818vw, 1.125rem);
 }
