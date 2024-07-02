@@ -4,24 +4,24 @@
 
 @font-face {
 	font-family: 'Dreamscape';
-	src: url('/Dreamscape/Dreamscape.ttf') format('truetype');
+	src: url('/assets/fonts/Dreamscape/Dreamscape.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
-  }
+}
 
-  @font-face {
+@font-face {
 	font-family: 'Medium';
 	src: url('/assets/fonts/Avenir/Avenir-Medium.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
-  }
+}
 
-  @font-face {
+@font-face {
 	font-family: 'Heavy';
 	src: url('/assets/fonts/Avenir/Avenir-Heavy.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
-  }
+}
 
 body {
 	width: 100vw;
@@ -37,6 +37,18 @@ body {
 	font-size: clamp(3.125rem, 2.017rem + 5.9091vw, 11.25rem);
 }
 
-.responsive-button-text {
+.responsive-font-header-buttons {
 	font-size: clamp(0.875rem, 0.8409rem + 0.1818vw, 1.125rem);
+}
+
+.subtitle, .responsive-font-getstarted-button {
+	font-size: clamp(0.6875rem, 0.6108rem + 0.4091vw, 1.25rem);
+}
+
+.call-to-action {
+	font-size: clamp(0.6875rem, 0.5256rem + 0.8636vw, 1.875rem);
+}
+
+.gradient-border {
+	border-image: linear-gradient(to right, rgba(251, 251, 238, 0), rgba(251, 251, 238, 0.2), rgba(251, 251, 238, 0)) 1;
 }
