@@ -17,15 +17,17 @@ export default {
 		},
 		extend: {
 			colors: {
+				light: '#B7AA9C',
+				border: '#646464',
 				primary: '#FBFBEE',
 				secondary: '#1B1611',
-				backdrop40: 'rgba(0, 0, 0, 0.4)'
+				'secondary-light': '#564636',
+				'backdrop-40': 'rgba(0, 0, 0, 0.4)'
 			},
 			borderWidth: {
 				1.5: '1.5px',
 			},
 			width: {
-				// 'card-custom': 'clamp(21.875rem, 20.3409rem + 8.1818vw, 33.125rem)',
 				'card-custom': 'clamp(26.875rem, 26.0227rem + 4.5455vw, 33.125rem)',
 			},
 			height: {
