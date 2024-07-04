@@ -1,16 +1,19 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import Card from '../../components/Home/Card'
 import Button from '../../components/Home/Button'
 
 const Home = () => {
+	const dialogRef = useRef(null)
 	const [isVisible, setIsVisible] = useState(false)
 
-	const showCard = () => {
+	const openDialog = () => {
 		setIsVisible(true)
+		dialogRef.current.showModal()
 	}
 
-	const hideCard = () => {
+	const closeDialog = () => {
 		setIsVisible(false)
+		dialogRef.current.close()
 	}
 
 	return (
@@ -20,10 +23,10 @@ const Home = () => {
 					className='absolute flex justify-between
 					2xl:w-[190px] xl:w-[180px] lg:w-[160px] md:w-[150px] sm:w-[130px]
 					2xl:right-[50px] xl:right-[40px] md:right-[30px] sm:right-[20px]'>
-					<button onClick={showCard} className={`${isVisible ? 'hidden' : 'block'} responsive-font-header-buttons`}>
+					<button data-open-modal onClick={openDialog} className={`${isVisible ? 'hidden' : 'block'} responsive-font-header-buttons`}>
 						Sign in
 					</button>
-					<Button isVisible={isVisible} onClick={showCard} className='rounded-lg responsive-font-header-buttons
+					<Button isVisible={isVisible} onClick={openDialog} className='rounded-lg responsive-font-header-buttons
 						2xl:py-[12px] xl:py-[11px] lg:py-[10px] md:py-[9px] sm:py-[8px]
 						2xl:px-[23px] xl:px-[20px] lg:px-[16px] md:px-[14px] sm:px-[10px]'>
 						Sign up
@@ -49,15 +52,14 @@ const Home = () => {
 					<p className='call-to-action'>
 						Come along for an unforgettable adventure of space competition and celestial marvels.
 					</p>
-					<Button onClick={showCard} className='responsive-font-getstarted-button lg:rounded-xl sm:rounded-lg mt-[25px]
+					<Button onClick={openDialog} className='responsive-font-getstarted-button lg:rounded-xl sm:rounded-lg mt-[25px]
 						2xl:py-[15px] xl:py-[11px] lg:py-[10px] md:py-[9px] sm:py-[8px]
 						2xl:px-[28px] xl:px-[24px] lg:px-[20px] md:px-[16px] sm:px-[12px]'>
 						Get Started
 					</Button>
 				</div>
-				{/* <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-0"></div> */}
 			</section>
-			<Card isVisible={isVisible} onClick={hideCard}></Card>
+			<Card dialogRef={dialogRef} isVisible={isVisible} onClick={closeDialog}></Card>
 		</>
 	)
 }

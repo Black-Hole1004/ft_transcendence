@@ -26,8 +26,6 @@
 body {
 	width: 100vw;
 	height: 100vh;
-	display: flex;
-	flex-direction: column;
 	background-size: cover;
 	background-position: 50% 37%;
 	background-image: url("/assets/images/background.png");
@@ -51,16 +49,4 @@ body {
 
 .gradient-border {
 	border-image: linear-gradient(to right, rgba(251, 251, 238, 0), rgba(251, 251, 238, 0.2), rgba(251, 251, 238, 0)) 1;
-}
-
-.card-close-button {
-	display: flex;
-	justify-content: end;
-	width: 20px;
-	height: 20px;
-}
-
-.card {
-	width: clamp(28.125rem, 27.4432rem + 3.6364vw, 33.125rem);
-	height: clamp(31.25rem, 29.1193rem + 11.3636vw, 46.875rem);
 }
