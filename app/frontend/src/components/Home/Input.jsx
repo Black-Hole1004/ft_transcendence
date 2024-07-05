@@ -1,8 +1,19 @@
 import React from 'react'
 
-function Input({placeholder}) {
+function Input({ iconPath, placeholder }) {
 	return (
-		<input className='bg-secondary-light placeholder:text-light responsive-input font-heavy border border-border box-border' placeholder={`${placeholder}`}></input>
+		<div className='flex flex-row items-center bg-secondary-light responsive-input border border-border'>
+			<img
+				src={`${iconPath}`}
+				className='responsive-icon select-none pointer-events-none padding-top-input'
+				alt='email-icon'
+			/>
+			<input
+				className='flex-1 placeholder:text-light bg-secondary-light placeholder:font-heavy text-primary font-medium
+				select-none padding-top-input av:px-2 sm:px-1 outline-none'
+				placeholder={`${placeholder}`}
+			></input>
+		</div>
 	)
 }
 

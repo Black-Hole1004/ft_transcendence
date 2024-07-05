@@ -14,7 +14,10 @@ function SignIn({ signInRef, openSignUpFromSignIn, closeSignIn }) {
 			<div className='p-2 h-full'>
 				<div className='relative w-full flex flex-row items-center'>
 					<button onClick={closeSignIn} className='absolute right-2 top-1'>
-						<img className='select-none close-button' src='/assets/images/close.png' />
+						<img
+							className='select-none close-button'
+							src='/assets/images/icons/close.png'
+						/>
 					</button>
 					<div className='separator h-0.5 flex-1'></div>
 					<img
@@ -29,8 +32,14 @@ function SignIn({ signInRef, openSignUpFromSignIn, closeSignIn }) {
 						<p className='sign-in-phrases'>Sign in to access your dashboard.</p>
 					</div>
 					<form className='flex flex-col form-gap'>
-						<Input placeholder={'Email'}></Input>
-						<Input placeholder={'Password'}></Input>
+						<Input
+							iconPath={'../../../assets/images/icons/email.png'}
+							placeholder={'Email'}
+						></Input>
+						<Input
+							iconPath={'../../../assets/images/icons/lock.png'}
+							placeholder={'Password'}
+						></Input>
 						<CardButton
 							className={
 								'text-primary font-heavy hover:bg-primary hover:text-secondary'
@@ -47,11 +56,12 @@ function SignIn({ signInRef, openSignUpFromSignIn, closeSignIn }) {
 					<div className='flex flex-col buttons-gap'>
 						<CardButton
 							className={
-								'font-medium text-secondary bg-primary sign-in-phrases flex flex-row items-center justify-center gap-2'
+								'font-medium text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
+								sign-in-phrases flex flex-row items-center justify-center gap-2'
 							}
 						>
 							<img
-								src='/assets/images/google.png'
+								src='/assets/images/icons/google.png'
 								className='card-images'
 								alt='google-logo'
 							/>
@@ -59,11 +69,12 @@ function SignIn({ signInRef, openSignUpFromSignIn, closeSignIn }) {
 						</CardButton>
 						<CardButton
 							className={
-								'font-medium text-secondary bg-primary sign-in-phrases flex flex-row items-center justify-center gap-2'
+								'font-medium text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
+								sign-in-phrases flex flex-row items-center justify-center gap-2'
 							}
 						>
 							<img
-								src='/assets/images/42-logo.png'
+								src='/assets/images/icons/42-logo.png'
 								className='card-images'
 								alt='42-logo'
 							/>
@@ -71,7 +82,12 @@ function SignIn({ signInRef, openSignUpFromSignIn, closeSignIn }) {
 						</CardButton>
 						<p className='sign-in-phrases text-light font-medium text-center'>
 							Don't have an account?
-							<button onClick={openSignUpFromSignIn} className='font-heavy text-primary px-1.5'> Sign up</button>
+							<button
+								onClick={openSignUpFromSignIn}
+								className='font-heavy text-primary px-1.5'
+							>
+								Sign up
+							</button>
 						</p>
 					</div>
 				</div>

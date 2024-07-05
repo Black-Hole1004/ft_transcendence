@@ -6,7 +6,7 @@ function CardButton({className, children}) {
 			// onClick={onClick}
 			className={`
 		border border-border transition duration-300 select-none
-		responsive-card-button ${className || ''}`}
+		responsive-card-button padding-top-button ${className || ''}`}
 		>
 			{children}
 		</button>
