@@ -81,10 +81,19 @@ body {
 	font-size: clamp(0.75rem, 0.136vw + 0.724rem, 0.938rem);
 }
 
-.welcome {
+.welcome, .create-account {
 	padding-bottom: clamp(1.875rem, 0.455vw + 1.79rem, 2.5rem);
 }
 
-.form-gap {
+.form-gap, .buttons-gap {
 	gap: clamp(0.75rem, 0.136vw + 0.724rem, 0.938rem);
+}
+
+.or-separator {
+	margin-top: clamp(1.25rem, 0.227vw + 1.207rem, 1.563rem);
+	margin-bottom: clamp(1.25rem, 0.227vw + 1.207rem, 1.563rem);
+}
+
+.card-images {
+	width: clamp(1.5rem, 0.273vw + 1.449rem, 1.875rem);
 }

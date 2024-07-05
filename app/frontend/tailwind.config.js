@@ -22,7 +22,7 @@ export default {
 				primary: '#FBFBEE',
 				secondary: '#1B1611',
 				'secondary-light': '#564636',
-				'backdrop-40': 'rgba(0, 0, 0, 0.4)'
+				'backdrop-40': 'rgba(0, 0, 0, 0.4)',
 			},
 			borderWidth: {
 				1.5: '1.5px',
@@ -31,7 +31,8 @@ export default {
 				'card-custom': 'clamp(26.875rem, 26.0227rem + 4.5455vw, 33.125rem)',
 			},
 			height: {
-				'card-custom': 'clamp(37.5rem, 36.2216rem + 6.8182vw, 46.875rem)',
+				'signin-card-custom': 'clamp(35rem, 7.727vw + 33.551rem, 45.625rem)',
+				'signup-card-custom': 'clamp(36.875rem, 9.545vw + 35.085rem, 50rem)',
 			},
 		},
 	},

@@ -5,8 +5,8 @@ function CardButton({className, children}) {
 		<button
 			// onClick={onClick}
 			className={`
-		border border-border transition duration-300 select-none text-primary font-heavy
-		responsive-card-button hover:bg-primary hover:text-secondary ${className || ''}`}
+		border border-border transition duration-300 select-none
+		responsive-card-button ${className || ''}`}
 		>
 			{children}
 		</button>

@@ -1,23 +1,38 @@
 import React, { useState, useRef } from 'react'
 import SignIn from './SignIn'
-import Card from '../../components/Home/Card'
-import Input from '../../components/Home/Input'
+import SignUp from './SignUp'
 import Button from '../../components/Home/Buttons/Button'
 
 const Home = () => {
 	const signInRef = useRef(null)
-	// const [isVisible, setIsVisible] = useState(false)
+	const signUpRef = useRef(null)
 
 	const openSignIn = () => {
-		// setIsVisible(true)
 		signInRef.current.showModal()
 	}
 
 	const closeSignIn = () => {
-		// setIsVisible(false)
 		signInRef.current.close()
 	}
 
+	const openSignUp = () => {
+		signUpRef.current.showModal()
+	}
+
+	const closeSignUp = () => {
+		signUpRef.current.close()
+	}
+	
+	const openSignUpFromSignIn = () => {
+		closeSignIn()
+		openSignUp()
+	}
+	
+	const openSignInFromSignUp = () => {
+		closeSignUp()
+		openSignIn()
+	}
+	
 	return (
 		<>
 			<header className='relative flex items-center text-primary font-medium 2xl:h-[116px] xl:h-[100px] sm:h-[80px]'>
@@ -34,7 +49,7 @@ const Home = () => {
 						Sign in
 					</button>
 					<Button
-						onClick={openSignIn}
+						onClick={openSignUp}
 						className='rounded-lg responsive-font-header-buttons
 						2xl:py-[12px] xl:py-[11px] lg:py-[10px] md:py-[9px] sm:py-[8px]
 						2xl:px-[23px] xl:px-[20px] lg:px-[16px] md:px-[14px] sm:px-[10px]'
@@ -66,7 +81,7 @@ const Home = () => {
 						marvels.
 					</p>
 					<Button
-						onClick={openSignIn}
+						onClick={openSignUp}
 						className='responsive-font-getstarted-button lg:rounded-xl sm:rounded-lg mt-[25px]
 						2xl:py-[15px] xl:py-[11px] lg:py-[10px] md:py-[9px] sm:py-[8px]
 						2xl:px-[28px] xl:px-[24px] lg:px-[20px] md:px-[16px] sm:px-[12px]'
@@ -75,7 +90,8 @@ const Home = () => {
 					</Button>
 				</div>
 			</section>
-			<SignIn signInRef={signInRef} closeSignIn={closeSignIn}></SignIn>
+			<SignIn signInRef={signInRef} openSignUpFromSignIn={openSignUpFromSignIn} closeSignIn={closeSignIn}></SignIn>
+			<SignUp signUpRef={signUpRef} openSignInFromSignUp={openSignInFromSignUp} closeSignUp={closeSignUp}></SignUp>
 		</>
 	)
 }

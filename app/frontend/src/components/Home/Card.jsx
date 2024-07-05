@@ -1,20 +1,13 @@
 import React, { useRef } from 'react'
 
-function Card({ signInRef, onClick, children }) {
+function Card({ dialogRef, onClick, children }) {
 	return (
-		// <div className={`${isVisible ? 'block' : 'hidden'} absolute av:border-1.5 border rounded-xl bg-secondary
-		// 	av:top-1/2 left-1/2 transform -translate-x-1/2 av:-translate-y-1/2 sm:bottom-0
-		// 	av:w-card-custom av:h-card-custom w-full h-[600px]
-		// 	`}>
-		// 	<button onClick={onClick} ><img className="card-close-button" src="/assets/images/close.png"/></button>
-		// </div>
-
 		<dialog
 			data-modal
-			ref={signInRef}
+			ref={dialogRef}
 			className='
 			av:border-1.5 border rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm
-			av:h-card-custom h-[600px] max-av:mb-0 av:w-card-custom max-w-full w-screen'
+			av:h-card-custom h-[570px] max-av:mb-0 av:w-card-custom max-w-full w-screen'
 		>
 			<div className='p-2 h-full'>
 				<div className='relative w-full flex flex-row items-center'>
