@@ -1,8 +1,9 @@
 import React from 'react'
 
-function Button({ onClick, className, children }) {
+function Button({id, onClick, className, children }) {
 	return (
 		<button
+			id={id}
 			onClick={onClick}
 			className={`
 			border border-primary transition duration-300 select-none

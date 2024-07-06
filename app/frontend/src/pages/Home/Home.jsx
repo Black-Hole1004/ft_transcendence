@@ -1,63 +1,35 @@
-import React, { useState, useRef } from 'react'
-import SignIn from './SignIn'
-import SignUp from './SignUp'
+import React, { useRef, useState } from 'react'
+import Card from '../../components/Home/Card/Card'
+import Header from '../../components/Home/Header/Header'
 import Button from '../../components/Home/Buttons/Button'
 
 const Home = () => {
-	const signInRef = useRef(null)
-	const signUpRef = useRef(null)
-
-	const openSignIn = () => {
-		signInRef.current.showModal()
+	const dialogRef = useRef(null)
+	const [isSigningIn, setIsSigningIn] = useState(false)
+	const openDialog = () => {
+		dialogRef.current.showModal()
 	}
 
-	const closeSignIn = () => {
-		signInRef.current.close()
+	const closeDialog = () => {
+		dialogRef.current.close()
 	}
 
-	const openSignUp = () => {
-		signUpRef.current.showModal()
+	const handleClick = (event) => {
+		const buttonId = event.target.getAttribute('id')
+
+		console.log(buttonId)
+		{
+			buttonId == 'sign-in' ? setIsSigningIn(true) : setIsSigningIn(false)
+		}
+
+		{
+			buttonId ? openDialog() : closeDialog()
+		}
 	}
 
-	const closeSignUp = () => {
-		signUpRef.current.close()
-	}
-	
-	const openSignUpFromSignIn = () => {
-		closeSignIn()
-		openSignUp()
-	}
-	
-	const openSignInFromSignUp = () => {
-		closeSignUp()
-		openSignIn()
-	}
-	
 	return (
 		<>
-			<header className='relative flex items-center text-primary font-medium 2xl:h-[116px] xl:h-[100px] sm:h-[80px]'>
-				<nav
-					className='absolute flex justify-between
-					2xl:w-[190px] xl:w-[180px] lg:w-[160px] md:w-[150px] sm:w-[130px]
-					2xl:right-[50px] xl:right-[40px] md:right-[30px] sm:right-[20px]'
-				>
-					<button
-						data-open-modal //
-						onClick={openSignIn}
-						className='responsive-font-header-buttons'
-					>
-						Sign in
-					</button>
-					<Button
-						onClick={openSignUp}
-						className='rounded-lg responsive-font-header-buttons
-						2xl:py-[12px] xl:py-[11px] lg:py-[10px] md:py-[9px] sm:py-[8px]
-						2xl:px-[23px] xl:px-[20px] lg:px-[16px] md:px-[14px] sm:px-[10px]'
-					>
-						Sign up
-					</Button>
-				</nav>
-			</header>
+			<Header openDialog={handleClick} />
 			<section className='relative'>
 				<div className='flex md:justify-start sm:justify-center'>
 					<h1
@@ -81,7 +53,8 @@ const Home = () => {
 						marvels.
 					</p>
 					<Button
-						onClick={openSignUp}
+						id='get-started'
+						onClick={handleClick}
 						className='responsive-font-getstarted-button lg:rounded-xl sm:rounded-lg mt-[25px]
 						2xl:py-[15px] xl:py-[11px] lg:py-[10px] md:py-[9px] sm:py-[8px]
 						2xl:px-[28px] xl:px-[24px] lg:px-[20px] md:px-[16px] sm:px-[12px]'
@@ -90,8 +63,12 @@ const Home = () => {
 					</Button>
 				</div>
 			</section>
-			<SignIn signInRef={signInRef} openSignUpFromSignIn={openSignUpFromSignIn} closeSignIn={closeSignIn}></SignIn>
-			<SignUp signUpRef={signUpRef} openSignInFromSignUp={openSignInFromSignUp} closeSignUp={closeSignUp}></SignUp>
+			<Card
+				dialogRef={dialogRef}
+				closeDialog={closeDialog}
+				isSigningIn={isSigningIn}
+				setIsSigningIn={setIsSigningIn}
+			></Card>
 		</>
 	)
 }
