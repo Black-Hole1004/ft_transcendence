@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import './Home.css'
 import Card from '../../components/Home/Card/Card'
 import Header from '../../components/Home/Header/Header'
 import Button from '../../components/Home/Buttons/Button'
@@ -17,7 +18,6 @@ const Home = () => {
 	const handleClick = (event) => {
 		const buttonId = event.target.getAttribute('id')
 
-		console.log(buttonId)
 		{
 			buttonId == 'sign-in' ? setIsSigningIn(true) : setIsSigningIn(false)
 		}

@@ -1,0 +1,44 @@
+import React from 'react'
+import './Header.css'
+
+function Header() {
+	return (
+		<header
+			className='relative flex items-center justify-between text-primary header-padding font-medium
+			md:border-b-2 border-b-[1px] border-white header-border header-height'
+		>
+			<img
+				className='select-none pointer-events-none header-logo'
+				src='/assets/images/logo-transparent.png'
+			/>
+			<h1 className='leading-[1.1] text-primary font-dreamscape select-none header-title-font'>
+				starserve
+			</h1>
+			<nav className='flex justify-between av:gap-x-2.5 sm:gap-x-1.5'>
+				<button>
+					<img
+						src='/assets/images/icons/chat.svg'
+						alt='profile-image'
+						className='nav-icons'
+					/>
+				</button>
+				<button>
+					<img
+						src='/assets/images/icons/notification.svg'
+						alt='profile-image'
+						className='nav-icons'
+					/>
+				</button>
+				<button>
+					<img
+						src='/assets/images/moudrib.jpeg'
+						alt='profile-image'
+						className='nav-icons border-[1px] rounded-full border-primary'
+					/>
+				</button>
+			</nav>
+		</header>
+	)
+}
+
+export default Header

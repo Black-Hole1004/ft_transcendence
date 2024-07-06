@@ -1,5 +1,5 @@
 import './Card.css'
-import Input from '../Input'
+import Input from '../Buttons/Input'
 import CardButton from '../Buttons/CardButton'
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
@@ -11,11 +11,11 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 		<dialog
 			data-modal
 			ref={dialogRef}
-			className={`
+			className={`absolute
 			${isSigningIn ? 'h-[570px]' : 'h-[600px]'}
 			${isSigningIn ? 'av:h-signin-card-custom' : 'av:h-signup-card-custom'}
 			max-av:mb-0 av:w-card-custom max-w-full w-screen
-			av:border-1.5 border rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
+			av:border-1.5 border border-b-0 rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
 			<div className='p-2 h-full'>
 				<div className='relative w-full flex flex-row items-center'>
@@ -36,7 +36,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					{isSigningIn ? (
 						<div className='w-full flex flex-col items-center text-light font-heavy welcome-message'>
 							<h1 className='sign-in-title'>Welcome back!</h1>
-							<p className='sign-in-subtitle'>Sign in to access your dashboard.</p>
+							<p className='sign-in-phrases'>Sign in to access your dashboard.</p>
 						</div>
 					) : (
 						<h1 className='sign-in-title text-center text-light font-heavy create-account'>
@@ -68,7 +68,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						</CardButton>
 					</form>
 					{!isSigningIn && (
-						<p className='sign-in-subtitle text-light font-medium text-center'>
+						<p className='sign-in-phrases text-light font-medium text-center'>
 							Already have an account?
 							<button
 								onClick={handleClick}
@@ -81,14 +81,14 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 
 					<div className='flex flex-row items-center text-light or-separator'>
 						<div className='separator h-0.5 flex-1'></div>
-						<p className='sign-in-subtitle'>or</p>
+						<p className='sign-in-phrases'>or</p>
 						<div className='separator h-0.5 flex-1'></div>
 					</div>
 					<div className='flex flex-col buttons-gap'>
 						<CardButton
 							className={
 								'font-medium text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
-								sign-in-subtitle flex flex-row items-center justify-center gap-2'
+								sign-in-phrases flex flex-row items-center justify-center gap-2'
 							}
 						>
 							<img

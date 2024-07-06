@@ -1,0 +1,20 @@
+.header-border {
+	border-image: linear-gradient(to right, rgba(251, 251, 238, 0), rgba(251, 251, 238, 0.2), rgba(251, 251, 238, 0)) 1;
+}
+
+.header-title-font {
+	font-size: clamp(1.063rem, 1.409vw + 0.798rem, 3rem);
+}
+
+.header-padding {
+	padding-left: clamp(0.313rem, 0.682vw + 0.185rem, 1.25rem);
+	padding-right: clamp(0.75rem, 2.636vw + 0.256rem, 4.375rem);
+}
+
+.header-logo {
+	width: clamp(3.75rem, 1.818vw + 3.409rem, 6.25rem);
+}
+
+.nav-icons {
+	width: clamp(2.25rem, 0.818vw + 2.097rem, 3.375rem);
+}

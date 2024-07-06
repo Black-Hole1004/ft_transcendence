@@ -1,4 +1,5 @@
 import React from 'react'
+import '../Card/Card.css'
 
 function CardButton({className, children}) {
 	return (
