@@ -1,0 +1,27 @@
+.message-title {
+    font-size: clamp(0.75rem, 1.045vw + 0.554rem, 2.188rem);
+}
+
+.message-body {
+    font-size: clamp(0.563rem, 0.591vw + 0.452rem, 1.375rem);
+}
+
+.full-message {
+    padding-top: clamp(3.125rem, 0.909vw + 2.955rem, 4.375rem);
+    padding-left: clamp(0.625rem, 2.727vw + 0.114rem, 4.375rem);
+    padding-right: clamp(1.25rem, 1.591vw + 0.952rem, 3.438rem);
+    padding-bottom: clamp(2.625rem, 5.727vw + 1.551rem, 10.5rem);
+}
+
+.card-height {
+    height: clamp(37.5rem, 4.545vw + 36.648rem, 43.75rem);
+}
+
+.card-color {
+    box-shadow: inset 0px 0px 5px 5px rgba(27, 22, 17, 0.5);
+    background: linear-gradient(rgba(27, 22, 17, 0.5), rgba(27, 22, 17, 0));
+}
+
+.card-title {
+    font-size: clamp(0.563rem, 11.333vw - 1.563rem, 1.625rem);
+}

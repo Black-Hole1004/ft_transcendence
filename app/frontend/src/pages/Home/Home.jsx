@@ -31,11 +31,11 @@ const Home = () => {
 		<>
 			<Header openDialog={handleClick} />
 			<section className='relative'>
-				<div className='flex md:justify-start sm:justify-center'>
+				<div className='flex lp:justify-start ms:justify-center'>
 					<h1
 						className='relative border gradient-border leading-[1] responsive-font text-primary font-dreamscape select-none
-						lg:border-t-2 lg:border-b-2 md:pt-[16px] sm:pt-[10px] pb-[10px]
-						2xl:ml-[80px] xl:ml-[60px] lg:ml-[40px] md:ml-[30px]'
+						lg:border-t-2 lg:border-b-2 lp:pt-[16px] ms:pt-[10px] pb-[10px]
+						4k:ml-[80px] xl:ml-[60px] lg:ml-[40px] lp:ml-[30px]'
 					>
 						starserve
 						<span className='subtitle absolute text-primary font-heavy bottom-2 left-0'>
@@ -55,9 +55,9 @@ const Home = () => {
 					<Button
 						id='get-started'
 						onClick={handleClick}
-						className='responsive-font-getstarted-button lg:rounded-xl sm:rounded-lg mt-[25px]
-						2xl:py-[15px] xl:py-[11px] lg:py-[10px] md:py-[9px] sm:py-[8px]
-						2xl:px-[28px] xl:px-[24px] lg:px-[20px] md:px-[16px] sm:px-[12px]'
+						className='responsive-font-getstarted-button lg:rounded-xl ms:rounded-lg mt-[25px]
+						4k:py-[15px] xl:py-[11px] lg:py-[10px] lp:py-[9px] ms:py-[8px]
+						4k:px-[28px] xl:px-[24px] lg:px-[20px] lp:px-[16px] ms:px-[12px]'
 					>
 						Get Started
 					</Button>

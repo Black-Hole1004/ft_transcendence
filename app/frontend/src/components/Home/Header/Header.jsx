@@ -7,8 +7,8 @@ function Header({ openDialog }) {
 		<header className='relative flex items-center text-primary font-medium header-height'>
 			<nav
 				className='absolute flex justify-between
-				2xl:w-[190px] xl:w-[180px] lg:w-[160px] md:w-[150px] sm:w-[130px]
-				2xl:right-[50px] xl:right-[40px] md:right-[30px] sm:right-[20px]'
+				4k:w-[190px] xl:w-[180px] lg:w-[160px] lp:w-[150px] ms:w-[130px]
+				4k:right-[50px] xl:right-[40px] lp:right-[30px] ms:right-[20px]'
 			>
 				<button
 					// data-open-modal
@@ -22,8 +22,8 @@ function Header({ openDialog }) {
 					id='sign-up'
 					onClick={openDialog}
 					className='rounded-lg responsive-font-header-buttons
-					2xl:py-[12px] xl:py-[11px] lg:py-[10px] md:py-[9px] sm:py-[8px]
-					2xl:px-[23px] xl:px-[20px] lg:px-[16px] md:px-[14px] sm:px-[10px]'
+					4k:py-[12px] xl:py-[11px] lg:py-[10px] lp:py-[9px] ms:py-[8px]
+					4k:px-[23px] xl:px-[20px] lg:px-[16px] lp:px-[14px] ms:px-[10px]'
 				>
 					Sign up
 				</Button>

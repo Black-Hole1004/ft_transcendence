@@ -13,9 +13,9 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			ref={dialogRef}
 			className={`absolute
 			${isSigningIn ? 'h-[570px]' : 'h-[600px]'}
-			${isSigningIn ? 'av:h-signin-card-custom' : 'av:h-signup-card-custom'}
-			max-av:mb-0 av:w-card-custom max-w-full w-screen
-			av:border-1.5 border border-b-0 rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
+			${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'}
+			max-ml:mb-0 ml:w-card-custom max-w-full w-screen
+			ml:border-1.5 border border-b-0 rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
 			<div className='p-2 h-full'>
 				<div className='relative w-full flex flex-row items-center'>

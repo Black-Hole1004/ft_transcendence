@@ -10,7 +10,7 @@ function Input({ iconPath, placeholder }) {
 			/>
 			<input
 				className='flex-1 placeholder:text-light bg-secondary-light placeholder:font-heavy text-primary font-medium
-				select-none padding-top-input av:px-2 sm:px-1 outline-none'
+				select-none padding-top-input ml:px-2 ms:px-1 outline-none'
 				placeholder={`${placeholder}`}
 				type='password'
 			></input>

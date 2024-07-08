@@ -10,6 +10,13 @@
 }
 
 @font-face {
+	font-family: 'Dreamscape-Sans';
+	src: url('/assets/fonts/Dreamscape/Dreamscape-Sans.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
 	font-family: 'Medium';
 	src: url('/assets/fonts/Avenir/Avenir-Medium.ttf') format('truetype');
 	font-weight: normal;
