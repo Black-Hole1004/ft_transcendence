@@ -41,3 +41,17 @@ body {
 .header-height {
 	height: clamp(3.75rem, 2.273vw + 3.324rem, 6.875rem);
 }
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: #48433E;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #FBFBEE;
+	border-radius: 4px;
+}

@@ -1,5 +1,5 @@
 import './Card.css'
-import Input from '../Buttons/Input'
+import Input from '../Input'
 import CardButton from '../Buttons/CardButton'
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {

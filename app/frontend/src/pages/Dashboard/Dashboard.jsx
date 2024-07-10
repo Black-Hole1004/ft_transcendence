@@ -1,6 +1,8 @@
 import React from 'react'
 import './Dashboard.css'
 import Header from '../../components/Header'
+import FriendsList from '../../components/Dashboard/FriendsList'
+import Leaderboard from '../../components/Dashboard/Leaderboard'
 
 function CongratulatoryMessage() {
 	return (
@@ -24,25 +26,17 @@ const Dashboard = () => {
 			<section className='flex-grow flex lg:flex-row ms:flex-col'>
 				<div className='lg:w-5/12 w-full flex flex-col'>
 					<CongratulatoryMessage />
-					<div className='flex mtb:flex-row flex-col lg:justify-between mtb:justify-around ms:items-center gap-y-5
-					lp:pl-cards-section-pl lp:pr-cards-section-pr'>
-						<div
-							className='flex flex-col items-center lp:w-fl-ldr-custom w-[300px]
-						rounded-xl card-height card-color'
-						>
-							<h1 className='font-dreamscape-sans'>FRIENDS LIST</h1>
-						</div>
-						<div
-							className='flex flex-col items-center lp:w-fl-ldr-custom w-[300px]
-						rounded-xl card-height card-color'
-						>
-							<h1 className='font-dreamscape-sans'>LEADERBOARD</h1>
-						</div>
+					<div
+						className='flex mtb:flex-row flex-col lg:justify-between mtb:justify-around ms:items-center gap-y-5
+					lp:pl-cards-section-pl lp:pr-cards-section-pr'
+					>
+						<FriendsList />
+						<Leaderboard />
 					</div>
 				</div>
-				{/* <div className='w-screen lg:flex-1 flex-none'>
+				<div className='lg:flex-1 flex-none'>
 
-				</div> */}
+				</div>
 			</section>
 		</div>
 	)

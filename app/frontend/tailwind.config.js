@@ -38,6 +38,7 @@ export default {
 			height: {
 				'signin-card-custom': 'clamp(35rem, 7.727vw + 33.551rem, 45.625rem)',
 				'signup-card-custom': 'clamp(36.875rem, 9.545vw + 35.085rem, 50rem)',
+				'fl-ldr-custom': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',
 			},
 			padding: {
 				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',

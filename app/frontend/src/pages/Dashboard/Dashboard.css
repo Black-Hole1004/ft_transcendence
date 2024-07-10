@@ -23,5 +23,20 @@
 }
 
 .card-title {
-    font-size: clamp(0.563rem, 11.333vw - 1.563rem, 1.625rem);
+    margin-top: clamp(1rem, 0.409vw + 0.923rem, 1.563rem);
+    margin-bottom: clamp(0.75rem, 0.849vw - 0.014rem, 1.313rem);
+    font-size: clamp(0.875rem, 0.545vw + 0.773rem, 1.625rem);
+}
+
+.search-input {
+    font-size: clamp(0.75rem, 0.377vw + 0.41rem, 1rem);
+    width: clamp(15rem, 5.66vw + 9.906rem, 18.75rem);
+}
+
+.search-icon {
+    width: clamp(0.938rem, 0.472vw + 0.513rem, 1.25rem);
+}
+
+.users {
+    margin-top: clamp(1.25rem, 1.818vw - 0.341rem, 2.5rem);
 }
