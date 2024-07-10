@@ -20,14 +20,19 @@ export default {
 		},
 		extend: {
 			colors: {
+				online: '#46E9D2',
+				ingame: '#F54E62',
+				offline: '#686259',
 				light: '#B7AA9C',
 				border: '#646464',
 				primary: '#FBFBEE',
 				secondary: '#1B1611',
+				achievement: '#FFCE9D',
 				'secondary-light': '#564636',
 				'backdrop-40': 'rgba(0, 0, 0, 0.4)',
 			},
 			borderWidth: {
+				0.5: '0.5px',
 				1.5: '1.5px',
 			},
 			width: {

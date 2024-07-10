@@ -39,4 +39,35 @@
 
 .users {
     margin-top: clamp(1.25rem, 1.818vw - 0.341rem, 2.5rem);
+    padding-left: clamp(0.625rem, 1.818vw - 0.966rem, 1.875rem);
+    padding-right: clamp(0.625rem, 1.818vw - 0.966rem, 1.875rem);
+}
+
+.achievement-icon-fr {
+    width: clamp(1.563rem, 0.909vw + 0.767rem, 2.188rem);
+}
+
+.achievement-icon-ldr {
+    width: clamp(2.188rem, 0.909vw + 1.392rem, 2.813rem);
+}
+
+.user-image {
+    width: clamp(2rem, 1.636vw + 0.568rem, 3.125rem);
+}
+
+.achievement-name {
+    font-size: clamp(0.438rem, 0.182vw + 0.278rem, 0.563rem);
+}
+
+.nickname {
+    font-size: clamp(0.75rem, 0.273vw + 0.511rem, 0.938rem);
+}
+
+.status {
+    font-size: clamp(0.563rem, 0.364vw + 0.244rem, 0.813rem);
+}
+
+.add-friend-button {
+    font-size: clamp(0.563rem, 0.364vw + 0.244rem, 0.813rem);
+    padding: clamp(0.188rem, 0.182vw + 0.028rem, 0.313rem);
 }

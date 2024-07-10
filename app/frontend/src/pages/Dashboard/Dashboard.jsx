@@ -6,7 +6,7 @@ import Leaderboard from '../../components/Dashboard/Leaderboard'
 
 function CongratulatoryMessage() {
 	return (
-		<div className='full-message fles flex-col'>
+		<div className='full-message flex flex-col'>
 			<h1 className='message-title font-heavy leading-[3]'>
 				Congratulations, Celestial Master!
 			</h1>
@@ -27,8 +27,8 @@ const Dashboard = () => {
 				<div className='lg:w-5/12 w-full flex flex-col'>
 					<CongratulatoryMessage />
 					<div
-						className='flex mtb:flex-row flex-col lg:justify-between mtb:justify-around ms:items-center gap-y-5
-					lp:pl-cards-section-pl lp:pr-cards-section-pr'
+						className='flex mtb:flex-row flex-col lg:justify-between mtb:justify-around ms:items-center gap-y-10
+						lp:pl-cards-section-pl lp:pr-cards-section-pr'
 					>
 						<FriendsList />
 						<Leaderboard />
