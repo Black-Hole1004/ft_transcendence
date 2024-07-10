@@ -39,8 +39,8 @@
 
 .users {
     margin-top: clamp(1.25rem, 1.818vw - 0.341rem, 2.5rem);
-    padding-left: clamp(0.625rem, 1.818vw - 0.966rem, 1.875rem);
-    padding-right: clamp(0.625rem, 1.818vw - 0.966rem, 1.875rem);
+    padding-left: clamp(0.625rem, 0.909vw - 0.17rem, 1.25rem);
+    padding-right: clamp(0.625rem, 0.909vw - 0.17rem, 1.25rem);
 }
 
 .achievement-icon-fr {
@@ -59,7 +59,7 @@
     font-size: clamp(0.438rem, 0.182vw + 0.278rem, 0.563rem);
 }
 
-.nickname {
+.nickname, .xp {
     font-size: clamp(0.75rem, 0.273vw + 0.511rem, 0.938rem);
 }
 
