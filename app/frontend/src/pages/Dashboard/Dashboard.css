@@ -38,6 +38,7 @@
 }
 
 .users {
+    margin-bottom: 10px;
     margin-top: clamp(1.25rem, 1.818vw - 0.341rem, 2.5rem);
     padding-left: clamp(0.625rem, 0.909vw - 0.17rem, 1.25rem);
     padding-right: clamp(0.625rem, 0.909vw - 0.17rem, 1.25rem);
@@ -70,4 +71,48 @@
 .add-friend-button {
     font-size: clamp(0.563rem, 0.364vw + 0.244rem, 0.813rem);
     padding: clamp(0.188rem, 0.182vw + 0.028rem, 0.313rem);
+}
+
+/* Right side */
+
+.game-modes {
+    width: clamp(60.938rem, 18.366vw + 55.99rem, 84.688rem);
+    height: clamp(27.813rem, 8.458vw + 25.534rem, 38.75rem);
+}
+
+.rightside-padding {
+    padding-top: clamp(1.25rem, 4.091vw + 0.483rem, 6.875rem);
+}
+
+.shape {
+    position: relative;
+    clip-path: polygon(0% 0%, 100% 0%, 76% 100%, 0% 100%);
+    background-size: cover;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.shape::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./assets/images/tournament-background.png');
+    background-size: cover;
+    filter: brightness(0.4);
+    transition: filter 0.5s ease;
+
+    border: 2px solid rgb(255, 206, 157)
+}
+
+.shape:hover::before {
+    filter: brightness(1);
+    border: none;
+}
+
+.modes-font {
+    line-height: 1.2;
+    font-size: clamp(1.25rem, 2.9vw + 0.469rem, 5rem);
 }

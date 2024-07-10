@@ -34,8 +34,18 @@ const Dashboard = () => {
 						<Leaderboard />
 					</div>
 				</div>
-				<div className='lg:flex-1 flex-none'>
-
+				<div className='lg:flex-1 ms:flex-none rightside-padding'>
+					<div className='game-modes flex'>
+						<div
+							className='flex items-center transition w-[66%] h-[620px]
+							text-primary hover:text-[rgba(0,0,0,0)] duration-500 hover:scale-[1.03] shape'
+						>
+							<h1 className='absolute left-20 z-10 font-dreamscape-sans text-center modes-font select-none'>
+								tournaments
+							</h1>
+						</div>
+						<div className='w-[34%] h-[620px]'></div>
+					</div>
 				</div>
 			</section>
 		</div>

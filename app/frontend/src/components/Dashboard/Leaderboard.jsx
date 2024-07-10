@@ -8,7 +8,7 @@ function Leaderboard() {
             rounded-xl card-height card-color h-fl-ldr-custom'
 		>
 			<h1 className='font-dreamscape-sans card-title'>LEADERBOARD</h1>
-			<div className='flex flex-col lg:gap-3 ms:gap-2 w-[96%] overflow-y-scroll users'>
+			<div className='flex flex-col lg:gap-3 ms:gap-2 w-[96%] h-[95%] overflow-y-scroll users'>
 				<UserLeaderboard rank={1} nickname={'mouad55'} achievement={'celestial master'} xp={12315}/>
 				<UserLeaderboard rank={2} nickname={'mouad55'} achievement={'celestial master'} xp={11512}/>
 				<UserLeaderboard rank={3} nickname={'mouad55'} achievement={'celestial master'} xp={11243}/>
