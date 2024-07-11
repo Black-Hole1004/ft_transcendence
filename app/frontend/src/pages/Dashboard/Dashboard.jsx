@@ -34,25 +34,38 @@ const Dashboard = () => {
 						<Leaderboard />
 					</div>
 				</div>
-				<div className='lg:flex-1 ms:flex-none rightside-padding'>
-					<div className=''>
-						<div className='relative flex items-center text-primary hover:text-[rgba(0,0,0,0)] duration-500'>
+				<div className='lg:flex-1 ms:flex-none rightside-margin'>
+					<div className='relative w-full modes font-dreamscape-sans text-primary select-none'>
+						<button className='absolute flex items-center hover:text-[rgba(0,0,0,0)] duration-500'>
 							<img
 								src='/assets/images/shape.svg'
-								className='brightness-[.5] hover:scale-[1.03] hover:brightness-100 transition duration-500 '
+								className='brightness-[.5] hover:scale-[1.05] hover:brightness-100 transition duration-500 lg:h-tournaments-lg'
 								alt='tournament-background'
 							/>
-							<h1 className='absolute left-[5%] font-dreamscape-sans text-center modes-font select-none'>
+							<h1 className='absolute left-[5%] modes-font pointer-events-none'>
 								tournaments
 							</h1>
-						</div>
-						<div className=''>
+						</button>
+						<button className='absolute right-0 hover:text-[rgba(0,0,0,0)] duration-500'>
 							<img
 								src='/assets/images/training.svg'
-								className='brightness-[.5] hover:scale-[1.03] hover:brightness-100 transition duration-500 '
-								alt='tournament-background'
+								className='brightness-[.5] hover:scale-[1.05] hover:brightness-100 transition duration-500 lg:h-training-lg'
+								alt='training-background'
 							/>
-						</div>
+							<h1 className='absolute top-[40%] right-[10%] modes-font pointer-events-none'>
+								training
+							</h1>
+						</button>
+						<button className='absolute bottom-5 right-0 transition hover:text-[rgba(0,0,0,0)] duration-500'>
+							<img
+								src='/assets/images/1v1.svg'
+								className='brightness-[.5] hover:scale-[1.05] hover:brightness-100 transition duration-500 lg:h-1vs1-lg'
+								alt='1vs1-background'
+							/>
+							<h1 className='absolute top-[40%] right-[30%] modes-font pointer-events-none'>
+								1 vs 1
+							</h1>
+						</button>
 					</div>
 				</div>
 			</section>

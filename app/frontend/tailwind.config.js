@@ -41,9 +41,12 @@ export default {
 				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
 			},
 			height: {
+				'fl-ldr-custom': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',
 				'signin-card-custom': 'clamp(35rem, 7.727vw + 33.551rem, 45.625rem)',
 				'signup-card-custom': 'clamp(36.875rem, 9.545vw + 35.085rem, 50rem)',
-				'fl-ldr-custom': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',
+				'tournaments-lg': 'clamp(24.063rem, 22.83vw + 3.515rem, 39.188rem)',
+				'training-lg': 'clamp(11.563rem, 10.849vw + 1.798rem, 18.75rem)',
+				'1vs1-lg': 'clamp(11.063rem, 10.66vw + 1.468rem, 18.125rem)',
 			},
 			padding: {
 				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',
