@@ -85,31 +85,7 @@
 }
 
 .shape {
-    position: relative;
-    clip-path: polygon(0% 0%, 100% 0%, 76% 100%, 0% 100%);
-    background-size: cover;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.shape::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('./assets/images/tournament-background.png');
-    background-size: cover;
-    filter: brightness(0.4);
     transition: filter 0.5s ease;
-
-    border: 2px solid rgb(255, 206, 157)
-}
-
-.shape:hover::before {
-    filter: brightness(1);
-    border: none;
 }
 
 .modes-font {
