@@ -47,10 +47,18 @@ export default {
 				'tournaments-lg': 'clamp(24.063rem, 22.83vw + 3.515rem, 39.188rem)',
 				'training-lg': 'clamp(11.563rem, 10.849vw + 1.798rem, 18.75rem)',
 				'1vs1-lg': 'clamp(11.063rem, 10.66vw + 1.468rem, 18.125rem)',
+				'shapes-lg': 'clamp(24.063rem, 21.607vw + 4.616rem, 39.188rem)', 
+				'shapes-ms': 'clamp(8.625rem, 42.493vw + 0.657rem, 38.875rem)',
 			},
 			padding: {
 				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',
 				'cards-section-pr': 'clamp(0.5rem, 2.642vw - 1.877rem, 2.25rem)',
+			},
+			margin: {
+				'modes-left-lg': 'clamp(0rem, 7.143vw - 8.929rem, 2.5rem)',
+				'modes-right-lg': 'clamp(0.313rem, 6.132vw - 5.206rem, 4.375rem)',
+				'modes-left-ms': 'clamp(0.625rem, 3.304vw - 0.265rem, 2.5rem)',
+				'modes-right-ms': 'clamp(0.625rem, 3.304vw - 0.265rem, 2.5rem)',
 			}
 		},
 	},

@@ -76,16 +76,14 @@
 /* Right side */
 
 .modes {
-    height: clamp(24.063rem, 22.83vw + 3.515rem, 39.188rem);
+    margin-bottom: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
 }
 
-.rightside-margin {
+.rightside-mt {
     margin-top: clamp(1.25rem, 4.091vw + 0.483rem, 6.875rem);
-    margin-right: clamp(0.313rem, 6.132vw - 5.206rem, 4.375rem);
-    margin-left: clamp(0rem, 7.143vw - 8.929rem, 2.5rem);
 }
 
 .modes-font {
     line-height: 1.2;
-    font-size: clamp(1.25rem, 2.9vw + 0.469rem, 5rem);
+    font-size: clamp(1.125rem, 2.743vw + 0.611rem, 5rem);
 }
