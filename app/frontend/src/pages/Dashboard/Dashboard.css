@@ -75,15 +75,29 @@
 
 /* Right side */
 
-.modes {
-    margin-bottom: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
+.modes-font {
+    line-height: 1.2;
+    font-size: clamp(1.125rem, 2.743vw + 0.611rem, 5rem);
 }
 
 .rightside-mt {
     margin-top: clamp(1.25rem, 4.091vw + 0.483rem, 6.875rem);
 }
 
-.modes-font {
-    line-height: 1.2;
-    font-size: clamp(1.125rem, 2.743vw + 0.611rem, 5rem);
+.modes {
+    margin-bottom: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
+}
+
+/* Achivements */
+
+.achivements {
+    font-size: clamp(0.75rem, 1.018vw + 0.559rem, 2.188rem);
+}
+
+.achievements-titles-font {
+    font-size: clamp(0.375rem, 0.398vw + 0.3rem, 0.938rem);
+}
+
+.achivements-padding {
+    padding: clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem) clamp(1.25rem, 1.062vw + 1.051rem, 2.75rem);
 }
