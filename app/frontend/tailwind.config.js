@@ -20,6 +20,7 @@ export default {
 		},
 		extend: {
 			colors: {
+				level: '#FFCE9E',
 				online: '#46E9D2',
 				ingame: '#F54E62',
 				offline: '#686259',
@@ -49,7 +50,7 @@ export default {
 				'tournaments-lg': 'clamp(24.063rem, 22.83vw + 3.515rem, 39.188rem)',
 				'shapes-ms': 'clamp(8.625rem, 42.493vw + 0.657rem, 38.875rem)',
 				'shapes-lg': 'clamp(24.063rem, 21.607vw + 4.616rem, 39.188rem)',
-				'achievements-lg': 'clamp(18.75rem, 6.696vw + 12.723rem, 23.438rem)',
+				'achievements-lg': 'clamp(15.625rem, 10.714vw + 5.982rem, 23.125rem)',
 			},
 			padding: {
 				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',

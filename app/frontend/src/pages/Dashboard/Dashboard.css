@@ -88,9 +88,9 @@
     margin-bottom: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
 }
 
-/* Achivements */
+/* Achievements */
 
-.achivements {
+.achievements {
     font-size: clamp(0.75rem, 1.018vw + 0.559rem, 2.188rem);
 }
 
@@ -100,4 +100,8 @@
 
 .achivements-padding {
     padding: clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem) clamp(1.25rem, 1.062vw + 1.051rem, 2.75rem);
+}
+
+.levels-font {
+    font-size: clamp(0.25rem, 0.354vw + 0.184rem, 0.75rem);
 }
