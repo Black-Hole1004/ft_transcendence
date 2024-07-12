@@ -1,4 +1,3 @@
-import React from 'react'
 import UserFriendsList from './UserFriendsList'
 
 function FriendsList() {

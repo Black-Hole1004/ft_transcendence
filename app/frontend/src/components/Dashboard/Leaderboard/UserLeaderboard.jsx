@@ -1,5 +1,3 @@
-import React from 'react'
-
 const achievements = {
 	'celestial master': {
 		icon: '/assets/images/Achievements/celestial-master.svg',
@@ -30,13 +28,10 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 					className='user-image rounded-full tb:border border-0.7 border-primary'
 					alt='user-image'
 				/>
-                <div className='flex flex-col justify-center'>
-
-				<p className='nickname'>
-					{`${nickname}` + ' '}
-				</p>
-				<p className='text-achievement achievement-name'> {achievement}</p>
-                </div>
+				<div className='flex flex-col justify-center'>
+					<p className='nickname'>{`${nickname}` + ' '}</p>
+					<p className='text-achievement achievement-name'> {achievement}</p>
+				</div>
 			</div>
 			<div className='flex items-center gap-1'>
 				<img
