@@ -1,0 +1,40 @@
+.section-margin {
+	margin: clamp(1.25rem, 1.991vw + 0.877rem, 4.063rem) clamp(0rem, 7.692vw - 2.933rem, 9.375rem);
+}
+
+.chat {
+	height: clamp(29.688rem, 25.708vw + 24.867rem, 66rem);
+}
+
+.user-info-image {
+	width: clamp(3.813rem, 8.363vw + 2.244rem, 15.625rem);
+}
+
+.full-name {
+	font-size: clamp(0.563rem, 1.15vw + 0.347rem, 2.188rem);
+	margin-top: clamp(0rem, 1.416vw - 0.265rem, 2rem);
+}
+
+.nickname {
+	font-size: clamp(0.438rem, 0.664vw + 0.313rem, 1.375rem);
+}
+
+.bio {
+	font-size: clamp(0.438rem, 0.487vw + 0.346rem, 1.125rem);
+}
+
+.badge {
+	width: clamp(5rem, 5.31vw + 4.004rem, 12.5rem);
+}
+
+.achievement-title {
+	font-size: clamp(0.563rem, 0.487vw + 0.471rem, 1.25rem);
+}
+
+.xp {
+	font-size: clamp(0.5rem, 0.442vw + 0.417rem, 1.125rem);
+}
+
+.separator {
+	background: linear-gradient(rgb(251, 251, 238, 0), rgb(251, 251, 238, 0.2), rgb(251, 251, 238, 0));
+}

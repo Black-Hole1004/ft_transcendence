@@ -20,6 +20,7 @@ export default {
 		},
 		extend: {
 			colors: {
+				'chat': '#B7AA9C',
 				level: '#FFCE9E',
 				online: '#46E9D2',
 				ingame: '#F54E62',
@@ -51,10 +52,20 @@ export default {
 				'shapes-ms': 'clamp(8.625rem, 42.493vw + 0.657rem, 38.875rem)',
 				'shapes-lg': 'clamp(24.063rem, 21.607vw + 4.616rem, 39.188rem)',
 				'achievements-lg': 'clamp(15.625rem, 10.714vw + 5.982rem, 23.125rem)',
+
+				'chat-user-info-lg': 'clamp(48.25rem, 25.714vw + 25.107rem, 66.25rem)',
+				'chat-user-info-ms': 'clamp(6.25rem, 13.474vw + 3.724rem, 15rem)',
 			},
 			padding: {
 				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',
 				'cards-section-pr': 'clamp(0.5rem, 2.642vw - 1.877rem, 2.25rem)',
+				
+				// Chat User informations
+				'user-info-x-lg': 'clamp(1.563rem, 1.339vw + 0.357rem, 2.5rem)',
+				'user-info-x-ms': 'clamp(0.313rem, 6.256vw - 0.861rem, 4.375rem)',
+				'user-info-y-ms': 'clamp(0.938rem, 2.887vw + 0.396rem, 2.813rem)',
+				'user-info-t': 'clamp(3.125rem, 2.679vw + 0.714rem, 5rem)',
+
 			},
 			margin: {
 				'modes-left-lg': 'clamp(0rem, 7.143vw - 8.929rem, 2.5rem)',
