@@ -60,8 +60,8 @@
     font-size: clamp(0.438rem, 0.182vw + 0.278rem, 0.563rem);
 }
 
-.nickname, .xp {
-    font-size: clamp(0.75rem, 0.273vw + 0.511rem, 0.938rem);
+.nickname-size, .xp {
+    font-size: clamp(0.563rem, 0.579vw + 0.345rem, 1.25rem);
 }
 
 .status {

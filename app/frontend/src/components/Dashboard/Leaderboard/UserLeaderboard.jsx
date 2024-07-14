@@ -22,14 +22,14 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 	return (
 		<div className='flex items-center justify-between font-dreamscape-sans'>
 			<div className='flex-1 flex items-center xl:gap-3 tb:gap-2 ms:gap-1 text-primary '>
-				<p className=''>{'#' + `${rank}`}</p>
+				<p className='nickname-size'>{'#' + `${rank}`}</p>
 				<img
 					src='/assets/images/moudrib.jpeg'
 					className='user-image rounded-full tb:border border-0.7 border-primary'
 					alt='user-image'
 				/>
 				<div className='flex flex-col justify-center'>
-					<p className='nickname'>{`${nickname}` + ' '}</p>
+					<p className='nickname-size leading-[1]'>{`${nickname}` + ' '}</p>
 					<p className='text-achievement achievement-name'> {achievement}</p>
 				</div>
 			</div>
@@ -39,7 +39,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 					className='achievement-icon-ldr'
 					alt='achievement-icon'
 				/>
-				<p className={`xp text-primary`}>{`${xp}` + 'xp'}</p>
+				<p className={`xp text-primary leading-[1]`}>{`${xp}` + 'xp'}</p>
 			</div>
 		</div>
 	)

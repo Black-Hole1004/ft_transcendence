@@ -2,9 +2,9 @@
 	margin: clamp(1.25rem, 1.991vw + 0.877rem, 4.063rem) clamp(0rem, 7.692vw - 2.933rem, 9.375rem);
 }
 
-.chat {
-	height: clamp(29.688rem, 25.708vw + 24.867rem, 66rem);
-}
+/* .chat {
+	height: clamp(29.688rem, 31.617vw + 9.413rem, 60rem);
+} */
 
 .user-info-image {
 	width: clamp(3.813rem, 8.363vw + 2.244rem, 15.625rem);
@@ -36,5 +36,14 @@
 }
 
 .separator {
+	height: clamp(31.25rem, 16.741vw + 23.214rem, 50rem);
 	background: linear-gradient(rgb(251, 251, 238, 0), rgb(251, 251, 238, 0.2), rgb(251, 251, 238, 0));
+}
+
+.search {
+	font-size: clamp(0.688rem, 0.221vw + 0.646rem, 1rem);
+	padding-top: clamp(0.375rem, 0.223vw + 0.268rem, 0.625rem);
+	padding-bottom: clamp(0.375rem, 0.223vw + 0.268rem, 0.625rem);
+	padding-left: clamp(0.375rem, 0.223vw + 0.268rem, 0.625rem);
+	padding-right: clamp(0.375rem, 0.223vw + 0.268rem, 0.625rem);
 }

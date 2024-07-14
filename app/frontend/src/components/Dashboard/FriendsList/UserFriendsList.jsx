@@ -34,7 +34,7 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 					className='user-image rounded-full tb:border ms:border-0.7 border-primary'
 					alt='user-image'
 				/>
-				<p className='text-primary nickname overflow-hidden'>
+				<p className='text-primary nickname-size overflow-hidden'>
 					{`${nickname}` + ' '}
 					<span className='text-achievement achievement-name'> {achievement}</span>
 				</p>

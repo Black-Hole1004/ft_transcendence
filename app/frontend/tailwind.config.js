@@ -41,6 +41,9 @@ export default {
 				'card-custom': 'clamp(26.875rem, 26.0227rem + 4.5455vw, 33.125rem)',
 				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
 				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
+				
+				'input-lg': 'clamp(8.125rem, 12.277vw + 2.232rem, 21.875rem)',
+				'input-ms': 'clamp(15rem, 34.261vw + 8.576rem, 25rem)'
 			},
 			height: {
 				'fl-ldr-custom': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',
@@ -53,8 +56,9 @@ export default {
 				'shapes-lg': 'clamp(24.063rem, 21.607vw + 4.616rem, 39.188rem)',
 				'achievements-lg': 'clamp(15.625rem, 10.714vw + 5.982rem, 23.125rem)',
 
-				'chat-user-info-lg': 'clamp(48.25rem, 25.714vw + 25.107rem, 66.25rem)',
-				'chat-user-info-ms': 'clamp(6.25rem, 13.474vw + 3.724rem, 15rem)',
+				'chat': 'clamp(29.688rem, 20.133vw + 25.913rem, 58.125rem)',
+				'leftside-chat-ms': 'clamp(9.375rem, 21.413vw + 5.36rem, 15.625rem)',
+				'leftside-chat-tb': 'clamp(9.375rem, 21.413vw + 5.36rem, 15.625rem)',
 			},
 			padding: {
 				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',
@@ -65,6 +69,8 @@ export default {
 				'user-info-x-ms': 'clamp(0.313rem, 6.256vw - 0.861rem, 4.375rem)',
 				'user-info-y-ms': 'clamp(0.938rem, 2.887vw + 0.396rem, 2.813rem)',
 				'user-info-t': 'clamp(3.125rem, 2.679vw + 0.714rem, 5rem)',
+				
+				// Chat Users
 
 			},
 			margin: {

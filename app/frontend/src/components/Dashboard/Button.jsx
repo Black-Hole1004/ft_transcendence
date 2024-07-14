@@ -1,6 +1,6 @@
 function Button({ image, title, className, mode }) {
 	return (
-		<button className={`absolute hover:text-[rgba(0,0,0,0)] duration-500 ${className}`}>
+		<button className={`absolute hover:text-[rgba(251,251,138,0)] duration-500 ${className}`}>
 			<img
 				src={`/assets/images/${image}`}
 				className='brightness-[.5] hover:scale-[1.05] hover:brightness-100 transition duration-500'
