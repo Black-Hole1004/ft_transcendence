@@ -60,10 +60,10 @@ export default {
 
 				'chat': 'clamp(29.688rem, 20.133vw + 25.913rem, 58.125rem)',
 				'users-div': 'clamp(29.375rem, 12.835vw + 23.214rem, 43.75rem)',
-				'leftside-chat-ms': 'clamp(9.375rem, 21.413vw + 5.36rem, 15.625rem)',
+				'leftside-chat-ms': 'clamp(10rem, 4.283vw + 9.197rem, 11.25rem)',
 				'leftside-chat-tb': 'clamp(9.375rem, 21.413vw + 5.36rem, 15.625rem)',
 
-				'user-tb': 'clamp(3.75rem, 2.232vw + 2.679rem, 6.25rem)'
+				'user-tb': 'clamp(3.125rem, 2.232vw + 2.054rem, 5.625rem)'
 			},
 			padding: {
 				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',

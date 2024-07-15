@@ -68,4 +68,5 @@
 
 .users-container {
 	margin-right: clamp(0.5rem, 0.391vw + 0.313rem, 0.938rem);
+	margin-bottom: 10px;
 }
