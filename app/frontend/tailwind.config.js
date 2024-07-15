@@ -20,13 +20,13 @@ export default {
 		},
 		extend: {
 			colors: {
-				'chat': '#B7AA9C',
+				chat: '#B7AA9C',
 				level: '#FFCE9E',
+				light: '#B7AA9C',
+				border: '#646464',
 				online: '#46E9D2',
 				ingame: '#F54E62',
 				offline: '#686259',
-				light: '#B7AA9C',
-				border: '#646464',
 				primary: '#FBFBEE',
 				secondary: '#1B1611',
 				achievement: '#FFCE9D',
@@ -43,7 +43,9 @@ export default {
 				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
 				
 				'input-lg': 'clamp(8.125rem, 12.277vw + 2.232rem, 21.875rem)',
-				'input-ms': 'clamp(15rem, 34.261vw + 8.576rem, 25rem)'
+				'input-ms': 'clamp(15rem, 34.261vw + 8.576rem, 25rem)',
+
+				'user-div': 'clamp(4.125rem, 7.281vw + 2.76rem, 6.25rem)',
 			},
 			height: {
 				'fl-ldr-custom': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',
@@ -57,8 +59,11 @@ export default {
 				'achievements-lg': 'clamp(15.625rem, 10.714vw + 5.982rem, 23.125rem)',
 
 				'chat': 'clamp(29.688rem, 20.133vw + 25.913rem, 58.125rem)',
+				'users-div': 'clamp(29.375rem, 12.835vw + 23.214rem, 43.75rem)',
 				'leftside-chat-ms': 'clamp(9.375rem, 21.413vw + 5.36rem, 15.625rem)',
 				'leftside-chat-tb': 'clamp(9.375rem, 21.413vw + 5.36rem, 15.625rem)',
+
+				'user-tb': 'clamp(3.75rem, 2.232vw + 2.679rem, 6.25rem)'
 			},
 			padding: {
 				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',
@@ -71,6 +76,7 @@ export default {
 				'user-info-t': 'clamp(3.125rem, 2.679vw + 0.714rem, 5rem)',
 				
 				// Chat Users
+				'user-div-px-tb': 'clamp(0.625rem, 1.116vw + 0.089rem, 1.875rem)',
 
 			},
 			margin: {

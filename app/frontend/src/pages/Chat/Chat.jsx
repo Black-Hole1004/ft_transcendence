@@ -16,12 +16,12 @@ const Chat = () => {
 						{/* left-part */}
 						<div
 							className='flex flex-col tb:w-[34%] max-tb:border border-primary lg:rounded-3xl rounded-2xl
-							tb:h-chat ms:h-leftside-chat-ms' // height for large screens
+							tb:h-chat ms:h-leftside-chat-ms gap-y-2'
 						>
 							{/* input-container */}
 							<div className='flex justify-center items-center tb:h-[20%] h-[25%]'>
 								{/* input-div */}
-								<div className='flex items-center border border-border rounded-2xl pl-2.5 tb:w-[85%] w-input-ms'>
+								<div className='flex items-center border border-border rounded-2xl pl-2.5 tb:w-[85%]'>
 									<img
 										src='/assets/images/icons/search-icon.png'
 										className='search-icon'
@@ -35,49 +35,48 @@ const Chat = () => {
 									/>
 								</div>
 							</div>
-							{/* users-div */}
-							<div className='flex-1 flex justify-center items-center'>Users</div>
+
+							{/* users-container */}
+							<div
+								className='flex tb:flex-col flex-row gap-y-1 users-container h-users-div
+								overflow-y-auto max-tb:overflow-x-scroll'
+							>
+								{/* user-div */}
+								<div>
+									<div className='flex tb:flex-row flex-col max-tb:justify-center items-center gap-x-2
+										tb:h-user-tb max-tb:w-user-div w-full border border-primary rounded-xl user tb:p-user-div-px-tb '>
+										<img
+											src='./assets/images/tabi3a.jpeg'
+											className='rounded-full border border-primary'
+											alt=''
+										/>
+										<div className='font-medium'>
+											<div className='user-nickname text-primary'>
+												<p className=''>Arabiai</p>
+											</div>
+											<div className='last-message text-chat max-tb:hidden'>
+												<p className='whitespace-nowrap overflow-hidden text-ellipsis '>
+													Lorem ipsum dolor sit amet, consectetur
+													adipisicing elit. Optio, omnis possimus officia
+													fuga enim ullam
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
 						</div>
 
 						<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center'></div>
 
-						<div className='w-full max-tb:border border-primary flex items-center justify-center
-							lg:rounded-3xl rounded-2xl h-chat'>
+						<div
+							className='max-tb:border border-primary flex items-center justify-center
+							lg:rounded-3xl rounded-2xl h-chat'
+						>
 							chat
 						</div>
 					</div>
-
-					{/* <div className='flex tb:flex-row ms:flex-col lg:border-2 tb:border-[1px] border-primary
-						lg:rounded-3xl rounded-2xl lg:w-[75%] w-full'>  xxxxxxxxxxxxxxxx
-
-						<div className='left-part tb:w-[40%] max-tb:border max-tb:border-primary'>
-
-							<div className='tb:h-[18%] flex justify-center items-center'>
-
-								<div className='flex items-center border border-border rounded-2xl pl-2.5'>
-									<img
-										src='/assets/images/icons/search-icon.png'
-										className='search-icon'
-										alt='search-icon'
-									/>
-									<input
-										type='text'
-										placeholder='Search for friends...'
-										className='font-medium bg-transparent text-primary outline-none tb:w-input-lg w-input-ms search placeholder:text-border'
-									/>
-								</div>
-
-							</div>
-
-							<div className='h-[82%] flex justify-center items-center'>users</div>
-
-						</div>
-
-						<div className='lp:w-[2px] tb:w-[1px] h-[90%] self-center separator'></div>
-
-						<div className='w-full max-tb:border max-tb:border-primary chat flex items-center justify-center'>chat</div>
-
-					</div> */}
 
 					<div
 						className='lg:border-2 border-[1px] border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
@@ -130,3 +129,13 @@ const Chat = () => {
 }
 
 export default Chat
+
+{
+	/* <div className='lb:w-[80%] w-[40%]'>
+										<p className='nickname text-primary'>Arabiai</p>
+										<p className='last-message whitespace-nowrap overflow-hidden text-ellipsis text-chat max-tb:text-transparent'>
+											Lorem ipsum dolor sit amet, consectetur adipisicing
+											elit. Optio, omnis possimus officia fuga enim ullam
+										</p>
+									</div> */
+}

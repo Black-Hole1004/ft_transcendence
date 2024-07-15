@@ -16,7 +16,7 @@ function FriendsList() {
 					className=' font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border'
 				/>
 			</div>
-			<div className='flex flex-col lg:gap-3 ms:gap-2 w-[96%] h-[90%] overflow-y-scroll users'>
+			<div className='flex flex-col lg:gap-3 ms:gap-2 w-[96%] h-[90%] overflow-y-auto users'>
 				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
 				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
 				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
