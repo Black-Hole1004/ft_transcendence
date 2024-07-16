@@ -84,6 +84,10 @@ export default {
 				'modes-right-lg': 'clamp(0.313rem, 6.132vw - 5.206rem, 4.375rem)',
 				'modes-left-ms': 'clamp(0.625rem, 3.304vw - 0.265rem, 2.5rem)',
 				'modes-right-ms': 'clamp(0.625rem, 3.304vw - 0.265rem, 2.5rem)',
+
+				// Profile Page
+				'container-x-lp': 'clamp(3.125rem, 33.929vw - 27.411rem, 26.875rem)',
+				'container-x-ms': 'clamp(0.313rem, 4.841vw - 0.595rem, 2.5rem)',
 			}
 		},
 	},

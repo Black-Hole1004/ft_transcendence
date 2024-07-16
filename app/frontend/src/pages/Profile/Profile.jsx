@@ -1,31 +1,56 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import Header from '../../components/Header'
 
 const Profile = () => {
-	// const containerRef = useRef(null)
-	// const [width, setWidth] = useState(0)
+	const containerRef = useRef(null)
+	const [width, setWidth] = useState(0)
 
-	// useEffect(() => {
-	// 	const calculateWidth = () => {
-	// 		if (containerRef.current) {
-	// 			const containerWidth = containerRef.current.getBoundingClientRect().width
-	// 			setWidth(containerWidth)
-	// 		}
-	// 	}
+	useEffect(() => {
+		const calculateWidth = () => {
+			if (containerRef.current) {
+				const containerWidth = containerRef.current.getBoundingClientRect().width
+				setWidth(containerWidth)
+			}
+		}
 
+		calculateWidth()
 
-	// }, [containerRef])
+		window.addEventListener('resize', calculateWidth)
 
-	// console.log(width)
+		return () => {
+			window.removeEventListener('resize', calculateWidth)
+		}
+	}, [])
+
+	console.log(width)
 	return (
-		<div ref={containerRef} className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
+		<div
+			ref={containerRef}
+			className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'
+		>
 			<Header />
-			<section className='flex-grow'>
-
+			<section className='flex-grow lp:mx-container-x-lp mx-container-x-ms'>
+				<div className='relative flex mt-20 lp:flex-row gap-y-3 flex-col'>
+					<img
+						src={`${width >= 1024 ? './assets/images/Profile/user-info-lp.svg' : './assets/images/Profile/user-info-ms.svg'}`}
+						className='lp:w-[67.5%] lp:self-start'
+						alt=''
+					/>
+					<img
+						src={`${width >= 1024 ? './assets/images/Profile/rank-card-lp.svg' : './assets/images/Profile/rank-card-ms.svg'}`}
+						className='lp:absolute lp:w-[40%] lp:right-0'
+						alt=''
+					/>
+					<img
+						src={`${width >= 1024 ? './assets/images/Profile/match-history-lp.svg' : './assets/images/Profile/match-history-ms.svg'}`}
+						className='lp:absolute lp:w-[53%] lp:right-0 lp:bottom-0'
+						alt=''
+					/>
+				</div>
 			</section>
 		</div>
-	);
+	)
 }
 
-export default Profile;
+export default Profile

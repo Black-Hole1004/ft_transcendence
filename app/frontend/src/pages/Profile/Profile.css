@@ -1,0 +1,20 @@
+.section {
+	margin-left: clamp(0.625rem, 14.159vw - 2.03rem, 20.625rem);
+	margin-right: clamp(0.625rem, 14.159vw - 2.03rem, 20.625rem);
+}
+
+.container-card {
+	width: clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem);
+}
+
+.profile-card {
+	width: 67.5%;
+}
+
+.rank-card {
+	width: 40%;
+}
+
+.match-history-card {
+	width: 53%;
+}
