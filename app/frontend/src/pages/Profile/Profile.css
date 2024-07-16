@@ -5,16 +5,46 @@
 
 .container-card {
 	width: clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem);
+	height: clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem);
 }
 
-.profile-card {
-	width: 67.5%;
+
+.user-info-lp {
+	width: clamp(38.938rem, 34.115vw + 17.104rem, 71.688rem);
+	/* width: 67.5%; */
+	height: clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem);
+	/* height: clamp(31.64rem, 13.9246rem + 27.6803vw, 58.213125rem); */
+	background-size: cover;
+	background-image: url('./assets/images/Profile/user-info-lp.svg');
 }
 
-.rank-card {
-	width: 40%;
+.user-info-ms {
+	background-size: cover;
+	background-image: url('./assets/images/Profile/user-info-ms.svg');
 }
 
-.match-history-card {
-	width: 53%;
+.rank-card-lp {
+	/* width: 40%; */
+	width: clamp(23.063rem, 20.247vw + 10.104rem, 42.5rem);
+	height: clamp(12.563rem, 11.003vw + 5.521rem, 23.125rem);
+	background-size: cover;
+	background-image: url('./assets/images/Profile/rank-card-lp.svg');
 }
+
+/* .rank-card-ms {
+	background-size: cover;
+	background-image: url('./assets/images/Profile/rank-card-ms.svg');
+} */
+
+.match-history-lp {
+	/* width: 53%; */
+	width: clamp(30.563rem, 26.823vw + 13.396rem, 56.313rem);
+	height: clamp(17.75rem, 15.56vw + 7.792rem, 32.688rem);
+	background-size: cover;
+	background-image: url('./assets/images/Profile/match-history-lp.svg');
+}
+
+/* .match-history-ms {
+	background-size: cover;
+	background-image: url('./assets/images/Profile/match-history-ms.svg');
+} */
