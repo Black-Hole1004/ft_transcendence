@@ -18,23 +18,48 @@ const Chat = () => {
 						<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center'></div>
 
 						<div
-							className='flex-1 max-tb:border border-primary
+							className='flex-1 flex flex-col items-center max-tb:border border-primary
 							lg:rounded-3xl rounded-2xl h-chat bg-[rgba(27,22,17,0.5)]'
 						>
-							<div className='flex items-center h-[20%] w-full gap-5'>
+							<div className='chat-header flex max-ms:flex-col items-center h-[20%] w-full lp:gap-5 gap-3 max-tb:my-3'>
 								<img
 									src='./assets/images/tabi3a.jpeg'
 									className='w-20 rounded-full border border-primary'
-									alt=''
+									alt='user image'
 								/>
-								<div>
-									<p className='font-heavy'>Abdelouahed Rabiai</p>
-									<p>Online</p>
+								<div className='max-ms:hidden'>
+									<p className='font-heavy friend-name text-primary'>Abdelouahed Rabiai</p>
+									<p className='last-message text-chat'>Online</p>
 								</div>
 							</div>
-							<div className='flex justify-center items-center'>
-								chat
+							<div className='flex-1 flex flex-col justify-between items-center'>
+								{/* chat */}
 								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+							</div>
+							<div className='footer flex justify-center items-center w-full h-[10%]'>
+								<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px] '>
+									<button>
+										<img src='./assets/images/icons/paperclip.svg' alt='' />
+									</button>
+									<input
+										type='text'
+										className='w-[85%] chat-input bg-transparent placeholder:text-chat outline-none'
+										placeholder='Type your message here...'
+									/>
+									<button>
+										<img src='./assets/images/icons/emoji.svg' alt='' />
+									</button>
+									<button>
+										<img src='./assets/images/icons/send-icon.svg' alt='' />
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>

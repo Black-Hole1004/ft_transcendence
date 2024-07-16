@@ -3,7 +3,7 @@ import UserFriendsList from './UserFriendsList'
 function FriendsList() {
 	return (
 		<div
-			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px]
+			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px] max-ms:hidden
 			rounded-xl card-height card-color h-fl-ldr-custom'
 		>
 			<h1 className='font-dreamscape-sans card-title text-primary'>FRIENDS LIST</h1>
@@ -16,7 +16,7 @@ function FriendsList() {
 					className=' font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border'
 				/>
 			</div>
-			<div className='flex flex-col lg:gap-3 ms:gap-2 w-[96%] h-[90%] overflow-y-auto users'>
+			<div className='flex flex-col lg:gap-3 gap-2 w-[96%] h-[90%] overflow-y-auto users'>
 				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
 				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
 				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>

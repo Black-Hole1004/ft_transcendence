@@ -34,8 +34,8 @@ const Home = () => {
 				<div className='flex lp:justify-start ms:justify-center'>
 					<h1
 						className='relative border gradient-border leading-[1] responsive-font text-primary font-dreamscape select-none
-						lg:border-t-2 lg:border-b-2 lp:pt-[16px] ms:pt-[10px] pb-[10px]
-						4k:ml-[80px] xl:ml-[60px] lg:ml-[40px] lp:ml-[30px]'
+						lg:border-t-2 lg:border-b-2 lp:pt-[16px] pt-[10px] pb-[10px]
+						4k:ml-[80px] xl:ml-[60px] lg:ml-[40px] lp:ml-[30px] max-ms:hidden'
 					>
 						starserve
 						<span className='subtitle absolute text-primary font-heavy bottom-2 left-0'>

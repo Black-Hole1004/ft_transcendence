@@ -62,7 +62,6 @@
 }
 
 .last-message {
-	/* width: clamp(7.188rem, 13.114vw + 0.893rem, 21.875rem); */
 	font-size: clamp(0.563rem, 0.335vw + 0.402rem, 0.938rem);
 }
 
@@ -70,8 +69,36 @@
 	width: clamp(7.188rem, 11.44vw + 1.696rem, 20rem);
 }
 
-
 .users-container {
 	margin-right: clamp(0.5rem, 0.391vw + 0.313rem, 0.938rem);
 	margin-bottom: 10px;
 }
+
+.chat-header {
+	padding-left: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem);
+}
+
+.chat-header .friend-name {
+	/* // 25 13 */
+	font-size: clamp(0.813rem, 0.531vw + 0.713rem, 1.563rem);
+}
+
+.chat-header img {
+	width: clamp(1.875rem, 1.991vw + 1.502rem, 4.688rem);
+}
+
+.chat-input-container {
+	padding-left: clamp(0.813rem, 0.973vw + 0.63rem, 2.188rem);
+	padding-right: clamp(0.813rem, 0.973vw + 0.63rem, 2.188rem);
+}
+
+.chat-input {
+	font-size: clamp(0.625rem, 0.398vw + 0.55rem, 1.188rem);
+	padding-top: clamp(0.5rem, 0.487vw + 0.409rem, 1.188rem);
+	padding-bottom: clamp(0.5rem, 0.487vw + 0.409rem, 1.188rem);
+}
+
+.footer button {
+	width: clamp(0.75rem, 0.575vw + 0.642rem, 1.563rem);
+}
+

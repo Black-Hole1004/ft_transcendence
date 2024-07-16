@@ -18,11 +18,11 @@ const Dashboard = () => {
 	return (
 		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header />
-			<section className='flex-grow flex lg:flex-row ms:flex-col'>
+			<section className='flex-grow flex lg:flex-row flex-col'>
 				<div className='lg:w-5/12 w-full flex flex-col'>
 					<CongratulatoryMessage />
 					<div
-						className='flex mtb:flex-row flex-col lg:justify-between mtb:justify-around ms:items-center gap-y-10
+						className='flex mtb:flex-row flex-col lg:justify-between mtb:justify-around items-center gap-y-10
 						lp:pl-cards-section-pl lp:pr-cards-section-pr'
 					>
 						<FriendsList />
@@ -30,7 +30,7 @@ const Dashboard = () => {
 					</div>
 				</div>
 				<div
-					className='flex flex-col flex-1 rightside-mt mb-10
+					className='flex flex-col flex-1 rightside-mt mb-10 max-ms:gap-[150px]
 					lg:mr-modes-right-lg lg:ml-modes-left-lg ml:ml-modes-left-ms ml:mr-modes-right-ms'
 				>
 					<GameModes />

@@ -23,7 +23,7 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 
 	return (
 		<div className='flex items-center justify-between'>
-			<div className='flex-1 flex items-center xl:gap-3 tb:gap-2 ms:gap-1 font-dreamscape-sans'>
+			<div className='flex-1 flex items-center xl:gap-3 tb:gap-2 gap-1 font-dreamscape-sans'>
 				<img
 					src={achievementData.icon}
 					className='achievement-icon-fr'
@@ -31,7 +31,7 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 				/>
 				<img
 					src='/assets/images/moudrib.jpeg'
-					className='user-image rounded-full tb:border ms:border-0.7 border-primary'
+					className='user-image rounded-full tb:border border-0.7 border-primary'
 					alt='user-image'
 				/>
 				<p className='text-primary nickname-size overflow-hidden'>
@@ -47,7 +47,7 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 						{status}
 					</p>
 				) : (
-					<Button className={'font-heavy add-friend-button lg:rounded-lg ms:rounded'}>Add Friend</Button>
+					<Button className={'font-heavy add-friend-button lg:rounded-lg rounded'}>Add Friend</Button>
 				)}
 			</div>
 		</div>
