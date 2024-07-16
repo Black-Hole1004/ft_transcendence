@@ -62,9 +62,14 @@
 }
 
 .last-message {
-	width: clamp(7.188rem, 13.114vw + 0.893rem, 21.875rem);
+	/* width: clamp(7.188rem, 13.114vw + 0.893rem, 21.875rem); */
 	font-size: clamp(0.563rem, 0.335vw + 0.402rem, 0.938rem);
 }
+
+.last-message-w {
+	width: clamp(7.188rem, 11.44vw + 1.696rem, 20rem);
+}
+
 
 .users-container {
 	margin-right: clamp(0.5rem, 0.391vw + 0.313rem, 0.938rem);
