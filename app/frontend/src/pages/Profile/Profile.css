@@ -8,43 +8,73 @@
 	height: clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem);
 }
 
-
 .user-info-lp {
 	width: clamp(38.938rem, 34.115vw + 17.104rem, 71.688rem);
-	/* width: 67.5%; */
 	height: clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem);
-	/* height: clamp(31.64rem, 13.9246rem + 27.6803vw, 58.213125rem); */
 	background-size: cover;
 	background-image: url('./assets/images/Profile/user-info-lp.svg');
 }
 
 .user-info-ms {
-	background-size: cover;
+	width: 100%;
+	height: 90%;
+	background-size: contain;
 	background-image: url('./assets/images/Profile/user-info-ms.svg');
 }
 
 .rank-card-lp {
-	/* width: 40%; */
 	width: clamp(23.063rem, 20.247vw + 10.104rem, 42.5rem);
 	height: clamp(12.563rem, 11.003vw + 5.521rem, 23.125rem);
 	background-size: cover;
 	background-image: url('./assets/images/Profile/rank-card-lp.svg');
 }
 
-/* .rank-card-ms {
-	background-size: cover;
+.rank-card-ms {
+	width: 100%;
+	height: 40%;
+	background-size: contain;
 	background-image: url('./assets/images/Profile/rank-card-ms.svg');
-} */
+}
 
 .match-history-lp {
-	/* width: 53%; */
 	width: clamp(30.563rem, 26.823vw + 13.396rem, 56.313rem);
 	height: clamp(17.75rem, 15.56vw + 7.792rem, 32.688rem);
 	background-size: cover;
 	background-image: url('./assets/images/Profile/match-history-lp.svg');
 }
 
-/* .match-history-ms {
-	background-size: cover;
+.match-history-ms {
+	width: 100%;
+	height: 70%;
+	background-size: contain;
 	background-image: url('./assets/images/Profile/match-history-ms.svg');
-} */
+}
+
+.card-title {
+	font-size: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
+}
+
+.rank img {
+	/* width: 33%; */
+	width: clamp(3.75rem, 7.301vw + 2.381rem, 14.063rem);
+}
+
+.level {
+	width: clamp(10rem, 9.735vw + 8.175rem, 23.75rem);
+}
+
+.achievement-title {
+	font-size: clamp(0.5rem, 0.752vw + 0.359rem, 1.563rem);
+}
+
+.progress {
+	font-size: clamp(0.5rem, 0.177vw + 0.467rem, 0.75rem);
+}
+
+.arrow {
+	width: clamp(0.938rem, 0.929vw + 0.763rem, 2.25rem);
+}
+
+.profile-image {
+	width: clamp(3.75rem, 6.195vw + 2.588rem, 12.5rem);
+}
