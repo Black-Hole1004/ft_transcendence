@@ -15,13 +15,6 @@
 	background-image: url('./assets/images/Profile/user-info-lp.svg');
 }
 
-.user-info-ms {
-	width: 100%;
-	height: 90%;
-	background-size: contain;
-	background-image: url('./assets/images/Profile/user-info-ms.svg');
-}
-
 .rank-card-lp {
 	width: clamp(23.063rem, 20.247vw + 10.104rem, 42.5rem);
 	height: clamp(12.563rem, 11.003vw + 5.521rem, 23.125rem);
@@ -43,19 +36,13 @@
 	background-image: url('./assets/images/Profile/match-history-lp.svg');
 }
 
-.match-history-ms {
-	width: 100%;
-	height: 70%;
-	background-size: contain;
-	background-image: url('./assets/images/Profile/match-history-ms.svg');
-}
-
-.card-title {
+.cards-title {
 	font-size: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
+	margin-top: clamp(1rem, 0.409vw + 0.923rem, 1.563rem);
+	margin-bottom: clamp(0.75rem, 0.849vw - 0.014rem, 1.313rem);
 }
 
 .rank img {
-	/* width: 33%; */
 	width: clamp(3.75rem, 7.301vw + 2.381rem, 14.063rem);
 }
 
@@ -77,4 +64,59 @@
 
 .profile-image {
 	width: clamp(3.75rem, 6.195vw + 2.588rem, 12.5rem);
+	margin-left: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
+	margin-right: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
+}
+
+.titles {
+	font-size: clamp(0.625rem, 0.575vw + 0.517rem, 1.438rem);
+}
+
+.bio-content {
+	font-size: clamp(0.5rem, 0.31vw + 0.442rem, 0.938rem);
+}
+
+.about {
+	width: clamp(17.5rem, 9.744vw + 13.785rem, 29.375rem);
+	height: clamp(6.25rem, 5.398vw + 5.238rem, 13.875rem);
+	font-size: clamp(0.5rem, 0.31vw + 0.442rem, 0.938rem);
+	padding-left: clamp(0.5rem, 0.752vw + 0.359rem, 1.563rem);
+	padding-right: clamp(0.5rem, 0.752vw + 0.359rem, 1.563rem);
+	background: linear-gradient(rgba(153, 124, 94, 0), rgba(153, 124, 94, 0.3));
+}
+
+.about img {
+	width: clamp(1.125rem, 0.31vw + 1.067rem, 1.563rem);
+}
+
+.third-part {
+	margin-left: clamp(0.5rem, 0.872vw + 0.168rem, 1.563rem);
+}
+
+.CircularProgressbar .CircularProgressbar-text {
+	font-family: 'dreamscape-sans';
+	font-size: clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem);
+}
+
+.progressbar {
+	width: clamp(7.5rem, 2.876vw + 6.961rem, 11.563rem);
+	height: clamp(7.5rem, 2.876vw + 6.961rem, 11.563rem);
+}
+
+
+
+
+
+
+
+
+/* Match history */
+
+.match-history {
+	margin-right: clamp(0rem, 1.302vw - 0.833rem, 1.25rem);
+	margin-bottom: clamp(0.75rem, 0.849vw - 0.014rem, 1.313rem);
+}
+
+.match-infos {
+	width: clamp(12.5rem, 36.913vw - 11.17rem, 33.125rem);
 }

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import Header from '../../components/Header'
+import 'react-circular-progressbar/dist/styles.css'
+import { CircularProgressbar } from 'react-circular-progressbar'
 
 const Profile = () => {
 	const containerRef = useRef(null)
@@ -23,16 +25,21 @@ const Profile = () => {
 		}
 	}, [])
 
-	const xp = 12445
+	const xp = 2445
 	const progress = xp % 2000
 	const progressStart = xp > 10000 ? 8000 : Math.floor(xp / 2000) * 2000
+	const [achievementProgress, setAchievementProgress] = useState(null)
+
+	useEffect(() => {
+		setAchievementProgress((progress * 100) / 2000)
+	}, [achievementProgress])
+
 	const [level, setLevel] = useState(null)
 
 	useEffect(() => {
-		setLevel((progress * 100) / 2000)
+		setLevel((xp * 100) / 10000)
 	}, [level])
 
-	console.log(width)
 	return (
 		<div
 			ref={containerRef}
@@ -40,12 +47,13 @@ const Profile = () => {
 		>
 			<Header />
 			<section className='flex justify-center'>
-				<div className='lp:mx-container-x-lp mx-container-x-ms container-card my-20 relative'>
+				<div className='lp:mx-container-x-lp mx-container-x-ms container-card my-20 relative flex flex-col max-lp:gap-y-3'>
 					<div
-						className={`${width >= 1024 ? 'user-info-lp' : 'user-info-ms'} bg-no-repeat lp:self-start overflow-hidden`}
+						className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
+						bg-no-repeat lp:self-start  max-ms:w-full`}
 					>
 						{/* first part */}
-						<div className='font-dreamscape text-primary card-title text-center relative'>
+						<div className='font-dreamscape text-primary cards-title text-center relative'>
 							<button className='absolute left-[4%]'>
 								<img
 									src='./assets/images/icons/arrow.svg'
@@ -64,9 +72,9 @@ const Profile = () => {
 									alt='profile image'
 								/>
 							</div>
-							<div className='flex flex-col text-primary'>
-								<p className='font-heavy'>BIO</p>
-								<p className='font-medium'>
+							<div className='flex flex-col text-primary max-w-[50%] lg:gap-y-3 gap-y-1 font-medium'>
+								<p className='titles'>BIO</p>
+								<p className='bio-content'>
 									Lorem, ipsum dolor sit amet consectetur adipisicing elit.
 									Nostrum hic magnam sequi odit ad, nobis molestiae, quaerat
 									adipisci accusamus quibusdam ipsum, possimus eveniet similique
@@ -74,14 +82,93 @@ const Profile = () => {
 								</p>
 							</div>
 						</div>
+
+						{/* third part */}
+						<div
+							className='third-part flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
+							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-5'
+						>
+							<div className='flex flex-col lp:gap-3 gap-2 items-center'>
+								<p className='titles self-start'>About</p>
+								<div className='about rounded-xl flex flex-col justify-around font-medium text-primary  max-ms:w-full'>
+									<div className='line1 flex justify-between items-center'>
+										<div className='flex items-center gap-3'>
+											<img src='./assets/images/icons/Name.svg' alt='' />
+											<p>Full Name</p>
+										</div>
+										<div>
+											<p>Mouad Oudrib</p>
+										</div>
+									</div>
+									<div className='line2 flex justify-between items-center'>
+										<div className='flex items-center gap-3'>
+											<img src='./assets/images/icons/username.svg' alt='' />
+											<p>Username</p>
+										</div>
+										<div>
+											<p>moudrib</p>
+										</div>
+									</div>
+									<div className='line3 flex justify-between items-center'>
+										<div className='flex items-center gap-3'>
+											<img src='./assets/images/icons/Email.svg' alt='' />
+											<p>Email</p>
+										</div>
+										<div>
+											<p>transcendence@gmail.com</p>
+										</div>
+									</div>
+									<div className='line4 flex justify-between items-center'>
+										<div className='flex items-center gap-3'>
+											<img src='./assets/images/icons/Calendar.svg' alt='' />
+											<p>Joined</p>
+										</div>
+										<div>
+											<p>April 2024</p>
+										</div>
+									</div>
+									<div className='line5 flex justify-between items-center'>
+										<div className='flex items-center gap-3'>
+											<img src='./assets/images/icons/Phone.svg' alt='' />
+											<p>Phone</p>
+										</div>
+										<div>
+											<p>+212611223344</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className='flex flex-col items-center lp:gap-3 gap-2'>
+								<p className='titles max-mtb:self-start'>Achievement Progression</p>
+								<div className='progressbar justify-self-center'>
+									<CircularProgressbar
+										value={level}
+										text={`${level > 100 ? 100 : level}%`}
+										styles={{
+											trail: {
+												stroke: '#79624C',
+											},
+											path: {
+												stroke: '#FFCE9E',
+											},
+											text: {
+												fill: '#FBFBEE',
+												fontSize:
+													'clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem)',
+											},
+										}}
+									/>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div
-						className={`${width >= 1024 ? 'rank-card-lp' : 'rank-card-ms'}
+						className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
 							bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}
 					>
-						<div className='font-dreamscape text-primary card-title text-center'>
-							<h1>rank</h1>
+						<div className='font-dreamscape text-primary cards-title text-center'>
+							<h1 className=''>rank</h1>
 						</div>
 						<div className='flex-1 flex items-center justify-center'>
 							<div>
@@ -102,7 +189,9 @@ const Profile = () => {
 								<div className='level xl:h-[11px] tb:h-2 h-[7px] rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
 									<div
 										className={`lp:mx-2 mx-1 rounded-lg h-[65%] bg-level`}
-										style={{ width: `${xp > 10000 ? 100 : level}%` }}
+										style={{
+											width: `${xp > 10000 ? 100 : achievementProgress}%`,
+										}}
 									></div>
 								</div>
 							</div>
@@ -110,29 +199,44 @@ const Profile = () => {
 					</div>
 
 					<div
-						className={`${width >= 1024 ? 'match-history-lp' : 'match-history-ms'} bg-no-repeat lp:absolute lp:bottom-0 lp:right-0`}
+						className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
+						bg-no-repeat lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
 					>
-						<div className='font-dreamscape text-primary card-title text-center'>
+						<div className='font-dreamscape text-primary cards-title text-center'>
 							<h1>match history</h1>
 						</div>
+						<div className='match-history flex-1 flex justify-end gap-5'>
+							<div className='flex flex-col items-center lp:gap-3 gap-2 self-end'>
+								<p className='titles self-start font-medium'>Win Rate</p>
+								<div className='progressbar justify-self-center'>
+									<CircularProgressbar
+										value={level}
+										text={`${level > 100 ? 100 : level}%`}
+										styles={{
+											trail: {
+												stroke: '#79624C',
+											},
+											path: {
+												stroke: '#FFCE9E',
+											},
+											text: {
+												fill: '#FBFBEE',
+												fontSize:
+													'clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem)',
+											},
+										}}
+									/>
+								</div>
+							</div>
+							<div className='flex flex-col gap-1'>
+								<div className='flex-1 border border-primary match-infos'></div>
+								<div className='flex-1 border border-primary match-infos'></div>
+								<div className='flex-1 border border-primary match-infos'></div>
+								<div className='flex-1 border border-primary match-infos'></div>
+								<div className='flex-1 border border-primary match-infos'></div>
+							</div>
+						</div>
 					</div>
-
-					{/* <img
-						src={`${width >= 1024 ? './assets/images/Profile/user-info-lp.svg' : './assets/images/Profile/user-info-ms.svg'}`}
-						className='lp:w-[67.5%] lp:self-start'
-						alt=''
-					>
-					</img>
-					<img
-						src={`${width >= 1024 ? './assets/images/Profile/rank-card-lp.svg' : './assets/images/Profile/rank-card-ms.svg'}`}
-						className='lp:absolute lp:w-[40%] lp:right-0 lp:top-0'
-						alt=''
-					/>
-					<img
-						src={`${width >= 1024 ? './assets/images/Profile/match-history-lp.svg' : './assets/images/Profile/match-history-ms.svg'}`}
-						className='lp:absolute lp:w-[53%] lp:right-0 lp:bottom-0'
-						alt=''
-					/> */}
 				</div>
 			</section>
 		</div>
