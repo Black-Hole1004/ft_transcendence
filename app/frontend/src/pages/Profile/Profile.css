@@ -104,6 +104,13 @@
 }
 
 
+/* 1024 - 2560 */
+.win-rate {
+	width: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
+	height: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
+}
+
+
 
 
 
@@ -113,10 +120,39 @@
 /* Match history */
 
 .match-history {
+	gap: clamp(0.625rem, 6.25vw - 5rem, 5rem);
 	margin-right: clamp(0rem, 1.302vw - 0.833rem, 1.25rem);
 	margin-bottom: clamp(0.75rem, 0.849vw - 0.014rem, 1.313rem);
 }
 
 .match-infos {
-	width: clamp(12.5rem, 36.913vw - 11.17rem, 33.125rem);
+	width: clamp(18.75rem, 20.089vw + 5.893rem, 30rem);
+}
+
+.match-winner {
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-right-radius: clamp(1.25rem, 1.953vw + 0rem, 3.125rem);
+	height: clamp(2.375rem, 2.474vw + 0.792rem, 4.75rem);
+}
+
+.match-loser {
+	border-top-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-left-radius: clamp(1.25rem, 1.953vw + 0rem, 3.125rem);
+	height: clamp(2.375rem, 2.474vw + 0.792rem, 4.75rem);
+}
+
+.result {
+	font-size: clamp(0.5rem, 0.651vw + 0.083rem, 1.125rem);
+}
+
+.points img {
+	width: clamp(1.25rem, 1.172vw + 0.5rem, 2.375rem);
+}
+
+.points p {
+	font-size: clamp(0.375rem, 0.391vw + 0.125rem, 0.75rem);
 }

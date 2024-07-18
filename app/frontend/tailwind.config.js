@@ -26,6 +26,8 @@ export default {
 				border: '#646464',
 				online: '#46E9D2',
 				ingame: '#F54E62',
+				defeat: '#F54E62',
+				victory: '#46E9D2',
 				offline: '#686259',
 				primary: '#FBFBEE',
 				secondary: '#1B1611',
