@@ -14,7 +14,7 @@ function User() {
 					<div className='user-nickname text-primary'>
 						<p className=''>Arabiai</p>
 					</div>
-					<div className='flex text-chat max-tb:hidden last-message'>
+					<div className='flex text-light max-tb:hidden last-message'>
 						<pre className='font-medium'>You: </pre>
 						<p className='last-message-w whitespace-nowrap overflow-hidden text-ellipsis'>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, omnis

@@ -30,6 +30,13 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: 'Regular';
+	src: url('/assets/fonts/Avenir/Avenir-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 body {
 	width: 100vw;
 	height: 100vh;

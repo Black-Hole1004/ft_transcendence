@@ -40,6 +40,7 @@ const Profile = () => {
 		setLevel((xp * 100) / 10000)
 	}, [level])
 
+
 	return (
 		<div
 			ref={containerRef}
@@ -168,7 +169,7 @@ const Profile = () => {
 							bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}
 					>
 						<div className='font-dreamscape text-primary cards-title text-center'>
-							<h1 className=''>rank</h1>
+							<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
 						</div>
 						<div className='flex-1 flex items-center justify-center'>
 							<div>
@@ -203,7 +204,7 @@ const Profile = () => {
 						bg-no-repeat lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
 					>
 						<div className='font-dreamscape text-primary cards-title text-center'>
-							<h1>match history</h1>
+							<h1 className='lg:pl-40 lp:pl-28'>match history</h1>
 						</div>
 						<div className='match-history flex-1 flex mtb:flex-row flex-col
 							justify-end max-lp:self-center'>

@@ -13,6 +13,7 @@ export default {
 			'4k': '2500px',
 		},
 		fontFamily: {
+			regular: ['Regular'],
 			heavy: ['Heavy'],
 			medium: ['Medium'],
 			dreamscape: ['Dreamscape'],
@@ -20,7 +21,7 @@ export default {
 		},
 		extend: {
 			colors: {
-				chat: '#B7AA9C',
+				// chat: '#B7AA9C',
 				level: '#FFCE9E',
 				light: '#B7AA9C',
 				border: '#646464',

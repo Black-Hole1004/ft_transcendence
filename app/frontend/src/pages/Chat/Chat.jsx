@@ -29,7 +29,7 @@ const Chat = () => {
 								/>
 								<div className='max-ms:hidden'>
 									<p className='font-heavy friend-name text-primary'>Abdelouahed Rabiai</p>
-									<p className='last-message text-chat'>Online</p>
+									<p className='last-message text-light'>Online</p>
 								</div>
 							</div>
 							<div className='flex-1 flex flex-col justify-between items-center'>
@@ -50,7 +50,7 @@ const Chat = () => {
 									</button>
 									<input
 										type='text'
-										className='w-[85%] chat-input bg-transparent placeholder:text-chat outline-none'
+										className='w-[85%] chat-input bg-transparent placeholder:text-light outline-none'
 										placeholder='Type your message here...'
 									/>
 									<button>

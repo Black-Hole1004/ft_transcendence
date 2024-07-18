@@ -13,7 +13,7 @@ function UserInfos() {
 			<div className='flex flex-col justify-center font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>
 				<div>
 					<p className='text-primary full-name leading-[1]'>Abdelouahed Rabiai</p>
-					<p className='text-chat nickname'>@Arabiai</p>
+					<p className='text-light nickname'>@Arabiai</p>
 				</div>
 				<div className='max-w-[500px]'>
 					<p className='font-medium text-primary bio'>
