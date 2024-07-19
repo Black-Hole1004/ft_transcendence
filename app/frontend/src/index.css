@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+	font-family: 'Dreamscape';
+	src: url('/assets/fonts/Dreamscape/Dreamscape.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Dreamscape-Sans';
+	src: url('/assets/fonts/Dreamscape/Dreamscape-Sans.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Medium';
+	src: url('/assets/fonts/Avenir/Avenir-Medium.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Heavy';
+	src: url('/assets/fonts/Avenir/Avenir-Heavy.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Regular';
+	src: url('/assets/fonts/Avenir/Avenir-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	background-size: cover;
+	background-position: 50% 37%;
+	background-image: url("/assets/images/background.png");
+}
+
+.header-height {
+	height: clamp(3.75rem, 2.273vw + 3.324rem, 6.875rem);
+}
+
+::-webkit-scrollbar {
+	width: clamp(0.375rem, 0.182vw + 0.216rem, 0.5rem);
+}
+
+::-webkit-scrollbar-track {
+	background: #48433E;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #FBFBEE;
+	border-radius: 4px;
+}
