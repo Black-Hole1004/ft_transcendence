@@ -1,0 +1,16 @@
+.page-margin {
+	margin: 40px clamp(0.313rem, 21.903vw - 3.794rem, 31.25rem);
+}
+
+.selected-table {
+	/* width: clamp(28.875rem, 22.462vw + 20.312rem, 56.25rem); */
+	height: clamp(13.75rem, 12.389vw + 11.427rem, 31.25rem);
+}
+
+.select-message {
+	font-size: clamp(1.25rem, 1.239vw + 1.018rem, 3rem);
+}
+
+.tables {
+	
+}

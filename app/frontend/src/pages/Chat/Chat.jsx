@@ -32,7 +32,7 @@ const Chat = () => {
 									<p className='last-message text-light'>Online</p>
 								</div>
 							</div>
-							<div className='flex-1 flex flex-col justify-between items-center'>
+							<div className='flex-1 flex flex-col justify-between items-center text-transparent'>
 								{/* chat */}
 								<p>&#183; Hello</p>
 								<p>&#183; Hello</p>
@@ -42,9 +42,19 @@ const Chat = () => {
 								<p>&#183; Hello</p>
 								<p>&#183; Hello</p>
 								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
+								<p>&#183; Hello</p>
 							</div>
-							<div className='footer flex justify-center items-center w-full h-[10%]'>
-								<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px] '>
+							<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
+								<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]'>
 									<button>
 										<img src='./assets/images/icons/paperclip.svg' alt='' />
 									</button>

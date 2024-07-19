@@ -158,10 +158,10 @@ const Settings = () => {
 										<textarea
 											name=''
 											id=''
-											defaultValue={'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam, aperiam sit ratione officiis asperiores id quisquam, fugiat ipsa sed autem.'}
+											placeholder={'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam, aperiam sit ratione officiis asperiores id quisquam, fugiat ipsa sed autem.'}
 											maxLength={'250'}
-											className='bio-input border border-border rounded-lg bg-[rgb(183,170,156,8%)]
-										max-ms:w-full outline-none placeholders'
+											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
+											max-ms:w-full outline-none placeholders placeholder:text-border'
 										>
 										</textarea>
 									</div>
