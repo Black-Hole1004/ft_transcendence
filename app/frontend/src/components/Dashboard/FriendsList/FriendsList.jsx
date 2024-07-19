@@ -1,0 +1,45 @@
+import UserFriendsList from './UserFriendsList'
+
+function FriendsList() {
+	return (
+		<div
+			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px] max-ms:hidden
+			rounded-xl card-height card-color h-fl-ldr-custom'
+		>
+			<h1 className='font-dreamscape-sans card-title text-primary'>FRIENDS LIST</h1>
+
+			<div className='flex items-center border border-border rounded-2xl pl-2.5'>
+				<img src='/assets/images/icons/search-icon.png' className='search-icon' alt='' />
+				<input
+					type='text'
+					placeholder='Search for friends...'
+					className=' font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border'
+				/>
+			</div>
+			<div className='flex flex-col lg:gap-3 gap-2 w-[96%] h-[90%] overflow-y-auto users'>
+				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'stellar voyager'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'novice astronaut'} status={'in-game'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'stellar voyager'} status={'in-game'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'in-game'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'stellar voyager'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+			</div>
+		</div>
+	)
+}
+
+export default FriendsList
