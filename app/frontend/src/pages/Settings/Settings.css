@@ -23,7 +23,11 @@
 	padding-bottom: clamp(1.563rem, 0.442vw + 1.48rem, 2.188rem);
 }
 
-.settings img {
+.settings {
+	height: clamp(51.875rem, 6.138vw + 48.929rem, 58.75rem);
+}
+
+.profile-pic {
 	width: clamp(2.5rem, 2.655vw + 2.002rem, 6.25rem);
 }
 
@@ -44,3 +48,26 @@
 	padding: clamp(0.25rem, 0.265vw + 0.2rem, 0.625rem) clamp(1rem, 1.283vw + 0.759rem, 2.813rem);
 }
 
+.inputs {
+	width: clamp(12.5rem, 5.31vw + 11.504rem, 20rem);
+	padding: clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem) clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem);
+}
+
+.placeholders {
+	font-size: clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem);
+}
+
+.last-sec {
+	gap: clamp(1.875rem, 15.044vw - 0.946rem, 23.125rem);
+}
+
+.bio-input {
+	width: clamp(17.5rem, 18.584vw + 14.015rem, 43.75rem);
+	height: clamp(3.438rem, 3.097vw + 2.857rem, 7.813rem);
+	max-height: 130px;
+	padding: clamp(0.375rem, 0.265vw + 0.325rem, 0.75rem) clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem);
+}
+
+.save-button {
+	margin-right: clamp(0.75rem, 2.124vw + 0.352rem, 3.75rem);
+}

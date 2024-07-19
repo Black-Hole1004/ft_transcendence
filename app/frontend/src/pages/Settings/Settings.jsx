@@ -2,12 +2,39 @@ import './Settings.css'
 import Header from '../../components/Header'
 import Button from '../../components/Home/Buttons/Button'
 
+function Input({ type, label, placeholder }) {
+	return (
+		<div className='flex flex-col'>
+			<label htmlFor='' className='font-regular text-light sections-title'>
+				{label}
+			</label>
+			<input
+				type={type}
+				className='inputs border border-border rounded-lg bg-[rgb(183,170,156,8%)]
+				placeholder:text-border placeholder:font-regular placeholders outline-none max-ms:w-[80%]'
+				placeholder={placeholder}
+			/>
+		</div>
+	)
+}
+
 const Settings = () => {
+	window.addEventListener('load', function() {
+		var resetButton = document.getElementById('resetButton');
+		
+		resetButton.addEventListener('click', function() {
+			var forms = document.getElementsByTagName('form');
+			for (var i = 0; i < forms.length; i++) {
+				forms[i].reset();
+			}
+		})
+	})
+		
 	return (
 		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header />
 			<section className='flex-grow flex justify-center'>
-				<div className='settings h-[930px] card-margin w-full lg:border-2 border border-primary rounded-3xl'>
+				<div className='settings max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
 						<h1 className='font-dreamscape-sans text-primary leading-[1]'>settings</h1>
 					</div>
@@ -22,15 +49,15 @@ const Settings = () => {
 								Must be JPEG, PNG, or GIF and cannot exceed 5MB.
 							</p>
 						</div>
-						<div className='flex items-center lp:gap-14 tb:gap-8 gap-5'>
+						<div className='flex items-center max-ms:flex-col lp:gap-14 tb:gap-8 gap-5'>
 							<div>
 								<img
 									src='./assets/images/moudrib.jpeg'
-									className='rounded-full border border-primary'
+									className='rounded-full border border-primary profile-pic'
 									alt=''
 								/>
 							</div>
-							<div className='flex lp:gap-2 gap-1'>
+							<div className='flex max-ms:flex-col lp:gap-2 gap-1'>
 								<Button
 									className={
 										'rounded-md border-border font-regular buttons-text update-button'
@@ -49,6 +76,116 @@ const Settings = () => {
 						</div>
 					</div>
 					<div className='h-0.5 separators'></div>
+					<div
+						className='sections-ml flex tb:flex-row flex-col items-center picture-section
+						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
+					>
+						<div className='font-regular sections-title tb:self-center self-start'>
+							<p className='text-primary'>Personal Settings</p>
+							<p className='text-light'>
+								Change identifying details for your account.
+							</p>
+						</div>
+						<div className='flex items-center'>
+							<form id='form1' className='flex flex-col lp:gap-4 gap-2'>
+								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
+									<Input
+										type={'text'}
+										label={'First Name'}
+										placeholder={'Mouad'}
+									/>
+									<Input
+										type={'text'}
+										label={'Last Name'}
+										placeholder={'Oudrib'}
+									/>
+								</div>
+								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
+									<Input
+										type={'email'}
+										label={'Email'}
+										placeholder={'transcendence@gmail.com'}
+									/>
+									<Input
+										type={'text'}
+										label={'Phone Number'}
+										placeholder={'+212611223344'}
+									/>
+								</div>
+								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
+									<Input
+										type={'password'}
+										label={'Current Password'}
+										placeholder={'•••••••••••••'}
+									/>
+									<Input
+										type={'password'}
+										label={'New Password'}
+										placeholder={'••••••••••'}
+									/>
+									<Input
+										type={'password'}
+										label={'Confirm New Password'}
+										placeholder={'••••••••••'}
+									/>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div className='h-0.5 separators'></div>
+					<div
+						className='sections-ml flex tb:flex-row flex-col items-center picture-section
+						last-sec max-tb:gap-y-3'
+					>
+						<div className='font-regular sections-title tb:self-center self-start'>
+							<p className='text-primary'>Profile Settings</p>
+						</div>
+						<div className='flex items-center'>
+							<form id='form2' className='flex flex-col lp:gap-4 gap-2'>
+								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
+									<Input
+										type={'text'}
+										label={'Username'}
+										placeholder={'mouad55'}
+									/>
+									<div className='flex flex-col'>
+										<label
+											htmlFor=''
+											className='font-regular text-light sections-title'
+										>
+											Bio
+										</label>
+										<textarea
+											name=''
+											id=''
+											defaultValue={'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam, aperiam sit ratione officiis asperiores id quisquam, fugiat ipsa sed autem.'}
+											maxLength={'250'}
+											className='bio-input border border-border rounded-lg bg-[rgb(183,170,156,8%)]
+										max-ms:w-full outline-none placeholders'
+										>
+										</textarea>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div className='flex justify-end save-button max-tb:my-3 tb:gap-2 gap-1'>
+						<Button
+							id={'resetButton'}
+							className={
+								'rounded-md border-border font-regular buttons-text remove-button'
+							}
+						>
+							Cancel
+						</Button>
+						<Button
+							className={
+								'rounded-md border-border font-regular buttons-text remove-button'
+							}
+						>
+							Save Changes
+						</Button>
+					</div>
 				</div>
 			</section>
 		</div>
