@@ -8,9 +8,11 @@
 }
 
 .select-message {
+	height: clamp(5.313rem, 5.088vw + 4.358rem, 12.5rem);
 	font-size: clamp(1.25rem, 1.239vw + 1.018rem, 3rem);
 }
 
 .tables {
-	
+	/* width: clamp(8.75rem, 10.619vw + 6.759rem, 23.75rem); */
+	height: clamp(5.313rem, 5.088vw + 4.358rem, 12.5rem);
 }
