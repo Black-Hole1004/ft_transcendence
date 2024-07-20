@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Game.css'
 import Header from '../../components/Header'
 
@@ -7,9 +7,9 @@ const Game = () => {
 
 	const handleClick = (id) => {
 		setBackgroundId(id)
-		console.log('id:', id)
-		console.log('backgroundId:', id)
 	}
+
+	const xp = 2231
 
 	return (
 		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
@@ -19,10 +19,10 @@ const Game = () => {
 					<div className='flex justify-center'>
 						<div
 							key={backgroundId}
-							className='lp:border-2 border border-primary selected-table mtb:w-select-table w-full rounded-2xl relative'
+							className='lp:border-2 border border-primary overflow-hidden selected-table mtb:w-select-table w-full rounded-2xl relative'
 							style={{
 								background: `url('/assets/images/tables/table${backgroundId}.png')`,
-								backgroundSize: 'cover'
+								backgroundSize: 'cover',
 							}}
 						>
 							<div className='w-full h-full flex justify-center items-center bg-backdrop-40'>
@@ -43,12 +43,23 @@ const Game = () => {
 							<button
 								key={id}
 								onClick={() => handleClick(id)}
-								className={`tables border border-primary rounded-xl`}
+								className={`tables border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500`}
 								style={{
 									background: `url('./assets/images/tables/table${id}.png')`,
 									backgroundSize: 'cover',
 								}}
-							></button>
+								disabled={xp / 1000 < id && id > 1 ? true : false}
+							>
+								<div
+									className={`h-full w-full flex justify-center items-center ${xp / 1000 < id && id > 1 && 'bg-backdrop-80'}`}
+								>
+									{/* <img
+										className={`${xp / 1000 < id && id > 1 ? 'block' : 'hidden'}`}
+										src='/assets/images/icons/Lock.svg'
+										alt=''
+									/> */}
+								</div>
+							</button>
 						))}
 					</div>
 				</div>

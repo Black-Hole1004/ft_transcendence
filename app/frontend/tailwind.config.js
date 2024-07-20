@@ -35,6 +35,7 @@ export default {
 				achievement: '#FFCE9D',
 				'secondary-light': '#564636',
 				'backdrop-40': 'rgba(0, 0, 0, 0.4)',
+				'backdrop-80': 'rgba(0, 0, 0, 0.8)',
 			},
 			borderWidth: {
 				0.7: '0.7px',
