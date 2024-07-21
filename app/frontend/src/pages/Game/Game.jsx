@@ -9,7 +9,7 @@ const Game = () => {
 		setBackgroundId(id)
 	}
 
-	const xp = 2231
+	const xp = 6231
 
 	return (
 		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
