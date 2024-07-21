@@ -6,9 +6,9 @@
 	font-size: clamp(1.063rem, 1.409vw + 0.798rem, 3rem);
 }
 
-.header-padding {
-	padding-left: clamp(0.313rem, 0.682vw + 0.185rem, 1.25rem);
-	padding-right: clamp(0.75rem, 2.636vw + 0.256rem, 4.375rem);
+.header-margin {
+	margin-left: clamp(0.313rem, 0.682vw + 0.185rem, 1.25rem);
+	margin-right: clamp(0.75rem, 2.636vw + 0.256rem, 4.375rem);
 }
 
 .header-logo {
@@ -17,4 +17,31 @@
 
 .nav-icons {
 	width: clamp(2.25rem, 0.818vw + 2.097rem, 3.375rem);
+}
+
+.dropdown {
+	width: clamp(11.563rem, 5.088vw + 10.608rem, 18.75rem);
+	height: clamp(13.75rem, 5.973vw + 12.63rem, 22.188rem);
+	gap: clamp(0.813rem, 0.354vw + 0.746rem, 1.313rem);
+	padding: clamp(1.688rem, 0.796vw + 1.538rem, 2.813rem) clamp(0.625rem, 0.354vw + 0.559rem, 1.125rem);
+}
+
+.dropdown-user-photo {
+	width: clamp(2.188rem, 0.885vw + 2.022rem, 3.438rem);
+}
+
+.fullname {
+	font-size: clamp(0.813rem, 0.354vw + 0.746rem, 1.313rem);
+}
+
+.username {
+	font-size: clamp(0.563rem, 0.265vw + 0.513rem, 0.938rem);
+}
+
+li {
+	font-size: clamp(0.563rem, 0.265vw + 0.513rem, 0.938rem);
+}
+
+li img {
+width: clamp(0.938rem, 0.442vw + 0.855rem, 1.563rem);
 }

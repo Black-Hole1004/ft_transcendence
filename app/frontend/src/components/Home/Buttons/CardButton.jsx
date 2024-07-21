@@ -1,7 +1,7 @@
 import React from 'react'
 import '../Card/Card.css'
 
-function CardButton({className, children}) {
+function CardButton({ className, children }) {
 	return (
 		<button
 			// onClick={onClick}
