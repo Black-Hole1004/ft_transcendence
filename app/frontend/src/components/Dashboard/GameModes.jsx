@@ -16,7 +16,7 @@ function GameModes() {
 				className={'right-0 w-[42%]'}
 				mode={'training'}
 			></Button>
-			<Link to={'/game'}>
+			<Link to={'/custom'}>
 				<Button
 					image={'1vs1.svg'}
 					title={'right-[30%]'}

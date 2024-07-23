@@ -14,53 +14,43 @@ const Game = () => {
 	return (
 		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header />
-			<section className='flex-grow'>
-				<div className='page-margin flex flex-col'>
-					<div className='flex justify-center'>
-						<div
-							key={backgroundId}
-							className='lp:border-2 border border-primary overflow-hidden selected-table mtb:w-select-table w-full rounded-2xl relative'
-							style={{
-								background: `url('/assets/images/tables/table${backgroundId}.png')`,
-								backgroundSize: 'cover',
-							}}
-						>
-							<div className='w-full h-full flex justify-center items-center bg-backdrop-40'>
-								<div className='absolute top-8 left-3 paddles bg-primary rounded-full'></div>
-								<button className='font-dreamscape start-button'>start</button>
-								<div className='absolute bottom-4 right-3 paddles bg-primary rounded-full '></div>
-							</div>
+			<section className='flex-grow flex'>
+				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
+					<div className='score border-1.5 border-primary rounded-xl'>
+						<p className='font-dreamscape leading-[1.125] text-center'>1 - 3</p>
+					</div>
+					<div className='flex-1 w-full flex justify-between'>
+						<div className='flex flex-col items-center font-dreamscape-sans'>
+							<img
+								src='/assets/images/moudrib.jpeg'
+								className='rounded-full border-2 border-primary user-photo'
+								alt='user photo'
+							/>
+							<p className='players-usernames'>mouad55</p>
+							<img
+								src='/assets/images/Achievements/celestial-master.svg'
+								className='achievements-icons hover:scale-[1.2] transition duration-500'
+								alt=''
+							/>
+							<p className='text-level badge-name'>celestial master</p>
 						</div>
-					</div>
-					<div className='select-message flex justify-center items-center'>
-						<h1 className='font-dreamscape-sans'>select table</h1>
-					</div>
-					<div
-						className='grid lg:gap-8 tb:gap-6 gap-4
-					lg:grid-cols-4 lg:grid-rows-2 lp:grid-cols-3 lp:grid-rows-3 grid-cols-2 grid-rows-4'
-					>
-						{[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
-							<button
-								key={id}
-								onClick={() => handleClick(id)}
-								className={`tables border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500`}
-								style={{
-									background: `url('./assets/images/tables/table${id}.png')`,
-									backgroundSize: 'cover',
-								}}
-								disabled={xp / 1000 < id && id > 1 ? true : false}
-							>
-								<div
-									className={`h-full w-full flex justify-center items-center ${xp / 1000 < id && id > 1 && 'bg-backdrop-80'}`}
-								>
-									{/* <img
-										className={`${xp / 1000 < id && id > 1 ? 'block' : 'hidden'}`}
-										src='/assets/images/icons/Lock.svg'
-										alt=''
-									/> */}
-								</div>
-							</button>
-						))}
+						<canvas id='game-table' className='game-table border'>
+
+						</canvas>
+						<div className='flex flex-col items-center font-dreamscape-sans'>
+							<img
+								src='/assets/images/lmoudir.jpg'
+								className='rounded-full border-2 border-primary user-photo'
+								alt='user photo'
+							/>
+							<p className='players-usernames'>Ahmaymou</p>
+							<img
+								src='/assets/images/Achievements/galactic-trailblazer.svg'
+								className='achievements-icons hover:scale-[1.2] transition duration-500'
+								alt=''
+							/>
+							<p className='text-level badge-name'>galactic trailblazer</p>
+						</div>
 					</div>
 				</div>
 			</section>

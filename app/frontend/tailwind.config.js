@@ -52,6 +52,8 @@ export default {
 				'user-div': 'clamp(4.125rem, 7.281vw + 2.76rem, 6.25rem)',
 
 				'select-table': 'clamp(28.875rem, 22.462vw + 20.312rem, 56.25rem)',
+
+				'game-table-mtb': 'clamp(26.25rem, 48.38vw + 13.218rem, 90.625rem)',
 			},
 			height: {
 				'fl-ldr-custom': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',

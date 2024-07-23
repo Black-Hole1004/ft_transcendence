@@ -1,0 +1,25 @@
+.page-margin {
+	margin: 40px clamp(0.313rem, 21.903vw - 3.794rem, 31.25rem);
+}
+
+.selected-table {
+	height: clamp(11.25rem, 14.159vw + 8.595rem, 31.25rem);
+}
+
+.select-message {
+	height: clamp(5.313rem, 5.088vw + 4.358rem, 12.5rem);
+	font-size: clamp(1.25rem, 1.106vw + 1.043rem, 2.813rem);
+}
+
+.tables {
+	height: clamp(5.313rem, 5.088vw + 4.358rem, 12.5rem);
+}
+
+.start-button {
+	font-size: clamp(1.875rem, 1.77vw + 1.543rem, 4.375rem);
+}
+
+.paddles {
+	width: clamp(0.563rem, 0.487vw + 0.471rem, 1.25rem);
+	height: clamp(2.813rem, 2.434vw + 2.356rem, 6.25rem);
+}

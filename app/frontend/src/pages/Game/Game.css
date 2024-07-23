@@ -1,25 +1,31 @@
-.page-margin {
-	margin: 40px clamp(0.313rem, 21.903vw - 3.794rem, 31.25rem);
+.margin-page {
+	margin: clamp(0.938rem, 0.664vw + 0.813rem, 1.875rem) clamp(0rem, 6.385vw - 1.716rem, 8.5rem);
 }
 
-.selected-table {
-	height: clamp(11.25rem, 14.159vw + 8.595rem, 31.25rem);
+.score {
+	width: clamp(12.5rem, 15.487vw + 9.596rem, 34.375rem);
+	height: clamp(4.375rem, 4.867vw + 3.462rem, 11.25rem);
+	font-size: clamp(4.688rem, 5.531vw + 3.65rem, 12.5rem);
 }
 
-.select-message {
-	height: clamp(5.313rem, 5.088vw + 4.358rem, 12.5rem);
-	font-size: clamp(1.25rem, 1.106vw + 1.043rem, 2.813rem);
+.user-photo {
+	width: clamp(5rem, 7.522vw + 3.59rem, 15.625rem);
+	margin-bottom: clamp(0.688rem, 1.018vw + 0.497rem, 2.125rem);
 }
 
-.tables {
-	height: clamp(5.313rem, 5.088vw + 4.358rem, 12.5rem);
+.players-usernames {
+	font-size: clamp(0.938rem, 1.46vw + 0.664rem, 3rem);
 }
 
-.start-button {
-	font-size: clamp(1.875rem, 1.77vw + 1.543rem, 4.375rem);
+.achievements-icons {
+	width: clamp(4.375rem, 5.752vw + 3.296rem, 12.5rem);
+	margin-bottom: clamp(0.688rem, 1.018vw + 0.497rem, 2.125rem);
 }
 
-.paddles {
-	width: clamp(0.563rem, 0.487vw + 0.471rem, 1.25rem);
-	height: clamp(2.813rem, 2.434vw + 2.356rem, 6.25rem);
+.badge-name {
+	font-size: clamp(0.563rem, 0.487vw + 0.471rem, 1.25rem) ;
+}
+
+.game-table {
+	width: ;
 }

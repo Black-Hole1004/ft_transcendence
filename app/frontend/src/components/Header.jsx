@@ -5,6 +5,7 @@ import Button from './Home/Buttons/Button'
 
 function Header() {
 	const dropdownRef = useRef(null)
+	const notificationRef = useRef(null)
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
@@ -29,18 +30,18 @@ function Header() {
 		}
 	})
 
-	useEffect(() => {
-		const closeNotification = (e) => {
-			if (!dropdownRef.current.contains(e.target)) {
-				setIsNotificationOpen(false)
-			}
-		}
-		document.addEventListener('mousedown', closeNotification)
+	// useEffect(() => {
+	// 	const closeNotification = (e) => {
+	// 		if (!notificationRef.current.contains(e.target)) {
+	// 			setIsNotificationOpen(false)
+	// 		}
+	// 	}
+	// 	document.addEventListener('mousedown', closeNotification)
 	
-		return () => {
-			document.removeEventListener('mousedown', closeNotification)
-		}
-	})
+	// 	return () => {
+	// 		document.removeEventListener('mousedown', closeNotification)
+	// 	}
+	// })
 
 
 	return (
@@ -76,7 +77,7 @@ function Header() {
 				</button>
 				{
 					isNotificationOpen && (
-						<div ref={dropdownRef} className='notification max-ms:w-full absolute z-10 ml:right-1/3 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'>
+						<div ref={notificationRef} className='notification max-ms:w-full absolute z-10 ml:right-1/3 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'>
 							<h1 className='font-heavy notification-header'>Notifications</h1>
 							<div className='flex flex-col tb:gap-3 gap-2 overflow-auto lp:mx-3 mx-2 mb-2 font-medium'>
 								<div className='flex items-center gap-1'>
