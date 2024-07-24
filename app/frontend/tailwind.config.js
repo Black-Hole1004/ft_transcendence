@@ -35,6 +35,7 @@ export default {
 				achievement: '#FFCE9D',
 				'secondary-light': '#564636',
 				'backdrop-40': 'rgba(0, 0, 0, 0.4)',
+				'backdrop-80': 'rgba(0, 0, 0, 0.8)',
 			},
 			borderWidth: {
 				0.7: '0.7px',
@@ -49,6 +50,10 @@ export default {
 				'input-ms': 'clamp(15rem, 34.261vw + 8.576rem, 25rem)',
 
 				'user-div': 'clamp(4.125rem, 7.281vw + 2.76rem, 6.25rem)',
+
+				'select-table': 'clamp(28.875rem, 22.462vw + 20.312rem, 56.25rem)',
+
+				'game-table-mtb': 'clamp(26.25rem, 48.38vw + 13.218rem, 90.625rem)',
 			},
 			height: {
 				'fl-ldr-custom': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',

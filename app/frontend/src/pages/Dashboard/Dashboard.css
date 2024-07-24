@@ -17,11 +17,6 @@
     height: clamp(37.5rem, 4.545vw + 36.648rem, 43.75rem);
 }
 
-.card-color {
-    box-shadow: inset 0px 0px 5px 5px rgba(27, 22, 17, 0.5);
-    background: linear-gradient(rgba(27, 22, 17, 0.5), rgba(27, 22, 17, 0));
-}
-
 .card-title {
     margin-top: clamp(1rem, 0.409vw + 0.923rem, 1.563rem);
     margin-bottom: clamp(0.75rem, 0.849vw - 0.014rem, 1.313rem);

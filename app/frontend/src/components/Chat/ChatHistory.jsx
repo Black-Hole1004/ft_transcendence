@@ -1,6 +1,12 @@
+import { useState } from "react"
 import User from "./User"
 
 function ChatHistory() {
+	const [small, setSmall] = useState(window.innerWidth < 768)
+	console.log("------->",small)
+	window.addEventListener("resize", ()=>{
+		setSmall(window.innerWidth < 768)
+	})
 	return (
 		<div
 			className='flex flex-col tb:w-[34%] max-tb:border border-primary lg:rounded-3xl rounded-2xl
@@ -22,8 +28,8 @@ function ChatHistory() {
 				</div>
 			</div>
 			<div
-				className='flex tb:flex-col flex-row gap-y-1 users-container h-users-div
-									tb:overflow-y-scroll max-tb:overflow-x-scroll'
+				className={`flex tb:flex-col flex-row gap-y-1 users-container h-users-div
+							tb:overflow-y-scroll ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				<User />
 				<User />

@@ -51,6 +51,7 @@ body {
 
 ::-webkit-scrollbar {
 	width: clamp(0.375rem, 0.182vw + 0.216rem, 0.5rem);
+	height: 6px;
 }
 
 ::-webkit-scrollbar-track {

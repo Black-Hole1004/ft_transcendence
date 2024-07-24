@@ -22,7 +22,7 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 	const achievementData = achievements[achievement]
 
 	return (
-		<div className='flex items-center justify-between'>
+		<div className='flex items-center justify-between gap-5'>
 			<div className='flex-1 flex items-center xl:gap-3 tb:gap-2 gap-1 font-dreamscape-sans'>
 				<img
 					src={achievementData.icon}
@@ -34,10 +34,10 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 					className='user-image rounded-full tb:border border-0.7 border-primary'
 					alt='user-image'
 				/>
-				<p className='text-primary nickname-size overflow-hidden'>
-					{`${nickname}` + ' '}
-					<span className='text-achievement achievement-name'> {achievement}</span>
-				</p>
+				<div className='flex flex-wrap items-center overflow-hidden'>
+					<p className='text-primary nickname-size leading-[1]'>{nickname}</p>
+					<p className='text-achievement achievement-name ml-1'> {achievement}</p>
+				</div>
 			</div>
 			<div>
 				{isFriend ? (
@@ -47,7 +47,9 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 						{status}
 					</p>
 				) : (
-					<Button className={'font-heavy add-friend-button lg:rounded-lg rounded'}>Add Friend</Button>
+					<Button className={'font-heavy add-friend-button lg:rounded-lg rounded'}>
+						Add Friend
+					</Button>
 				)}
 			</div>
 		</div>
