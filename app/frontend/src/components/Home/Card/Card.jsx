@@ -11,10 +11,8 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 		<dialog
 			data-modal
 			ref={dialogRef}
-			className={`absolute
-			${isSigningIn ? 'h-[570px]' : 'h-[600px]'}
-			${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'}
-			max-ml:mb-0 ml:w-card-custom max-w-full w-screen
+			className={`max-ml:mb-0 ml:w-card-custom max-w-full w-screen
+			${isSigningIn ? 'h-[570px]' : 'h-[600px]'} ${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'}
 			ml:border-1.5 border border-b-0 rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
 			<div className='p-2 h-full'>
@@ -25,12 +23,12 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 							src='/assets/images/icons/close.png'
 						/>
 					</button>
-					<div className='separator h-0.5 flex-1'></div>
+					<div className='card-separator h-0.5 flex-1'></div>
 					<img
 						className='select-none pointer-events-none logo'
 						src='/assets/images/logo-transparent.png'
 					/>
-					<div className='separator h-0.5 flex-1'></div>
+					<div className='card-separator h-0.5 flex-1'></div>
 				</div>
 				<div className='flex flex-col justify-center form-padding'>
 					{isSigningIn ? (
@@ -80,15 +78,15 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					)}
 
 					<div className='flex flex-row items-center text-light or-separator'>
-						<div className='separator h-0.5 flex-1'></div>
+						<div className='card-separator h-0.5 flex-1'></div>
 						<p className='sign-in-phrases'>or</p>
-						<div className='separator h-0.5 flex-1'></div>
+						<div className='card-separator h-0.5 flex-1'></div>
 					</div>
-					<div className='flex flex-col buttons-gap'>
+					<div className='flex flex-col buttons-gap font-medium sign-in-phrases'>
 						<CardButton
 							className={
-								'font-medium text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
-								sign-in-phrases flex flex-row items-center justify-center gap-2'
+								'text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
+								flex flex-row items-center justify-center gap-2'
 							}
 						>
 							<img
@@ -100,8 +98,8 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						</CardButton>
 						<CardButton
 							className={
-								'font-medium text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
-								sign-in-phrases flex flex-row items-center justify-center gap-2'
+								'text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
+								flex flex-row items-center justify-center gap-2'
 							}
 						>
 							<img
@@ -112,7 +110,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 							<p>Continue with 42 Intra</p>
 						</CardButton>
 						{isSigningIn && (
-							<p className='sign-in-phrases text-light font-medium text-center'>
+							<p className=' text-light text-center'>
 								Don't have an account?
 								<button
 									onClick={handleClick}

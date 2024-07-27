@@ -7,10 +7,8 @@ const Game = () => {
 
 	const handlePause = () => {
 		setIsPaused(!isPaused)
-		console.log(isPaused)
 	}
 
-	// text-[rgba(251,251,238,20%)]
 	return (
 		<div
 			className={`min-h-screen flex flex-col backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}
@@ -45,20 +43,16 @@ const Game = () => {
 								id='game-table'
 								className={`w-[1400px] h-[800px] border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 							></canvas>
-							<div className='flex gap-2 pause'>
-								{isPaused ? (
-									<img src='/assets/images/icons/play.svg' alt='' />
-								) : (
-									<img src='/assets/images/icons/pause.svg' alt='' />
-								)}
-
-								<button
-									onClick={handlePause}
-									className='self-center font-dreamscape-sans brightness-[1] leading-[0.95]'
-								>
-									{isPaused ? 'resume' : 'pause'}
-								</button>
-							</div>
+							<button
+								onClick={handlePause}
+								className='pause flex items-center gap-3 font-dreamscape-sans brightness-[1] leading-[0.95]'
+							>
+								<img
+									src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`}
+									alt=''
+								/>
+								<p className='align-middle'>{isPaused ? 'resume' : 'pause'}</p>
+							</button>
 						</div>
 						<div
 							className={`flex flex-col items-center font-dreamscape-sans ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}

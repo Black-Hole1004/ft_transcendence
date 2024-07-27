@@ -8,7 +8,7 @@ import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
 
 const Dashboard = () => {
-	const xp = 6445
+	const xp = 8445
 	const [level, setLevel] = useState(null)
 
 	useEffect(() => {

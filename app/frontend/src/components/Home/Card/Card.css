@@ -55,6 +55,6 @@
 	margin-bottom: clamp(1.25rem, 0.227vw + 1.207rem, 1.563rem);
 }
 
-.separator {
+.card-separator {
 	background: linear-gradient(to right, rgba(251, 251, 238, 0), rgba(251, 251, 238, 0.1), rgba(251, 251, 238, 0))
 }
