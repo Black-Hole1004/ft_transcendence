@@ -90,12 +90,12 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 
 					<form className='flex flex-col form-gap'>
 						{inputs.slice(0, isSigningIn ? 2 : 3).map((input, index) => (
-								<Input
-									key={index}
-									iconPath={`/assets/images/icons/${input.iconPath}.png`}
-									placeholder={input.placeholder}
-								></Input>
-							))}
+							<Input
+								key={index}
+								iconPath={`/assets/images/icons/${input.iconPath}.png`}
+								placeholder={input.placeholder}
+							></Input>
+						))}
 						<CardButton
 							className={
 								'text-primary font-heavy hover:bg-primary hover:text-secondary'

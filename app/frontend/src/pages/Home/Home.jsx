@@ -17,7 +17,6 @@ const Home = () => {
 
 	const handleClick = (event) => {
 		const buttonId = event.target.getAttribute('id')
-
 		{
 			buttonId == 'sign-in' ? setIsSigningIn(true) : setIsSigningIn(false)
 		}
@@ -45,8 +44,8 @@ const Home = () => {
 				</div>
 				<div className='font-heavy text-center lp:mt-[120px] mt-[80px] mx-1 tracking-wide leading-[1.7]'>
 					<p>
-						Join the ultimate space ping pong adventure on Venus! Serve, spin, and score
-						in zero-gravity.
+						Join the ultimate space pong adventure on Venus! Serve, spin, and score in
+						zero-gravity.
 					</p>
 					<p>
 						Come along for an unforgettable adventure of space competition and celestial

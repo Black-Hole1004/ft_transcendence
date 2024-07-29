@@ -40,6 +40,7 @@
 body {
 	width: 100vw;
 	height: 100vh;
+	max-width: 100%;
 	background-size: cover;
 	background-color: #1B1611;
 	background-repeat: no-repeat;

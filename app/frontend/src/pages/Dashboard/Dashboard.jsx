@@ -8,7 +8,8 @@ import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
 
 const Dashboard = () => {
-	const xp = 8445
+
+	const xp = 6445
 	const [level, setLevel] = useState(null)
 
 	useEffect(() => {
@@ -18,9 +19,9 @@ const Dashboard = () => {
 	return (
 		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header />
-			<section className='flex-grow flex lg:flex-row flex-col'>
+			<section className='flex-grow flex lg:flex-row flex-col'> {/*max-mtb:flex-col-reverse*/}
 				<div className='lg:w-5/12 w-full flex flex-col'>
-					<CongratulatoryMessage />
+					<CongratulatoryMessage achievementId={5}/>
 					<div
 						className='flex mtb:flex-row flex-col lg:justify-between mtb:justify-around items-center gap-y-10
 						lp:pl-cards-section-pl lp:pr-cards-section-pr'

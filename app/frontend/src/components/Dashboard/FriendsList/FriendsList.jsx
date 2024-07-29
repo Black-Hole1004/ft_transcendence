@@ -3,8 +3,8 @@ import UserFriendsList from './UserFriendsList'
 function FriendsList() {
 	return (
 		<div
-			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px] max-ms:hidden
-			rounded-xl card-height border-1.5 border-[rgba(255,206,157,.4)] h-fl-ldr-custom'
+			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px]
+			rounded-xl card-height border-1.5 border-[rgba(255,206,157,.4)] h-fl-ldr-custom bg-[rgba(27,22,17,0.5)]'
 		>
 			<h1 className='font-dreamscape-sans card-title text-primary'>FRIENDS LIST</h1>
 
