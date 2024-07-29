@@ -55,7 +55,7 @@ const Home = () => {
 					<Button
 						id='get-started'
 						onClick={handleClick}
-						className='lg:rounded-xl ms:rounded-lg my-[25px]	'
+						className='lg:rounded-xl ms:rounded-lg my-[25px]'
 					>
 						Get Started
 					</Button>

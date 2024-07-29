@@ -9,7 +9,6 @@ function Header({ openDialog }) {
 				className='absolute flex justify-between nav'
 			>
 				<button
-					// data-open-modal
 					id='sign-in'
 					onClick={openDialog}
 					className='header-buttons'

@@ -1,15 +1,28 @@
 import './Card.css'
 import Input from '../Input'
 import CardButton from '../Buttons/CardButton'
+import { useEffect } from 'react'
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => {
 		isSigningIn ? setIsSigningIn(false) : setIsSigningIn(true)
 	}
 
+	useEffect(() => {
+		dialogRef.current.addEventListener('click', e => {
+			const dialogDimensions = dialogRef.current.getBoundingClientRect()
+			if (
+				e.clientX < dialogDimensions.left ||
+				e.clientX > dialogDimensions.right ||
+				e.clientY < dialogDimensions.top ||
+				e.clientY > dialogDimensions.bottom )
+				dialogRef.current.close()
+		})
+
+	}, [])
+
 	return (
 		<dialog
-			data-modal
 			ref={dialogRef}
 			className={`max-ml:mb-0 ml:w-card-custom max-w-full w-screen
 			${isSigningIn ? 'h-[570px]' : 'h-[600px]'} ${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'}
