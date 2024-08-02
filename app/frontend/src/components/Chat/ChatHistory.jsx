@@ -3,7 +3,7 @@ import User from "./User"
 
 function ChatHistory() {
 	const [small, setSmall] = useState(window.innerWidth < 768)
-	console.log("------->",small)
+	// console.log("------->",small)
 	window.addEventListener("resize", ()=>{
 		setSmall(window.innerWidth < 768)
 	})

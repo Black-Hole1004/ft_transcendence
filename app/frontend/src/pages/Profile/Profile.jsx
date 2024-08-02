@@ -140,7 +140,7 @@ const Profile = () => {
 								</div>
 							</div>
 							<div className='flex flex-col items-center lp:gap-3 gap-2'>
-								<p className='titles max-mtb:self-start max-mtb:ml-3'>Achievement Progression</p>
+								<p className='titles max-mtb:self-start max-mtb:ml-3'>Achievements Progression</p>
 								<div className='progressbar justify-self-center'>
 									<CircularProgressbar
 										value={level}

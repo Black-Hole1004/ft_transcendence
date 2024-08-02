@@ -26,6 +26,10 @@
 	font-size: clamp(0.563rem, 0.487vw + 0.471rem, 1.25rem) ;
 }
 
-.game-table {
-	width: ;
+.pause {
+	font-size: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
+}
+
+.pause img {
+	width: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
 }

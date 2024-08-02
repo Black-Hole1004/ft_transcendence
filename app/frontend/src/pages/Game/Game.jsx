@@ -3,30 +3,34 @@ import './Game.css'
 import Header from '../../components/Header'
 
 const Game = () => {
-	const [backgroundId, setBackgroundId] = useState(1)
+	const [isPaused, setIsPaused] = useState(false)
 
-	const handleClick = (id) => {
-		setBackgroundId(id)
+	const handlePause = () => {
+		setIsPaused(!isPaused)
 	}
 
-	const xp = 6231
-
 	return (
-		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
+		<div
+			className={`min-h-screen flex flex-col backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}
+		>
 			<Header />
 			<section className='flex-grow flex'>
 				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
-					<div className='score border-1.5 border-primary rounded-xl'>
+					<div
+						className={`score border-1.5 border-primary rounded-xl ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+					>
 						<p className='font-dreamscape leading-[1.125] text-center'>1 - 3</p>
 					</div>
 					<div className='flex-1 w-full flex justify-between'>
-						<div className='flex flex-col items-center font-dreamscape-sans'>
+						<div
+							className={`flex flex-col items-center font-dreamscape-sans ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+						>
 							<img
 								src='/assets/images/moudrib.jpeg'
 								className='rounded-full border-2 border-primary user-photo'
 								alt='user photo'
 							/>
-							<p className='players-usernames'>mouad55</p>
+							<p className='players-usernames truncate'>mouad55</p>
 							<img
 								src='/assets/images/Achievements/celestial-master.svg'
 								className='achievements-icons hover:scale-[1.2] transition duration-500'
@@ -34,10 +38,25 @@ const Game = () => {
 							/>
 							<p className='text-level badge-name'>celestial master</p>
 						</div>
-						<canvas id='game-table' className='game-table border'>
-
-						</canvas>
-						<div className='flex flex-col items-center font-dreamscape-sans'>
+						<div className='flex flex-col items-center gap-7'>
+							<canvas
+								id='game-table'
+								className={`w-[1400px] h-[800px] border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+							></canvas>
+							<button
+								onClick={handlePause}
+								className='pause flex items-center gap-3 font-dreamscape-sans brightness-[1] leading-[0.95]'
+							>
+								<img
+									src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`}
+									alt=''
+								/>
+								<p className='align-middle'>{isPaused ? 'resume' : 'pause'}</p>
+							</button>
+						</div>
+						<div
+							className={`flex flex-col items-center font-dreamscape-sans ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+						>
 							<img
 								src='/assets/images/lmoudir.jpg'
 								className='rounded-full border-2 border-primary user-photo'

@@ -5,21 +5,21 @@ import Button from './Home/Buttons/Button'
 
 function Header() {
 	const dropdownRef = useRef(null)
-	const notificationRef = useRef(null)
+	// const notificationRef = useRef(null)
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+	// const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
 	const toggleDropdown = () => {
 		setIsDropdownOpen(!isDropdownOpen)
 	}
 
-	const toggleNotification = () => {
-		setIsNotificationOpen(!isNotificationOpen)
-	}
+	// const toggleNotification = () => {
+	// 	setIsNotificationOpen(!isNotificationOpen)
+	// }
 
 	useEffect(() => {
 		const closeDropdown = (e) => {
-			if (!dropdownRef.current.contains(e.target)) {
+			if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
 				setIsDropdownOpen(false)
 			}
 		}
@@ -28,20 +28,7 @@ function Header() {
 		return () => {
 			document.removeEventListener('mousedown', closeDropdown)
 		}
-	})
-
-	// useEffect(() => {
-	// 	const closeNotification = (e) => {
-	// 		if (!notificationRef.current.contains(e.target)) {
-	// 			setIsNotificationOpen(false)
-	// 		}
-	// 	}
-	// 	document.addEventListener('mousedown', closeNotification)
-	
-	// 	return () => {
-	// 		document.removeEventListener('mousedown', closeNotification)
-	// 	}
-	// })
+	}, [])
 
 
 	return (
@@ -68,7 +55,7 @@ function Header() {
 						className='nav-icons'
 					/>
 				</Link>
-				<button onClick={toggleNotification}>
+				{/* <button onClick={toggleNotification}>
 					<img
 						src='/assets/images/icons/notification.svg'
 						alt='notification icon'
@@ -114,7 +101,7 @@ function Header() {
 							</div>
 						</div>
 					)
-				}
+				} */}
 				<button onClick={toggleDropdown} type='button'>
 					<img
 						src='/assets/images/moudrib.jpeg'

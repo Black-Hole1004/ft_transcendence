@@ -1,0 +1,39 @@
+{
+	"achievements": [
+		{
+			"id": "1",
+			"name": "novice astronaut",
+			"title": "Welcome aboard, Novice Astronaut!",
+			"body": "Your journey begins on Venus, where the cosmos eagerly awaits your exploration. Strap in and prepare for an adventure beyond the stars!",
+			"icon": "/assets/images/Achievements/novice-astronaut.svg"
+		},
+		{
+			"id": "2",
+			"name": "cosmic explorer",
+			"title": "Greetings, Cosmic Explorer!",
+			"body": "Level 2 brings you to Jupiter, the king of planets, where vast storms and boundless mysteries await your exploration. Blaze a trail through the cosmos and leave your mark among the stars.",
+			"icon": "/assets/images/Achievements/cosmic-explorer.svg"
+		},
+		{
+			"id": "3",
+			"name": "Stellar Voyager",
+			"title": "Ahoy, Stellar Voyager!",
+			"body": "As you ascend to Level 3, Saturn's majestic rings beckon you to new realms of discovery. Navigate the cosmos with grace and curiosity, for the stars themselves await your presence.",
+			"icon": "/assets/images/Achievements/stellar-voyager.svg"
+		},
+		{
+			"id": "4",
+			"name": "Galactic Trailblazer",
+			"title": "Salutations, Galactic Trailblazer!",
+			"body": "Here on Earth, the universe unfolds before your eyes, offering endless wonders to discover. Embrace the journey ahead as you chart new territories and unlock the secrets of our celestial home.",
+			"icon": "/assets/images/Achievements/galactic-trailblazer.svg"
+		},
+		{
+			"id": "5",
+			"name": "celestial master",
+			"title": "Congratulations, Celestial Master!",
+			"body": "You've ascended to the highest echelons of cosmic mastery, basking in the brilliance of the Sun itself. As a true luminary of the cosmos, your journey knows no bounds. Shine on, and may your light guide others to new celestial heights!",
+			"icon": "/assets/images/Achievements/celestial-master.svg"
+		}
+	]
+}

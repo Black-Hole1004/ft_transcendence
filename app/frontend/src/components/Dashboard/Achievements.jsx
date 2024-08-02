@@ -4,9 +4,9 @@ function Achievements({ level }) {
 	return (
 		<div
 			className='border-1.5 border-[rgba(255,206,157,.4)] rounded-xl bg-[rgba(27,22,17,0.5)]
-		lg:h-achievements-lg achivements-padding'
+			lg:h-achievements-lg achivements-padding'
 		>
-			<h1 className='font-dreamscape-sans text-primary text-center leading-[1.02] achievements max-ms:hidden'>
+			<h1 className='font-dreamscape-sans text-primary text-center leading-[1.02] achievements'>
 				Achievements
 			</h1>
 			<div className='flex max-ms:flex-col justify-between items-center text-level select-none'>
