@@ -214,7 +214,7 @@ const Profile = () => {
 									<XAxis
 										dataKey='name'
 										scale='point'
-										padding={{ left: 10, right: 10 }}
+										padding={{ left: 15, right: 15 }}
 										axisLine={false}
 										tickLine={false}
 										tick={{
