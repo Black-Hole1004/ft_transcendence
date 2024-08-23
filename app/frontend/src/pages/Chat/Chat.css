@@ -2,9 +2,9 @@
 	margin: clamp(1.25rem, 1.991vw + 0.877rem, 4.063rem) clamp(0rem, 7.692vw - 2.933rem, 9.375rem);
 }
 
-/* .chat {
-	height: clamp(29.688rem, 31.617vw + 9.413rem, 60rem);
-} */
+.search-icon {
+	width: clamp(0.938rem, 0.472vw + 0.513rem, 1.25rem);
+}
 
 .user-info-image {
 	width: clamp(3.813rem, 8.363vw + 2.244rem, 15.625rem);

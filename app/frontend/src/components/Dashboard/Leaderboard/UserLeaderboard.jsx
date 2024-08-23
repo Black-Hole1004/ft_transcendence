@@ -1,18 +1,18 @@
 const achievements = {
 	'celestial master': {
-		icon: '/assets/images/Achievements/celestial-master.svg',
+		icon: '/assets/images/Achievements/celestial-master.png',
 	},
 	'galactic trailblazer': {
-		icon: '/assets/images/Achievements/galactic-trailblazer.svg',
+		icon: '/assets/images/Achievements/galactic-trailblazer.png',
 	},
 	'stellar voyager': {
-		icon: '/assets/images/Achievements/stellar-voyager.svg',
+		icon: '/assets/images/Achievements/stellar-voyager.png',
 	},
 	'cosmic explorer': {
-		icon: '/assets/images/Achievements/cosmic-explorer.svg',
+		icon: '/assets/images/Achievements/cosmic-explorer.png',
 	},
 	'novice astronaut': {
-		icon: '/assets/images/Achievements/novice-astronaut.svg',
+		icon: '/assets/images/Achievements/novice-astronaut.png',
 	},
 }
 
@@ -27,6 +27,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 					src='/assets/images/moudrib.jpeg'
 					className='user-image rounded-full tb:border border-0.7 border-primary'
 					alt='user-image'
+					loading='lazy'
 				/>
 				<div className='flex flex-col justify-center'>
 					<p className='nickname-size leading-[1]'>{`${nickname}` + ' '}</p>
@@ -38,6 +39,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 					src={achievementData.icon}
 					className='achievement-icon-ldr'
 					alt='achievement-icon'
+					loading='lazy'
 				/>
 				<p className={`xp text-primary leading-[1]`}>{`${xp}` + 'xp'}</p>
 			</div>

@@ -31,9 +31,9 @@ const Settings = () => {
 	})
 		
 	return (
-		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
+		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header />
-			<section className='flex-grow flex justify-center'>
+			<section className='flex justify-center'>
 				<div className='settings max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
 						<h1 className='font-dreamscape-sans text-primary leading-[1]'>settings</h1>

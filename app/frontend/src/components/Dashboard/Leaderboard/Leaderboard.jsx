@@ -4,7 +4,7 @@ function Leaderboard() {
 	return (
 		<div
 			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px]
-			rounded-xl card-height card-color h-fl-ldr-custom border-1.5 border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]'
+			rounded-xl card-height border-1.5 border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]'
 		>
 			<h1 className='font-dreamscape-sans card-title'>LEADERBOARD</h1>
 			<div className='flex flex-col lg:gap-3 gap-2 w-[96%] h-[95%] overflow-y-auto users'>

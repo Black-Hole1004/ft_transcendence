@@ -6,9 +6,9 @@ import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 
 const Chat = () => {
 	return (
-		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
+		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header />
-			<section className='flex-grow section-margin'>
+			<section className='section-margin'>
 				<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
 					<div
 						className='flex tb:flex-row flex-col lg:border-2 tb:border-[1px] tb:items-center

@@ -2,7 +2,7 @@ import React from 'react'
 import './Header.css'
 import Button from '../Buttons/Button'
 
-function Header({ openDialog }) {
+function Header({ handleClick }) {
 	return (
 		<header className='relative flex items-center text-primary font-medium header-height'>
 			<nav
@@ -10,14 +10,14 @@ function Header({ openDialog }) {
 			>
 				<button
 					id='sign-in'
-					onClick={openDialog}
+					onClick={handleClick}
 					className='header-buttons'
 				>
 					Sign in
 				</button>
 				<Button
 					id='sign-up'
-					onClick={openDialog}
+					onClick={handleClick}
 					className='rounded-lg header-buttons'
 				>
 					Sign up

@@ -16,8 +16,8 @@ function Badge({ image, title, level }) {
 			}`}
 		>
 			<img
-				src={`/assets/images/Achievements/${image}.svg`}
-				className='hover:scale-[1.2] transition duration-500'
+				src={`/assets/images/Achievements/${image}.png`}
+				className='hover:scale-[1.2] transition duration-500 select-none'
 				alt={`${title} Badge`}
 			/>
 			<p className='achievements-titles-font font-dreamscape-sans'>{title}</p>

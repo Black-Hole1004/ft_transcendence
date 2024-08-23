@@ -4,8 +4,30 @@ import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
 import 'react-circular-progressbar/dist/styles.css'
 import { CircularProgressbar } from 'react-circular-progressbar'
+// import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area} from 'recharts'
+import {
+	AreaChart,
+	Area,
+	XAxis,
+	YAxis,
+	Scatter,
+	Line,
+	CartesianGrid,
+	Tooltip,
+	ResponsiveContainer,
+} from 'recharts'
 
 const Profile = () => {
+	const data = [
+		// { name: '', min: 0, pv: 2400, amt: 2400 },
+		{ name: 'Mon', min: 80, pv: 2400, amt: 2400 },
+		{ name: 'Tue', min: 60, pv: 2400, amt: 2400 },
+		{ name: 'Wed', min: 150, pv: 2400, amt: 2400 },
+		{ name: 'Thu', min: 130, pv: 2400, amt: 2400 },
+		{ name: 'Fri', min: 240, pv: 2400, amt: 2400 },
+		{ name: 'Sat', min: 290, pv: 2400, amt: 2400 },
+		{ name: 'Sun', min: 240, pv: 2400, amt: 2400 },
+	]
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
 
@@ -44,14 +66,14 @@ const Profile = () => {
 	return (
 		<div
 			ref={containerRef}
-			className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'
+			className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'
 		>
 			<Header />
 			<section className='flex justify-center'>
 				<div className='lp:mx-container-x-lp mx-container-x-ms container-card my-20 relative flex flex-col max-lp:gap-y-3'>
 					<div
 						className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
-						bg-no-repeat lp:self-start  max-ms:w-full`}
+						lp:self-start max-ms:w-full flex flex-col`}
 					>
 						{/* first part */}
 						<div className='font-dreamscape text-primary cards-title text-center relative'>
@@ -86,12 +108,12 @@ const Profile = () => {
 
 						{/* third part */}
 						<div
-							className='third-part flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
-							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-5'
+							className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
+							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
 						>
-							<div className='flex flex-col lp:gap-3 gap-2 items-center'>
+							<div className='flex flex-col items-center gap-2'>
 								<p className='titles self-start max-mtb:ml-3'>About</p>
-								<div className='about rounded-xl flex flex-col justify-around font-medium text-primary  max-ms:w-full'>
+								<div className='about rounded-xl flex flex-col justify-around font-medium text-primary max-ms:w-full'>
 									<div className='line1 flex justify-between items-center'>
 										<div className='flex items-center gap-3'>
 											<img src='./assets/images/icons/Name.svg' alt='' />
@@ -139,8 +161,10 @@ const Profile = () => {
 									</div>
 								</div>
 							</div>
-							<div className='flex flex-col items-center lp:gap-3 gap-2'>
-								<p className='titles max-mtb:self-start max-mtb:ml-3'>Achievements Progression</p>
+							<div className='flex flex-col items-center gap-2'>
+								<p className='titles max-mtb:self-start max-mtb:ml-3'>
+									Achievements Progression
+								</p>
 								<div className='progressbar justify-self-center'>
 									<CircularProgressbar
 										value={level}
@@ -156,29 +180,91 @@ const Profile = () => {
 											text: {
 												fill: '#FBFBEE',
 												fontSize:
-												'clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem)',
+													'clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem)',
 											},
 										}}
-										/>
+									/>
 								</div>
 							</div>
+						</div>
+						{/* fourth part */}
+						<div
+							className='font-medium rounded-xl mt-2 lp:ml-2 chart-card max-lp:self-center flex flex-col
+						lp:h-chart-lp h-chart-ms lp:w-chart-lp w-chart-ms'
+						>
+							<p className='text-primary chart-title m-2'>
+								Weekly User Engagement: Time Spent on Platform
+							</p>
+							<ResponsiveContainer width='95%' height='90%' className={'self-center'}>
+								<AreaChart data={data}>
+									<defs>
+										<linearGradient id='min' x1='0' y1='0' x2='0' y2='1'>
+											<stop
+												offset='5%'
+												stopColor='#FFCE9E'
+												stopOpacity={0.8}
+											/>
+											<stop
+												offset='95%'
+												stopColor='#FFCE9E'
+												stopOpacity={0}
+											/>
+										</linearGradient>
+									</defs>
+									<XAxis
+										dataKey='name'
+										scale='point'
+										padding={{ left: 10, right: 10 }}
+										axisLine={false}
+										tickLine={false}
+										tick={{
+											fontSize: 'clamp(0.625rem, 0.354vw + 0.559rem, 1.125rem)',
+											fill: '#FBFBEE',
+										}}
+									/>
+									<Tooltip
+										cursor={{
+											stroke: '#FBFBEE',
+										}}
+										contentStyle={{
+											backgroundColor: '#79624C', 
+											border: '1px solid #FBFBEE',
+											borderRadius: '5px'
+										}}
+									/>
+									<Area
+										type='monotone'
+										dataKey='min'
+										stroke='#FFCE9E'
+										fillOpacity={1}
+										fill='url(#min)'
+										strokeWidth={2}
+										dot={{
+											stroke: '#79624C',
+											strokeWidth: 2.5,
+											r: 4,
+											fill: '#FFCE9E',
+										}}
+									/>
+								</AreaChart>
+							</ResponsiveContainer>
 						</div>
 					</div>
 
 					<div
 						className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
 						bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}
-						>
+					>
 						<div className='font-dreamscape text-primary cards-title text-center'>
 							<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
 						</div>
 						<div className='flex-1 flex items-center justify-center'>
 							<div>
 								<img
-									src='./assets/images/Achievements/celestial-master.svg'
+									src='./assets/images/Achievements/celestial-master.png'
 									className='hover:scale-[1.05] transition duration-500'
 									alt='achievement badge'
-									/>
+								/>
 							</div>
 							<div className='flex flex-col '>
 								<p className='font-dreamscape-sans text-level text-center achievement-title'>
@@ -194,7 +280,7 @@ const Profile = () => {
 										style={{
 											width: `${xp > 10000 ? 100 : achievementProgress}%`,
 										}}
-										></div>
+									></div>
 								</div>
 							</div>
 						</div>
@@ -203,14 +289,14 @@ const Profile = () => {
 					<div
 						className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
 						bg-no-repeat lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
-						>
+					>
 						<div className='font-dreamscape text-primary cards-title text-center'>
 							<h1 className='lg:pl-40 lp:pl-28'>match history</h1>
 						</div>
 						<div
 							className='match-history flex-1 flex mtb:flex-row flex-col
-							justify-end max-lp:self-center'
-							>
+							justify-end max-lp:self-center mb-3'
+						>
 							<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
 								<p className='titles lp:self-center self-start font-medium'>
 									Win Rate
@@ -245,26 +331,26 @@ const Profile = () => {
 									<div className='flex items-center gap-2'>
 										<img
 											src='./assets/images/moudrib.jpeg'
-											className='border border-victory match-winner'
+											className='border border-online match-winner'
 											alt=''
 										/>
 										<div className='points flex'>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
-											<p className='text-victory self-end'>+45</p>
+											<p className='text-online self-end'>+45</p>
 										</div>
 									</div>
 									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-victory'>victory</p>
+										<p className='font-dreamscape-sans text-online'>victory</p>
 										<p className='font-dreamscape text-primary'>7 - 0</p>
 									</div>
 									<div className='flex items-center gap-2'>
 										<div className='points flex'>
 											<p className='text-defeat self-end'>-33</p>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
 										</div>
@@ -284,26 +370,26 @@ const Profile = () => {
 									<div className='flex items-center gap-2'>
 										<img
 											src='./assets/images/moudrib.jpeg'
-											className='border border-victory match-winner'
+											className='border border-online match-winner'
 											alt=''
 										/>
 										<div className='points flex'>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
-											<p className='text-victory self-end'>+45</p>
+											<p className='text-online self-end'>+45</p>
 										</div>
 									</div>
 									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-victory'>victory</p>
+										<p className='font-dreamscape-sans text-online'>victory</p>
 										<p className='font-dreamscape text-primary'>7 - 0</p>
 									</div>
 									<div className='flex items-center gap-2'>
 										<div className='points flex'>
 											<p className='text-defeat self-end'>-33</p>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
 										</div>
@@ -323,26 +409,26 @@ const Profile = () => {
 									<div className='flex items-center gap-2'>
 										<img
 											src='./assets/images/moudrib.jpeg'
-											className='border border-victory match-winner'
+											className='border border-online match-winner'
 											alt=''
 										/>
 										<div className='points flex'>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
-											<p className='text-victory self-end'>+45</p>
+											<p className='text-online self-end'>+45</p>
 										</div>
 									</div>
 									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-victory'>victory</p>
+										<p className='font-dreamscape-sans text-online'>victory</p>
 										<p className='font-dreamscape text-primary'>7 - 0</p>
 									</div>
 									<div className='flex items-center gap-2'>
 										<div className='points flex'>
 											<p className='text-defeat self-end'>-33</p>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
 										</div>
@@ -362,26 +448,26 @@ const Profile = () => {
 									<div className='flex items-center gap-2'>
 										<img
 											src='./assets/images/moudrib.jpeg'
-											className='border border-victory match-winner'
+											className='border border-online match-winner'
 											alt=''
 										/>
 										<div className='points flex'>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
-											<p className='text-victory self-end'>+45</p>
+											<p className='text-online self-end'>+45</p>
 										</div>
 									</div>
 									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-victory'>victory</p>
+										<p className='font-dreamscape-sans text-online'>victory</p>
 										<p className='font-dreamscape text-primary'>7 - 0</p>
 									</div>
 									<div className='flex items-center gap-2'>
 										<div className='points flex'>
 											<p className='text-defeat self-end'>-33</p>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
 										</div>
@@ -401,26 +487,26 @@ const Profile = () => {
 									<div className='flex items-center gap-2'>
 										<img
 											src='./assets/images/moudrib.jpeg'
-											className='border border-victory match-winner'
+											className='border border-online match-winner'
 											alt=''
 										/>
 										<div className='points flex'>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
-											<p className='text-victory self-end'>+45</p>
+											<p className='text-online self-end'>+45</p>
 										</div>
 									</div>
 									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-victory'>victory</p>
+										<p className='font-dreamscape-sans text-online'>victory</p>
 										<p className='font-dreamscape text-primary'>7 - 0</p>
 									</div>
 									<div className='flex items-center gap-2'>
 										<div className='points flex'>
 											<p className='text-defeat self-end'>-33</p>
 											<img
-												src='./assets/images/Achievements/celestial-master.svg'
+												src='./assets/images/Achievements/celestial-master.png'
 												alt=''
 											/>
 										</div>

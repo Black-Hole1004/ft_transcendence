@@ -28,7 +28,7 @@ function UserInfos() {
 				<div>
 					<div className='badge hover:scale-[1.2] transition duration-500 xl:mt-5 lg:mt-3 xl:mb-2 lg:mb-0'>
 						<img
-							src='./assets/images/Achievements/celestial-master.svg'
+							src='./assets/images/Achievements/celestial-master.png'
 							alt='achievement badge'
 						/>
 					</div>

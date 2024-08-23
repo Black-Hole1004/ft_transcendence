@@ -39,7 +39,7 @@ function Header() {
 			<Link to={'/dashboard'}>
 				<img
 					className='select-none pointer-events-none header-logo max-ms:hidden'
-					src='/assets/images/logo-transparent.png'
+					src='/assets/images/logo.webp'
 				/>
 			</Link>
 			<Link to={'/dashboard'}>

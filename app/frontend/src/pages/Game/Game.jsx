@@ -11,17 +11,17 @@ const Game = () => {
 
 	return (
 		<div
-			className={`min-h-screen flex flex-col backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}
+			className={`min-h-screen backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}
 		>
 			<Header />
-			<section className='flex-grow flex'>
+			<section className='flex'>
 				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
 					<div
 						className={`score border-1.5 border-primary rounded-xl ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 					>
 						<p className='font-dreamscape leading-[1.125] text-center'>1 - 3</p>
 					</div>
-					<div className='flex-1 w-full flex justify-between'>
+					<div className='flex-1 w-full flex justify-between flex-col'>
 						<div
 							className={`flex flex-col items-center font-dreamscape-sans ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 						>
