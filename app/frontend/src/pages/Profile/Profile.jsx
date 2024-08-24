@@ -2,32 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
-import 'react-circular-progressbar/dist/styles.css'
-import { CircularProgressbar } from 'react-circular-progressbar'
-// import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area} from 'recharts'
-import {
-	AreaChart,
-	Area,
-	XAxis,
-	YAxis,
-	Scatter,
-	Line,
-	CartesianGrid,
-	Tooltip,
-	ResponsiveContainer,
-} from 'recharts'
+import ProfileBio from '../../components/Profile/ProfileBio'
+import ProgressBar from '../../components/Profile/ProgressBar'
+import AboutSection from '../../components/Profile/AboutSection'
+import UserStatsGraph from '../../components/Profile/UserStatsGraph'
 
 const Profile = () => {
-	const data = [
-		// { name: '', min: 0, pv: 2400, amt: 2400 },
-		{ name: 'Mon', min: 80, pv: 2400, amt: 2400 },
-		{ name: 'Tue', min: 60, pv: 2400, amt: 2400 },
-		{ name: 'Wed', min: 150, pv: 2400, amt: 2400 },
-		{ name: 'Thu', min: 130, pv: 2400, amt: 2400 },
-		{ name: 'Fri', min: 240, pv: 2400, amt: 2400 },
-		{ name: 'Sat', min: 290, pv: 2400, amt: 2400 },
-		{ name: 'Sun', min: 240, pv: 2400, amt: 2400 },
-	]
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
 
@@ -48,6 +28,16 @@ const Profile = () => {
 		}
 	}, [])
 
+
+	const wins = 102
+	const totalGames = 123
+	
+	const [winRate, setWinRate] = useState(null)
+
+	useEffect(() => {
+		setWinRate((wins / totalGames * 100).toFixed(2))
+	}, [totalGames])
+
 	const xp = 5445
 	const progress = xp % 2000
 	const progressStart = xp > 10000 ? 8000 : Math.floor(xp / 2000) * 2000
@@ -60,7 +50,7 @@ const Profile = () => {
 	const [level, setLevel] = useState(null)
 
 	useEffect(() => {
-		setLevel((xp * 100) / 10000)
+		setLevel(xp > 10000 ? 100 : (xp * 100) / 10000)
 	}, [level])
 
 	return (
@@ -70,7 +60,8 @@ const Profile = () => {
 		>
 			<Header />
 			<section className='flex justify-center'>
-				<div className='lp:mx-container-x-lp mx-container-x-ms container-card my-20 relative flex flex-col max-lp:gap-y-3'>
+				<div className='lp:mt-20 my-10 relative flex flex-col max-lp:gap-y-3
+					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'>
 					<div
 						className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
 						lp:self-start max-ms:w-full flex flex-col`}
@@ -87,168 +78,24 @@ const Profile = () => {
 							<h1>profile</h1>
 						</div>
 						{/* second part */}
-						<div className='flex items-center'>
-							<div>
-								<img
-									src='./assets/images/moudrib.jpeg'
-									className='profile-image rounded-full lg:border-2 border border-primary'
-									alt='profile image'
-								/>
-							</div>
-							<div className='flex flex-col text-primary max-w-[50%] lg:gap-y-3 gap-y-1 font-medium'>
-								<p className='titles'>BIO</p>
-								<p className='bio-content'>
-									Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-									Nostrum hic magnam sequi odit ad, nobis molestiae, quaerat
-									adipisci accusamus quibusdam ipsum, possimus eveniet similique
-									deserunt eius porro nam ab dignissimos.
-								</p>
-							</div>
-						</div>
-
+						<ProfileBio />
 						{/* third part */}
 						<div
 							className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
 						>
-							<div className='flex flex-col items-center gap-2'>
-								<p className='titles self-start max-mtb:ml-3'>About</p>
-								<div className='about rounded-xl flex flex-col justify-around font-medium text-primary max-ms:w-full'>
-									<div className='line1 flex justify-between items-center'>
-										<div className='flex items-center gap-3'>
-											<img src='./assets/images/icons/Name.svg' alt='' />
-											<p>Full Name</p>
-										</div>
-										<div>
-											<p>Mouad Oudrib</p>
-										</div>
-									</div>
-									<div className='line2 flex justify-between items-center'>
-										<div className='flex items-center gap-3'>
-											<img src='./assets/images/icons/username.svg' alt='' />
-											<p>Username</p>
-										</div>
-										<div>
-											<p>moudrib</p>
-										</div>
-									</div>
-									<div className='line3 flex justify-between items-center'>
-										<div className='flex items-center gap-3'>
-											<img src='./assets/images/icons/Email.svg' alt='' />
-											<p>Email</p>
-										</div>
-										<div>
-											<p>transcendence@gmail.com</p>
-										</div>
-									</div>
-									<div className='line4 flex justify-between items-center'>
-										<div className='flex items-center gap-3'>
-											<img src='./assets/images/icons/Calendar.svg' alt='' />
-											<p>Joined</p>
-										</div>
-										<div>
-											<p>April 2024</p>
-										</div>
-									</div>
-									<div className='line5 flex justify-between items-center'>
-										<div className='flex items-center gap-3'>
-											<img src='./assets/images/icons/Phone.svg' alt='' />
-											<p>Phone</p>
-										</div>
-										<div>
-											<p>+212611223344</p>
-										</div>
-									</div>
-								</div>
-							</div>
+							<AboutSection />
 							<div className='flex flex-col items-center gap-2'>
 								<p className='titles max-mtb:self-start max-mtb:ml-3'>
 									Achievements Progression
 								</p>
 								<div className='progressbar justify-self-center'>
-									<CircularProgressbar
-										value={level}
-										text={`${level > 100 ? 100 : level}%`}
-										styles={{
-											trail: {
-												stroke: '#79624C',
-											},
-											path: {
-												stroke: '#FFCE9E',
-												transition: 'stroke-dashoffset 3s ease 0s',
-											},
-											text: {
-												fill: '#FBFBEE',
-												fontSize:
-													'clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem)',
-											},
-										}}
-									/>
+									<ProgressBar value={level}/>
 								</div>
 							</div>
 						</div>
 						{/* fourth part */}
-						<div
-							className='font-medium rounded-xl mt-2 lp:ml-2 chart-card max-lp:self-center flex flex-col
-						lp:h-chart-lp h-chart-ms lp:w-chart-lp w-chart-ms'
-						>
-							<p className='text-primary chart-title m-2'>
-								Weekly User Engagement: Time Spent on Platform
-							</p>
-							<ResponsiveContainer width='95%' height='90%' className={'self-center'}>
-								<AreaChart data={data}>
-									<defs>
-										<linearGradient id='min' x1='0' y1='0' x2='0' y2='1'>
-											<stop
-												offset='5%'
-												stopColor='#FFCE9E'
-												stopOpacity={0.8}
-											/>
-											<stop
-												offset='95%'
-												stopColor='#FFCE9E'
-												stopOpacity={0}
-											/>
-										</linearGradient>
-									</defs>
-									<XAxis
-										dataKey='name'
-										scale='point'
-										padding={{ left: 15, right: 15 }}
-										axisLine={false}
-										tickLine={false}
-										tick={{
-											fontSize: 'clamp(0.625rem, 0.354vw + 0.559rem, 1.125rem)',
-											fill: '#FBFBEE',
-										}}
-									/>
-									<Tooltip
-										cursor={{
-											stroke: '#FBFBEE',
-										}}
-										contentStyle={{
-											backgroundColor: '#79624C', 
-											border: '1px solid #FBFBEE',
-											borderRadius: '5px'
-										}}
-									/>
-									<Area
-										type='monotone'
-										dataKey='min'
-										stroke='#FFCE9E'
-										fillOpacity={1}
-										fill='url(#min)'
-										strokeWidth={2}
-										dot={{
-											stroke: '#79624C',
-											strokeWidth: 2.5,
-											r: 4,
-											fill: '#FFCE9E',
-										}}
-									/>
-								</AreaChart>
-							</ResponsiveContainer>
-						</div>
+						<UserStatsGraph />
 					</div>
 
 					<div
@@ -262,7 +109,7 @@ const Profile = () => {
 							<div>
 								<img
 									src='./assets/images/Achievements/celestial-master.png'
-									className='hover:scale-[1.05] transition duration-500'
+									className='hover:scale-[1.05] transition duration-500 select-none'
 									alt='achievement badge'
 								/>
 							</div>
@@ -288,7 +135,7 @@ const Profile = () => {
 
 					<div
 						className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
-						bg-no-repeat lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
+						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
 					>
 						<div className='font-dreamscape text-primary cards-title text-center'>
 							<h1 className='lg:pl-40 lp:pl-28'>match history</h1>
@@ -302,24 +149,7 @@ const Profile = () => {
 									Win Rate
 								</p>
 								<div className='win-rate justify-self-center'>
-									<CircularProgressbar
-										value={level}
-										text={`${level > 100 ? 100 : level}%`}
-										styles={{
-											trail: {
-												stroke: '#79624C',
-											},
-											path: {
-												stroke: '#FFCE9E',
-												transition: 'stroke-dashoffset 3s ease 0s',
-											},
-											text: {
-												fill: '#FBFBEE',
-												fontSize:
-													'clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem)',
-											},
-										}}
-									/>
+									<ProgressBar value={winRate}/>
 								</div>
 							</div>
 							<div className='flex flex-col gap-1'>
@@ -332,12 +162,12 @@ const Profile = () => {
 										<img
 											src='./assets/images/moudrib.jpeg'
 											className='border border-online match-winner'
-											alt=''
+											alt='player image'
 										/>
 										<div className='points flex'>
 											<img
 												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
+												alt='achievement badge'
 											/>
 											<p className='text-online self-end'>+45</p>
 										</div>
@@ -351,13 +181,13 @@ const Profile = () => {
 											<p className='text-defeat self-end'>-33</p>
 											<img
 												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
+												alt='achievement badge'
 											/>
 										</div>
 										<img
 											src='./assets/images/moudrib.jpeg'
 											className='border border-defeat match-loser'
-											alt=''
+											alt='player image'
 										/>
 									</div>
 								</div>

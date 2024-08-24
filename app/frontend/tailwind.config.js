@@ -39,7 +39,7 @@ export default {
 				1.5: '1.5px',
 			},
 			width: {
-				'card-custom': 'clamp(26.875rem, 26.0227rem + 4.5455vw, 33.125rem)',
+				'card-custom': 'clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem)',
 				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
 
 				'input-lg': 'clamp(8.125rem, 12.277vw + 2.232rem, 21.875rem)',
@@ -52,11 +52,14 @@ export default {
 				'game-table-mtb': 'clamp(26.25rem, 48.38vw + 13.218rem, 90.625rem)',
 
 				'chart-lp': 'clamp(25rem, 19.531vw + 12.5rem, 43.75rem)',
-				'chart-ms': 'clamp(18.625rem, 41.77vw + 10.793rem, 37.5rem)'
+				'chart-ms': 'clamp(18.625rem, 41.77vw + 10.793rem, 37.5rem)',
+
+				'profile-cards': 'clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem)'
 			},
 			height: {
 				'chart-lp': 'clamp(8.75rem, 12.37vw + 0.833rem, 20.625rem)',
 				'chart-ms': 'clamp(9.375rem, 20.747vw + 5.485rem, 18.75rem)',
+				'profile-cards': 'clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem)',
 				'signin-card-custom': 'clamp(35rem, 7.727vw + 33.551rem, 45.625rem)',
 				'signup-card-custom': 'clamp(36.875rem, 9.545vw + 35.085rem, 50rem)',
 				'1vs1-lg': 'clamp(11.063rem, 10.66vw + 1.468rem, 18.125rem)',
