@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
+import MatchStats from '../../components/Profile/MatchStats'
 import ProfileBio from '../../components/Profile/ProfileBio'
 import ProgressBar from '../../components/Profile/ProgressBar'
 import AboutSection from '../../components/Profile/AboutSection'
@@ -50,8 +51,17 @@ const Profile = () => {
 	const [level, setLevel] = useState(null)
 
 	useEffect(() => {
-		setLevel(xp > 10000 ? 100 : (xp * 100) / 10000)
+		setLevel(xp > 10000 ? 100 : (xp * 100 / 10000).toFixed(2))
 	}, [level])
+
+	const stats = [
+		{
+			winner: 'mouad55',
+			loser: 'arabiai',
+			winnerScore: 7,
+			loserScore: 2,
+		}
+	]
 
 	return (
 		<div
@@ -66,7 +76,6 @@ const Profile = () => {
 						className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
 						lp:self-start max-ms:w-full flex flex-col`}
 					>
-						{/* first part */}
 						<div className='font-dreamscape text-primary cards-title text-center relative'>
 							<Link to={'/dashboard'}>
 								<img
@@ -77,9 +86,7 @@ const Profile = () => {
 							</Link>
 							<h1>profile</h1>
 						</div>
-						{/* second part */}
 						<ProfileBio />
-						{/* third part */}
 						<div
 							className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
@@ -94,7 +101,6 @@ const Profile = () => {
 								</div>
 							</div>
 						</div>
-						{/* fourth part */}
 						<UserStatsGraph />
 					</div>
 
@@ -153,200 +159,11 @@ const Profile = () => {
 								</div>
 							</div>
 							<div className='flex flex-col gap-1'>
-								{/* Match 1 */}
-								<div
-									className='flex-1 flex justify-between
-									bg-[rgba(121,118,110,0.2)] backdrop-blur-ms rounded-lg match-infos'
-								>
-									<div className='flex items-center gap-2'>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-online match-winner'
-											alt='player image'
-										/>
-										<div className='points flex'>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt='achievement badge'
-											/>
-											<p className='text-online self-end'>+45</p>
-										</div>
-									</div>
-									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-online'>victory</p>
-										<p className='font-dreamscape text-primary'>7 - 0</p>
-									</div>
-									<div className='flex items-center gap-2'>
-										<div className='points flex'>
-											<p className='text-defeat self-end'>-33</p>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt='achievement badge'
-											/>
-										</div>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-defeat match-loser'
-											alt='player image'
-										/>
-									</div>
-								</div>
-
-								{/* Match 2 */}
-								<div
-									className='flex-1 flex justify-between
-									bg-[rgba(121,118,110,0.2)] backdrop-blur-ms rounded-lg match-infos'
-								>
-									<div className='flex items-center gap-2'>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-online match-winner'
-											alt=''
-										/>
-										<div className='points flex'>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
-											/>
-											<p className='text-online self-end'>+45</p>
-										</div>
-									</div>
-									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-online'>victory</p>
-										<p className='font-dreamscape text-primary'>7 - 0</p>
-									</div>
-									<div className='flex items-center gap-2'>
-										<div className='points flex'>
-											<p className='text-defeat self-end'>-33</p>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
-											/>
-										</div>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-defeat match-loser'
-											alt=''
-										/>
-									</div>
-								</div>
-
-								{/* Match 3 */}
-								<div
-									className='flex-1 flex justify-between
-									bg-[rgba(121,118,110,0.2)] backdrop-blur-ms rounded-lg match-infos'
-								>
-									<div className='flex items-center gap-2'>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-online match-winner'
-											alt=''
-										/>
-										<div className='points flex'>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
-											/>
-											<p className='text-online self-end'>+45</p>
-										</div>
-									</div>
-									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-online'>victory</p>
-										<p className='font-dreamscape text-primary'>7 - 0</p>
-									</div>
-									<div className='flex items-center gap-2'>
-										<div className='points flex'>
-											<p className='text-defeat self-end'>-33</p>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
-											/>
-										</div>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-defeat match-loser'
-											alt=''
-										/>
-									</div>
-								</div>
-
-								{/* Match 4 */}
-								<div
-									className='flex-1 flex justify-between
-									bg-[rgba(121,118,110,0.2)] backdrop-blur-ms rounded-lg match-infos'
-								>
-									<div className='flex items-center gap-2'>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-online match-winner'
-											alt=''
-										/>
-										<div className='points flex'>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
-											/>
-											<p className='text-online self-end'>+45</p>
-										</div>
-									</div>
-									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-online'>victory</p>
-										<p className='font-dreamscape text-primary'>7 - 0</p>
-									</div>
-									<div className='flex items-center gap-2'>
-										<div className='points flex'>
-											<p className='text-defeat self-end'>-33</p>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
-											/>
-										</div>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-defeat match-loser'
-											alt=''
-										/>
-									</div>
-								</div>
-
-								{/* Match 5 */}
-								<div
-									className='flex-1 flex justify-between
-									bg-[rgba(121,118,110,0.2)] backdrop-blur-ms rounded-lg match-infos'
-								>
-									<div className='flex items-center gap-2'>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-online match-winner'
-											alt=''
-										/>
-										<div className='points flex'>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
-											/>
-											<p className='text-online self-end'>+45</p>
-										</div>
-									</div>
-									<div className='flex flex-col items-center justify-center result'>
-										<p className='font-dreamscape-sans text-online'>victory</p>
-										<p className='font-dreamscape text-primary'>7 - 0</p>
-									</div>
-									<div className='flex items-center gap-2'>
-										<div className='points flex'>
-											<p className='text-defeat self-end'>-33</p>
-											<img
-												src='./assets/images/Achievements/celestial-master.png'
-												alt=''
-											/>
-										</div>
-										<img
-											src='./assets/images/moudrib.jpeg'
-											className='border border-defeat match-loser'
-											alt=''
-										/>
-									</div>
-								</div>
+								<MatchStats />
+								<MatchStats />
+								<MatchStats />
+								<MatchStats />
+								<MatchStats />
 							</div>
 						</div>
 					</div>

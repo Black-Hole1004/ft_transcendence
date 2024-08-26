@@ -39,7 +39,7 @@ export default {
 				1.5: '1.5px',
 			},
 			width: {
-				'card-custom': 'clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem)',
+				'card-custom': 'clamp(26.875rem, 26.0227rem + 4.5455vw, 33.125rem)',
 				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
 
 				'input-lg': 'clamp(8.125rem, 12.277vw + 2.232rem, 21.875rem)',

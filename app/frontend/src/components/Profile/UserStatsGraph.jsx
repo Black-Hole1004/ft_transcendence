@@ -41,6 +41,7 @@ function UserStatsGraph() {
 					<Tooltip
 						cursor={{
 							stroke: '#FBFBEE',
+							strokeWidth: 0.5
 						}}
 						contentStyle={{
 							backgroundColor: '#79624C',
