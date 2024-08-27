@@ -9,7 +9,7 @@ function FriendsList() {
 			<h1 className='font-dreamscape-sans card-title text-primary'>FRIENDS LIST</h1>
 
 			<div className='flex items-center border border-border rounded-2xl pl-2.5'>
-				<img src='/assets/images/icons/search-icon.png' className='search-icon' alt='' />
+				<img src='/assets/images/icons/search-icon.png' className='search-icon select-none' alt='' />
 				<input
 					type='text'
 					placeholder='Search for friends...'

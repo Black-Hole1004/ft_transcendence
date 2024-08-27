@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import './Game.css'
 import Header from '../../components/Header'
 
@@ -21,9 +21,9 @@ const Game = () => {
 					>
 						<p className='font-dreamscape leading-[1.125] text-center'>1 - 3</p>
 					</div>
-					<div className='flex-1 w-full flex justify-between flex-col'>
+					<div className='flex-1 w-full flex justify-between font-dreamscape-sans max-lg:flex-wrap max-lg:justify-around'>
 						<div
-							className={`flex flex-col items-center font-dreamscape-sans ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+							className={`flex flex-col items-center ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 						>
 							<img
 								src='/assets/images/moudrib.jpeg'
@@ -38,14 +38,14 @@ const Game = () => {
 							/>
 							<p className='text-level badge-name'>celestial master</p>
 						</div>
-						<div className='flex flex-col items-center gap-7'>
+						<div className='flex flex-col items-center gap-7 max-lg:order-first max-lg:w-full'>
 							<canvas
 								id='game-table'
-								className={`w-[1400px] h-[800px] border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+								className={`game-table border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 							></canvas>
 							<button
 								onClick={handlePause}
-								className='pause flex items-center gap-3 font-dreamscape-sans brightness-[1] leading-[0.95]'
+								className='pause flex items-center gap-3 brightness-[1] leading-[0.95]'
 							>
 								<img
 									src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`}
@@ -55,7 +55,7 @@ const Game = () => {
 							</button>
 						</div>
 						<div
-							className={`flex flex-col items-center font-dreamscape-sans ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+							className={`flex flex-col items-center ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 						>
 							<img
 								src='/assets/images/lmoudir.jpg'

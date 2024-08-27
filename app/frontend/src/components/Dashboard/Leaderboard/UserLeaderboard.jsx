@@ -25,7 +25,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 				<p className='nickname-size'>{'#' + `${rank}`}</p>
 				<img
 					src='/assets/images/moudrib.jpeg'
-					className='user-image rounded-full tb:border border-0.7 border-primary'
+					className='user-image rounded-full tb:border border-0.7 border-primary select-none'
 					alt='user-image'
 					loading='lazy'
 				/>
@@ -37,7 +37,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 			<div className='flex items-center gap-1'>
 				<img
 					src={achievementData.icon}
-					className='achievement-icon-ldr'
+					className='achievement-icon-ldr select-none'
 					alt='achievement-icon'
 					loading='lazy'
 				/>

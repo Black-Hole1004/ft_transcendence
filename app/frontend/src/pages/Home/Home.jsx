@@ -22,7 +22,6 @@ const Home = () => {
 	const handleClick = (event) => {
 		const buttonId = event.target.getAttribute('id')
 		setIsSigningIn(buttonId === 'sign-in')
-		console.log(buttonId)
 		openDialog()
 	}
 
