@@ -71,7 +71,12 @@
 
 .users-container {
 	margin-right: clamp(0.5rem, 0.391vw + 0.313rem, 0.938rem);
-	margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+	.scroll {
+		scrollbar-color: transparent transparent;
+	}
 }
 
 .chat-header {
@@ -79,7 +84,6 @@
 }
 
 .chat-header .friend-name {
-	/* // 25 13 */
 	font-size: clamp(0.813rem, 0.531vw + 0.713rem, 1.563rem);
 }
 
