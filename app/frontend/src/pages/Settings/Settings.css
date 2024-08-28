@@ -23,10 +23,6 @@
 	padding-bottom: clamp(1.563rem, 0.442vw + 1.48rem, 2.188rem);
 }
 
-.settings {
-	height: clamp(51.875rem, 6.138vw + 48.929rem, 58.75rem);
-}
-
 .profile-pic {
 	width: clamp(2.5rem, 2.655vw + 2.002rem, 6.25rem);
 }

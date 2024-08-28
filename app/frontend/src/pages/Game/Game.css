@@ -33,3 +33,9 @@
 .pause img {
 	width: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
 }
+
+.game-table {
+	/* transform: rotate(90deg); */
+	width: clamp(37.5rem, 37.611vw + 30.448rem, 90.625rem);
+	height: clamp(18.75rem, 19.912vw + 15.017rem, 46.875rem);
+}

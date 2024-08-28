@@ -7,7 +7,7 @@ function UserInfos() {
 		>
 			<img
 				src='./assets/images/tabi3a.jpeg'
-				className='rounded-full lg:border-2 border border-primary user-info-image'
+				className='rounded-full lg:border-2 border border-primary user-info-image mr-1'
 				alt='User image'
 			/>
 			<div className='flex flex-col justify-center font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>
@@ -25,23 +25,16 @@ function UserInfos() {
 				</div>
 			</div>
 			<div className='flex flex-col justify-center items-center'>
-				<div>
-					<div className='badge hover:scale-[1.2] transition duration-500 xl:mt-5 lg:mt-3 xl:mb-2 lg:mb-0'>
-						<img
-							src='./assets/images/Achievements/celestial-master.svg'
-							alt='achievement badge'
-						/>
-					</div>
-				</div>
+				<img
+					className='badge hover:scale-[1.2] transition duration-500 xl:mt-5 lg:mt-3 xl:mb-2 lg:mb-0'
+					src='./assets/images/Achievements/celestial-master.png'
+					alt='achievement badge'
+				/>
 				<div className='flex flex-col'>
-					<div>
-						<p className='font-dreamscape-sans text-level achievement-title leading-[1]'>
-							Celestial Master
-						</p>
-					</div>
-					<div>
-						<p className='text-primary self-end xp'>10231xp</p>
-					</div>
+					<p className='font-dreamscape-sans text-level achievement-title leading-[1] text-center'>
+						Celestial Master
+					</p>
+					<p className='text-primary self-end xp'>10231xp</p>
 				</div>
 			</div>
 		</div>

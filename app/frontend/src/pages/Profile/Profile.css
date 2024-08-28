@@ -3,11 +3,6 @@
 	margin-right: clamp(0.625rem, 14.159vw - 2.03rem, 20.625rem);
 }
 
-.container-card {
-	width: clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem);
-	height: clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem);
-}
-
 .user-info-lp {
 	width: clamp(38.938rem, 34.115vw + 17.104rem, 71.688rem);
 	height: clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem);
@@ -22,13 +17,6 @@
 	background-image: url('./assets/images/Profile/rank-card-lp.svg');
 }
 
-.rank-card-ms {
-	width: 100%;
-	height: 40%;
-	background-size: contain;
-	background-image: url('./assets/images/Profile/rank-card-ms.svg');
-}
-
 .match-history-lp {
 	width: clamp(30.563rem, 26.823vw + 13.396rem, 56.313rem);
 	height: clamp(17.75rem, 15.56vw + 7.792rem, 32.688rem);
@@ -39,7 +27,7 @@
 .cards-title {
 	font-size: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
 	margin-top: clamp(1rem, 0.409vw + 0.923rem, 1.563rem);
-	margin-bottom: clamp(0.75rem, 0.849vw - 0.014rem, 1.313rem);
+	margin-bottom: clamp(0.75rem, 0.177vw + 0.717rem, 1rem);
 }
 
 .rank img {
@@ -89,7 +77,7 @@
 	width: clamp(1.125rem, 0.31vw + 1.067rem, 1.563rem);
 }
 
-.third-part {
+.infos-chart {
 	margin-left: clamp(0.5rem, 0.872vw + 0.168rem, 1.563rem);
 }
 
@@ -156,3 +144,15 @@
 .points p {
 	font-size: clamp(0.375rem, 0.391vw + 0.125rem, 0.75rem);
 }
+
+.chart-title {
+	font-size: clamp(0.5rem, 0.398vw + 0.425rem, 1.063rem);
+}
+
+
+/* .chart-card { */
+	/* width: clamp(18.625rem, 41.77vw + 10.793rem, 37.5rem); */
+	/* height: clamp(9.375rem, 20.747vw + 5.485rem, 18.75rem); */
+	/* width: clamp(25rem, 19.531vw + 12.5rem, 43.75rem); */
+	/* height: clamp(8.75rem, 12.37vw + 0.833rem, 20.625rem); */
+/* } */

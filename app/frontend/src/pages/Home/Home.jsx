@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import './Home.css'
+// const LazyCard = React.lazy(() => import('../../components/Home/Card/Card'))
 import Card from '../../components/Home/Card/Card'
 import Header from '../../components/Home/Header/Header'
 import Button from '../../components/Home/Buttons/Button'
@@ -7,8 +8,11 @@ import Button from '../../components/Home/Buttons/Button'
 const Home = () => {
 	const dialogRef = useRef(null)
 	const [isSigningIn, setIsSigningIn] = useState(false)
+
 	const openDialog = () => {
-		dialogRef.current.showModal()
+		if (dialogRef.current) {
+			dialogRef.current.showModal()
+		}
 	}
 
 	const closeDialog = () => {
@@ -17,18 +21,13 @@ const Home = () => {
 
 	const handleClick = (event) => {
 		const buttonId = event.target.getAttribute('id')
-		{
-			buttonId == 'sign-in' ? setIsSigningIn(true) : setIsSigningIn(false)
-		}
-
-		{
-			buttonId ? openDialog() : closeDialog()
-		}
+		setIsSigningIn(buttonId === 'sign-in')
+		openDialog()
 	}
 
 	return (
 		<>
-			<Header openDialog={handleClick} />
+			<Header handleClick={handleClick} />
 			<section className='text-primary responsive-text'>
 				<div className='flex lp:justify-start justify-center'>
 					<h1
@@ -60,12 +59,15 @@ const Home = () => {
 					</Button>
 				</div>
 			</section>
-			<Card
-				dialogRef={dialogRef}
-				closeDialog={closeDialog}
-				isSigningIn={isSigningIn}
-				setIsSigningIn={setIsSigningIn}
-			></Card>
+			<React.Suspense fallback={<div>Loading...</div>}>
+				{/* <LazyCard */}
+				<Card
+					dialogRef={dialogRef}
+					closeDialog={closeDialog}
+					isSigningIn={isSigningIn}
+					setIsSigningIn={setIsSigningIn}
+				/>
+			</React.Suspense>
 		</>
 	)
 }

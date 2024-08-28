@@ -13,22 +13,19 @@ export default {
 			'4k': '2500px',
 		},
 		fontFamily: {
-			regular: ['Regular'],
 			heavy: ['Heavy'],
 			medium: ['Medium'],
+			regular: ['Regular'],
 			dreamscape: ['Dreamscape'],
 			'dreamscape-sans': ['Dreamscape-Sans'],
 		},
 		extend: {
 			colors: {
-				// chat: '#B7AA9C',
 				level: '#FFCE9E',
 				light: '#B7AA9C',
 				border: '#646464',
 				online: '#46E9D2',
-				ingame: '#F54E62',
 				defeat: '#F54E62',
-				victory: '#46E9D2',
 				offline: '#686259',
 				primary: '#FBFBEE',
 				secondary: '#1B1611',
@@ -44,8 +41,7 @@ export default {
 			width: {
 				'card-custom': 'clamp(26.875rem, 26.0227rem + 4.5455vw, 33.125rem)',
 				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
-				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
-				
+
 				'input-lg': 'clamp(8.125rem, 12.277vw + 2.232rem, 21.875rem)',
 				'input-ms': 'clamp(15rem, 34.261vw + 8.576rem, 25rem)',
 
@@ -54,17 +50,24 @@ export default {
 				'select-table': 'clamp(28.875rem, 22.462vw + 20.312rem, 56.25rem)',
 
 				'game-table-mtb': 'clamp(26.25rem, 48.38vw + 13.218rem, 90.625rem)',
+
+				'chart-lp': 'clamp(25rem, 19.531vw + 12.5rem, 43.75rem)',
+				'chart-ms': 'clamp(18.625rem, 41.77vw + 10.793rem, 37.5rem)',
+
+				'profile-cards': 'clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem)'
 			},
 			height: {
-				'fl-ldr-custom': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',
+				'chart-lp': 'clamp(8.75rem, 12.37vw + 0.833rem, 20.625rem)',
+				'chart-ms': 'clamp(9.375rem, 20.747vw + 5.485rem, 18.75rem)',
+				'profile-cards': 'clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem)',
 				'signin-card-custom': 'clamp(35rem, 7.727vw + 33.551rem, 45.625rem)',
 				'signup-card-custom': 'clamp(36.875rem, 9.545vw + 35.085rem, 50rem)',
 				'1vs1-lg': 'clamp(11.063rem, 10.66vw + 1.468rem, 18.125rem)',
 				'training-lg': 'clamp(11.563rem, 10.849vw + 1.798rem, 18.75rem)',
 				'tournaments-lg': 'clamp(24.063rem, 22.83vw + 3.515rem, 39.188rem)',
+
 				'shapes-ms': 'clamp(8.625rem, 42.493vw + 0.657rem, 38.875rem)',
 				'shapes-lg': 'clamp(24.063rem, 21.607vw + 4.616rem, 39.188rem)',
-				'achievements-lg': 'clamp(15.625rem, 10.714vw + 5.982rem, 23.125rem)',
 
 				'chat': 'clamp(29.688rem, 20.133vw + 25.913rem, 58.125rem)',
 				'users-div': 'clamp(29.375rem, 12.835vw + 23.214rem, 43.75rem)',
@@ -76,8 +79,6 @@ export default {
 				'profile': 'clamp(31.64rem, 13.9246rem + 27.6803vw, 58.213125rem)',
 			},
 			padding: {
-				'cards-section-pl': 'clamp(0.5rem, 5.849vw - 4.764rem, 4.375rem)',
-				'cards-section-pr': 'clamp(0.5rem, 2.642vw - 1.877rem, 2.25rem)',
 				
 				// Chat User informations
 				'user-info-x-lg': 'clamp(1.563rem, 1.339vw + 0.357rem, 2.5rem)',
@@ -90,6 +91,7 @@ export default {
 
 			},
 			margin: {
+				// Game modes
 				'modes-left-lg': 'clamp(0rem, 7.143vw - 8.929rem, 2.5rem)',
 				'modes-right-lg': 'clamp(0.313rem, 6.132vw - 5.206rem, 4.375rem)',
 				'modes-left-ms': 'clamp(0.625rem, 3.304vw - 0.265rem, 2.5rem)',

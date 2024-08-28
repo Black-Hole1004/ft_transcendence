@@ -13,9 +13,9 @@ const Custom = () => {
 	const xp = 6231
 
 	return (
-		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
+		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header />
-			<section className='flex-grow'>
+			<section>
 				<div className='page-margin flex flex-col'>
 					<div className='flex justify-center'>
 						<div

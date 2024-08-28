@@ -6,16 +6,16 @@ import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 
 const Chat = () => {
 	return (
-		<div className='min-h-screen flex flex-col backdrop-blur-sm bg-backdrop-40 text-primary'>
+		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header />
-			<section className='flex-grow section-margin'>
+			<section className='section-margin'>
 				<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
 					<div
 						className='flex tb:flex-row flex-col lg:border-2 tb:border-[1px] tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 					>
 						<ChatHistory />
-						<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center'></div>
+						<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
 						<div
 							className='flex-1 flex flex-col items-center max-tb:border border-primary
@@ -28,7 +28,9 @@ const Chat = () => {
 									alt='user image'
 								/>
 								<div className='max-ms:hidden'>
-									<p className='font-heavy friend-name text-primary'>Abdelouahed Rabiai</p>
+									<p className='font-heavy friend-name text-primary'>
+										Abdelouahed Rabiai
+									</p>
 									<p className='last-message text-light'>Online</p>
 								</div>
 							</div>

@@ -4,35 +4,35 @@
 
 @font-face {
 	font-family: 'Dreamscape';
-	src: url('/assets/fonts/Dreamscape/Dreamscape.ttf') format('truetype');
+	src: url('/assets/fonts/Dreamscape/Dreamscape.woff2') format('woff2');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'Dreamscape-Sans';
-	src: url('/assets/fonts/Dreamscape/Dreamscape-Sans.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'Medium';
-	src: url('/assets/fonts/Avenir/Avenir-Medium.ttf') format('truetype');
+	src: url('/assets/fonts/Dreamscape/Dreamscape-Sans.woff2') format('woff2');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'Heavy';
-	src: url('/assets/fonts/Avenir/Avenir-Heavy.ttf') format('truetype');
+	src: url('/assets/fonts/Avenir/Avenir-Heavy.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Medium';
+	src: url('/assets/fonts/Avenir/Avenir-Medium.woff2') format('woff2');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'Regular';
-	src: url('/assets/fonts/Avenir/Avenir-Regular.ttf') format('truetype');
+	src: url('/assets/fonts/Avenir/Avenir-Regular.woff2') format('woff2');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -42,10 +42,10 @@ body {
 	height: 100vh;
 	max-width: 100%;
 	background-size: cover;
-	background-color: #1B1611;
+	background-color: #000;
 	background-repeat: no-repeat;
 	background-position: 50% 37%;
-	background-image: url("/assets/images/background.png");
+	background-image: url("/assets/images/background.webp");
 }
 
 .header-height {

@@ -59,24 +59,27 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 		<dialog
 			ref={dialogRef}
 			className={`max-ml:mb-0 ml:w-card-custom max-w-full w-screen
-			${isSigningIn ? 'h-[570px]' : 'h-[600px]'} ${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'}
+			${isSigningIn ? 'h-[570px]' : 'h-[600px]'}
+			${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'}
 			ml:border-1.5 border border-b-0 rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
-			<div className='p-2 h-full'>
+			<div className='m-2'>
 				<div className='relative w-full flex items-center'>
 					<img
 						onClick={closeDialog}
 						className='absolute right-2 top-1 select-none close-button'
 						src='/assets/images/icons/close.png'
-					/>
+						loading='lazy'
+						/>
 					<div className='card-separator h-0.5 flex-1'></div>
 					<img
 						className='select-none pointer-events-none logo'
-						src='/assets/images/logo-transparent.png'
-					/>
+						src='/assets/images/logo.webp'
+						loading='lazy'
+						/>
 					<div className='card-separator h-0.5 flex-1'></div>
 				</div>
-				<div className='flex flex-col justify-center form-padding text-light font-heavy'>
+				<div className='flex flex-col justify-center form-padding text-light font-heavy lp:mb-8 mb-5'>
 					{isSigningIn ? (
 						<div className='w-full flex flex-col items-center welcome-message'>
 							<h1 className='sign-in-title'>Welcome back!</h1>
@@ -91,7 +94,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					<form className='flex flex-col form-gap'>
 						{inputs.slice(0, isSigningIn ? 2 : 3).map((input, index) => (
 							<Input
-								key={index}
+							key={index}
 								iconPath={`/assets/images/icons/${input.iconPath}.png`}
 								placeholder={input.placeholder}
 							></Input>
@@ -134,6 +137,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									src={`/assets/images/icons/${button.iconPath}.png`}
 									className='card-images'
 									alt={button.alt}
+									loading='lazy'
 								/>
 								<p>{button.content}</p>
 							</CardButton>

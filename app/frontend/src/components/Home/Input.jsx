@@ -5,6 +5,7 @@ function Input({ iconPath, placeholder }) {
 		<div className='flex flex-row items-center bg-secondary-light responsive-input border border-border'>
 			<img
 				src={`${iconPath}`}
+				loading='lazy'
 				className='responsive-icon select-none pointer-events-none padding-top-input'
 				alt='email-icon'
 			/>
