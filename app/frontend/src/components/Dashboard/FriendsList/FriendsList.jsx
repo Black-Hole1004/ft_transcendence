@@ -12,6 +12,7 @@ function FriendsList() {
 				<img src='/assets/images/icons/search-icon.png' className='search-icon select-none' alt='' />
 				<input
 					type='text'
+					name='search for friends'
 					placeholder='Search for friends...'
 					className='font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border'
 				/>

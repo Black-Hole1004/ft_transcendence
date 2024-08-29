@@ -58,6 +58,7 @@ const Chat = () => {
 								</button>
 								<input
 									type='text'
+									name='chat-input'
 									className='w-[85%] chat-input bg-transparent placeholder:text-light outline-none'
 									placeholder='Type your message here...'
 								/>

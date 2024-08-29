@@ -163,18 +163,15 @@ const Settings = () => {
 								</div>
 								<div className='flex flex-col'>
 									<label
-										htmlFor=''
+										htmlFor='bio'
 										className='font-regular text-light sections-title'
 									>
 										Bio
 									</label>
 									<textarea
-										name=''
-										id=''
-										placeholder={
-											'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam, aperiam sit ratione officiis asperiores id quisquam, fugiat ipsa sed autem.'
-										}
-										maxLength={'250'}
+										id='bio'
+										maxLength='250'
+										placeholder='Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam, aperiam sit ratione officiis asperiores id quisquam, fugiat ipsa sed autem.'
 										className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
 											max-ms:w-full outline-none placeholders placeholder:text-border'
 									></textarea>

@@ -21,6 +21,7 @@ function ChatHistory() {
 					/>
 					<input
 						type='text'
+						name='search for friends'
 						placeholder='Search for friends...'
 						className='font-medium bg-transparent text-primary outline-none search placeholder:text-border
 									lg:w-input-lg ms:w-input-ms w-0'

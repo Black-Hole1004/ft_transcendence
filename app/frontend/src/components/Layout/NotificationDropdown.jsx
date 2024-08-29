@@ -1,6 +1,5 @@
-// import { Link } from 'react-router-dom'
 import { useRef, useEffect } from 'react'
-import Button from './Home/Buttons/Button'
+import Button from '../Home/Buttons/Button'
 
 function NotificationDropdown({ setIsNotificationOpen }) {
 	const notificationRef = useRef(null)
