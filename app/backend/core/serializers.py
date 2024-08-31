@@ -8,7 +8,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add custom claims
         token['username'] = user.username
-        token['is_tabi3a'] = False
+        token['is_tabi3a'] = False # just for testing lmao
         # ...
 
         return token
