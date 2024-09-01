@@ -13,9 +13,10 @@ import json
 @csrf_exempt  # Disable CSRF for this view for testing purposes
 def login(request):
     if request.method == 'POST':
-        try:
+        # try:
             # Parse JSON data from request body
-            data = json.loads(request.body.decode('utf-8'))
+            # data = json.loads(request.body.decode('utf-8'))
+            data = request.POST
             username = data.get('username')
             password = data.get('password')
 
@@ -31,18 +32,29 @@ def login(request):
                 access_token = str(refresh.access_token)
                 refresh_token = str(refresh)
 
-                # Return tokens in JSON response
-                return JsonResponse({
-                    'access_token': access_token,
+                # Set the access token in the cookie
+                response = JsonResponse({
                     'refresh_token': refresh_token,
                     'message': 'User authenticated successfully'
                 })
+
+                # Set the access token as a HttpOnly cookie
+                response.set_cookie(
+                    key='access_token',
+                    value=access_token,
+                    httponly=True,
+                    secure=True,  # Ensure cookies are only sent over HTTPS
+                    samesite='Lax'  # Adjust this according to your CSRF needs
+                )
+
+                return response
             else:
                 return JsonResponse({'error': 'Invalid credentials'}, status=401)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        # except json.JSONDecodeError:
+        #     return JsonResponse({'error': 'Invalid JSON'}, status=400)
     else:
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
+        return render(request, 'login.html')
+        # return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def register(request):
     if request.method == 'POST':
