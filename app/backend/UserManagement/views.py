@@ -56,6 +56,7 @@ def login(request):
         return render(request, 'login.html')
         # return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+@csrf_exempt  # Disable CSRF for this view for testing purposes
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

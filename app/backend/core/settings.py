@@ -177,5 +177,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
-] #todo: change this to the actual frontend url
+    "http://localhost:5173",
+] # todo: to be changed in production
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # todo: to be changed in production
