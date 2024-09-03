@@ -1,6 +1,7 @@
 import Button from './Button'
 import { Link } from 'react-router-dom'
 
+
 function GameModes() {
 	return (
 		<div className='relative w-full lg:h-shapes-lg ms:h-shapes-ms font-dreamscape-sans text-primary select-none modes'>

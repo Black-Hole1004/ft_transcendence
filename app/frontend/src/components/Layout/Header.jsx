@@ -25,10 +25,11 @@ function Header() {
 			className='relative flex items-center justify-between text-primary header-margin font-medium
 			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end'
 		>
-			<Link to={'/dashboard'}>
+			<Link to={'/dashboard'} aria-label="Go to Dashboard">
 				<img
-					className='select-none pointer-events-none header-logo max-ms:hidden'
+					alt='logo'
 					src='/assets/images/logo.webp'
+					className='select-none pointer-events-none header-logo max-ms:hidden'
 				/>
 			</Link>
 			<Link to={'/dashboard'}>

@@ -1,6 +1,5 @@
 import './Dashboard.css'
 import { useState, useEffect } from 'react'
-// import Header from '../../components/Header'
 import GameModes from '../../components/Dashboard/GameModes'
 import Achievements from '../../components/Dashboard/Achievements'
 import FriendsList from '../../components/Dashboard/FriendsList/FriendsList'

@@ -1,5 +1,5 @@
 .section-margin {
-	margin: clamp(1.25rem, 1.991vw + 0.877rem, 4.063rem) clamp(0rem, 7.692vw - 2.933rem, 9.375rem);
+	margin: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem) clamp(0rem, 7.692vw - 2.933rem, 9.375rem);
 }
 
 .search-icon {
@@ -106,3 +106,19 @@
 	width: clamp(0.75rem, 0.575vw + 0.642rem, 1.563rem);
 }
 
+
+
+
+/* Message */
+
+.message-image {
+	width: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
+}
+
+.message-content {
+	font-size: clamp(0.688rem, 0.177vw + 0.654rem, 0.938rem);
+}
+
+.message-time {
+	font-size: clamp(0.438rem, 0.177vw + 0.404rem, 0.688rem);
+}

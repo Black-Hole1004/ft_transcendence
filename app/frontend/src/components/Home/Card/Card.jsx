@@ -72,13 +72,13 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						onClick={closeDialog}
 						className='absolute right-2 top-1 select-none close-button'
 						src='/assets/images/icons/close.png'
-						loading='lazy'
+						loading='eager'
 					/>
 					<div className='card-separator h-0.5 flex-1'></div>
 					<img
 						className='select-none pointer-events-none logo'
 						src='/assets/images/logo.webp'
-						loading='lazy'
+						loading='eager'
 					/>
 					<div className='card-separator h-0.5 flex-1'></div>
 				</div>
@@ -97,7 +97,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					<form className='flex flex-col form-gap'>
 						{inputs.slice(0, isSigningIn ? 2 : 3).map((input, index) => (
 							<Input
-								// key={index}
+								key={index}
 								id={input.id}
 								iconPath={`/assets/images/icons/${input.iconPath}.png`}
 								placeholder={input.placeholder}
@@ -141,7 +141,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									src={`/assets/images/icons/${button.iconPath}.png`}
 									className='card-images'
 									alt={button.alt}
-									loading='lazy'
+									loading='eager'
 								/>
 								<p>{button.content}</p>
 							</CardButton>

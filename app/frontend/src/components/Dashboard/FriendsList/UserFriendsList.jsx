@@ -28,13 +28,13 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 					src={achievementData.icon}
 					className='achievement-icon-fr select-none'
 					alt='achievement-icon'
-					loading='lazy'
+					loading='eager'
 				/>
 				<img
 					src='/assets/images/moudrib.jpeg'
 					className='user-image rounded-full tb:border border-0.7 border-primary select-none'
 					alt='user-image'
-					loading='lazy'
+					loading='eager'
 				/>
 				<div className='flex flex-wrap items-center overflow-hidden'>
 					<p className='text-primary nickname-size leading-[1] truncate'>{nickname}</p>
