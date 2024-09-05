@@ -4,6 +4,7 @@ import './Home.css'
 import Card from '../../components/Home/Card/Card'
 import Header from '../../components/Home/Header/Header'
 import Button from '../../components/Home/Buttons/Button'
+import Alert from '../../components/Alert'
 
 const Home = () => {
 	const dialogRef = useRef(null)

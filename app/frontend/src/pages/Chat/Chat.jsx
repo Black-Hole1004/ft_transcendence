@@ -9,12 +9,12 @@ const Message = ({ content, id }) => {
 				id !== 1 ? (
 					<img
 						src='./assets/images/tabi3a.jpeg'
-						className='rounded-full border-0.7 border-primary message-image'
+						className='rounded-full border-0.7 border-primary message-image select-none'
 						alt='friend-image'
 					/>
 				) : <></>
 			}
-			<div className={`flex flex-col max-w-[60%]`}>
+			<div className={`flex flex-col ml:max-w-[60%] max-w-[80%]`}>
 				<p
 					className={`text-secondary py-2 px-3 rounded-2xl message-content font-medium
 					${id !== 1 ? 'bg-light rounded-tl-sm' : 'bg-primary rounded-tr-sm'}`}
@@ -71,6 +71,7 @@ const Chat = () => {
 							<Message content={`Definitely. But this time, I'm taking the win!`} id={2} />
 							<Message content={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, culpa? Eaque laudantium est sunt ad corporis, vel nihil beatae velit, praesentium aliquid fugiat amet tempore voluptatum repellendus exercitationem voluptas doloremque.`} id={1} />
 							<Message content={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, culpa? Eaque laudantium est sunt ad corporis, vel nihil beatae velit, praesentium aliquid fugiat amet tempore voluptatum repellendus exercitationem voluptas doloremque.`} id={2} />
+							<Message content={`.`} id={2} />
 						</div>
 						<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
 							<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]'>

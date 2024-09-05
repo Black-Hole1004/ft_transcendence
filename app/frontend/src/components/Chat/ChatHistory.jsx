@@ -29,7 +29,7 @@ function ChatHistory() {
 				</div>
 			</div>
 			<div
-				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1
+				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
 							tb:overflow-y-scroll ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				<User />
