@@ -1,25 +1,25 @@
-// // select canvas
-// const canvas = document.getElementById("pong");
-// const ctx = canvas.getContext("2d");
+// select canvas
+const canvas = document.getElementById("pong");
+const ctx = canvas.getContext("2d");
 
-// // variables
-// const PaddlwWidth = 20;
-// const PaddleHeight = 100;
+// variables
+const PaddleWidth = 20;
+const PaddleHeight = 100;
 
-// const paddleX = 3.6;
-// const paddleY = canvas.height / 2 - PaddleHeight / 2;
+const paddleX = 3.6;
+const paddleY = canvas.height / 2 - PaddleHeight / 2;
 
-// const BallX = canvas.width / 2;
-// const BallY = canvas.height / 2;
+const BallX = canvas.width / 2;
+const BallY = canvas.height / 2;
 
-// const MAX_BALL_SPEED = 8; // Set the maximum ball speed
-// const MAX_AI_LEVEL = 10; // Set the maximum AI level
+const MAX_BALL_SPEED = 8; // Set the maximum ball speed
+const MAX_AI_LEVEL = 10; // Set the maximum AI level
 
-// const BallRadius = 15;
-// const BallInitialSpeed = 1;
-// const BallAcceleration = 0.025; // 1% of the initial speed
-// const paddleSpeed = 750;
-// const ai_level = 2; // 1 easy, 2 medium, 3 diffuclt, 4 hard, 5 very hard, 7 impossible, 10 unbeatable
+const BallRadius = 15;
+const BallInitialSpeed = 1;
+const BallAcceleration = 0.025; // 1% of the initial speed
+const paddleSpeed = 750;
+const ai_level = 2; // 1 easy, 2 medium, 3 diffuclt, 4 hard, 5 very hard, 7 impossible, 10 unbeatable
 
 
 
@@ -77,27 +77,27 @@ const ball = {
 };
 
 // draw shapes && text functions
-// function drawPaddle(x, y, w, h, color) {
-// 	ctx.fillStyle = color;
-// 	ctx.fillRect(x, y, w, h);
-// 	// make the top and bottom lines of the paddle rounded
-// 	ctx.beginPath();
-// 	ctx.arc(x + w / 2, y, w / 2, 0, Math.PI, true);
-// 	ctx.closePath();
-// 	ctx.fill();
-// 	ctx.beginPath();
-// 	ctx.arc(x + w / 2, y + h, w / 2, 0, Math.PI, false);
-// 	ctx.closePath();
-// 	ctx.fill();
-// }
+function drawPaddle(x, y, w, h, color) {
+	ctx.fillStyle = color;
+	ctx.fillRect(x, y, w, h);
+	// make the top and bottom lines of the paddle rounded
+	ctx.beginPath();
+	ctx.arc(x + w / 2, y, w / 2, 0, Math.PI, true);
+	ctx.closePath();
+	ctx.fill();
+	ctx.beginPath();
+	ctx.arc(x + w / 2, y + h, w / 2, 0, Math.PI, false);
+	ctx.closePath();
+	ctx.fill();
+}
 
-// function drawBall(x, y, r, color) {
-// 	ctx.fillStyle = color;
-// 	ctx.beginPath();
-// 	ctx.arc(x, y, r, 0, Math.PI * 2, false);
-// 	ctx.closePath();
-// 	ctx.fill();
-// }
+function drawBall(x, y, r, color) {
+	ctx.fillStyle = color;
+	ctx.beginPath();
+	ctx.arc(x, y, r, 0, Math.PI * 2, false);
+	ctx.closePath();
+	ctx.fill();
+}
 // draw text
 function drawText(text, x, y, color) {
 	ctx.fillStyle = color;
