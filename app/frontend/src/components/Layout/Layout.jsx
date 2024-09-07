@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 function Layout() {
 	const [showAlert, setShowAlert] = useState(true)
-	const [alertType, setAlertType] = useState('warning');
+	const [alertType, setAlertType] = useState('success');
 	const [alertMessage, setAlertMessage] = useState('Hello');
 
 	return (
