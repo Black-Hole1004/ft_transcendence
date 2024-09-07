@@ -32,9 +32,9 @@ function Achievements({ level }) {
 					<p>8000xp</p>
 					<p>10000xp</p>
 				</div>
-				<div className='w-full xl:h-[11px] tb:h-2 h-[7px] rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
+				<div className='w-full lg:h-2 tb:h-1.5 h-1 rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
 					<div
-						className={`lp:mx-2 mx-1 rounded-lg h-[65%] bg-level ease-out duration-500`}
+						className={`rounded-lg h-[100%] bg-level ease-out duration-500`}
 						style={{ width: `${filled}%` }}
 					></div>
 				</div>

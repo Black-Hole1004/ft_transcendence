@@ -52,14 +52,12 @@ const Profile = () => {
 		setLevel(xp > 10000 ? 100 : ((xp * 100) / 10000).toFixed(2))
 	}, [level])
 
-	const stats = [
-		{
-			winner: 'mouad55',
-			loser: 'arabiai',
-			winnerScore: 7,
-			loserScore: 2,
-		},
-	]
+	// const [filled, setFilled] = useState(0);
+
+	// useEffect(() => {
+	// 	if (filled < achievementProgress)
+	// 		setTimeout(() => setFilled(prev => prev + 1), 20)
+	// }, [filled, achievementProgress]);
 
 	return (
 		<section ref={containerRef} className='flex justify-center'>
@@ -114,17 +112,17 @@ const Profile = () => {
 								alt='achievement badge'
 							/>
 						</div>
-						<div className='flex flex-col '>
-							<p className='font-dreamscape-sans text-level text-center achievement-title'>
+						<div className='flex flex-col font-dreamscape-sans'>
+							<p className='text-level text-center achievement-title'>
 								celestial master
 							</p>
-							<div className='flex justify-between text-primary font-medium progress'>
+							<div className='flex justify-between text-primary progress'>
 								<p>{progressStart}xp</p>
 								<p>{progressStart + 2000}xp</p>
 							</div>
-							<div className='level xl:h-[11px] tb:h-2 h-[7px] rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
+							<div className='level lg:h-2 tb:h-1.5 h-1 rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
 								<div
-									className={`lp:mx-2 mx-1 rounded-lg h-[65%] bg-level`}
+									className={`rounded-lg h-[100%] bg-level ease-out duration-500`}
 									style={{
 										width: `${xp > 10000 ? 100 : achievementProgress}%`,
 									}}

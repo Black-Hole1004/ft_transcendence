@@ -40,7 +40,7 @@
 .users {
 	margin-bottom: 10px;
 	margin-top: clamp(1.25rem, 1.818vw - 0.341rem, 2.5rem);
-	padding-left: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem);
+	/* padding-left: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem); */
 	padding-right: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem);
 }
 
@@ -61,7 +61,7 @@
 }
 
 .nickname-size, .xp {
-	font-size: clamp(0.563rem, 0.579vw + 0.345rem, 1.25rem);
+	font-size: clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem);
 }
 
 .status {

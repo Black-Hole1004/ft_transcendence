@@ -22,8 +22,8 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 	const achievementData = achievements[achievement]
 
 	return (
-		<div className='flex items-center justify-between gap-5 font-dreamscape-sans'>
-			<div className='flex-1 flex items-center xl:gap-3 tb:gap-2 gap-1 '>
+		<div className='flex items-center justify-between font-dreamscape-sans'>
+			<div className='flex-1 flex items-center xl:gap-3 tb:gap-2 gap-1'>
 				<img
 					src={achievementData.icon}
 					className='achievement-icon-fr select-none'
@@ -36,7 +36,7 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 					alt='user-image'
 					loading='eager'
 				/>
-				<div className='flex flex-wrap items-center overflow-hidden'>
+				<div className='flex-1 flex flex-wrap items-center overflow-hidden'>
 					<p className='text-primary nickname-size leading-[1] truncate'>{nickname}</p>
 					<p className='text-achievement achievement-name ml-1'> {achievement}</p>
 				</div>

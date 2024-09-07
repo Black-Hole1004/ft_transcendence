@@ -29,8 +29,8 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 					alt='user-image'
 					loading='eager'
 				/>
-				<div className='flex flex-col justify-center'>
-					<p className='nickname-size leading-[1]'>{`${nickname}` + ' '}</p>
+				<div className='flex-1 flex flex-col justify-center overflow-hidden'>
+					<p className='nickname-size leading-[1] truncate'>{`${nickname}` + ' '}</p>
 					<p className='text-achievement achievement-name'> {achievement}</p>
 				</div>
 			</div>
