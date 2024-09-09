@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
 
-function Header() {
+function Header({src, preview}) {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
@@ -56,7 +56,7 @@ function Header() {
 				)}
 				<button onClick={toggleDropdown} type='button'>
 					<img
-						src='/assets/images/moudrib.jpeg'
+						src={preview || src }
 						alt='user photo'
 						className='nav-icons border-[1px] rounded-full border-primary select-none'
 					/>

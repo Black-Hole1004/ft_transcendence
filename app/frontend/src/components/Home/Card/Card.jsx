@@ -1,10 +1,21 @@
 import './Card.css'
 import Input from '../Input'
 import CardButton from '../Buttons/CardButton'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
+
+
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => setIsSigningIn(!isSigningIn)
+
+	
+	const [error, setError] = useState('')
+	// const history = useHistory()
+
+	
 
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
@@ -55,6 +66,62 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			content: 'Continue with 42 Intra',
 		},
 	]
+
+	// --------------------------------------------------------------------------------------------
+
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
+	const navigate = useNavigate()
+
+	async function loginUser(email, password) {
+
+		try {
+			const response = await axios.post('http://127.0.0.1:8000/api/login/', {
+				email: email,
+				password: password,
+			});
+			console.log('response status =>', response.status);
+			if (response.status === 200) {
+				console.log('Registration successful');
+				alert('Login successful');
+				// window.location.href = '/dashboard';
+				// navigate('/dashboard');
+			}
+		} catch (error) {
+			setError('Registration failed. Please try again.');
+		}
+	}
+
+	async function registerUser(email, password, confirmPassword) {
+		try {
+			const response = await axios.post('http://127.0.0.1:8000/api/register/', {
+				email: email,
+				password1: password,
+				password2: confirmPassword,
+			});
+			console.log('response status =>', response.status);
+			if (response.status === 201) {
+				console.log('Registration successful');
+				alert('Registration successful');
+			}
+		} catch (error) {
+			setError('Registration failed. Please try again.');
+		}
+	}
+
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		if (isSigningIn) {
+			loginUser(email, password)
+		}
+		else {
+			registerUser(email, password, confirmPassword)
+		}
+	}
+	// --------------------------------------------------------------------------------------------
+
 	return (
 		<dialog
 			ref={dialogRef}
@@ -91,13 +158,29 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						</h1>
 					)}
 
-					<form className='flex flex-col form-gap'>
+
+					{/* -----------------------------------------------------------------------------------------*/}
+					<form className='flex flex-col form-gap' onSubmit={handleSubmit}>
 						{inputs.slice(0, isSigningIn ? 2 : 3).map((input, index) => (
 							<Input
-							key={index}
+								key={index}
 								iconPath={`/assets/images/icons/${input.iconPath}.png`}
 								placeholder={input.placeholder}
-							></Input>
+								value={
+									index === 0
+										? email
+										: index === 1
+										? password
+										: confirmPassword
+								}
+								onChange = {(e) => {
+									if (index === 0) setEmail(e.target.value)
+									else if (index === 1) setPassword(e.target.value)
+									else setConfirmPassword(e.target.value)
+								}}
+
+							>
+							</Input>
 						))}
 						<CardButton
 							className={
@@ -159,5 +242,4 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 		</dialog>
 	)
 }
-
 export default Card
