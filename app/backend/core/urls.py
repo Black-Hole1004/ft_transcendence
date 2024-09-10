@@ -1,5 +1,7 @@
 from django.urls import path
 from UserManagement import views
+from django.urls import include
+from django.urls import path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -14,4 +16,6 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('api/login/', views.login, name='login'),
     path('api/register/', views.register, name='register'),
+    path('social-auth/', include('social_django.urls', namespace='social')),
+    path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
 ]
