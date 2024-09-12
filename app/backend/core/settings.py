@@ -56,8 +56,13 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
-    }
-    }
+    },
+    'intra42': {
+        'SCOPE': [
+            'public',
+        ],
+    },
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -170,11 +175,12 @@ CORS_ALLOWED_ORIGINS = [
 ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # todo: to be changed in production
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
+    'core.GoogleOauth2.CustomGoogleOAuth2',  # Google OAuth
+    'core.intra42.Intra42OAuth2',  # Custom Intra42 backend
+    'django.contrib.auth.backends.ModelBackend',  # Default authentication
 )
 
-LOGIN_REDIRECT_URL = 'http://localhost:5173/dashboard'
+LOGIN_REDIRECT_URL = 'http://localhost:5173/Dashboard'
 LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
@@ -193,3 +199,13 @@ SOCIAL_AUTH_PIPELINE = (
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1041204309614-ngvt7ta2vjueskg7s2r5otjd3u9lf48a.apps.googleusercontent.com'  # Google Client ID
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Google Client Secret
+
+
+#todo: Creds should be changed in production
+
+SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-cdcc23cff090940f13730afd65feb14fe10adba125685f2f6b47055c98256fd7'
+SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'http://localhost:8000/social-auth/complete/intra42/'
+
+# Optional: You can configure scopes or permissions as needed
+SOCIAL_AUTH_INTRA42_SCOPE = ['public']

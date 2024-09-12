@@ -62,13 +62,14 @@ def login(request):
         try:
             #Parse JSON data from request body
             data = json.loads(request.body.decode('utf-8'))
+            print(f"Request method: {data}")
             # data = request.POST
-            username = data.get('username')
+            email = data.get('email')
             password = data.get('password')
 
             # Authenticate the user
-            user = authenticate(request, username=username, password=password)
-            print(f"Authenticated user: {username}, {password}, {user}")
+            user = authenticate(request, email=email, password=password)
+            print(f"Authenticated user: {email}, {password}, {user}")
 
             if user is not None:
                 auth_login(request, user)
@@ -80,6 +81,7 @@ def login(request):
 
                 # Set the access token in the cookie
                 response = JsonResponse({
+                    'access_token': access_token,
                     'refresh_token': refresh_token,
                     'message': 'User authenticated successfully'
                 })
