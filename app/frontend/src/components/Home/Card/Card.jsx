@@ -56,11 +56,13 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 
 	const buttons = [
 		{
+			id : 'google',
 			iconPath: 'google',
 			alt: 'google-logo',
 			content: 'Continue with Google',
 		},
 		{
+			id : '42',
 			iconPath: '42-logo',
 			alt: '42-logo',
 			content: 'Continue with 42 Intra',
@@ -120,6 +122,26 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			registerUser(email, password, confirmPassword)
 		}
 	}
+
+	const handleOauth = (id) => {
+		console.log('id =>', id);
+		let API_URL = 'http://localhost:8000/social-auth/login/google-oauth2/';
+	
+		// Use curly braces for the if statement for clarity
+		if (id === '42') {
+			API_URL = 'http://localhost:8000/social-auth/login/intra42/';
+		}
+	
+		axios.get(API_URL)
+			.then((response) => {
+				console.log(response);
+				// Uncomment the next line to redirect the user
+				// window.location.href = response.data.authorization_url;
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 	// --------------------------------------------------------------------------------------------
 
 	return (
@@ -215,6 +237,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									'text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
 										flex flex-row items-center justify-center gap-2'
 								}
+								onClick = {() => handleOauth(button.id)}
 							>
 								<img
 									src={`/assets/images/icons/${button.iconPath}.png`}
@@ -223,6 +246,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									loading='lazy'
 								/>
 								<p>{button.content}</p>
+								
 							</CardButton>
 						))}
 						{isSigningIn && (
