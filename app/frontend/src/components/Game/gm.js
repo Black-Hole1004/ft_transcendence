@@ -246,10 +246,7 @@ function collisionDetection(ball, paddle) {
 	const distY = Math.abs(ball.y - paddle.y - paddle.height / 2);
 
 	// Check if the distance is less than the sum of the half-widths and half-heights
-	if (
-		distX < ball.radius + paddle.width / 2 &&
-		distY < ball.radius + paddle.height / 2
-	) {
+	if ( distX < ball.radius + paddle.width / 2 && distY < ball.radius + paddle.height / 2) {
 		// Collision detected
 		return true;
 	}

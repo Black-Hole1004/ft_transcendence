@@ -1,28 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 function Timer(props) {
-    const [timeLeft, setTimeLeft] = useState(90); // 1 minute 30 seconds is 90 seconds
 
-    useEffect(() => {
-        if (props.isPaused) {
-            return;
-        }
-
-        if (timeLeft > 0) {
-            const timerId = setInterval(() => {
-                setTimeLeft((prevTime) => prevTime - 1);
-            }, 1000);
-
-            return () => clearInterval(timerId); // Clear interval when component unmounts or timeLeft changes
-        }
-        else if (timeLeft === 0) {
-            alert('Game over!');
-        }
-    }, [timeLeft, props.isPaused]);
-
-    // Format the time in mm:ss format
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
+    const minutes = Math.floor(props.timeRemaining / 60);
+    const seconds = props.timeRemaining % 60;
 
     return (
         <div
