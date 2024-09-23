@@ -13,27 +13,35 @@ const Game = () => {
     const [isGameOver, setIsGameOver] = useState(false)
     const [player1Score, setPlayer1Score] = useState(0)
     const [player2Score, setPlayer2Score] = useState(0)
-    const [timeRemaining, setTimeRemaining] = useState(20) // 1m 10s
-    const [showRestartPopup, setShowRestartPopup] = useState(false)
-	const [resetParameters, setResetParameters] = useState(false)
     const [winner, setWinner] = useState(null)
-
+    
     const location = useLocation()
-    const { backgroundId } = queryString.parse(location.search)
+    const { 
+        mode, 
+        player1, 
+        player2, 
+        ballColor, 
+        duration, 
+        backgroundId 
+    } = location.state || {}
+    
+    const [timeRemaining, setTimeRemaining] = useState(duration || 20)
+    const [showRestartPopup, setShowRestartPopup] = useState(false)
+    const [resetParameters, setResetParameters] = useState(false)
 
-    const player1 = {
-        name: "mouad55",
-        badge: "celestial master",
-        image: "/assets/images/moudrib.jpeg",
-        badgeImage: "/assets/images/Achievements/celestial-master.png"
-    }
+    // const player1 = {
+    //     name: "mouad55",
+    //     badge: "celestial master",
+    //     image: "/assets/images/moudrib.jpeg",
+    //     badgeImage: "/assets/images/Achievements/celestial-master.png"
+    // }
 
-    const player2 = {
-        name: "Ahmaymou",
-        badge: "galactic trailblazer",
-        image: "/assets/images/lmoudir.jpg",
-        badgeImage: "/assets/images/Achievements/galactic-trailblazer.png"
-    }
+    // const player2 = {
+    //     name: "Ahmaymou",
+    //     badge: "galactic trailblazer",
+    //     image: "/assets/images/lmoudir.jpg",
+    //     badgeImage: "/assets/images/Achievements/galactic-trailblazer.png"
+    // }
 
     const handlePause = () => {
         if (!isGameOver) {
@@ -96,7 +104,9 @@ const Game = () => {
                     <GameScore player1Score={player1Score} player2Score={player2Score} isPaused={isPaused} />
 					<Timer isPaused={isPaused} timeRemaining={timeRemaining} />
                     <div className='flex-1 w-full flex justify-between font-dreamscape-sans max-lg:flex-wrap max-lg:justify-around'>
-                        <Player isPaused={isPaused} PlayerName={player1.name} BadgeName={player1.badge} playerImage={player1.image} badgeImage={player1.badgeImage} />
+                        <Player isPaused={isPaused} PlayerName={player1.name} BadgeName={player1.badge} playerImage={player1.image} badgeImage={player1.badgeImage}
+                        GameMode='local'
+                        />
                         <PongTable 
                             isPaused={isPaused} 
                             handlePause={handlePause} 
@@ -105,11 +115,11 @@ const Game = () => {
                             isGameOver={isGameOver}
 							resetParameters={resetParameters} // this is a boolean that will be toggled to reset the game
                         />
-                        <Player isPaused={isPaused} PlayerName={player2.name} BadgeName={player2.badge} playerImage={player2.image} badgeImage={player2.badgeImage} />
+                        <Player isPaused={isPaused} PlayerName={player2.name} BadgeName={player2.badge} playerImage={player2.image} badgeImage={player2.badgeImage} 
+                        GameMode='local'
+                        />
                     </div>
-                    {(showRestartPopup || (player1Score > 1 || player2Score > 1)) &&
-                    
-                    (
+                    {(showRestartPopup) && (
 						<>
 							<div className="restart-popup">
 								<h2>Game Over!</h2>
@@ -129,3 +139,10 @@ const Game = () => {
 }
 
 export default Game
+
+
+
+
+
+
+

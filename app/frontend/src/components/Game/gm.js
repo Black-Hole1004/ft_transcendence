@@ -22,8 +22,6 @@ const paddleSpeed = 750;
 const ai_level = 2; // 1 easy, 2 medium, 3 diffuclt, 4 hard, 5 very hard, 7 impossible, 10 unbeatable
 
 
-
-
 //time variables
 let startTime = Date.now();
 let totalTime = 30; // 1 minute 30 seconds
@@ -32,14 +30,6 @@ let gameStarted = false;
 let gameEnded = false;
 let gamePaused = false;
 //Game objects
-// the vertical line in the middle
-const net = {
-	x: canvas.width / 2 - 1,
-	y: 0,
-	width: 2,
-	height: 10,
-	color: "#332D33",
-};
 
 // user paddle
 const player = {
@@ -98,38 +88,7 @@ function drawBall(x, y, r, color) {
 	ctx.closePath();
 	ctx.fill();
 }
-// draw text
-function drawText(text, x, y, color) {
-	ctx.fillStyle = color;
-	ctx.font = "45px fantasy";
-	ctx.textAlign = "center";
-	ctx.fillText(text, x, y);
-}
 
-function drawNet() {
-	for (let i = 70; i <= canvasHeight; i += 15) {
-		drawPaddle(net.x, net.y + i, net.width, net.height, net.color);
-	}
-}
-
-function drawTimer() {
-	const minutes = Math.floor(timeRemaining / 60);
-	const seconds = timeRemaining % 60;
-	const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-	ctx.fillStyle = "#332D33";
-	ctx.font = "45px fantasy";
-	ctx.textAlign = "center";
-	ctx.fillText(formattedTime, canvasWidth / 2, 50);
-}
-
-canvas.addEventListener("click", (evt) => {
-	console.log("evt");
-	if (evt.button === 0 && gameEnded && !gameStarted) {
-		console.log("let's start again");
-		startGame();
-		requestAnimationFrame(game);
-	}
-});
 
 // redraw canvas
 function render() {
@@ -255,24 +214,6 @@ function collisionDetection(ball, paddle) {
 }
 
 
-function gameOver() {
-	// explodeBall(ball);
-	if (player.score > ai.score) {
-		drawText("You Won!", canvasWidth / 2, canvasHeight / 2, "#332D33");
-		player.won = true;
-	} else if (ai.score > player.score) {
-		drawText("You Lost!", canvasWidth / 2, canvasHeight / 2, "#332D33");
-		ai.won = true;
-	}
-	else if (player.score == ai.score) {
-		drawText("Its' A Draw", canvasWidth / 2, canvasHeight / 2, "#332D33");
-		ai.won = false;
-		player.won = false;
-	}
-	drawText("Game Over", canvasWidth / 2, canvasHeight / 2 - 50, "#332D33");
-	cancelAnimationFrame(game);
-}
-
 // update function : move, collision, score, movement..
 function update() {
 	// ball movement
@@ -333,16 +274,6 @@ function update() {
 	}
 }
 
-function startGame() {
-	startTime = Date.now();
-	gameStarted = true;
-	gameEnded = false;
-	gamePaused = false; 
-	player.score = 0;
-	ai.score = 0;
-	timeRemaining = totalTime;
-	resetBall();
-}
 
 // Game intialization
 function game() {
@@ -354,9 +285,6 @@ function game() {
 		render();
 		update();
 		requestAnimationFrame(game);
-	}
-	else if (gameEnded) {
-		// wait for the user to click to restart the game
 	}
 }
 

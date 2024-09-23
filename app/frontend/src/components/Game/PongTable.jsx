@@ -1,4 +1,3 @@
-import { color } from 'chart.js/helpers';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { ScrollRestoration } from 'react-router-dom';
 
@@ -20,6 +19,7 @@ function PongTable(props) {
 
     const [playerY, setPlayerY] = useState(150);
     const [aiY, setAiY] = useState(150); // Initially AI control, but this will now be controlled by Player 2
+    const [lastBallPosition, setLastBallPosition] = useState(null);
     const paddleHeight = 95;
     const paddleX = 3.6;
     const paddleY = canvasHeight / 2 - paddleHeight / 2;
@@ -52,6 +52,15 @@ function PongTable(props) {
         score: 0,
         won : false
     };
+
+    useEffect(() => {
+        if (isPaused) {
+            setLastBallPosition(ballPosition);
+        } else if (lastBallPosition) {
+            setBallPosition(lastBallPosition);
+            setLastBallPosition(null);
+        }
+    }, [isPaused]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
