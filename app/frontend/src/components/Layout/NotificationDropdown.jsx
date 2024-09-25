@@ -4,21 +4,21 @@ import Button from '../Home/Buttons/Button'
 function NotificationDropdown({ setIsNotificationOpen }) {
 	const notificationRef = useRef(null)
 
-	useEffect(() => {
-		const handleOutsideClick = (e) => {
-			if (notificationRef.current && !notificationRef.current.contains(e.target)) {
-				setIsNotificationOpen(false)
-			}
-		}
-		const timeoutId = setTimeout(() => {
-			document.addEventListener('click', handleOutsideClick);
-		  }, 0);
+	// useEffect(() => {
+	// 	const handleOutsideClick = (e) => {
+	// 		if (notificationRef.current && !notificationRef.current.contains(e.target)) {
+	// 			setIsNotificationOpen(false)
+	// 		}
+	// 	}
+	// 	const timeoutId = setTimeout(() => {
+	// 		document.addEventListener('click', handleOutsideClick);
+	// 	  }, 0);
 		
-		  return () => {
-			clearTimeout(timeoutId);
-			document.removeEventListener('click', handleOutsideClick);
-		  };
-	}, [])
+	// 	  return () => {
+	// 		clearTimeout(timeoutId);
+	// 		document.removeEventListener('click', handleOutsideClick);
+	// 	  };
+	// }, [])
 
 	return (
 		<div

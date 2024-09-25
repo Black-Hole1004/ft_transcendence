@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import './Header.css'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
@@ -9,15 +9,22 @@ function Header() {
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
 	const toggleDropdown = (e) => {
-		e.stopPropagation()
-		setIsDropdownOpen(!isDropdownOpen)
-		if (isDropdownOpen) setIsNotificationOpen(false)
+		// e.stopPropagation()
+		setIsDropdownOpen((prevIsDropdownOpen) => {
+			if (!prevIsDropdownOpen)
+				setIsNotificationOpen(false)
+			return (!prevIsDropdownOpen)
+		})
 	}
 
 	const toggleNotification = (e) => {
-		e.stopPropagation()
-		setIsNotificationOpen(!isNotificationOpen)
-		if (isNotificationOpen) setIsDropdownOpen(false)
+		// e.stopPropagation()
+		setIsNotificationOpen((prevIsNotificationOpen) => {
+			if (!prevIsNotificationOpen) {
+				setIsDropdownOpen(false)
+			}
+			return (!prevIsNotificationOpen)
+		})
 	}
 
 	return (

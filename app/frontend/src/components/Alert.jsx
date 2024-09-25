@@ -9,7 +9,7 @@ function Alert({ type, message, onClose }) {
 	}
 	return (
 		<div
-			className={`absolute z-20 top-24 right-2 backdrop-brightness-0 font-medium
+			className={`absolute z-20 top-24 right-2 backdrop-brightness-0 font-medium border-l-4
 			flex items-center justify-between border alert p-3 rounded-lg ${AlertsStyles[type]}
 			xl:w-[25%] lp:w-[30%] tb:w-[40%] mtb:w-[50%] w-[80%]`}
 			role='alert'

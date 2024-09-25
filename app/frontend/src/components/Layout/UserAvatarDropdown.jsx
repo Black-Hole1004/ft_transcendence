@@ -4,21 +4,24 @@ import { useRef, useEffect } from 'react'
 function UserAvatarDropdown({ setIsDropdownOpen }) {
 	const dropdownRef = useRef(null)
 
-	useEffect(() => {
-		const handleOutsideClick = (e) => {
-			if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-				setIsDropdownOpen(false)
-			}
-		}
-		const timeoutId = setTimeout(() => {
-			document.addEventListener('click', handleOutsideClick);
-		  }, 0);
+	// useEffect(() => {
+	// 	const handleOutsideClick = (e) => {
+	// 		if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+	// 			console.log(dropdownRef.current.contains(e.target))
+	// 			setIsDropdownOpen(false)
+	// 		}
+	// 	}
+	// 	const timeoutId = setTimeout(() => {
+	// 		document.addEventListener('click', handleOutsideClick);
+	// 	}, 0);
 		
-		  return () => {
-			clearTimeout(timeoutId);
-			document.removeEventListener('click', handleOutsideClick);
-		  };
-	}, [])
+	// 	return () => {
+	// 		clearTimeout(timeoutId);
+	// 		document.removeEventListener('click', handleOutsideClick);
+	// 	};
+	// }, [])
+
+
 
 	return (
 		<div
