@@ -21,16 +21,6 @@ const BallAcceleration = 0.025; // 1% of the initial speed
 const paddleSpeed = 750;
 const ai_level = 2; // 1 easy, 2 medium, 3 diffuclt, 4 hard, 5 very hard, 7 impossible, 10 unbeatable
 
-
-//time variables
-let startTime = Date.now();
-let totalTime = 30; // 1 minute 30 seconds
-let timeRemaining = totalTime;
-let gameStarted = false;
-let gameEnded = false;
-let gamePaused = false;
-//Game objects
-
 // user paddle
 const player = {
 	name: "player",
@@ -95,20 +85,12 @@ function render() {
 	// clear the canvas with a black rectangle
 	drawPaddle(0, 0, canvasWidth, canvasHeight, "#DFE2DB");
 
-	// draw the network
-	drawNet();
-
-	// draw the score
-	drawText(player.score, canvasWidth / 4, 50, "#332D33"); // User score
-	drawText(ai.score, (3 * canvasWidth) / 4, 50, "#332D33"); // AI score
-
 	// draw the paddles
 	drawPaddle(player.x, player.y, player.width, player.height, player.color); // user paddle
 	drawPaddle(ai.x, ai.y, ai.width, ai.height, ai.color); // AI paddle
 
 	// draw the ball
 	drawBall(ball.x, ball.y, ball.radius, ball.color);
-	drawTimer();
 
 }
 
@@ -191,7 +173,7 @@ function updatePlayerPosition(currentTime) {
 	requestAnimationFrame(updatePlayerPosition);
 }
 
-// reset the ball
+// reset the ball TO the center of the canvas
 function resetBall() {
 	ball.x = canvasWidth / 2;
 	ball.y = canvasHeight / 2;
@@ -258,37 +240,150 @@ function update() {
 			resetBall();
 		}
 	}
-	// check if the game is over and update the timer
-	const elapcedTime = (Date.now() - startTime) / 1000; // get the elpaced time and convert it to seconds 
-	timeRemaining = totalTime - Math.floor(elapcedTime); // calculate the remaining time
-	if (!gameStarted) {
-		gameStarted = true;
-	} else {
-		timeRemaining--;
-		if (timeRemaining <= 0) {
-			gameEnded = true;
-			gameStarted = false;
-			gamePaused = false;	
-			gameOver();
-		}
-	}
 }
 
 
 // Game intialization
 function game() {
-	if (!gameEnded && !gameStarted) {
-		startGame();
-		gameStarted = true;
-	}
-	if (gameStarted && !gameEnded) {
-		render();
-		update();
-		requestAnimationFrame(game);
-	}
+	render();
+	update();
+	requestAnimationFrame(game);
 }
 
-//loop the game
-// const FPS = 50; //frames per second
-// setInterval(game, 1000 / FPS);
+// start the game loop
 game();
+
+
+import React, { useEffect, useRef, useState } from 'react';
+import { useFetcher } from 'react-router-dom';
+
+function PongTable({ 
+  isPaused, 
+  handlePause, 
+  backgroundId, 
+  updateScore, 
+  isGameOver, 
+  resetParameters, 
+  player1Color, 
+  player2Color, 
+  ballColor,
+  paddleHeight,
+  ballRadius
+}) {
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+  const requestRef = useRef(null);
+  const lastTimeRef = useRef(null);
+  
+  const [canvasSize, setCanvasSize] = useState({ width: 800, height: 400 });
+  
+  const paddleWidth = 20;
+  const paddleX = 5;
+  const BallInitialSpeed = 0.5;
+  const BallAcceleration = 0.1; 
+  const paddleSpeed = 300; // pixels per second {100, 200, 300 .. 800}
+  const MAX_BALL_SPEED = 8;
+
+  const MAX_CANVAS_WIDTH = 1200; // Maximum canvas width
+  const MAX_CANVAS_HEIGHT = 600; // Maximum canvas height
+  const MIN_CANVAS_WIDTH = 400; // Minimum canvas width
+  const ASPECT_RATIO = 2; // Width to height ratio (2:1)
+
+  // ... (other state variables remain the same)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        const containerWidth = containerRef.current.clientWidth;
+        const containerHeight = window.innerHeight;
+
+        let newWidth = containerWidth;
+        let newHeight = newWidth / ASPECT_RATIO;
+
+        // Ensure the canvas doesn't exceed the maximum dimensions
+        if (newWidth > MAX_CANVAS_WIDTH) {
+          newWidth = MAX_CANVAS_WIDTH;
+          newHeight = newWidth / ASPECT_RATIO;
+        }
+
+        // Ensure the canvas doesn't exceed the container height
+        if (newHeight > containerHeight * 0.8) { // 80% of container height
+          newHeight = containerHeight * 0.8;
+          newWidth = newHeight * ASPECT_RATIO;
+        }
+
+        // Ensure the canvas doesn't go below the minimum width
+        if (newWidth < MIN_CANVAS_WIDTH) {
+          newWidth = MIN_CANVAS_WIDTH;
+          newHeight = newWidth / ASPECT_RATIO;
+        }
+
+        setCanvasSize({ width: Math.round(newWidth), height: Math.round(newHeight) });
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    // Reset game state when resetParameters changes or canvas size changes
+    const scaleFactor = canvasSize.width / 800; // Calculate scale factor based on original 800x400 size
+
+    ballRef.current = {
+      x: canvasSize.width / 2,
+      y: canvasSize.height / 2,
+      radius: ballRadius * scaleFactor,
+      speed: BallInitialSpeed * scaleFactor,
+      velocityX: 5 * scaleFactor,
+      velocityY: 5 * scaleFactor,
+      color: ballColor || 'white'
+    };
+
+    const scaledPaddleHeight = paddleHeight * scaleFactor;
+    const scaledPaddleWidth = paddleWidth * scaleFactor;
+    const scaledPaddleX = paddleX * scaleFactor;
+
+    setPlayerY(canvasSize.height / 2 - scaledPaddleHeight / 2);
+    setAiY(canvasSize.height / 2 - scaledPaddleHeight / 2);
+
+    setPlayer(prev => ({
+      ...prev,
+      x: scaledPaddleX,
+      y: canvasSize.height / 2 - scaledPaddleHeight / 2,
+      width: scaledPaddleWidth,
+      height: scaledPaddleHeight,
+    }));
+
+    setAi(prev => ({
+      ...prev,
+      x: canvasSize.width - scaledPaddleWidth - scaledPaddleX,
+      y: canvasSize.height / 2 - scaledPaddleHeight / 2,
+      width: scaledPaddleWidth,
+      height: scaledPaddleHeight,
+    }));
+  }, [resetParameters, ballRadius, ballColor, paddleHeight, canvasSize]);
+
+  // ... (rest of the component code remains the same)
+
+  return (
+    <div ref={containerRef} className="flex flex-col items-center gap-7 max-lg:order-first max-lg:w-full">
+      <canvas
+        ref={canvasRef}
+        width={canvasSize.width}
+        height={canvasSize.height}
+        className={`game-table border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+        style={{ borderRadius: '25px', width: '100%', height: 'auto', maxWidth: `${MAX_CANVAS_WIDTH}px` }}
+      />
+      {!isGameOver && (
+        <button onClick={handlePause} className="pause flex items-center gap-3 brightness-[1] leading-[0.95]">
+          <img src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`} alt="" />
+          <p className="align-middle">{isPaused ? 'resume' : 'pause'}</p>
+        </button>
+      )}
+    </div>
+  );
+}
+
+export default PongTable;

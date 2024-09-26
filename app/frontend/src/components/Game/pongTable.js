@@ -145,7 +145,13 @@ function PongTable({
     };
     
     const handlePaddleCollision = (ball, paddle) => {
+      const paddleCenter = paddle.y + paddle.height / 2;
+      const collisionPoint = ball.y - paddleCenter;
+      const normalizedCollisionPoint = collisionPoint / (paddle.height / 2);
+      const bounceAngle = normalizedCollisionPoint * Math.PI / 4;
+  
       ball.velocityX = -ball.velocityX;
+      // ball.velocityY = ball.speed * Math.sin(bounceAngle);
   
       // Ensure the ball is outside the paddle
       if (paddle.x < 400) { // Left paddle
