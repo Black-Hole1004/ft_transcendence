@@ -1,33 +1,8 @@
 import { Link } from 'react-router-dom'
-import { useRef, useEffect } from 'react'
 
-function UserAvatarDropdown({ setIsDropdownOpen }) {
-	const dropdownRef = useRef(null)
-
-	// useEffect(() => {
-	// 	const handleOutsideClick = (e) => {
-	// 		if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-	// 			console.log(dropdownRef.current.contains(e.target))
-	// 			setIsDropdownOpen(false)
-	// 		}
-	// 	}
-	// 	const timeoutId = setTimeout(() => {
-	// 		document.addEventListener('click', handleOutsideClick);
-	// 	}, 0);
-		
-	// 	return () => {
-	// 		clearTimeout(timeoutId);
-	// 		document.removeEventListener('click', handleOutsideClick);
-	// 	};
-	// }, [])
-
-
-
+function UserAvatarDropdown() {
 	return (
-		<div
-			ref={dropdownRef}
-			className='dropdown absolute z-10 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
-		>
+		<>
 			<Link to={'/profile'}>
 				<div className='flex items-center gap-1'>
 					<img
@@ -71,7 +46,7 @@ function UserAvatarDropdown({ setIsDropdownOpen }) {
 					</li>
 				</Link>
 			</ul>
-		</div>
+		</>
 	)
 }
 

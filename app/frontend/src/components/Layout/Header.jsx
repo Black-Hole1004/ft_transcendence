@@ -1,5 +1,5 @@
 import './Header.css'
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
@@ -8,23 +8,43 @@ function Header() {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
-	const toggleDropdown = (e) => {
-		// e.stopPropagation()
-		setIsDropdownOpen((prevIsDropdownOpen) => {
-			if (!prevIsDropdownOpen)
+	const dropdownRef = useRef(null)
+	const avatarButtonRef = useRef(null)
+	const notificationRef = useRef(null)
+	const notificationButtonRef = useRef(null)
+
+	useEffect(() => {
+
+		const handleOutsideClick = (e) => {
+			if (isDropdownOpen && 
+				dropdownRef.current && 
+				!dropdownRef.current.contains(e.target) &&
+				!avatarButtonRef.current.contains(e.target))
+				setIsDropdownOpen(false)
+			
+				if (isNotificationOpen && 
+				notificationRef.current && 
+				!notificationRef.current.contains(e.target) &&
+				!notificationButtonRef.current.contains(e.target))
 				setIsNotificationOpen(false)
-			return (!prevIsDropdownOpen)
-		})
+			console.log('closed')
+		}
+
+		document.addEventListener('click', handleOutsideClick)
+
+		return () => {
+			document.removeEventListener('click', handleOutsideClick)
+		}
+	}, [isDropdownOpen, isNotificationOpen])
+
+	const toggleDropdown = () => {
+		setIsDropdownOpen(!isDropdownOpen)
+		setIsNotificationOpen(false)
 	}
 
-	const toggleNotification = (e) => {
-		// e.stopPropagation()
-		setIsNotificationOpen((prevIsNotificationOpen) => {
-			if (!prevIsNotificationOpen) {
-				setIsDropdownOpen(false)
-			}
-			return (!prevIsNotificationOpen)
-		})
+	const toggleNotification = () => {
+		setIsNotificationOpen(!isNotificationOpen)
+		setIsDropdownOpen(false)
 	}
 
 	return (
@@ -32,7 +52,7 @@ function Header() {
 			className='relative flex items-center justify-between text-primary header-margin font-medium
 			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end'
 		>
-			<Link to={'/dashboard'} aria-label="Go to Dashboard">
+			<Link to={'/dashboard'} aria-label='Go to Dashboard'>
 				<img
 					alt='logo'
 					src='/assets/images/logo.webp'
@@ -52,7 +72,7 @@ function Header() {
 						className='nav-icons select-none'
 					/>
 				</Link>
-				<button onClick={toggleNotification}>
+				<button ref={notificationButtonRef} onClick={toggleNotification}>
 					<img
 						src='/assets/images/icons/notification.svg'
 						alt='notification icon'
@@ -60,16 +80,28 @@ function Header() {
 					/>
 				</button>
 				{isNotificationOpen && (
-					<NotificationDropdown setIsNotificationOpen={setIsNotificationOpen} />
+					<div
+						ref={notificationRef}
+						className='notification max-ms:w-full absolute z-10 ml:right-1/3 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
+					>
+						<NotificationDropdown />
+					</div>
 				)}
-				<button onClick={toggleDropdown} type='button'>
+				<button ref={avatarButtonRef} onClick={toggleDropdown} type='button'>
 					<img
 						src='/assets/images/moudrib.jpeg'
 						alt='user photo'
 						className='nav-icons border-[1px] rounded-full border-primary select-none'
 					/>
 				</button>
-				{isDropdownOpen && <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} />}
+				{isDropdownOpen && (
+					<div
+						ref={dropdownRef}
+						className='dropdown absolute z-10 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
+					>
+						<UserAvatarDropdown />
+					</div>
+				)}
 			</nav>
 		</header>
 	)
