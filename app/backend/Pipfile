@@ -11,6 +11,8 @@ djangorestframework-simplejwt = "*"
 python-dotenv = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+social-auth-app-django = "*"
+requests = "*"
 
 [dev-packages]
 
