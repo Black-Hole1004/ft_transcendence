@@ -4,19 +4,18 @@ import CardButton from '../Buttons/CardButton'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 
-
+const API_LOGIN = import.meta.env.VITE_API_LOGIN
+const API_REGISTER = import.meta.env.VITE_API_REGISTER
+const API_42 = import.meta.env.VITE_API_42
+const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => setIsSigningIn(!isSigningIn)
-
 	
-	const [error, setError] = useState('')
-	// const history = useHistory()
-
-	
-
+	// --------------------------- moudrib code -------------------------------------------
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
 			const dialogDimensions = dialogRef.current.getBoundingClientRect()
@@ -38,7 +37,6 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 				dialogRef.current.removeEventListener('click', handleOutsideClick)
 		}
 	}, [])
-
 	const inputs = [
 		{
 			iconPath: 'email',
@@ -68,28 +66,29 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			content: 'Continue with 42 Intra',
 		},
 	]
-
 	// --------------------------------------------------------------------------------------------
+
 
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
+
 	const navigate = useNavigate()
+	const setTokens = (response) => {
+        Cookies.set('refreshToken', response.data.refresh_token, { expires: 30 })
+        Cookies.set('accessToken', response.data.access_token, { expires: 7 })
+        navigate('/dashboard')
+    }
 
 	async function loginUser(email, password) {
 
 		try {
-			const response = await axios.post('http://127.0.0.1:8000/api/login/', {
+			const response = await axios.post(API_LOGIN, {
 				email: email,
 				password: password,
 			});
-			console.log('response status =>', response.status);
-			if (response.status === 200) {
-				console.log('Registration successful');
-				alert('Login successful');
-				// window.location.href = '/dashboard';
-				// navigate('/dashboard');
-			}
+			if (response.status === 200)
+				setTokens(response)
 		} catch (error) {
 			setError('Registration failed. Please try again.');
 		}
@@ -97,12 +96,11 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 
 	async function registerUser(email, password, confirmPassword) {
 		try {
-			const response = await axios.post('http://127.0.0.1:8000/api/register/', {
+			const response = await axios.post(API_REGISTER, {
 				email: email,
 				password1: password,
 				password2: confirmPassword,
 			});
-			console.log('response status =>', response.status);
 			if (response.status === 201) {
 				console.log('Registration successful');
 				alert('Registration successful');
@@ -112,36 +110,31 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 		}
 	}
 
+	const handleOauth = (provider) => {
+		const API_URLS = {
+		  "google": API_GOOGLE,
+		  '42': API_42,
+		};
+	  
+		const apiUrl = API_URLS[provider];
+		if (apiUrl) {
+		  window.location.href = apiUrl;
+		} else {
+		  console.error(`Unsupported OAuth provider: ${provider}`);
+		}
+	};
+
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		if (isSigningIn) {
+		if (isSigningIn)
 			loginUser(email, password)
-		}
-		else {
+		else 
 			registerUser(email, password, confirmPassword)
-		}
 	}
 
-	const handleOauth = (id) => {
-		console.log('id =>', id);
-		let API_URL = 'http://localhost:8000/social-auth/login/google-oauth2/';
-	
-		// Use curly braces for the if statement for clarity
-		if (id === '42') {
-			API_URL = 'http://localhost:8000/social-auth/login/intra42/';
-		}
-	
-		axios.get(API_URL)
-			.then((response) => {
-				console.log(response);
-				// Uncomment the next line to redirect the user
-				// window.location.href = response.data.authorization_url;
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
+
+
 	// --------------------------------------------------------------------------------------------
 
 	return (

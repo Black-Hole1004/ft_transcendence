@@ -29,7 +29,7 @@ function Input({id, type, label, placeholder, value, onChange}) {
 	)
 }
 
-const Settings = () => {
+const s = () => {
 
 	window.addEventListener('load', function() {
 		var resetButton = document.getElementById('resetButton');
@@ -65,10 +65,13 @@ const Settings = () => {
 	const [selectedFile, setSelectedFile] = useState(null)
 
 	let cookies = document.cookie;
-	let access_token = cookies.split('=')[1];
-	let header = {"Authorization": `Bearer ${access_token}`};
+	let cookieArray = cookies.split(';');
 
-
+	let refresh_token = cookieArray[0].split('=')[1];
+	let access_token = cookieArray[1].split('=')[1];
+	const header = {
+		'Authorization': `Bearer ${access_token}`
+	}
 	/**********************  Fetch User Data ************************/
 	const fetchUser = async () => {
 		try 
@@ -217,9 +220,9 @@ const Settings = () => {
 		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
 			<Header src={`${BASE_URL}${profile_picture}`} preview={preview} />
 			<section className='flex justify-center'>
-				<div className='settings max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
+				<div className='s max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
-						<h1 className='font-dreamscape-sans text-primary leading-[1]'>settings</h1>
+						<h1 className='font-dreamscape-sans text-primary leading-[1]'>s</h1>
 					</div>
 					<div className='h-0.5 separators'></div>
 					<div
@@ -279,7 +282,7 @@ const Settings = () => {
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
 						<div className='font-regular sections-title tb:self-center self-start'>
-							<p className='text-primary'>Personal Settings</p>
+							<p className='text-primary'>Personal s</p>
 							<p className='text-light'>
 								Change identifying details for your account.
 							</p>
@@ -362,7 +365,7 @@ const Settings = () => {
 						gap-5 max-tb:gap-y-3'
 					>
 						<div className='font-regular sections-title tb:self-center self-start'>
-							<p className='text-primary'>Profile Settings</p>
+							<p className='text-primary'>Profile s</p>
 						</div>
 						<div className='flex items-center'>
 
@@ -440,4 +443,4 @@ const Settings = () => {
 }
 
 
-export default Settings
+export default s

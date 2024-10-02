@@ -91,6 +91,8 @@ class Intra42OAuth2(BaseOAuth2):
         defaults={
             'email': user_details['email'],
             'first_name': user_details['first_name'],
+            'last_name': user_details['last_name'],
+            'username': user_details['username'],
             'password': User.objects.make_random_password()  # Set a random password
             }
         )

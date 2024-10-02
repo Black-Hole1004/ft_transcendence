@@ -102,6 +102,7 @@ def login(request):
 
                 # Set the access token in the cookie
                 response = JsonResponse({
+                    'access_token': access_token,
                     'refresh_token': refresh_token,
                     'message': 'User authenticated successfully'
                 })

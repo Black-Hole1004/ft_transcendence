@@ -26,11 +26,7 @@ SECRET_KEY = 'django-insecure-i&y#bhr-1ki8hm0jk(^+1okcwc2y^#7e#womz9@idma@gf22+#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -182,7 +178,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://api.intra.42.fr"
+    "https://api.intra.42.fr",
 ] # todo: to be changed in production
 
 # Ensure secure cookies in production
@@ -190,7 +186,7 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # todo: to be changed in production
+ALLOWED_HOSTS = ['*']
 
 AUTHENTICATION_BACKENDS = (
     'core.GoogleOauth2.CustomGoogleOAuth2',  # Google OAuth
