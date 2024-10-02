@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom'
 
-function UserAvatarDropdown() {
+function UserAvatarDropdown({ setIsDropdownOpen }) {
+
+	const closeDropdown = () => {
+		setIsDropdownOpen(false)
+	}
+
 	return (
 		<>
 			<Link to={'/profile'}>
-				<div className='flex items-center gap-1'>
+				<div onClick={closeDropdown} className='flex items-center gap-1'>
 					<img
 						src='/assets/images/moudrib.jpeg'
 						className='rounded-full border border-primary dropdown-user-photo'
@@ -19,19 +24,19 @@ function UserAvatarDropdown() {
 			<div className='h-[1px] w-[80%] bg-border self-center'></div>
 			<ul className='font-medium text-primary flex flex-col tb:gap-2.5 gap-1.5'>
 				<Link to={'/profile'}>
-					<li className='flex items-center gap-4 '>
+					<li onClick={closeDropdown} className='flex items-center gap-4 '>
 						<img src='/assets/images/icons/profile.svg' alt='' />
 						Profile
 					</li>
 				</Link>
 				<Link to={'/dashboard'}>
-					<li className='flex items-center gap-4 '>
+					<li onClick={closeDropdown} className='flex items-center gap-4 '>
 						<img src='/assets/images/icons/dashboard.svg' alt='' />
 						Dashboard
 					</li>
 				</Link>
 				<Link to={'/settings'}>
-					<li className='flex items-center gap-4 '>
+					<li onClick={closeDropdown} className='flex items-center gap-4 '>
 						<img src='/assets/images/icons/settings.svg' alt='' />
 						Settings
 					</li>

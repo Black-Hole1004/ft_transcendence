@@ -20,24 +20,29 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 	const achievementData = achievements[achievement]
 
 	return (
-		<div className='flex items-center justify-between font-dreamscape-sans'>
-			<div className='flex-1 flex items-center xl:gap-3 tb:gap-2 ms:gap-1 text-primary '>
+		<div
+			className='user-container flex items-center justify-between font-dreamscape-sans
+		rounded-md hover:bg-[rgba(183,170,156,0.3)]'
+		>
+			<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[68%]'>
 				<p className='nickname-size'>{'#' + `${rank}`}</p>
 				<img
-					src='/assets/images/moudrib.jpeg'
-					className='user-image rounded-full tb:border border-0.7 border-primary select-none'
+					src='/assets/images/lmoudir.jpg'
+					className='h-[80%] rounded-full tb:border border-0.7 border-primary select-none'
 					alt='user-image'
 					loading='eager'
 				/>
-				<div className='flex-1 flex flex-col justify-center overflow-hidden'>
-					<p className='nickname-size leading-[1] truncate'>{`${nickname}` + ' '}</p>
-					<p className='text-achievement achievement-name'> {achievement}</p>
+				<div className='flex flex-wrap items-center overflow-hidden'>
+					<p className='text-primary nickname-size leading-[1] truncate mr-1'>
+						{nickname}
+					</p>
+					<p className='text-achievement achievement-name '> {achievement}</p>
 				</div>
 			</div>
-			<div className='flex items-center gap-1'>
+			<div className='h-full mx-1 flex items-center'>
 				<img
 					src={achievementData.icon}
-					className='achievement-icon-ldr select-none'
+					className='h-[60%] select-none'
 					alt='achievement-icon'
 					loading='eager'
 				/>

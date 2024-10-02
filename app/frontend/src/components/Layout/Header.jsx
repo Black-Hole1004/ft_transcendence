@@ -1,8 +1,8 @@
 import './Header.css'
-import React, { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
+import React, { useState, useRef, useEffect } from 'react'
 
 function Header() {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -27,7 +27,6 @@ function Header() {
 				!notificationRef.current.contains(e.target) &&
 				!notificationButtonRef.current.contains(e.target))
 				setIsNotificationOpen(false)
-			console.log('closed')
 		}
 
 		document.addEventListener('click', handleOutsideClick)
@@ -99,7 +98,7 @@ function Header() {
 						ref={dropdownRef}
 						className='dropdown absolute z-10 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
 					>
-						<UserAvatarDropdown />
+						<UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} />
 					</div>
 				)}
 			</nav>

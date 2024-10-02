@@ -17,27 +17,27 @@ function FriendsList() {
 					className='font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border'
 				/>
 			</div>
-			<div className='flex flex-col lg:gap-3 gap-2 w-[96%] h-[90%] overflow-y-auto users'>
-				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'stellar voyager'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'novice astronaut'} status={'in-game'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'stellar voyager'} status={'in-game'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'in-game'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'stellar voyager'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'galactic trailblazer'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'celestial master'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'mouad55'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+			<div className='w-[96%] overflow-y-auto users'>
+				<UserFriendsList nickname={'mouad5555vv5555555555555555'} achievement={'celestial master'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'celestial master'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'stellar voyager'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'celestial master'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'novice astronaut'} status={'in-game'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'stellar voyager'} status={'in-game'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'celestial master'} status={'in-game'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'galactic trailblazer'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'stellar voyager'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'galactic trailblazer'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'celestial master'} status={'offline'} isFriend={true}/>
+				<UserFriendsList nickname={'Aymahmou55555555555555555'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
 			</div>
 		</div>
 	)
