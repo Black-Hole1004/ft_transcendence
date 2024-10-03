@@ -5,7 +5,7 @@ function NotificationDropdown() {
 		<>
 			<h1 className='font-heavy notification-header'>Notifications</h1>
 			<div className='flex flex-col tb:gap-3 gap-2 overflow-auto lp:mx-3 mx-2 mb-2 font-medium'>
-				<div className='flex items-center gap-1'>
+				<div className='flex items-center gap-2'>
 					<img
 						src='/assets/images/lmoudir.jpg'
 						className='mtb:border border-0.7 border-primary rounded-full'
@@ -19,7 +19,7 @@ function NotificationDropdown() {
 				</div>
 				<div className='h-px w-[80%] bg-border self-center'></div>
 				<div className='flex items-center justify-between'>
-					<div className='flex items-center gap-1'>
+					<div className='flex items-center gap-2'>
 						<img
 							src='/assets/images/tabi3a.jpeg'
 							className='mtb:border border-0.7 border-primary rounded-full'
@@ -33,7 +33,7 @@ function NotificationDropdown() {
 					</div>
 				</div>
 				<div className='h-px w-[80%] bg-border self-center'></div>
-				<div className='flex items-center gap-1'>
+				<div className='flex items-center gap-2'>
 					<img
 						src='/assets/images/lmoudir.jpg'
 						className='mtb:border border-0.7 border-primary rounded-full'
@@ -47,7 +47,7 @@ function NotificationDropdown() {
 				</div>
 				<div className='h-px w-[80%] bg-border self-center'></div>
 				<div className='flex items-center justify-between'>
-					<div className='flex items-center gap-1'>
+					<div className='flex items-center gap-2'>
 						<img
 							src='/assets/images/tabi3a.jpeg'
 							className='mtb:border border-0.7 border-primary rounded-full'

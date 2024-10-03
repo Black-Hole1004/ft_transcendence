@@ -8,8 +8,7 @@ function Achievements({ level }) {
 		if (filled < level)
 			setTimeout(() => setFilled(prev => prev + 1), 20)
 	}, [filled, level]);
-	
-	
+
 	return (
 		<div
 			className='border-1.5 rounded-xl achivements-card font-dreamscape-sans

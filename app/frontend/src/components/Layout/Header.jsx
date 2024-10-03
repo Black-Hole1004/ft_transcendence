@@ -68,23 +68,44 @@ function Header() {
 			</Link>
 			<nav className='relative flex justify-between ml:gap-x-2.5 ms:gap-x-1.5'>
 				<Link to={'/chat'}>
-					<img
-						src='/assets/images/icons/chat.svg'
-						alt='chat icon'
-						className='nav-icons select-none hover:brightness-150'
-					/>
+					<div className='relative'>
+						<img
+							src='/assets/images/icons/chat.svg'
+							alt='chat icon'
+							className='nav-icons select-none hover:brightness-150'
+						/>
+						<div
+							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
+						h-[30%] absolute z-10 rounded-full right-0 top-0'
+						>
+							<p className='font-heavy text-[10px] p-0.5'>+99</p>
+						</div>
+					</div>
 				</Link>
-				<button ref={notificationButtonRef} onClick={toggleNotification}>
+				<button
+					ref={notificationButtonRef}
+					onClick={toggleNotification}
+					className='relative'
+				>
 					<img
 						src='/assets/images/icons/notification.svg'
 						alt='notification icon'
 						className='nav-icons select-none hover:brightness-150'
 					/>
+					{!isNotificationOpen && (
+						<div
+							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
+						h-[30%] absolute z-10 rounded-full right-0 top-0'
+						>
+							<p className='font-heavy text-[10px] p-0.5'>+99</p>
+						</div>
+					)}
 				</button>
 				{isNotificationOpen && (
 					<div
 						ref={notificationRef}
-						className='notification max-ms:w-full absolute z-10 ml:right-1/3 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
+						className='notification max-ms:w-full absolute z-10 ml:right-1/3 right-0
+							top-full flex flex-col border border-primary rounded-xl bg-secondary'
 					>
 						<NotificationDropdown />
 					</div>
@@ -101,13 +122,13 @@ function Header() {
 						className='nav-icons border-[1px] rounded-full border-primary select-none'
 					/>
 					<div
-						className='flex justify-center items-center bg-secondary 
+						className='flex justify-center items-center bg-secondary border border-[#0B0B0B]
 						w-[34%] h-[34%] absolute z-10 rounded-full right-0 bottom-0'
 					>
 						<img
 							src='assets/images/icons/Arrow-dropdown.svg'
-							className={`w-[70%] duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
-							alt=''
+							className={`w-[60%] duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+							alt='arrow icon'
 						/>
 					</div>
 				</button>
