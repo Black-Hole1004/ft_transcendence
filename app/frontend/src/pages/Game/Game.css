@@ -1,5 +1,5 @@
 .margin-page {
-	margin: clamp(0.938rem, 0.664vw + 0.813rem, 1.875rem) clamp(0rem, 6.385vw - 1.716rem, 8.5rem);
+	padding: clamp(0.938rem, 0.664vw + 0.813rem, 1.875rem) clamp(0rem, 6.385vw - 1.716rem, 8.5rem);
 }
 
 .score {

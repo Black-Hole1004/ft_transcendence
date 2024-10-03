@@ -1,5 +1,4 @@
 import './Settings.css'
-import Header from '../../components/Header'
 import Button from '../../components/Home/Buttons/Button'
 import { useEffect , useState } from 'react'
 
