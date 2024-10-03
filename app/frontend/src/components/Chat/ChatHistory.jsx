@@ -21,6 +21,7 @@ function ChatHistory() {
 					/>
 					<input
 						type='text'
+						name='search for friends'
 						placeholder='Search for friends...'
 						className='font-medium bg-transparent text-primary outline-none search placeholder:text-border
 									lg:w-input-lg ms:w-input-ms w-0'
@@ -28,7 +29,7 @@ function ChatHistory() {
 				</div>
 			</div>
 			<div
-				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1
+				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
 							tb:overflow-y-scroll ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				<User />

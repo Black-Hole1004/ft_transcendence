@@ -39,14 +39,17 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	}, [])
 	const inputs = [
 		{
+			id: 'email',
 			iconPath: 'email',
 			placeholder: 'Email',
 		},
 		{
+			id: 'password',
 			iconPath: 'lock',
 			placeholder: 'Password',
 		},
 		{
+			id: 'confirmpassword',
 			iconPath: 'lock',
 			placeholder: 'Confirm your password',
 		},
@@ -151,14 +154,14 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						onClick={closeDialog}
 						className='absolute right-2 top-1 select-none close-button'
 						src='/assets/images/icons/close.png'
-						loading='lazy'
-						/>
+						loading='eager'
+					/>
 					<div className='card-separator h-0.5 flex-1'></div>
 					<img
 						className='select-none pointer-events-none logo'
 						src='/assets/images/logo.webp'
-						loading='lazy'
-						/>
+						loading='eager'
+					/>
 					<div className='card-separator h-0.5 flex-1'></div>
 				</div>
 				<div className='flex flex-col justify-center form-padding text-light font-heavy lp:mb-8 mb-5'>
@@ -236,7 +239,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									src={`/assets/images/icons/${button.iconPath}.png`}
 									className='card-images'
 									alt={button.alt}
-									loading='lazy'
+									loading='eager'
 								/>
 								<p>{button.content}</p>
 								

@@ -7,7 +7,7 @@ function UserInfos() {
 		>
 			<img
 				src='./assets/images/tabi3a.jpeg'
-				className='rounded-full lg:border-2 border border-primary user-info-image mr-1'
+				className='rounded-full lg:border-2 border border-primary user-info-image mr-1 select-none'
 				alt='User image'
 			/>
 			<div className='flex flex-col justify-center font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>
