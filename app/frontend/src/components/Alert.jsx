@@ -7,14 +7,15 @@ function Alert({ type, message, onClose }) {
 		success: 'bg-green-500 bg-opacity-10 border-green-500 text-green-100',
 		warning: 'bg-yellow-500 bg-opacity-10 border-yellow-500 text-yellow-100',
 	}
+
 	return (
 		<div
-			className={`absolute z-20 top-24 right-2 backdrop-brightness-0 font-medium border-l-4
-			flex items-center justify-between border alert p-3 rounded-lg ${AlertsStyles[type]}
-			xl:w-[25%] lp:w-[30%] tb:w-[40%] mtb:w-[50%] w-[80%]`}
+			className={`absolute z-20 top-28 right-2 backdrop-brightness-0 font-medium border-l-4
+			flex items-center justify-between border alert lp:p-6 p-3 rounded-lg ${AlertsStyles[type]}
+			min-w-[24%] mtb:max-w-[400px] max-w-[280px]`}
 			role='alert'
 		>
-			<div className='flex gap-3 items-center'>
+			<div className='flex gap-3 items-center mr-4'>
 				<img src={`./assets/images/icons/${type}.png`} className='alert-icon' alt='' />
 				<span>{message}</span>
 			</div>

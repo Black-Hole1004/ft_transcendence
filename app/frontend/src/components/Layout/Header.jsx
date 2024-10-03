@@ -14,18 +14,21 @@ function Header() {
 	const notificationButtonRef = useRef(null)
 
 	useEffect(() => {
-
 		const handleOutsideClick = (e) => {
-			if (isDropdownOpen && 
-				dropdownRef.current && 
+			if (
+				isDropdownOpen &&
+				dropdownRef.current &&
 				!dropdownRef.current.contains(e.target) &&
-				!avatarButtonRef.current.contains(e.target))
+				!avatarButtonRef.current.contains(e.target)
+			)
 				setIsDropdownOpen(false)
-			
-				if (isNotificationOpen && 
-				notificationRef.current && 
+
+			if (
+				isNotificationOpen &&
+				notificationRef.current &&
 				!notificationRef.current.contains(e.target) &&
-				!notificationButtonRef.current.contains(e.target))
+				!notificationButtonRef.current.contains(e.target)
+			)
 				setIsNotificationOpen(false)
 		}
 
@@ -68,14 +71,14 @@ function Header() {
 					<img
 						src='/assets/images/icons/chat.svg'
 						alt='chat icon'
-						className='nav-icons select-none'
+						className='nav-icons select-none hover:brightness-150'
 					/>
 				</Link>
 				<button ref={notificationButtonRef} onClick={toggleNotification}>
 					<img
 						src='/assets/images/icons/notification.svg'
 						alt='notification icon'
-						className='nav-icons select-none'
+						className='nav-icons select-none hover:brightness-150'
 					/>
 				</button>
 				{isNotificationOpen && (
@@ -86,12 +89,27 @@ function Header() {
 						<NotificationDropdown />
 					</div>
 				)}
-				<button ref={avatarButtonRef} onClick={toggleDropdown} type='button'>
+				<button
+					ref={avatarButtonRef}
+					onClick={toggleDropdown}
+					type='button'
+					className='relative'
+				>
 					<img
 						src='/assets/images/moudrib.jpeg'
 						alt='user photo'
 						className='nav-icons border-[1px] rounded-full border-primary select-none'
 					/>
+					<div
+						className='flex justify-center items-center bg-secondary 
+						w-[34%] h-[34%] absolute z-10 rounded-full right-0 bottom-0'
+					>
+						<img
+							src='assets/images/icons/Arrow-dropdown.svg'
+							className={`w-[70%] duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+							alt=''
+						/>
+					</div>
 				</button>
 				{isDropdownOpen && (
 					<div
