@@ -6,6 +6,18 @@ import FriendsList from '../../components/Dashboard/FriendsList/FriendsList'
 import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
 
+// Extract query parameters from the URL
+const params = new URLSearchParams(window.location.search);
+const accessToken = params.get('access_token');
+const refreshToken = params.get('refresh_token');
+
+// if (!accessToken || !refreshToken) --> set the cookies
+if (accessToken && refreshToken) {
+	document.cookie = `access_token=${accessToken}; path=/; secure; SameSite=Lax;`;
+	document.cookie = `refresh_token=${refreshToken}; path=/; secure; SameSite=Lax;`;
+	window.location.href = '/dashboard';
+}
+
 const Dashboard = () => {
 	const xp = 6445
 	const [level, setLevel] = useState(null)

@@ -3,6 +3,8 @@ from UserManagement.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from social_core.backends.oauth import BaseOAuth2
 from django.http import JsonResponse
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 import requests
 
 class Intra42OAuth2(BaseOAuth2):
@@ -19,6 +21,25 @@ class Intra42OAuth2(BaseOAuth2):
         ('displayname', 'name'),
         ('image_url', 'profile_image_url'),
     ]
+    # def start(self):
+
+    #     response = HttpResponse()
+
+    #     response['Access-Control-Allow-Origin'] = '*'
+
+    #     response['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+
+    #     response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+
+
+    #     # Redirect the user to the authorization page
+
+    #     response['Location'] = self.AUTHORIZATION_URL
+
+    #     response.status_code = 302
+
+
+    #     return response
     def get_user_details(self, response):
         """Return user details from Intra42 account"""
         return {
@@ -86,13 +107,13 @@ class Intra42OAuth2(BaseOAuth2):
         user_details = self.get_user_details(user_data)
 
         # Get or create the user in the database
+        # print(user_details)
         user, created = User.objects.get_or_create(
         email=user_details['email'],
         defaults={
             'email': user_details['email'],
-            'first_name': user_details['first_name'],
-            'last_name': user_details['last_name'],
             'username': user_details['username'],
+            'first_name': user_details['first_name'],
             'password': User.objects.make_random_password()  # Set a random password
             }
         )
@@ -104,32 +125,10 @@ class Intra42OAuth2(BaseOAuth2):
             access_token = str(refresh.access_token)
             refresh_token = str(refresh)
 
-            # Create a response with the tokens and set cookies
-            response = JsonResponse({
-                'access_token': access_token,
-                'refresh_token': refresh_token,
-                'message': 'User authenticated successfully via OAuth'
-            })
+            # Redirect to front-end URL and include tokens in the query parameters
+            redirect_url = f"http://localhost:5173/dashboard?access_token={access_token}&refresh_token={refresh_token}"
 
-            # Set the access token as a cookie
-            response.set_cookie(
-                key='access_token',
-                value=access_token,
-                httponly=True,  # Ensures the cookie is not accessible via JavaScript
-                secure=True,    # Only set the cookie over HTTPS
-                samesite='Lax', # CSRF protection, adjust according to your needs
-            )
-
-            # Set the refresh token as a cookie if necessary
-            response.set_cookie(
-                key='refresh_token',
-                value=refresh_token,
-                httponly=True,
-                secure=True,
-                samesite='Lax',
-            )
-
-            return response
+            return HttpResponseRedirect(redirect_url)
 
         else:
             return JsonResponse({'error': 'User authentication failed'}, status=401)
