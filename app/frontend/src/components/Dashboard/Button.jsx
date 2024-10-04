@@ -1,3 +1,5 @@
+
+
 function Button({ image, title, className, mode }) {
 	return (
 		<button className={`absolute hover:text-[rgba(251,251,138,0)] duration-500 ${className}`}>
