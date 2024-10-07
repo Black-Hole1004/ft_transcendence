@@ -13,7 +13,7 @@ function Input({ iconPath, placeholder, value, onChange }) {
 				className='flex-1 placeholder:text-light bg-secondary-light placeholder:font-heavy text-primary font-medium
 				select-none padding-top-input ml:px-2 ms:px-1 outline-none'
 				placeholder={placeholder}
-				type={placeholder === 'Email' ? 'text' : 'password'}
+				type={placeholder === 'Email' ? 'email' : 'password'}
 				value={value}              
 				onChange={onChange}   
 			/>

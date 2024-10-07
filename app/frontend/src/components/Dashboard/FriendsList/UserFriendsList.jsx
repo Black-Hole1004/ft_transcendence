@@ -24,7 +24,7 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 	return (
 		<div className='user-container flex items-center justify-between font-dreamscape-sans
 			rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
-			<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[74%]'>
+			<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[72%]'>
 				<img
 					src={achievementData.icon}
 					className='achievement-icon-fr select-none'
