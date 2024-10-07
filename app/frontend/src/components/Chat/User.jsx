@@ -1,8 +1,16 @@
-function User() {
+function User({ id, convId, setId }) {
+
+	const HighlightConversation = () => {
+		setId(id)
+	}
+
 	return (
 		<div
-			className='flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
-				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg user tb:p-user-div-px-tb hover:bg-[rgba(183,170,156,0.3)]'
+			id={id}
+			onClick={HighlightConversation}
+			className={`flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
+				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg user tb:p-user-div-px-tb
+				${convId === id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
 		>
 			<img
 				src='./assets/images/tabi3a.jpeg'

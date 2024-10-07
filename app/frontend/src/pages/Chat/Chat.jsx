@@ -6,7 +6,7 @@ import { useState } from 'react'
 const StartConversation = () => {
 	return (
 		<div className='flex-1 flex flex-col justify-center items-center text-primary p-5 gap-2 text-center'>
-			<img className='w-[40%]' src="assets/images/NoMessages.svg" alt="" />
+			<img className='w-[50%]' src="assets/images/NoMessages.svg" alt="" />
 			<h2 className='font-heavy nickname'>No conversations yet!</h2>
 			<p className=' font-regular bio'>You can begin by typing a name in the search bar and selecting the user to initiate a chat.</p>
 		</div>
@@ -43,7 +43,6 @@ const Chat = () => {
 
 	const [conversationId, setConversationId] = useState(0)
 
-
 	return (
 		<section className='section-margin'>
 			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
@@ -51,7 +50,7 @@ const Chat = () => {
 					className='flex tb:flex-row flex-col lg:border-2 tb:border-[1px] tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 				>
-					<ChatHistory />
+					<ChatHistory convId={conversationId} setId={setConversationId} />
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
 					<div
