@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'UserManagement',
     'social_django',
     'core',
+    'Chat'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
