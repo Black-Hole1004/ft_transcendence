@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.urls import path, include
 from UserManagement import views
 
@@ -14,7 +15,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     # admin/
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', views.getRoutes),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('api/users/', UserProfileView.as_view(), name='user-profile'),
     path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
     path('social-auth/', include('social_django.urls', namespace='social')),
+    path('chat/', include('Chat.urls'))
 ]
