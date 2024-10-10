@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
-def chat(request):
-    return HttpResponse("<h1>Chat page</h1>")
+def index(request):
+    return render(request, "Chat/index.html")
+
+def room(request, room_name):
+    return render(request, "Chat/room.html", {"room_name": room_name})
