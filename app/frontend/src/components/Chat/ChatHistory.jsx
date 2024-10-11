@@ -1,7 +1,8 @@
 import { useState } from "react"
 import User from "./User"
 
-function ChatHistory() {
+function ChatHistory({ convId, setId }) {
+
 	const [small, setSmall] = useState(window.innerWidth < 768)
 	window.addEventListener("resize", () => {
 		setSmall(window.innerWidth < 768)
@@ -21,6 +22,7 @@ function ChatHistory() {
 					/>
 					<input
 						type='text'
+						name='search for friends'
 						placeholder='Search for friends...'
 						className='font-medium bg-transparent text-primary outline-none search placeholder:text-border
 									lg:w-input-lg ms:w-input-ms w-0'
@@ -28,20 +30,20 @@ function ChatHistory() {
 				</div>
 			</div>
 			<div
-				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1
+				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
 							tb:overflow-y-scroll ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
-				<User />
-				<User />
-				<User />
-				<User />
-				<User />
-				<User />
-				<User />
-				<User />
-				<User />
-				<User />
-				<User />
+				<User id={1} convId={convId} setId={setId} />
+				<User id={2} convId={convId} setId={setId} />
+				<User id={3} convId={convId} setId={setId} />
+				<User id={4} convId={convId} setId={setId} />
+				<User id={5} convId={convId} setId={setId} />
+				<User id={6} convId={convId} setId={setId} />
+				<User id={7} convId={convId} setId={setId} />
+				<User id={8} convId={convId} setId={setId} />
+				<User id={9} convId={convId} setId={setId} />
+				<User id={10} convId={convId} setId={setId} />
+				<User id={11} convId={convId} setId={setId} />
 			</div>
 		</div>
 	)
