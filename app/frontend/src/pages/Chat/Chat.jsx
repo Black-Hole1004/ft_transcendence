@@ -6,7 +6,7 @@ import { useState } from 'react'
 const StartConversation = () => {
 	return (
 		<div className='flex-1 flex flex-col justify-center items-center text-primary p-5 gap-2 text-center'>
-			<img className='w-[50%]' src="assets/images/NoMessages.svg" alt="" />
+			<img className='w-[50%] select-none' src="assets/images/NoMessages.svg" alt="" />
 			<h2 className='font-heavy nickname'>No conversations yet!</h2>
 			<p className=' font-regular bio'>You can begin by typing a name in the search bar and selecting the user to initiate a chat.</p>
 		</div>
@@ -43,6 +43,8 @@ const Chat = () => {
 
 	const [conversationId, setConversationId] = useState(0)
 
+	// const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/${conversation_key}`)
+
 	return (
 		<section className='section-margin'>
 			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
@@ -57,21 +59,21 @@ const Chat = () => {
 						className='flex-1 flex flex-col items-center max-tb:border border-primary
 							lg:rounded-3xl rounded-2xl tb:h-chat h-[600px] bg-[rgba(27,22,17,0.5)]'
 					>
-						<div className='chat-header flex max-ms:flex-col items-center tb:h-[20%] h-[15%] w-full lp:gap-5 gap-3 max-tb:my-3'>
-							<img
-								src='./assets/images/tabi3a.jpeg'
-								className='w-20 rounded-full border border-primary'
-								alt='user image'
-							/>
-							<div className='max-ms:hidden'>
-								<p className='font-heavy friend-name text-primary'>
-									Abdelouahed Rabiai
-								</p>
-								<p className='last-message text-light'>Online</p>
-							</div>
-						</div>
 						{conversationId ? (
 							<>
+								<div className='chat-header flex max-ms:flex-col items-center tb:h-[20%] h-[15%] w-full lp:gap-5 gap-3 max-tb:my-3'>
+									<img
+										src='./assets/images/tabi3a.jpeg'
+										className='w-20 rounded-full border border-primary select-none'
+										alt='user image'
+									/>
+									<div className='max-ms:hidden'>
+										<p className='font-heavy friend-name text-primary'>
+											Abdelouahed Rabiai
+										</p>
+										<p className='last-message text-light'>Online</p>
+									</div>
+								</div>
 								<div className='flex-1 w-[98%] ml-2 mr-4 overflow-auto flex flex-col gap-1.5'>
 									<Message content={'Ready for another round?'} id={2} />
 									<Message content={`You bet! I'm gonna win this time.`} id={1} />
@@ -113,8 +115,7 @@ const Chat = () => {
 								<StartConversation />}
 					</div>
 				</div>
-
-				<UserInfos />
+				<UserInfos conversationId={conversationId}/>
 			</div>
 		</section>
 	)

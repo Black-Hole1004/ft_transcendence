@@ -31,19 +31,19 @@ function ChatHistory({ convId, setId }) {
 			</div>
 			<div
 				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
-							tb:overflow-y-scroll ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
+							tb:overflow-y-auto ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				<User id={1} convId={convId} setId={setId} />
 				<User id={2} convId={convId} setId={setId} />
 				<User id={3} convId={convId} setId={setId} />
-				<User id={4} convId={convId} setId={setId} />
-				<User id={5} convId={convId} setId={setId} />
-				<User id={6} convId={convId} setId={setId} />
-				<User id={7} convId={convId} setId={setId} />
-				<User id={8} convId={convId} setId={setId} />
-				<User id={9} convId={convId} setId={setId} />
-				<User id={10} convId={convId} setId={setId} />
-				<User id={11} convId={convId} setId={setId} />
+				{/* <User id={4} convId={convId} setId={setId} /> */}
+				{/* <User id={5} convId={convId} setId={setId} /> */}
+				{/* <User id={6} convId={convId} setId={setId} /> */}
+				{/* <User id={7} convId={convId} setId={setId} /> */}
+				{/* <User id={8} convId={convId} setId={setId} /> */}
+				{/* <User id={9} convId={convId} setId={setId} /> */}
+				{/* <User id={10} convId={convId} setId={setId} /> */}
+				{/* <User id={11} convId={convId} setId={setId} /> */}
 			</div>
 		</div>
 	)
