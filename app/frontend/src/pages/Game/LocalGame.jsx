@@ -68,6 +68,10 @@ const LocalGame = () => {
   const [player2Score, setPlayer2Score] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [winner, setWinner] = useState(null);
+  
+  const [powerups, setPowerups] = useState([]);
+  const [attacks, setAttacks] = useState([]);
+
 
   const location = useLocation();
   const { 
@@ -166,7 +170,7 @@ const LocalGame = () => {
             <PongTable 
               isPaused={isPaused} 
               handlePause={handlePause} 
-              backgroundId={backgroundId || 1} 
+              backgroundId={backgroundId} 
               updateScore={updateScore}
               isGameOver={isGameOver}
               resetParameters={resetParameters}
@@ -175,6 +179,8 @@ const LocalGame = () => {
               ballColor={ballColor}
               paddleHeight={paddleHeight}
               ballRadius={ballRadius}
+              powerups={powerups}
+              attacks={attacks}
             />
           {/* </div> */}
           {/* <div className="justify-center items-center w-1/4"> */}

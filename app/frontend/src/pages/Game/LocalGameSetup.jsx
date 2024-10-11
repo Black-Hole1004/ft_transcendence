@@ -8,8 +8,11 @@ const LocalGameSetup = () => {
 	const [player1Color, setPlayer1Color] = useState('#ffffff')
 	const [player2Color, setPlayer2Color] = useState('#ffffff')
 	const [ballColor, setBallColor] = useState('#ffffff')
-	const [paddleHeight, setPaddleHeight] = useState(100)
-	const [ballRadius, setBallRadius] = useState(10)
+	const [paddleHeight, setPaddleHeight] = useState(110)
+	const [ballRadius, setBallRadius] = useState(15)
+	const [removeBackground, setRemoveBackground] = useState(false)
+	const [powerUps, setPowerUps] = useState(1)
+	const [attacks, setAttacks] = useState(1)
 	const location = useLocation()
 	const navigate = useNavigate()
 	const { backgroundId } = location.state || { backgroundId: 1 }
@@ -20,6 +23,8 @@ const LocalGameSetup = () => {
 	const minPaddleHeight = 50
 	const maxBallRadius = 100
 	const minBallRadius = 5
+	const maxPowerUps = 3
+	const maxAttacks = 3
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -31,9 +36,11 @@ const LocalGameSetup = () => {
 					player2: { name: player2Name, color: player2Color },
 					ballColor: ballColor,
 					duration: gameDuration,
-					backgroundId,
+					backgroundId: removeBackground ? null : backgroundId,
 					paddleHeight,
 					ballRadius,
+					powerUps,
+					attacks,
 				},
 			})
 		}
@@ -43,10 +50,16 @@ const LocalGameSetup = () => {
 		return '#' + Math.floor(Math.random() * 16777215).toString(16)
 	}
 
+	const generateRandomName = () => {
+		return 'Player ' + Math.floor(Math.random() * 1000)
+	}
+
 	const handleRandomColors = () => {
 		setPlayer1Color(generateRandomColor())
 		setPlayer2Color(generateRandomColor())
 		setBallColor(generateRandomColor())
+		setPlayer1Name(generateRandomName())
+		setPlayer2Name(generateRandomName())
 	}
 
 	const resetToDefault = () => {
@@ -55,6 +68,9 @@ const LocalGameSetup = () => {
 		setBallColor('#ffffff')
 		setPaddleHeight(100)
 		setBallRadius(10)
+		setRemoveBackground(false)
+		setPowerUps(1)
+		setAttacks(1)
 	}
 
 	const GamePreview = ({
@@ -64,9 +80,10 @@ const LocalGameSetup = () => {
 		paddleHeight,
 		ballRadius,
 		backgroundId,
+		removeBackground,
 	}) => {
 		const canvasRef = useRef(null)
-		const scale = 0.75 // Scale factor for the preview
+		const scale = 0.75
 		const scaledWidth = canvasWidth * scale
 		const scaledHeight = canvasHeight * scale
 
@@ -74,25 +91,26 @@ const LocalGameSetup = () => {
 			const canvas = canvasRef.current
 			const ctx = canvas.getContext('2d')
 
-			// Clear canvas and set a background color
-			ctx.fillStyle = '#000000' // Black background
+			ctx.fillStyle = '#000000'
 			ctx.fillRect(0, 0, scaledWidth, scaledHeight)
 
-			// Draw background
-			const backgroundImage = new Image()
-			backgroundImage.src = `/assets/images/tables/table${backgroundId}.png`
-			backgroundImage.onload = () => {
-				ctx.drawImage(backgroundImage, 0, 0, scaledWidth, scaledHeight)
-				drawGameElements()
-			}
-			backgroundImage.onerror = () => {
-				console.error('Failed to load background image')
+			if (!removeBackground) {
+				const backgroundImage = new Image()
+				backgroundImage.src = `/assets/images/tables/table${backgroundId}.png`
+				backgroundImage.onload = () => {
+					ctx.drawImage(backgroundImage, 0, 0, scaledWidth, scaledHeight)
+					drawGameElements()
+				}
+				backgroundImage.onerror = () => {
+					console.error('Failed to load background image')
+					drawGameElements()
+				}
+			} else {
 				drawGameElements()
 			}
 
 			function drawGameElements() {
-				// Draw paddles
-				const paddleWidth = 10 * scale
+				const paddleWidth = 15 * scale
 				ctx.fillStyle = player1Color
 				ctx.fillRect(
 					10,
@@ -100,6 +118,12 @@ const LocalGameSetup = () => {
 					paddleWidth,
 					paddleHeight * scale
 				)
+				ctx.beginPath()
+				ctx.arc(10 + paddleWidth / 2, (scaledHeight - paddleHeight * scale) / 2, paddleWidth / 2, 0, Math.PI * 2)
+				ctx.arc(10 + paddleWidth / 2, (scaledHeight + paddleHeight * scale) / 2, paddleWidth / 2, 0, Math.PI * 2)
+				ctx.closePath()
+				ctx.fill()
+
 				ctx.fillStyle = player2Color
 				ctx.fillRect(
 					scaledWidth - paddleWidth - 10,
@@ -107,10 +131,14 @@ const LocalGameSetup = () => {
 					paddleWidth,
 					paddleHeight * scale
 				)
-
-				// Draw ball
 				ctx.beginPath()
-				ctx.arc(scaledWidth / 2, scaledHeight / 2, ballRadius * scale, 0, Math.PI * 2)
+				ctx.arc((scaledWidth - paddleWidth - 10) + paddleWidth / 2, (scaledHeight - paddleHeight * scale) / 2, paddleWidth / 2, 0, Math.PI * 2)
+				ctx.arc((scaledWidth - paddleWidth - 10) + paddleWidth / 2, (scaledHeight + paddleHeight * scale) / 2, paddleWidth / 2, 0, Math.PI * 2)
+				ctx.closePath()
+				ctx.fill()
+
+				ctx.beginPath()
+				ctx.arc(scaledWidth / 2, scaledHeight / 2, (ballRadius + 2) * scale, 0, Math.PI * 2)
 				ctx.fillStyle = ballColor
 				ctx.fill()
 			}
@@ -121,6 +149,7 @@ const LocalGameSetup = () => {
 			paddleHeight,
 			ballRadius,
 			backgroundId,
+			removeBackground,
 			scaledWidth,
 			scaledHeight,
 		])
@@ -178,6 +207,48 @@ const LocalGameSetup = () => {
 					</div>
 
 					<div className='mb-4'>
+						<label className='flex items-center'>
+							<input
+								type='checkbox'
+								checked={removeBackground}
+								onChange={(e) => setRemoveBackground(e.target.checked)}
+								className='mr-2'
+							/>
+							Remove Background
+						</label>
+					</div>
+
+					<div className='mb-4'>
+						<label className='block text-sm font-bold mb-2' htmlFor='powerUps'>
+							Power-ups: {powerUps}
+						</label>
+						<input
+							id='powerUps'
+							type='range'
+							min={0}
+							max={maxPowerUps}
+							value={powerUps}
+							onChange={(e) => setPowerUps(parseInt(e.target.value))}
+							className='w-full'
+						/>
+					</div>
+
+					<div className='mb-4'>
+						<label className='block text-sm font-bold mb-2' htmlFor='attacks'>
+							Attacks: {attacks}
+						</label>
+						<input
+							id='attacks'
+							type='range'
+							min={0}
+							max={maxAttacks}
+							value={attacks}
+							onChange={(e) => setAttacks(parseInt(e.target.value))}
+							className='w-full'
+						/>
+					</div>
+
+					<div className='mb-4'>
 						<label className='block text-sm font-bold mb-2'>Preview</label>
 						<GamePreview
 							player1Color={player1Color}
@@ -186,6 +257,7 @@ const LocalGameSetup = () => {
 							paddleHeight={paddleHeight}
 							ballRadius={ballRadius}
 							backgroundId={backgroundId}
+							removeBackground={removeBackground}
 						/>
 					</div>
 				</div>
@@ -194,7 +266,6 @@ const LocalGameSetup = () => {
 					<form onSubmit={handleSubmit} className='w-full md:w-2/3 pl-6'>
 						<h2 className='text-2xl font-bold mb-4'>Local Game Setup</h2>
 
-						{/* Form Inputs */}
 						<div className='mb-4'>
 							<label className='block text-sm font-bold mb-2' htmlFor='player1Name'>
 								Player 1 Name
