@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import './Custom.css'
-import Header from '../../components/Header'
 import { useNavigate } from 'react-router-dom'
 
 const Custom = () => {
@@ -31,7 +30,6 @@ const Custom = () => {
 
     return (
         <div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
-            <Header />
             <section>
                 <div className='page-margin flex flex-col'>
                     {step === 1 && (

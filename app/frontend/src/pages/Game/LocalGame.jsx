@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';  // Make sure this is included
 
 import './Game.css';
-import Header from '../../components/Header';
 import GameScore from '../../components/Game/GameScore';
 import Player from '../../components/Game/Player';
 import PongTable from '../../components/Game/PongTable';
@@ -149,8 +148,7 @@ const LocalGame = () => {
   };
 ``
   return (
-    <div className={`min-h-screen backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}>
-      <Header />
+    <div className={` backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}>
       <section className='flex'>
         <div className='flex-1 margin-page flex flex-col items-center gap-8'>
           <GameScore player1Score={player1Score} player2Score={player2Score} isPaused={isPaused} />
