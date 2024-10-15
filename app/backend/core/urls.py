@@ -5,7 +5,6 @@ from UserManagement import views
 from UserManagement.views import UserProfileView
 # from UserManagement.views import UserUpdateView
 
-
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -26,5 +25,5 @@ urlpatterns = [
     path('api/users/', UserProfileView.as_view(), name='user-profile'),
     path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
     path('social-auth/', include('social_django.urls', namespace='social')),
-    path('chat/', include('Chat.urls'))
+    path('api/chat/', include('Chat.urls'))
 ]
