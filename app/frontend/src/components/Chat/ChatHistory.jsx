@@ -1,12 +1,37 @@
-import { useState } from "react"
-import User from "./User"
+import User from './User'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+
+const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({ convId, setId }) {
-
+	const [conversations, setConversations] = useState([])
 	const [small, setSmall] = useState(window.innerWidth < 768)
-	window.addEventListener("resize", () => {
+
+	window.addEventListener('resize', () => {
 		setSmall(window.innerWidth < 768)
 	})
+
+	let cookies = document.cookie.split(';').filter((cookie) => cookie.includes('accessToken'))
+	
+	let accessToken = cookies[0].split('=')[1]
+
+	const headers = {
+		'Authorization': `Bearer ${accessToken}`
+	}
+
+	useEffect(() => {
+		const getConversations = async () => {
+			try {
+				const response = await axios.get(API_CHAT, { headers })
+				setConversations(response.data)
+			} catch (error) {
+				console.error('Error fetching conversations:', error);
+			}
+		}
+
+		getConversations()
+	}, [])
 
 	return (
 		<div
@@ -33,17 +58,9 @@ function ChatHistory({ convId, setId }) {
 				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
 							tb:overflow-y-auto ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
-				<User id={1} convId={convId} setId={setId} />
-				<User id={2} convId={convId} setId={setId} />
-				<User id={3} convId={convId} setId={setId} />
-				{/* <User id={4} convId={convId} setId={setId} /> */}
-				{/* <User id={5} convId={convId} setId={setId} /> */}
-				{/* <User id={6} convId={convId} setId={setId} /> */}
-				{/* <User id={7} convId={convId} setId={setId} /> */}
-				{/* <User id={8} convId={convId} setId={setId} /> */}
-				{/* <User id={9} convId={convId} setId={setId} /> */}
-				{/* <User id={10} convId={convId} setId={setId} /> */}
-				{/* <User id={11} convId={convId} setId={setId} /> */}
+				{conversations.map((conversation) => (
+					<User conversation={conversation} convId={convId} setId={setId} key={conversation.id}/>
+				))}
 			</div>
 		</div>
 	)

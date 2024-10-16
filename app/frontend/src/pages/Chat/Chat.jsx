@@ -1,7 +1,7 @@
 import './Chat.css'
+import { useState } from 'react'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
-import { useState } from 'react'
 
 const StartConversation = () => {
 	return (

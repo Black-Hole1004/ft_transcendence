@@ -1,5 +1,5 @@
 function UserInfos({ conversationId }) {
-	console.log(conversationId)
+
 	return (
 		<div
 			className='lg:border-2 border-[1px] border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
