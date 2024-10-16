@@ -30,3 +30,9 @@ class ConversationSerializer(serializers.ModelSerializer):
             elif obj.user2_id.id == current_user_id:
                 return UserSerializer(obj.user1_id).data
             return None
+
+class UserInfosSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'bio', 'is_active', 'profile_picture']
