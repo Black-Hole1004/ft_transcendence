@@ -1,50 +1,59 @@
 import './Chat.css'
-import { useState } from 'react'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import Messages from '../../components/Chat/Messages.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
+import StartConversation from '../../components/Chat/StartConversation.jsx'
 
-const StartConversation = () => {
-	return (
-		<div className='flex-1 flex flex-col justify-center items-center text-primary p-5 gap-2 text-center'>
-			<img className='w-[50%] select-none' src="assets/images/NoMessages.svg" alt="" />
-			<h2 className='font-heavy nickname'>No conversations yet!</h2>
-			<p className=' font-regular bio'>You can begin by typing a name in the search bar and selecting the user to initiate a chat.</p>
-		</div>
-	)
-}
 
-const Message = ({ content, id }) => {
-	return (
-		<div className={`w-full flex items-start lg:gap-2 gap-1 px-2 ${id === 1 ? ' justify-end' : ''}`}>
-			{
-				id !== 1 ? (
-					<img
-						src='./assets/images/tabi3a.jpeg'
-						className='rounded-full border-0.7 border-primary message-image select-none'
-						alt='friend-image'
-					/>
-				) : <></>
-			}
-			<div className={`flex flex-col ml:max-w-[60%] max-w-[80%]`}>
-				<p
-					className={`text-secondary py-2 px-3 rounded-2xl message-content font-medium
-					${id !== 1 ? 'bg-light rounded-tl-sm' : 'bg-primary rounded-tr-sm'}`}
-				>
-					{content}
-				</p>
-				<p className={`text-light font-regular message-time
-					${id !== 1 ? 'self-end' : ''}`}>12:21 PM</p>
-			</div>
-		</div>
-	)
-}
+
+const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
 
+	const [user, setUser] = useState(null)
+	const [conversations, setConversations] = useState([])
 	const [conversationId, setConversationId] = useState(0)
 
-	// const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/${conversation_key}`)
+	let cookies = document.cookie.split(';').filter((cookie) => cookie.includes('accessToken'))
+	let accessToken = cookies[0].split('=')[1]
 
+	const headers = {
+		'Authorization': `Bearer ${accessToken}`
+	}
+
+	useEffect(() => {
+		const getConversations = async () => {
+			try {
+				const response = await axios.get(API_CHAT, { headers })
+				setConversations(response.data)
+			} catch (error) {
+				console.error('Error fetching conversations:', error);
+			}
+		}
+
+		getConversations()
+	}, [])
+
+	useEffect(() => {
+		const getUserInfos = async () => {
+			try {
+				if (conversationId > 0) {
+					const response = await axios.get(`${API_CHAT}${conversationId}/`, { headers })
+					setUser(response.data[0])
+				}
+			} catch (error) {
+				console.error('Error fetching user infos:', error);
+			}
+		}
+
+		if (conversationId > 0) {
+			getUserInfos()
+		}
+	}, [conversationId])
+
+	// const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/${conversation_key}`)
 	return (
 		<section className='section-margin'>
 			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
@@ -52,48 +61,35 @@ const Chat = () => {
 					className='flex tb:flex-row flex-col lg:border-2 tb:border-[1px] tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 				>
-					<ChatHistory convId={conversationId} setId={setConversationId} />
+					<ChatHistory convId={conversationId} setId={setConversationId} conversations={conversations} />
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
 					<div
 						className='flex-1 flex flex-col items-center max-tb:border border-primary
 							lg:rounded-3xl rounded-2xl tb:h-chat h-[600px] bg-[rgba(27,22,17,0.5)]'
 					>
-						{conversationId ? (
+						{user ? (
 							<>
 								<div className='chat-header flex max-ms:flex-col items-center tb:h-[20%] h-[15%] w-full lp:gap-5 gap-3 max-tb:my-3'>
 									<img
-										src='./assets/images/tabi3a.jpeg'
+										src={`${user.profile_picture}`}
 										className='w-20 rounded-full border border-primary select-none'
 										alt='user image'
 									/>
 									<div className='max-ms:hidden'>
 										<p className='font-heavy friend-name text-primary'>
-											Abdelouahed Rabiai
+											{`${user.first_name} ${user.last_name}`}
 										</p>
-										<p className='last-message text-light'>Online</p>
+										<p className={`last-message ${user.is_active ? 'text-online' : 'text-offline'}`}>
+											{user.is_active ? 'Online' : 'Offline'}
+										</p>
 									</div>
 								</div>
-								<div className='flex-1 w-[98%] ml-2 mr-4 overflow-auto flex flex-col gap-1.5'>
-									<Message content={'Ready for another round?'} id={2} />
-									<Message content={`You bet! I'm gonna win this time.`} id={1} />
-									<Message content={`Haha, we'll see about that! I've been practicing.`} id={2} />
-									<Message content={`Oh, bringing out the big guns, huh? Let’s do this!`} id={1} />
-									<Message content={`Alright, let's start! First to 10 points?`} id={2} />
-									<Message content={`Deal. Good luck, but not too much luck 😜`} id={1} />
-									<Message content={'Haha, same to you! Here we go...'} id={2} />
-									<Message content={'Yes! 10-9! Victory is mine!'} id={1} />
-									<Message content={'Nooo! That was so close! Good game, though.'} id={2} />
-									<Message content={'GG! You had me sweating there for a bit. Rematch?'} id={1} />
-									<Message content={`Definitely. But this time, I'm taking the win!`} id={2} />
-									<Message content={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, culpa? Eaque laudantium est sunt ad corporis, vel nihil beatae velit, praesentium aliquid fugiat amet tempore voluptatum repellendus exercitationem voluptas doloremque.`} id={1} />
-									<Message content={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, culpa? Eaque laudantium est sunt ad corporis, vel nihil beatae velit, praesentium aliquid fugiat amet tempore voluptatum repellendus exercitationem voluptas doloremque.`} id={2} />
-									<Message content={`.`} id={2} />
-								</div>
+								<Messages />
 								<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
 									<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]'>
 										<button>
-											<img src='./assets/images/icons/paperclip.svg' alt='' />
+											<img src='/assets/images/icons/paperclip.svg' alt='' />
 										</button>
 										<input
 											type='text'
@@ -103,19 +99,20 @@ const Chat = () => {
 											placeholder='Type your message here...'
 											/>
 										<button>
-											<img src='./assets/images/icons/emoji.svg' alt='' />
+											<img src='/assets/images/icons/emoji.svg' alt='' />
 										</button>
 										<button>
-											<img src='./assets/images/icons/send-icon.svg' alt='' />
+											<img src='/assets/images/icons/send-icon.svg' alt='' />
 										</button>
 									</div>
 								</div>
 							</>
 							) :
-								<StartConversation />}
+								<StartConversation />
+						}
 					</div>
 				</div>
-				<UserInfos conversationId={conversationId}/>
+				<UserInfos user={user}/>
 			</div>
 		</section>
 	)

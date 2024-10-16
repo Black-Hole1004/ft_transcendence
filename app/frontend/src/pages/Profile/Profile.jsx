@@ -72,7 +72,7 @@ const Profile = () => {
 					<div className='font-dreamscape text-primary cards-title text-center relative'>
 						<Link to={'/dashboard'}>
 							<img
-								src='./assets/images/icons/arrow.svg'
+								src='/assets/images/icons/arrow.svg'
 								className='arrow absolute left-[4%]'
 								alt='arrow icon'
 							/>
@@ -107,7 +107,7 @@ const Profile = () => {
 					<div className='flex-1 flex items-center justify-center'>
 						<div>
 							<img
-								src='./assets/images/Achievements/celestial-master.png'
+								src='/assets/images/Achievements/celestial-master.png'
 								className='hover:scale-[1.05] transition duration-500 select-none'
 								alt='achievement badge'
 							/>

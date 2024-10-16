@@ -1,37 +1,12 @@
 import User from './User'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-const API_CHAT = import.meta.env.VITE_API_CHAT
-
-function ChatHistory({ convId, setId }) {
-	const [conversations, setConversations] = useState([])
+function ChatHistory({ convId, setId, conversations }) {
 	const [small, setSmall] = useState(window.innerWidth < 768)
 
 	window.addEventListener('resize', () => {
 		setSmall(window.innerWidth < 768)
 	})
-
-	let cookies = document.cookie.split(';').filter((cookie) => cookie.includes('accessToken'))
-	
-	let accessToken = cookies[0].split('=')[1]
-
-	const headers = {
-		'Authorization': `Bearer ${accessToken}`
-	}
-
-	useEffect(() => {
-		const getConversations = async () => {
-			try {
-				const response = await axios.get(API_CHAT, { headers })
-				setConversations(response.data)
-			} catch (error) {
-				console.error('Error fetching conversations:', error);
-			}
-		}
-
-		getConversations()
-	}, [])
 
 	return (
 		<div

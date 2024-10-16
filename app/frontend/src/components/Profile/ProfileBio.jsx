@@ -3,7 +3,7 @@ function ProfileBio() {
 		<div className='flex items-center'>
 			<div>
 				<img
-					src='./assets/images/moudrib.jpeg'
+					src='/assets/images/moudrib.jpeg'
 					className='profile-image rounded-full lg:border-2 border border-primary select-none'
 					alt='profile image'
 				/>

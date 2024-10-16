@@ -45,7 +45,7 @@ const Custom = () => {
 								onClick={() => handleClick(id)}
 								className={`tables border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500`}
 								style={{
-									background: `url('./assets/images/tables/table${id}.png')`,
+									background: `url('/assets/images/tables/table${id}.png')`,
 									backgroundSize: 'cover',
 								}}
 								disabled={xp / 1000 < id && id > 1 ? true : false}

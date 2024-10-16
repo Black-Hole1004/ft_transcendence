@@ -16,7 +16,7 @@ function Alert({ type, message, onClose }) {
 			role='alert'
 		>
 			<div className='flex gap-3 items-center mr-4'>
-				<img src={`./assets/images/icons/${type}.png`} className='alert-icon' alt='' />
+				<img src={`/assets/images/icons/${type}.png`} className='alert-icon' alt='' />
 				<span>{message}</span>
 			</div>
 			<button className='focus:outline-none px-2' onClick={onClose}>&times;</button>

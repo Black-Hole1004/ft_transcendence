@@ -5,7 +5,7 @@ function AboutSection() {
 			<div className='about rounded-xl flex flex-col justify-around font-medium text-primary max-ms:w-full'>
 				<div className='line1 flex justify-between items-center'>
 					<div className='flex items-center gap-3'>
-						<img src='./assets/images/icons/Name.svg' className='select-none' alt='' />
+						<img src='/assets/images/icons/Name.svg' className='select-none' alt='' />
 						<p>Full Name</p>
 					</div>
 					<div>
@@ -15,7 +15,7 @@ function AboutSection() {
 				<div className='line2 flex justify-between items-center'>
 					<div className='flex items-center gap-3'>
 						<img
-							src='./assets/images/icons/username.svg'
+							src='/assets/images/icons/username.svg'
 							className='select-none'
 							alt=''
 						/>
@@ -27,7 +27,7 @@ function AboutSection() {
 				</div>
 				<div className='line3 flex justify-between items-center'>
 					<div className='flex items-center gap-3'>
-						<img src='./assets/images/icons/Email.svg' className='select-none' alt='' />
+						<img src='/assets/images/icons/Email.svg' className='select-none' alt='' />
 						<p>Email</p>
 					</div>
 					<div>
@@ -37,7 +37,7 @@ function AboutSection() {
 				<div className='line4 flex justify-between items-center'>
 					<div className='flex items-center gap-3'>
 						<img
-							src='./assets/images/icons/Calendar.svg'
+							src='/assets/images/icons/Calendar.svg'
 							className='select-none'
 							alt=''
 						/>
@@ -49,7 +49,7 @@ function AboutSection() {
 				</div>
 				<div className='line5 flex justify-between items-center'>
 					<div className='flex items-center gap-3'>
-						<img src='./assets/images/icons/Phone.svg' className='select-none' alt='' />
+						<img src='/assets/images/icons/Phone.svg' className='select-none' alt='' />
 						<p>Phone</p>
 					</div>
 					<div>

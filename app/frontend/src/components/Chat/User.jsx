@@ -1,15 +1,22 @@
+import { useNavigate } from 'react-router-dom';
+
 function User({ conversation, convId, setId }) {
 
-	const HighlightConversation = () => {
+	const navigate = useNavigate()
+
+	const handleConversationSelect = () => {
 		setId(conversation.other_user.id)
+		navigate(`/chat/${conversation.other_user.id}`)
 	}
+
+
 	return (
 		<div
 			id={conversation.other_user.id}
-			onClick={HighlightConversation}
+			onClick={handleConversationSelect}
 			className={`flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
 				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg user tb:p-user-div-px-tb
-				${convId === conversation.other_user_id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
+				${convId === conversation.other_user.id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
 		>
 			<img
 				src={`http://localhost:8000${conversation.other_user.profile_picture}`}
