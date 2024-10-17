@@ -14,9 +14,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
+
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
         print(f"===== Disconnected from {self.room_group_name} =====")
+
 
     async def receive(self, text_data):
         print(f"text_data: {text_data}")
@@ -28,6 +30,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.room_group_name, {'type': 'chat.message', 'message': message}
         )
+
 
     async def chat_message(self, event):
         message = event['message']

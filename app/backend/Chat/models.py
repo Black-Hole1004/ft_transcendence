@@ -26,7 +26,6 @@ class Message(models.Model):
 class Conversation(models.Model):
     user1_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1', default=1)
     user2_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2', default=2)
-    # conversation_key = models.CharField(max_length=100, unique=True)
     last_message_id = models.ForeignKey('Message', on_delete=models.SET_NULL, null=True, related_name='last_message')
     is_blocked = models.BooleanField(default=False)
 
