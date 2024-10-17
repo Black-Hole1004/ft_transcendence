@@ -1,14 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 
-function User({ conversation, convId, setId }) {
+function User({ conversation, convId, setId, setMessages }) {
+
+	let currentTime = new Date()
+	let messageTime = new Date(conversation.last_message_id.sent_datetime)
+	let timePassed = (Date.parse(currentTime) - Date.parse(messageTime)) / 1000
+
+	timePassed = timePassed < 60 ? `${timePassed}s` :
+				timePassed < 3600 ? `${Math.floor(timePassed / 60)}m` :
+				timePassed < 86400 ? `${Math.floor(timePassed / 3600)}h` :
+				timePassed < 604800 ? `${Math.floor(timePassed / 86400)}d` :
+				timePassed < 31449600 ? `${Math.floor(timePassed / 604800)}w` :
+				`${Math.floor(timePassed / 31449600)}y`
 
 	const navigate = useNavigate()
 
 	const handleConversationSelect = () => {
 		setId(conversation.other_user.id)
-		navigate(`/chat/${conversation.other_user.id}`)
+		setMessages([])
+		navigate(`/chat/${conversation.id}/${conversation.other_user.id}`)
 	}
-
 
 	return (
 		<div
@@ -34,7 +45,7 @@ function User({ conversation, convId, setId }) {
 					<p className='whitespace-nowrap overflow-hidden text-ellipsis'>
 						{conversation.last_message_id.content}
 					</p>
-					<pre className='font-medium'> &middot; 1h</pre>
+					<pre className='font-medium'> &middot; {timePassed}</pre>
 				</div>
 			</div>
 		</div>

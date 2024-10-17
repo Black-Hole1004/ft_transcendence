@@ -6,21 +6,20 @@ import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
 
-
-
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
-
 	const [user, setUser] = useState(null)
+	const [messages, setMessages] = useState([])
 	const [conversations, setConversations] = useState([])
-	const [conversationId, setConversationId] = useState(0)
+	const [selectedUserId, setSelectedUserId] = useState(0)
+	const [selectedUserImage, setSelectedUserImage] = useState(null)
 
 	let cookies = document.cookie.split(';').filter((cookie) => cookie.includes('accessToken'))
 	let accessToken = cookies[0].split('=')[1]
 
 	const headers = {
-		'Authorization': `Bearer ${accessToken}`
+		Authorization: `Bearer ${accessToken}`,
 	}
 
 	useEffect(() => {
@@ -29,7 +28,7 @@ const Chat = () => {
 				const response = await axios.get(API_CHAT, { headers })
 				setConversations(response.data)
 			} catch (error) {
-				console.error('Error fetching conversations:', error);
+				console.error('Error fetching conversations:', error)
 			}
 		}
 
@@ -39,21 +38,31 @@ const Chat = () => {
 	useEffect(() => {
 		const getUserInfos = async () => {
 			try {
-				if (conversationId > 0) {
-					const response = await axios.get(`${API_CHAT}${conversationId}/`, { headers })
-					setUser(response.data[0])
+				if (selectedUserId > 0) {
+					const conversationId = conversations.filter(
+						(conversation) => conversation.other_user.id === selectedUserId
+					)[0].id
+					const response = await axios.get(
+						`${API_CHAT}${conversationId}/${selectedUserId}/`,
+						{ headers }
+					)
+
+					setUser(response.data.user_infos[0])
+					setMessages(response.data.messages)
+					setSelectedUserImage(response.data.user_infos[0].profile_picture)
 				}
 			} catch (error) {
-				console.error('Error fetching user infos:', error);
+				console.error('Error fetching user infos:', error)
 			}
 		}
 
-		if (conversationId > 0) {
+		if (selectedUserId > 0) {
 			getUserInfos()
 		}
-	}, [conversationId])
+	}, [selectedUserId])
 
 	// const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/${conversation_key}`)
+
 	return (
 		<section className='section-margin'>
 			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
@@ -61,7 +70,12 @@ const Chat = () => {
 					className='flex tb:flex-row flex-col lg:border-2 tb:border-[1px] tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 				>
-					<ChatHistory convId={conversationId} setId={setConversationId} conversations={conversations} />
+					<ChatHistory
+						convId={selectedUserId}
+						setId={setSelectedUserId}
+						conversations={conversations}
+						setMessages={setMessages}
+					/>
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
 					<div
@@ -72,7 +86,7 @@ const Chat = () => {
 							<>
 								<div className='chat-header flex max-ms:flex-col items-center tb:h-[20%] h-[15%] w-full lp:gap-5 gap-3 max-tb:my-3'>
 									<img
-										src={`${user.profile_picture}`}
+										src={`${selectedUserImage}`}
 										className='w-20 rounded-full border border-primary select-none'
 										alt='user image'
 									/>
@@ -80,12 +94,18 @@ const Chat = () => {
 										<p className='font-heavy friend-name text-primary'>
 											{`${user.first_name} ${user.last_name}`}
 										</p>
-										<p className={`last-message ${user.is_active ? 'text-online' : 'text-offline'}`}>
+										<p
+											className={`last-message ${user.is_active ? 'text-online' : 'text-offline'}`}
+										>
 											{user.is_active ? 'Online' : 'Offline'}
 										</p>
 									</div>
 								</div>
-								<Messages />
+								<Messages
+									messages={messages}
+									selectedUserId={selectedUserId}
+									selectedUserImage={selectedUserImage}
+								/>
 								<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
 									<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]'>
 										<button>
@@ -97,7 +117,7 @@ const Chat = () => {
 											maxLength={1000}
 											className='w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
 											placeholder='Type your message here...'
-											/>
+										/>
 										<button>
 											<img src='/assets/images/icons/emoji.svg' alt='' />
 										</button>
@@ -107,12 +127,12 @@ const Chat = () => {
 									</div>
 								</div>
 							</>
-							) :
-								<StartConversation />
-						}
+						) : (
+							<StartConversation />
+						)}
 					</div>
 				</div>
-				<UserInfos user={user}/>
+				<UserInfos user={user} />
 			</div>
 		</section>
 	)

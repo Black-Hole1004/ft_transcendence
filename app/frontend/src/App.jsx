@@ -19,7 +19,7 @@ function App() {
 					<Route element={<Layout />}>
 						<Route path='/Game' element={<Game />} />
 						<Route path='/chat' element={<Chat />} />
-						<Route path='/chat/:id' element={<Chat />} />
+						<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />
 						<Route path='/Custom' element={<Custom />} />
 						<Route path='/Profile' element={<Profile />} />
 						<Route path='/Settings' element={<Settings />} />

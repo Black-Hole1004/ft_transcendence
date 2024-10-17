@@ -1,7 +1,7 @@
 import User from './User'
 import { useState } from 'react'
 
-function ChatHistory({ convId, setId, conversations }) {
+function ChatHistory({ convId, setId, conversations, setMessages }) {
 	const [small, setSmall] = useState(window.innerWidth < 768)
 
 	window.addEventListener('resize', () => {
@@ -34,7 +34,13 @@ function ChatHistory({ convId, setId, conversations }) {
 							tb:overflow-y-auto ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				{conversations.map((conversation) => (
-					<User conversation={conversation} convId={convId} setId={setId} key={conversation.id}/>
+					<User
+						key={conversation.id}
+						conversation={conversation}
+						convId={convId}
+						setId={setId}
+						setMessages={setMessages}
+					/>
 				))}
 			</div>
 		</div>

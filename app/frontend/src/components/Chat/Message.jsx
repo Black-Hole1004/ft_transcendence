@@ -1,11 +1,19 @@
-const Message = ({ content, id }) => {
+
+const Message = ({ message, selectedUserId, selectedUserImage }) => {
+	let content = message.content
+	let senderId = message.sender_id
+	let time = new Date(message.sent_datetime)
+
+	let hour = time.getHours()
+	let min = time.getMinutes()
+
 	return (
-		<div className={`w-full flex items-start lg:gap-2 gap-1 px-2 ${id === 1 ? ' justify-end' : ''}`}>
+		<div id="message" className={`w-full flex items-start lg:gap-2 gap-1 px-2 ${senderId !== selectedUserId ? ' justify-end' : ''}`}>
 			{
-				id !== 1 ? (
+				selectedUserId === senderId ? (
 					<img
-						src='/assets/images/tabi3a.jpeg'
-						className='rounded-full border-0.7 border-primary message-image select-none'
+						src={`${selectedUserImage}`}
+						className='rounded-full border border-primary message-image select-none'
 						alt='friend-image'
 					/>
 				) : <></>
@@ -13,12 +21,14 @@ const Message = ({ content, id }) => {
 			<div className={`flex flex-col ml:max-w-[60%] max-w-[80%]`}>
 				<p
 					className={`text-secondary py-2 px-3 rounded-2xl message-content font-medium
-					${id !== 1 ? 'bg-light rounded-tl-sm' : 'bg-primary rounded-tr-sm'}`}
+					${selectedUserId === senderId ? 'bg-light rounded-tl-sm' : 'bg-primary rounded-tr-sm'}`}
 				>
 					{content}
 				</p>
 				<p className={`text-light font-regular message-time
-					${id !== 1 ? 'self-end' : ''}`}>12:21 PM</p>
+					${selectedUserId === senderId ? 'self-end' : ''}`}>
+					{hour > 12 ? hour - 12 : hour}:{min} {hour >= 12 ? 'PM' : 'AM'}
+				</p>
 			</div>
 		</div>
 	)
