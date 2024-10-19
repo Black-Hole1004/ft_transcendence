@@ -14,13 +14,14 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = ['id', 'sender_id', 'sent_datetime', 'content', 'status']
 
 class ConversationSerializer(serializers.ModelSerializer):
+    last_message = MessageSerializer()
+    my_id = serializers.SerializerMethodField()
     other_user = serializers.SerializerMethodField()
-    last_message_id = MessageSerializer()
 
     class Meta:
         model = Conversation
-        fields = ['id', 'other_user', 'last_message_id', 'is_blocked']
-    
+        fields = ['id', 'my_id', 'other_user', 'last_message', 'is_blocked']
+
     def get_other_user(self, obj):
         request = self.context.get('request')
         if request and request.user:
@@ -31,8 +32,12 @@ class ConversationSerializer(serializers.ModelSerializer):
                 return UserSerializer(obj.user1_id).data
             return None
 
+    def get_my_id(self, obj):
+        request = self.context.get('request')
+        return request.user.id
+
 class UserInfosSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'bio', 'is_active', 'profile_picture']
+        fields = ['first_name', 'last_name', 'username', 'bio', 'status', 'profile_picture']

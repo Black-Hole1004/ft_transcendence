@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework import generics
 from UserManagement.models import User
 from Chat.models import Conversation, Message
@@ -9,7 +10,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
+from django.db.models import F
 
+def room(request):
+    return render(request, "Chat/room.html")
 
 
 @api_view(['GET'])
@@ -17,7 +21,14 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 @authentication_classes([JWTAuthentication])
 @csrf_exempt
 def ConversationsList(request):
-    conversations = Conversation.objects.filter(user1_id=request.user.id) | Conversation.objects.filter(user1_id=request.user.id)
+    conversations = (
+        Conversation.objects.filter(user1_id=request.user.id) |
+        Conversation.objects.filter(user2_id=request.user.id)
+    ).annotate(
+    last_sent_datetime=F('last_message__sent_datetime')
+    ).order_by('-last_sent_datetime')
+
+
     serializer = ConversationSerializer(conversations, context={'request': request}, many=True)
     return Response(serializer.data)
 
