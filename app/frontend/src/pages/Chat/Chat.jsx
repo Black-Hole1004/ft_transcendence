@@ -1,47 +1,50 @@
 import './Chat.css'
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Messages from '../../components/Chat/Messages.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
+import { useHeaders } from '../../components/HeadersContext.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
+
+	
+	const headers = useHeaders()
+	
+	const MessageInputRef = useRef(null)
+	
 	const [user, setUser] = useState(null)
 	const [messages, setMessages] = useState([])
-	const [conversations, setConversations] = useState([])
 	const [selectedUserId, setSelectedUserId] = useState(0)
+	const [conversationId, setConversationId] = useState(0)
 	const [selectedUserImage, setSelectedUserImage] = useState(null)
-
-	let cookies = document.cookie.split(';').filter((cookie) => cookie.includes('accessToken'))
-	let accessToken = cookies[0].split('=')[1]
-
-	const headers = {
-		Authorization: `Bearer ${accessToken}`,
-	}
+	console.log('chat')
 
 	useEffect(() => {
-		const getConversations = async () => {
-			try {
-				const response = await axios.get(API_CHAT, { headers })
-				setConversations(response.data)
-			} catch (error) {
-				console.error('Error fetching conversations:', error)
-			}
-		}
+		const uri = window.location.pathname.split('/').slice(2,4).map((id) => parseInt(id))
 
-		getConversations()
+		if (uri.length > 0) {
+			setMessages([])
+			setConversationId(uri[0])
+			setSelectedUserId(uri[1])
+		}
 	}, [])
+
+	if (selectedUserId) {
+		const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/${conversationId}`)
+	}
+
+	if (MessageInputRef.current) {
+		MessageInputRef.current.focus()
+	}
 
 	useEffect(() => {
 		const getUserInfos = async () => {
 			try {
 				if (selectedUserId > 0) {
-					const conversationId = conversations.filter(
-						(conversation) => conversation.other_user.id === selectedUserId
-					)[0].id
 					const response = await axios.get(
 						`${API_CHAT}${conversationId}/${selectedUserId}/`,
 						{ headers }
@@ -61,44 +64,53 @@ const Chat = () => {
 		}
 	}, [selectedUserId])
 
-	// const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/${conversation_key}`)
-
 	return (
 		<section className='section-margin'>
 			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
 				<div
-					className='flex tb:flex-row flex-col lg:border-2 tb:border-[1px] tb:items-center
+					className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 				>
 					<ChatHistory
-						convId={selectedUserId}
-						setId={setSelectedUserId}
-						conversations={conversations}
+						setConversationId={setConversationId}
+						selectedUserId={selectedUserId}
+						setSelectedUserId={setSelectedUserId}
 						setMessages={setMessages}
 					/>
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
 					<div
 						className='flex-1 flex flex-col items-center max-tb:border border-primary
-							lg:rounded-3xl rounded-2xl tb:h-chat h-[600px] bg-[rgba(27,22,17,0.5)]'
+									lg:rounded-3xl rounded-2xl tb:h-chat bg-[rgba(27,22,17,0.5)]'
 					>
 						{user ? (
 							<>
-								<div className='chat-header flex max-ms:flex-col items-center tb:h-[20%] h-[15%] w-full lp:gap-5 gap-3 max-tb:my-3'>
+								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3'>
 									<img
 										src={`${selectedUserImage}`}
 										className='w-20 rounded-full border border-primary select-none'
 										alt='user image'
 									/>
-									<div className='max-ms:hidden'>
+									<div>
 										<p className='font-heavy friend-name text-primary'>
 											{`${user.first_name} ${user.last_name}`}
 										</p>
-										<p
-											className={`last-message ${user.is_active ? 'text-online' : 'text-offline'}`}
-										>
-											{user.is_active ? 'Online' : 'Offline'}
-										</p>
+										<div className='flex items-center gap-0.5'>
+											<div
+												className={`w-1.5 h-1.5 rounded-full
+												${user.status === 'online' ? 'bg-online' : user.status === 'offline' ? 'bg-offline' : 'bg-defeat'}`}
+											></div>
+											<p
+												className={`last-message font-heavy
+												${user.status === 'online' ? 'text-online' : user.status === 'offline' ? 'text-offline' : 'text-defeat'}`}
+											>
+												{user.status === 'online'
+													? 'Online'
+													: user.status === 'offline'
+														? 'Offline'
+														: 'In-Game'}
+											</p>
+										</div>
 									</div>
 								</div>
 								<Messages
@@ -109,20 +121,21 @@ const Chat = () => {
 								<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
 									<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]'>
 										<button>
-											<img src='/assets/images/icons/paperclip.svg' alt='' />
+											<img src='/assets/images/icons/paperclip.svg' alt='paperclip-icon' />
 										</button>
 										<input
 											type='text'
-											name='chat-input'
 											maxLength={1000}
-											className='w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
+											name='chat-input'
+											ref={MessageInputRef}
 											placeholder='Type your message here...'
+											className='w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
 										/>
 										<button>
-											<img src='/assets/images/icons/emoji.svg' alt='' />
+											<img src='/assets/images/icons/emoji.svg' alt='emojies-icon' />
 										</button>
-										<button>
-											<img src='/assets/images/icons/send-icon.svg' alt='' />
+										<button type='submit'>
+											<img src='/assets/images/icons/send-icon.svg' alt='send-icon' />
 										</button>
 									</div>
 								</div>
@@ -132,7 +145,7 @@ const Chat = () => {
 						)}
 					</div>
 				</div>
-				<UserInfos user={user} />
+				{selectedUserId > 0 && <UserInfos user={user} />}
 			</div>
 		</section>
 	)

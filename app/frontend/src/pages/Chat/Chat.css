@@ -118,3 +118,7 @@
 .message-time {
 	font-size: clamp(0.438rem, 0.177vw + 0.404rem, 0.688rem);
 }
+
+#container > :first-child {
+    margin-top: auto !important;
+}

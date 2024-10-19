@@ -21,13 +21,13 @@ function Layout() {
 			className='relative flex flex-col min-h-screen
 			backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'
 		>
-			{showAlert && (
+			{/* {showAlert && (
 				<Alert
 					type={alertType}
 					message={alertMessage}
 					onClose={() => setShowAlert(false)}
 				/>
-			)}
+			)} */}
 			<Header />
 			<Outlet />
 		</div>

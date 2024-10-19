@@ -1,12 +1,37 @@
 import User from './User'
-import { useState } from 'react'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { useHeaders } from '../../components/HeadersContext.jsx'
 
-function ChatHistory({ convId, setId, conversations, setMessages }) {
+const API_CHAT = import.meta.env.VITE_API_CHAT
+
+function ChatHistory({ setConversationId, selectedUserId, setSelectedUserId, setMessages }) {
+
+	const headers = useHeaders()
+
+	const [conversations, setConversations] = useState([])
 	const [small, setSmall] = useState(window.innerWidth < 768)
 
 	window.addEventListener('resize', () => {
 		setSmall(window.innerWidth < 768)
 	})
+
+	console.log('history')
+
+	useEffect(() => {
+		const getConversations = async () => {
+			try {
+				const response = await axios.get(API_CHAT, { headers })
+				// if (response.data[0])
+				// 	setMyId(response.data[0].my_id)
+				setConversations(response.data)
+			} catch (error) {
+				console.error('Error fetching conversations:', error)
+			}
+		}
+
+		getConversations()
+	}, [])
 
 	return (
 		<div
@@ -17,7 +42,7 @@ function ChatHistory({ convId, setId, conversations, setMessages }) {
 				<div className='flex items-center border border-border rounded-2xl pl-2.5 tb:w-[85%]'>
 					<img
 						src='/assets/images/icons/search-icon.png'
-						className='search-icon'
+						className='search-icon select-none'
 						alt='search-icon'
 					/>
 					<input
@@ -30,15 +55,16 @@ function ChatHistory({ convId, setId, conversations, setMessages }) {
 				</div>
 			</div>
 			<div
-				className={`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
+				className={`flex tb:flex-col max-tb:justify-center flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
 							tb:overflow-y-auto ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				{conversations.map((conversation) => (
 					<User
 						key={conversation.id}
 						conversation={conversation}
-						convId={convId}
-						setId={setId}
+						selectedUserId={selectedUserId}
+						setSelectedUserId={setSelectedUserId}
+						setConversationId={setConversationId}
 						setMessages={setMessages}
 					/>
 				))}
