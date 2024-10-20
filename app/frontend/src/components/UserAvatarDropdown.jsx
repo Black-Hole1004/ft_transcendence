@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useRef, useEffect } from 'react'
-import axios from 'axios'
 import useAuth from '../context/AuthContext'
 
-const USER_API_LOGOUT = import.meta.env.VITE_API_LOGOUT
 
 function UserAvatarDropdown({ setIsDropdownOpen, src, firstName, lastName, username }) {
 	const dropdownRef = useRef(null)
