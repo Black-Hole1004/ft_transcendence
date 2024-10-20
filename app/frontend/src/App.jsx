@@ -2,6 +2,8 @@ import React from 'react'
 // import Box from '@mui/material/Box'
 // import CircularProgress from '@mui/material/CircularProgress'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import PrivateRoute from './utils/PrivateRoute'
 const Home = React.lazy(() => import('./pages/Home/Home'))
 const Chat = React.lazy(() => import('./pages/Chat/Chat'))
 const Game = React.lazy(() => import('./pages/Game/Game'))
@@ -17,20 +19,23 @@ const Tournament = React.lazy(() => import('./pages/Tournament/Tournament'))
 function App() {
 	return (
 		<Router>
-			<React.Suspense fallback={<div>Loading...</div>}>
-				<Routes>
-					<Route path='/' element={<Home />} />
-					<Route path='/Game' element={<Game />} />
-					<Route path='/Chat' element={<Chat />} />
-					<Route path='/Custom' element={<Custom />} />
-					<Route path='/Profile' element={<Profile />} />
-					<Route path='/Settings' element={<Settings />} />
-					<Route path='/Dashboard' element={<Dashboard />} />
-					<Route path='/Tournament' element={<Tournament />} />
-				</Routes>
-			</React.Suspense>
+			<AuthProvider>
+				<React.Suspense fallback={<div>Loading...</div>}>
+					<Routes>
+						<Route exact path='/' element={<Home />} />
+
+						{/* Protect these routes using PrivateRoute */}
+            			<Route path='/Game' element={<PrivateRoute><Game /></PrivateRoute>} />
+            			<Route path='/Chat' element={<PrivateRoute><Chat /></PrivateRoute>} />
+            			<Route path='/Custom' element={<PrivateRoute><Custom /></PrivateRoute>} />
+            			<Route path='/Profile' element={<PrivateRoute><Profile /></PrivateRoute>} />
+            			<Route path='/Settings' element={<PrivateRoute><Settings /></PrivateRoute>} />
+            			<Route path='/Dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+            			<Route path='/Tournament' element={<PrivateRoute><Tournament /></PrivateRoute>} />
+					</Routes>
+				</React.Suspense>
+			</AuthProvider>
 		</Router>
 	)
 }
-
 export default App

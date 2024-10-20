@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom'
 import { useRef, useEffect } from 'react'
+import axios from 'axios'
+import useAuth from '../context/AuthContext'
 
-function UserAvatarDropdown({ setIsDropdownOpen }) {
+const USER_API_LOGOUT = import.meta.env.VITE_API_LOGOUT
+
+function UserAvatarDropdown({ setIsDropdownOpen, src, firstName, lastName, username }) {
 	const dropdownRef = useRef(null)
+
+	const {logout} = useAuth()
 
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
@@ -20,6 +26,7 @@ function UserAvatarDropdown({ setIsDropdownOpen }) {
 		  };
 	}, [])
 
+
 	return (
 		<div
 			ref={dropdownRef}
@@ -28,13 +35,13 @@ function UserAvatarDropdown({ setIsDropdownOpen }) {
 			<Link to={'/profile'}>
 				<div className='flex items-center gap-1'>
 					<img
-						src='/assets/images/moudrib.jpeg'
+						src={src}
 						className='rounded-full border border-primary dropdown-user-photo'
 						alt='user photo'
 					/>
 					<div className='font-medium'>
-						<p className='text-primary fullname'>Mouad Oudrib</p>
-						<p className='text-light username'>@mouad55</p>
+						<p className='text-primary fullname'> {firstName} {lastName} </p>
+						<p className='text-light username'> {username} </p>
 					</div>
 				</div>
 			</Link>
@@ -61,7 +68,7 @@ function UserAvatarDropdown({ setIsDropdownOpen }) {
 			</ul>
 			<div className='h-[1px] w-[80%] bg-border self-center'></div>
 			<ul>
-				<Link to={'/'}>
+				<Link onClick={logout}>
 					<li className='flex items-center gap-4 '>
 						<img src='/assets/images/icons/log-out.svg' alt='' />
 						Log Out

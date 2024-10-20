@@ -4,8 +4,8 @@ import CardButton from '../Buttons/CardButton'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import Cookies from 'js-cookie'
 
+import useAuth from '../../../context/AuthContext'
 
 const API_LOGIN = import.meta.env.VITE_API_LOGIN
 const API_REGISTER = import.meta.env.VITE_API_REGISTER
@@ -15,6 +15,10 @@ const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => setIsSigningIn(!isSigningIn)
 	
+	const {email, password, confirmPassword} = useAuth()
+
+
+	const {login, register , setEmail, setPassword, setConfirmPassword, isSigningIn1} = useAuth()
 	// --------------------------- moudrib code -------------------------------------------
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
@@ -69,72 +73,32 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	// --------------------------------------------------------------------------------------------
 
 
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [confirmPassword, setConfirmPassword] = useState('')
-
-	const navigate = useNavigate()
-	const setTokens = (response) => {
-        Cookies.set('refreshToken', response.data.refresh_token, { expires: 30 })
-        Cookies.set('accessToken', response.data.access_token, { expires: 7 })
-        navigate('/dashboard')
-    }
-
-	async function loginUser(email, password) {
-
-		try {
-			const response = await axios.post(API_LOGIN, {
-				email: email,
-				password: password,
-			});
-			if (response.status === 200)
-				setTokens(response)
-		} catch (error) {
-			setError('Registration failed. Please try again.');
-		}
-	}
-
-	async function registerUser(email, password, confirmPassword) {
-		try {
-			const response = await axios.post(API_REGISTER, {
-				email: email,
-				password1: password,
-				password2: confirmPassword,
-			});
-			if (response.status === 201) {
-				console.log('Registration successful');
-				alert('Registration successful');
-			}
-		} catch (error) {
-			setError('Registration failed. Please try again.');
-		}
-	}
 
 	const handleOauth = (provider) => {
 		const API_URLS = {
 		  "google": API_GOOGLE,
 		  '42': API_42,
 		};
-	  
 		const apiUrl = API_URLS[provider];
 		if (apiUrl) {
-		  window.location.href = apiUrl;
+			window.location.href = apiUrl;
+			const cookie = Cookies.get('access_token');
+			console.log(cookie);
 		} else {
-		  console.error(`Unsupported OAuth provider: ${provider}`);
+			console.error(`Unsupported OAuth provider: ${provider}`);
 		}
 	};
+
+	
 
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		if (isSigningIn)
-			loginUser(email, password)
+			login()
 		else 
-			registerUser(email, password, confirmPassword)
+			register()
 	}
-
-
-
 	// --------------------------------------------------------------------------------------------
 
 	return (
@@ -176,7 +140,8 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 
 					{/* -----------------------------------------------------------------------------------------*/}
 					<form className='flex flex-col form-gap' onSubmit={handleSubmit}>
-						{inputs.slice(0, isSigningIn ? 2 : 3).map((input, index) => (
+						{
+							inputs.slice(0, isSigningIn ? 2 : 3).map((input, index) => (
 							<Input
 								key={index}
 								iconPath={`/assets/images/icons/${input.iconPath}.png`}
@@ -193,10 +158,10 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									else if (index === 1) setPassword(e.target.value)
 									else setConfirmPassword(e.target.value)
 								}}
-
 							>
 							</Input>
-						))}
+						))
+						}
 						<CardButton
 							className={
 								'text-primary font-heavy hover:bg-primary hover:text-secondary'
@@ -205,6 +170,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 							{isSigningIn ? <>Sign in</> : <>Sign up</>}
 						</CardButton>
 					</form>
+
 					{!isSigningIn && (
 						<p className='sign-in-phrases text-light font-medium text-center'>
 							Already have an account?
@@ -225,6 +191,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					<div className='flex flex-col buttons-gap font-medium sign-in-phrases'>
 						{buttons.map((button, index) => (
 							<CardButton
+								id = {button.id}
 								key={index}
 								className={
 									'text-secondary bg-primary hover:bg-secondary-light hover:text-primary \

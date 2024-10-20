@@ -12,6 +12,7 @@ import json
 import uuid
 from rest_framework import status
 from .serializers import UserSerializer
+from django.contrib.auth import logout
 
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import parser_classes
@@ -19,10 +20,7 @@ from rest_framework.decorators import parser_classes
 from django.http import HttpResponseRedirect
 
 from django.core.files.uploadedfile import UploadedFile
-
 from rest_framework.views import APIView
-
-
 from .models import User
 
 import os
@@ -154,6 +152,14 @@ def register(request):
     else:
         return render(request, 'register.html')
 
+@csrf_exempt  # Disable CSRF for this view for testing purposes
+def logout_view(request):
+    # delete the access token cookie
+    response = JsonResponse({'message': 'User logged out successfully'})
+    response.delete_cookie('access_token')
+    return response
+
+
 def generate_random_username():
     prefix = 'moha_'
     suffix = str(uuid.uuid4())[:8]
@@ -182,8 +188,7 @@ def display_text(request):
 @permission_classes([IsAuthenticated])
 class UserProfileView(APIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
-
-
+ # Disable CSRF for this view for testing purposes
     def get(self, request):
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])

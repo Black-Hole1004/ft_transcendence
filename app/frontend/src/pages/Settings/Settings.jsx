@@ -2,8 +2,9 @@ import './Settings.css'
 import Header from '../../components/Header'
 import Button from '../../components/Home/Buttons/Button'
 import { useEffect , useState } from 'react'
-
+import Cookies from 'js-cookie'
 import axios from 'axios'
+import useAuth from '../../context/AuthContext'
 
 const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -64,25 +65,29 @@ const s = () => {
 	const [preview, setPreview] = useState(null)
 	const [selectedFile, setSelectedFile] = useState(null)
 
-	let cookies = document.cookie;
-	let cookieArray = cookies.split(';');
+	const {authTokens} = useAuth()
 
-	let refresh_token = cookieArray[0].split('=')[1];
-	let access_token = cookieArray[1].split('=')[1];
-	const header = {
-		'Authorization': `Bearer ${access_token}`
-	}
-	/**********************  Fetch User Data ************************/
 	const fetchUser = async () => {
 		try 
 		{
-			const response = await axios.get(USER_API, {headers: header});
-			return response.data;
+			const response = await fetch(USER_API, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + String(authTokens.access_token)
+				}
+			})
+			const data = await response.json();
+			if (response.ok) {
+				return (data)
+			} else {
+				return (null)
+			}
 		} 
 		catch (error) 
 		{
 			console.log(error);
-			return null;
+			return (null);
 		}
 	};
 	  

@@ -1,6 +1,6 @@
 import React from 'react'
 import './Chat.css'
-import Header from '../../components/Header'
+import Header from '../../components/Header.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 

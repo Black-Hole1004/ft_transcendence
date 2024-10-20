@@ -1,10 +1,10 @@
 import React from 'react'
 import '../Card/Card.css'
 
-function CardButton({ className, children, onClick }) {
+function CardButton({ className, children}) {
 	return (
 		<button
-			onClick={onClick}
+			type='submit'
 			className={`
 		border border-border transition duration-300 select-none
 		responsive-card-button padding-top-button ${className || ''}`}

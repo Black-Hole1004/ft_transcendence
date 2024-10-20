@@ -4,10 +4,16 @@ import './Home.css'
 import Card from '../../components/Home/Card/Card'
 import Header from '../../components/Home/Header/Header'
 import Button from '../../components/Home/Buttons/Button'
+import useAuth from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const Home = () => {
 	const dialogRef = useRef(null)
 	const [isSigningIn, setIsSigningIn] = useState(false)
+	const Navigate = useNavigate()
+
+	const {authTokens, user} = useAuth()
 
 	const openDialog = () => {
 		if (dialogRef.current) {
@@ -24,6 +30,10 @@ const Home = () => {
 		setIsSigningIn(buttonId === 'sign-in')
 		openDialog()
 	}
+	useEffect(() => {
+		if (authTokens && user)
+			Navigate('/settings')
+	}, [])
 
 	return (
 		<>

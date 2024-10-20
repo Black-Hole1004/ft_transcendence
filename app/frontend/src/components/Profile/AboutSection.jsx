@@ -1,4 +1,5 @@
-function AboutSection() {
+function AboutSection({ first_name, last_name, email, mobile_number, username }) {
+
 	return (
 		<div className='flex flex-col items-center gap-2'>
 			<p className='titles self-start max-mtb:ml-3'>About</p>
@@ -9,7 +10,7 @@ function AboutSection() {
 						<p>Full Name</p>
 					</div>
 					<div>
-						<p>Mouad Oudrib</p>
+						<p>{first_name} {last_name}</p>
 					</div>
 				</div>
 				<div className='line2 flex justify-between items-center'>
@@ -22,7 +23,7 @@ function AboutSection() {
 						<p>Username</p>
 					</div>
 					<div>
-						<p>moudrib</p>
+						<p>{username}</p>
 					</div>
 				</div>
 				<div className='line3 flex justify-between items-center'>
@@ -31,7 +32,7 @@ function AboutSection() {
 						<p>Email</p>
 					</div>
 					<div>
-						<p>transcendence@gmail.com</p>
+						<p>{email}</p>
 					</div>
 				</div>
 				<div className='line4 flex justify-between items-center'>
@@ -53,7 +54,7 @@ function AboutSection() {
 						<p>Phone</p>
 					</div>
 					<div>
-						<p>+212611223344</p>
+						<p>{mobile_number}</p>
 					</div>
 				</div>
 			</div>

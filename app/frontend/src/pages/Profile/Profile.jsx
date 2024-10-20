@@ -8,6 +8,10 @@ import ProgressBar from '../../components/Profile/ProgressBar'
 import AboutSection from '../../components/Profile/AboutSection'
 import UserStatsGraph from '../../components/Profile/UserStatsGraph'
 
+import axios from 'axios';
+const USER_API = import.meta.env.VITE_USER_API;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 const Profile = () => {
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
@@ -19,20 +23,93 @@ const Profile = () => {
 				setWidth(containerWidth)
 			}
 		}
-
 		calculateWidth()
-
 		window.addEventListener('resize', calculateWidth)
-
 		return () => {
 			window.removeEventListener('resize', calculateWidth)
 		}
 	}, [])
 
+	/* my code */
+	const [first_name, setFirst_name] = useState('')
+	const [last_name, setLast_name] = useState('')
+	const [email, setEmail] = useState('')
+	const [mobile_number, setMobile_number] = useState('')
+	const [username, setUsername] = useState('')
+	const [display_name, setDisplay_name] = useState('')
+	const [bio, setBio] = useState('')
+	const [profile_picture, setProfile_picture] = useState('')
+	const [preview, setPreview] = useState(null)
 
+	const [user, setUser] = useState({
+		first_name: '',
+		last_name: '',
+		email: '',
+		mobile_number: '',
+		username: '',
+		display_name: '',
+		bio: '',
+		profile_picture: ''
+	})
+
+
+	const fetchUser = async () => {
+		try 
+		{
+			const response = await axios.get(USER_API, {headers: header});
+			return response.data;
+		} 
+		catch (error) 
+		{
+			console.log(error);
+			return null;
+		}
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const fetchedData = await fetchUser();
+			if (fetchedData)
+				setUser(fetchedData);
+		};
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		if (!user) 
+			return;
+		setFirst_name(user.first_name);
+		setLast_name(user.last_name);
+		setEmail(user.email);
+		setMobile_number(user.mobile_number);
+		setUsername(user.username);
+		setDisplay_name(user.display_name);
+		setBio(user.bio);
+		setProfile_picture(user.profile_picture);
+	} , [user]);
+
+	let cookies = document.cookie;
+	if (!cookies) {
+		console.log('No cookies found');
+		return;
+	}
+
+	let cookieArray = cookies.split(';');
+	if (cookieArray.length < 2) {
+		console.log('Not enough cookies found');
+		return;
+	}
+	// let refresh_token = cookieArray[0].split('=')[1];
+	let access_token = cookieArray[1].split('=')[1];
+	const header = {
+		'Authorization': `Bearer ${access_token}`
+	}
+
+
+
+	/************************************************************************ */
 	const wins = 102
 	const totalGames = 123
-	
 	const [winRate, setWinRate] = useState(null)
 
 	useEffect(() => {
@@ -47,9 +124,7 @@ const Profile = () => {
 	useEffect(() => {
 		setAchievementProgress((progress * 100) / 2000)
 	}, [achievementProgress])
-
 	const [level, setLevel] = useState(null)
-
 	useEffect(() => {
 		setLevel(xp > 10000 ? 100 : (xp * 100 / 10000).toFixed(2))
 	}, [level])
@@ -62,13 +137,16 @@ const Profile = () => {
 			loserScore: 2,
 		}
 	]
+	/************************************************************************ */
 
 	return (
 		<div
 			ref={containerRef}
 			className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'
 		>
-			<Header />
+			<Header src={`${BASE_URL}${profile_picture}`} preview={preview}
+				firstName={first_name} lastName={last_name} username={username}
+			/>
 			<section className='flex justify-center'>
 				<div className='lp:mt-20 my-10 relative flex flex-col max-lp:gap-y-3
 					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'>
@@ -86,12 +164,12 @@ const Profile = () => {
 							</Link>
 							<h1>profile</h1>
 						</div>
-						<ProfileBio />
+						<ProfileBio src={`${BASE_URL}${profile_picture}`} bio={bio} />
 						<div
 							className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
 						>
-							<AboutSection />
+							<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} />
 							<div className='flex flex-col items-center gap-2'>
 								<p className='titles max-mtb:self-start max-mtb:ml-3'>
 									Achievements Progression

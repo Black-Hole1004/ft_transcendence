@@ -1,0 +1,185 @@
+import { createContext, useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
+import { useEffect } from 'react'
+
+const AuthContext = createContext(null)
+const API_LOGIN = import.meta.env.VITE_API_LOGIN
+const API_REGISTER = import.meta.env.VITE_API_REGISTER
+const API_42 = import.meta.env.VITE_API_42
+const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
+const VITE_API_REFRESH = import.meta.env.VITE_API_REFRESH
+
+export const AuthProvider = ({ children }) => {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+
+    const initialAuthTokens = localStorage.getItem('authTokens')
+        ? JSON.parse(localStorage.getItem('authTokens'))
+        : null;
+
+
+    const initialUser = initialAuthTokens && initialAuthTokens.access_token
+        ? jwtDecode(initialAuthTokens.access_token)
+        : null
+
+    const [authTokens, setAuthTokens] = useState(initialAuthTokens)
+    const [user, setUser] = useState(initialUser)
+    const navigate = useNavigate()
+
+    const login = async () => {
+        try {
+            const response = await fetch(API_LOGIN, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "email": email,
+                    "password": password
+                })
+            })
+            const data = await response.json()
+            if (response.ok) {
+                console.log('Login successful', data)
+                setAuthTokens(data)
+                setUser(jwtDecode(data.access_token))
+                localStorage.setItem('authTokens', JSON.stringify(data))
+                navigate('/settings')
+            }
+            else {
+                console.log('Login failed', data)
+            }
+        } catch (error) {
+            console.error('error', error)
+        }
+    }
+
+
+
+    const register = async () => {
+        try {
+            const response = await fetch(API_REGISTER, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'email': email,
+                    'password1': password,
+                    'password2': confirmPassword
+                })
+            })
+            const data = await response.json();
+            if (response.ok) {
+                console.log('registration successful', data)
+            } else {
+                console.log('registartion failed', data)
+            }
+        } catch (error) {
+            console.error('error', error)
+        }
+    }
+
+    const get_expiration_time = (token) => {
+        if (!token) {
+            return null
+        }
+        const decodedToken = jwtDecode(token)
+        return (decodedToken.exp ? decodedToken.exp * 1000 : null)
+    }
+
+    const refres_token = async () => {
+        try {
+            const response = await fetch(VITE_API_REFRESH, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "refresh": authTokens.refresh_token
+                })
+            })
+            const data = await response.json()
+            if (response.ok) {
+                const updatedTokens = {
+                    access_token: data.access,
+                    refresh_token: authTokens.refresh_token,
+                };
+                setAuthTokens(updatedTokens);
+                setUser(jwtDecode(data.access));
+                localStorage.setItem('authTokens', JSON.stringify(updatedTokens)); 
+            }
+            else {
+                console.log('Login failed', data)
+                logout()
+            }
+        } catch (error) {
+            console.error('error', error)
+            logout()
+        }
+    }
+
+    useEffect(() => {
+        if (authTokens) {
+            const accessTokenExpirationTime = get_expiration_time(authTokens.access_token)
+            const refreshTokenExpirationTime = get_expiration_time(authTokens.refresh_token)
+
+            const accesTokenTimeout = setTimeout(() => {
+                refres_token()
+            }, accessTokenExpirationTime - Date.now() - 1000);
+
+            const refreshTokenTimeout = setTimeout(() => {
+                logout()
+            }, refreshTokenExpirationTime - Date.now() - 1000);
+
+            return (() => {
+                clearTimeout(accesTokenTimeout);
+                clearTimeout(refreshTokenTimeout);
+            })
+        }
+    }, [authTokens])
+
+    const logout = () => {
+        setAuthTokens(null)
+        setUser(null)
+        localStorage.removeItem('authTokens')
+        navigate('/')
+    }
+
+    const contextData = {
+        login: login,
+        register: register,
+        logout: logout,
+
+        setEmail: setEmail,
+        setPassword: setPassword,
+        setConfirmPassword: setConfirmPassword,
+
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+
+        authTokens: authTokens,
+        user: user
+    }
+
+    return (
+        <AuthContext.Provider value={contextData}>
+            {children}
+        </AuthContext.Provider>
+    )
+}
+
+const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return (context)
+}
+
+export default useAuth;

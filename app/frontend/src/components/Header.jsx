@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
 
-function Header({src, preview}) {
+function Header({src, preview, firstName, lastName, username}) {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
@@ -61,7 +61,7 @@ function Header({src, preview}) {
 						className='nav-icons border-[1px] rounded-full border-primary select-none'
 					/>
 				</button>
-				{isDropdownOpen && <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} />}
+				{isDropdownOpen && <UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} src={src} firstName={firstName} lastName={lastName} username={username} />}
 			</nav>
 		</header>
 	)
