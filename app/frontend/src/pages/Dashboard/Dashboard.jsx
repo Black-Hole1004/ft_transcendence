@@ -8,13 +8,13 @@ import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMess
 
 // Extract query parameters from the URL
 const params = new URLSearchParams(window.location.search);
-const accessToken = params.get('access_token');
-const refreshToken = params.get('refresh_token');
+const access_token = params.get('access_token');
+const refresh_token = params.get('refresh_token');
 
-// if (!accessToken || !refreshToken) --> set the cookies
-if (accessToken && refreshToken) {
-	document.cookie = `access_token=${accessToken}; path=/; secure; SameSite=Lax;`;
-	document.cookie = `refresh_token=${refreshToken}; path=/; secure; SameSite=Lax;`;
+// if (!access_token || !refresh_token) --> set the cookies
+if (access_token && refresh_token) {
+	document.cookie = `access_token=${access_token}; path=/; secure; SameSite=Lax;`;
+	document.cookie = `refresh_token=${refresh_token}; path=/; secure; SameSite=Lax;`;
 	window.location.href = '/dashboard';
 }
 

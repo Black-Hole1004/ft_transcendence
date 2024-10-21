@@ -6,15 +6,15 @@ export const HeadersProvider = ({ children }) => {
 	const [headers, setHeaders] = useState({})
 
 	useEffect(() => {
-		let accessToken = ''
-		let cookies = document.cookie.split(';').filter((cookie) => cookie.includes('accessToken'))
+		let access_token = ''
+		let cookies = document.cookie.split(';').filter((cookie) => cookie.includes('access_token'))
 
 		if (cookies.length) {
-			accessToken = cookies[0].split('=')[1]
+			access_token = cookies[0].split('=')[1]
 		}
 	
 		setHeaders({
-			Authorization: `Bearer ${accessToken}`,
+			Authorization: `Bearer ${access_token}`,
 		})
 	}, [])
 

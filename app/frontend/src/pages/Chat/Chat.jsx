@@ -36,7 +36,7 @@ const Chat = () => {
 
 	useEffect(() => {
 			const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
-
+			
 			chatSocket.addEventListener('open', () => {
 				console.log('WebSocket connected')
 			})
