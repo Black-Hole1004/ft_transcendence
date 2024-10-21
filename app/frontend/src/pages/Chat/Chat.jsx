@@ -11,17 +11,17 @@ const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
 
-	
 	const headers = useHeaders()
 	
 	const MessageInputRef = useRef(null)
 	
+	const [myId, setMyId] = useState(0)
 	const [user, setUser] = useState(null)
+	const [socket, setSocket] = useState(null)
 	const [messages, setMessages] = useState([])
 	const [selectedUserId, setSelectedUserId] = useState(0)
 	const [conversationId, setConversationId] = useState(0)
 	const [selectedUserImage, setSelectedUserImage] = useState(null)
-	console.log('chat')
 
 	useEffect(() => {
 		const uri = window.location.pathname.split('/').slice(2,4).map((id) => parseInt(id))
@@ -33,13 +33,38 @@ const Chat = () => {
 		}
 	}, [])
 
-	if (selectedUserId) {
-		const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/${conversationId}`)
+
+	useEffect(() => {
+			const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
+
+			chatSocket.addEventListener('open', () => {
+				console.log('WebSocket connected')
+			})
+			console.log(chatSocket)
+			setSocket(chatSocket)
+			
+			return () => {
+				if (chatSocket) {
+					chatSocket.close()
+					console.log('WebSocket diconnected')
+				}
+			}
+	}, [])
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			sendMessage()
+		}
 	}
 
-	if (MessageInputRef.current) {
-		MessageInputRef.current.focus()
-	}
+	useEffect(() => {
+		if (socket && socket.readyState) {
+			socket.send(JSON.stringify({
+				message_type: 'join',
+				conversation_id: conversationId,
+			}))
+		}
+	}, [selectedUserId])
 
 	useEffect(() => {
 		const getUserInfos = async () => {
@@ -64,6 +89,19 @@ const Chat = () => {
 		}
 	}, [selectedUserId])
 
+	const sendMessage = () => {
+		const value = MessageInputRef.current.value.trim()
+		if (value !== '') {
+			console.log('message: ', value)
+			socket.send(JSON.stringify({
+				sender: myId,
+				message: value,
+				message_type: 'message',
+			}))
+			MessageInputRef.current.value = ''
+		}
+	}
+
 	return (
 		<section className='section-margin'>
 			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
@@ -72,10 +110,11 @@ const Chat = () => {
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 				>
 					<ChatHistory
-						setConversationId={setConversationId}
+						setMyId={setMyId}
+						setMessages={setMessages}
 						selectedUserId={selectedUserId}
 						setSelectedUserId={setSelectedUserId}
-						setMessages={setMessages}
+						setConversationId={setConversationId}
 					/>
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
@@ -121,21 +160,22 @@ const Chat = () => {
 								<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
 									<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]'>
 										<button>
-											<img src='/assets/images/icons/paperclip.svg' alt='paperclip-icon' />
+											<img src='/assets/images/icons/paperclip.svg' className='select-none' alt='paperclip-icon' />
 										</button>
 										<input
 											type='text'
 											maxLength={1000}
 											name='chat-input'
 											ref={MessageInputRef}
+											onKeyDown={handleKeyPress}
 											placeholder='Type your message here...'
 											className='w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
 										/>
 										<button>
-											<img src='/assets/images/icons/emoji.svg' alt='emojies-icon' />
+											<img src='/assets/images/icons/emoji.svg' className='select-none' alt='emojies-icon' />
 										</button>
-										<button type='submit'>
-											<img src='/assets/images/icons/send-icon.svg' alt='send-icon' />
+										<button type='submit' onClick={sendMessage}>
+											<img src='/assets/images/icons/send-icon.svg' className='select-none' alt='send-icon' />
 										</button>
 									</div>
 								</div>

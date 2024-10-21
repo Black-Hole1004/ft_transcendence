@@ -1,7 +1,7 @@
 import Alert from '../Alert'
 import Header from './Header'
-import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 function Layout() {
 	const [showAlert, setShowAlert] = useState(true)
@@ -10,11 +10,12 @@ function Layout() {
 		'A problem has been occured while submitting your data.'
 	)
 
-	if (showAlert === true) {
-		setTimeout(() => {
+	useEffect(() => {
+		const timer = setTimeout(() => {
 			setShowAlert(false)
 		}, 10000)
-	}
+		return () => clearTimeout(timer)
+	}, [showAlert])
 
 	return (
 		<div

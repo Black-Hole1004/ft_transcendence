@@ -5,7 +5,6 @@ function User({ setConversationId, conversation, selectedUserId, setSelectedUser
 	let messageTime = new Date(conversation.last_message.sent_datetime)
 	let timePassed = (Date.parse(currentTime) - Date.parse(messageTime)) / 1000
 
-	console.log('user')
 	timePassed =
 		timePassed < 60
 			? `${timePassed}s`
@@ -20,7 +19,6 @@ function User({ setConversationId, conversation, selectedUserId, setSelectedUser
 							: `${Math.floor(timePassed / 31449600)}y`
 
 	const navigate = useNavigate()
-
 
 	const handleConversationSelect = () => {
 		setSelectedUserId((prev) => {

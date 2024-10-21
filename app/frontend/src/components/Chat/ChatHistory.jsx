@@ -5,7 +5,7 @@ import { useHeaders } from '../../components/HeadersContext.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
-function ChatHistory({ setConversationId, selectedUserId, setSelectedUserId, setMessages }) {
+function ChatHistory({ setMyId, setConversationId, selectedUserId, setSelectedUserId, setMessages }) {
 
 	const headers = useHeaders()
 
@@ -16,14 +16,12 @@ function ChatHistory({ setConversationId, selectedUserId, setSelectedUserId, set
 		setSmall(window.innerWidth < 768)
 	})
 
-	console.log('history')
 
 	useEffect(() => {
 		const getConversations = async () => {
 			try {
 				const response = await axios.get(API_CHAT, { headers })
-				// if (response.data[0])
-				// 	setMyId(response.data[0].my_id)
+				setMyId(response.data[0].my_id)
 				setConversations(response.data)
 			} catch (error) {
 				console.error('Error fetching conversations:', error)
@@ -47,10 +45,11 @@ function ChatHistory({ setConversationId, selectedUserId, setSelectedUserId, set
 					/>
 					<input
 						type='text'
+						autoComplete='off'
 						name='search for friends'
 						placeholder='Search for friends...'
-						className='font-medium bg-transparent text-primary outline-none search placeholder:text-border
-									lg:w-input-lg ms:w-input-ms w-0'
+						className='font-medium bg-transparent text-primary outline-none search
+									lg:w-input-lg ms:w-input-ms w-[80%] placeholder:text-border'
 					/>
 				</div>
 			</div>
