@@ -12,13 +12,9 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 
 from django.db.models import F
 
-def room(request):
-    return render(request, "Chat/room.html")
-
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([JWTAuthentication])
+# @authentication_classes([JWTAuthentication])
 @csrf_exempt
 def ConversationsList(request):
     conversations = (
@@ -38,7 +34,7 @@ def ConversationsList(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([JWTAuthentication])
+# @authentication_classes([JWTAuthentication])
 @csrf_exempt
 def getUserinfos(request, conversation_id, user_id):
     user_infos = User.objects.filter(id=user_id)
