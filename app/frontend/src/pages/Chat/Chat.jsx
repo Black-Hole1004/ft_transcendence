@@ -61,38 +61,44 @@ const Chat = () => {
 			ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
 			chatSocket.current = ws
 
-			ws.addEventListener('open', () => {
+			const handleOpen = () => {
 				console.log('WebSocket connected')
 				if (conversationId) {
 					joinRoom(ws, conversationId)
 				}
-			})
+			}
 
-			ws.addEventListener('close', () => {
+			const handleClose = () => {
 				console.log('WebSocket disconnected')
 				setTimeout(connect, 3000)
-			})
+			}
 
-			ws.addEventListener('message', (e) => {
-
+			const handleMessage = (e) => {
 				const data = JSON.parse(e.data)
-				console.log(data)
 				setMessages((prevMessages) => [...prevMessages, {
 					sender_id: data.sender,
 					content: data.message,
 					sent_datetime: data.timestamp
 				}])
-			})
-
-		}
-
-		connect()
-
-		return () => {
-			if (ws) {
-				ws.close()
-				console.log('WebSocket diconnected')
 			}
+			
+			ws.addEventListener('open', handleOpen)
+			ws.addEventListener('close', handleClose)
+			ws.addEventListener('message', handleMessage)
+
+			return () => {
+				ws.removeEventListener('open', handleOpen)
+				ws.removeEventListener('close', handleClose)
+				ws.removeEventListener('message', handleMessage)
+				ws.close()
+				console.log('WebSocket disconnected')
+			}
+		}
+		
+		const cleanup = connect()
+		
+		return () => {
+			if (cleanup) cleanup()
 		}
 	}, [])
 
@@ -153,6 +159,7 @@ const Chat = () => {
 				>
 					<ChatHistory
 						setMyId={setMyId}
+						messages={messages}
 						setMessages={setMessages}
 						selectedUserId={selectedUserId}
 						setSelectedUserId={setSelectedUserId}

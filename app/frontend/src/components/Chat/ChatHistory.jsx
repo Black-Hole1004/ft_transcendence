@@ -7,10 +7,11 @@ const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({
 	setMyId,
-	setConversationId,
-	selectedUserId,
-	setSelectedUserId,
+	messages,
 	setMessages,
+	selectedUserId,
+	setConversationId,
+	setSelectedUserId,
 }) {
 	const headers = useHeaders()
 
@@ -34,7 +35,7 @@ function ChatHistory({
 		}
 
 		getConversations()
-	}, [])
+	}, [messages])
 
 	return (
 		<div
