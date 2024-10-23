@@ -10,21 +10,42 @@ import StartConversation from '../../components/Chat/StartConversation.jsx'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
-
 	const headers = useHeaders()
-	
+
 	const MessageInputRef = useRef(null)
-	
+
 	const [myId, setMyId] = useState(0)
 	const [user, setUser] = useState(null)
-	const [socket, setSocket] = useState(null)
+	const chatSocket = useRef(null)
 	const [messages, setMessages] = useState([])
 	const [selectedUserId, setSelectedUserId] = useState(0)
 	const [conversationId, setConversationId] = useState(0)
 	const [selectedUserImage, setSelectedUserImage] = useState(null)
 
+
+	const joinRoom = (ws, roomId) => {
+		ws.send(
+			JSON.stringify({
+				message_type: 'join',
+				conversation_id: roomId,
+			})
+		)
+	}
+
 	useEffect(() => {
-		const uri = window.location.pathname.split('/').slice(2,4).map((id) => parseInt(id))
+		let ws = chatSocket.current
+
+		if (ws && ws.readyState === WebSocket.OPEN) {
+			joinRoom(ws ,conversationId)
+		}
+	}, [conversationId])
+
+
+	useEffect(() => {
+		const uri = window.location.pathname
+			.split('/')
+			.slice(2, 4)
+			.map((id) => parseInt(id))
 
 		if (uri.length > 0) {
 			setMessages([])
@@ -33,38 +54,54 @@ const Chat = () => {
 		}
 	}, [])
 
-
 	useEffect(() => {
-			const chatSocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
-			
-			chatSocket.addEventListener('open', () => {
+		let ws
+
+		const connect = () => {
+			ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
+			chatSocket.current = ws
+
+			ws.addEventListener('open', () => {
 				console.log('WebSocket connected')
-			})
-			console.log(chatSocket)
-			setSocket(chatSocket)
-			
-			return () => {
-				if (chatSocket) {
-					chatSocket.close()
-					console.log('WebSocket diconnected')
+				if (conversationId) {
+					joinRoom(ws, conversationId)
 				}
+			})
+
+			ws.addEventListener('close', () => {
+				console.log('WebSocket disconnected')
+				setTimeout(connect, 3000)
+			})
+
+			ws.addEventListener('message', (e) => {
+
+				const data = JSON.parse(e.data)
+				console.log(data)
+				setMessages((prevMessages) => [...prevMessages, {
+					sender_id: data.sender,
+					content: data.message,
+					sent_datetime: data.timestamp
+				}])
+			})
+
+		}
+
+		connect()
+
+		return () => {
+			if (ws) {
+				ws.close()
+				console.log('WebSocket diconnected')
 			}
+		}
 	}, [])
+
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') {
 			sendMessage()
 		}
 	}
-
-	useEffect(() => {
-		if (socket && socket.readyState) {
-			socket.send(JSON.stringify({
-				message_type: 'join',
-				conversation_id: conversationId,
-			}))
-		}
-	}, [selectedUserId])
 
 	useEffect(() => {
 		const getUserInfos = async () => {
@@ -90,15 +127,20 @@ const Chat = () => {
 	}, [selectedUserId])
 
 	const sendMessage = () => {
-		const value = MessageInputRef.current.value.trim()
-		if (value !== '') {
-			console.log('message: ', value)
-			socket.send(JSON.stringify({
-				sender: myId,
-				message: value,
-				message_type: 'message',
-			}))
-			MessageInputRef.current.value = ''
+		let ws = chatSocket.current
+		
+		if (ws && ws.readyState === WebSocket.OPEN) {
+			const value = MessageInputRef.current.value.trim()
+
+			if (value !== '') {
+				ws.send(JSON.stringify({
+					sender: myId,
+					message: value,
+					message_type: 'message',
+					conversation_id: conversationId,
+				}))
+				MessageInputRef.current.value = ''
+			}
 		}
 	}
 
@@ -124,7 +166,7 @@ const Chat = () => {
 					>
 						{user ? (
 							<>
-								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3'>
+								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
 									<img
 										src={`${selectedUserImage}`}
 										className='w-20 rounded-full border border-primary select-none'
@@ -160,7 +202,11 @@ const Chat = () => {
 								<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
 									<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]'>
 										<button>
-											<img src='/assets/images/icons/paperclip.svg' className='select-none' alt='paperclip-icon' />
+											<img
+												src='/assets/images/icons/paperclip.svg'
+												className='select-none'
+												alt='paperclip-icon'
+											/>
 										</button>
 										<input
 											type='text'
@@ -172,10 +218,18 @@ const Chat = () => {
 											className='w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
 										/>
 										<button>
-											<img src='/assets/images/icons/emoji.svg' className='select-none' alt='emojies-icon' />
+											<img
+												src='/assets/images/icons/emoji.svg'
+												className='select-none'
+												alt='emojies-icon'
+											/>
 										</button>
 										<button type='submit' onClick={sendMessage}>
-											<img src='/assets/images/icons/send-icon.svg' className='select-none' alt='send-icon' />
+											<img
+												src='/assets/images/icons/send-icon.svg'
+												className='select-none'
+												alt='send-icon'
+											/>
 										</button>
 									</div>
 								</div>

@@ -4,8 +4,7 @@ const Message = ({ message, selectedUserId, selectedUserImage }) => {
 	let senderId = message.sender_id
 	let time = new Date(message.sent_datetime)
 
-	let hour = time.getHours()
-	let min = time.getMinutes()
+	time = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
 	return (
 		<div id="message" className={`w-full flex items-start lg:gap-2 gap-1 px-2 ${senderId !== selectedUserId ? ' justify-end' : ''}`}>
@@ -25,9 +24,8 @@ const Message = ({ message, selectedUserId, selectedUserImage }) => {
 				>
 					{content}
 				</p>
-				<p className={`text-light font-regular message-time
-					${selectedUserId === senderId ? 'self-end' : ''}`}>
-					{hour > 12 ? hour - 12 : hour}:{min} {hour >= 12 ? 'PM' : 'AM'}
+				<p className='text-light font-regular message-time self-end'>
+					{time}
 				</p>
 			</div>
 		</div>

@@ -95,7 +95,7 @@ function Header() {
 					{!isNotificationOpen && (
 						<div
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
-						h-[30%] absolute z-10 rounded-full right-0 top-0'
+						h-[30%] absolute z-50 rounded-full right-0 top-0'
 						>
 							<p className='font-heavy text-[10px] p-0.5'>+99</p>
 						</div>
@@ -135,7 +135,7 @@ function Header() {
 				{isDropdownOpen && (
 					<div
 						ref={dropdownRef}
-						className='dropdown absolute z-10 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
+						className='dropdown absolute z-50 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
 					>
 						<UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} />
 					</div>
