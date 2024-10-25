@@ -1,4 +1,3 @@
-
 const Message = ({ message, selectedUserId, selectedUserImage }) => {
 	let content = message.content
 	let senderId = message.sender_id
@@ -7,16 +6,19 @@ const Message = ({ message, selectedUserId, selectedUserImage }) => {
 	time = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
 	return (
-		<div id="message" className={`w-full flex items-start lg:gap-2 gap-1 px-2 ${senderId !== selectedUserId ? ' justify-end' : ''}`}>
-			{
-				selectedUserId === senderId ? (
-					<img
-						src={`${selectedUserImage}`}
-						className='rounded-full border border-primary message-image select-none'
-						alt='friend-image'
-					/>
-				) : <></>
-			}
+		<div
+			id='message'
+			className={`w-full flex items-start lg:gap-2 gap-1 px-2 ${senderId !== selectedUserId ? ' justify-end' : ''}`}
+		>
+			{selectedUserId === senderId ? (
+				<img
+					src={`${selectedUserImage}`}
+					className='rounded-full border border-primary message-image select-none'
+					alt='friend-image'
+				/>
+			) : (
+				<></>
+			)}
 			<div className={`flex flex-col ml:max-w-[60%] max-w-[80%]`}>
 				<p
 					className={`text-secondary py-2 px-3 rounded-2xl message-content font-medium
@@ -24,9 +26,7 @@ const Message = ({ message, selectedUserId, selectedUserImage }) => {
 				>
 					{content}
 				</p>
-				<p className='text-light font-regular message-time self-end'>
-					{time}
-				</p>
+				<p className='text-light font-regular message-time self-end'>{time}</p>
 			</div>
 		</div>
 	)

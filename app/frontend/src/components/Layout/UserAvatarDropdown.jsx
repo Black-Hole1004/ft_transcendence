@@ -21,23 +21,23 @@ function UserAvatarDropdown({ setIsDropdownOpen }) {
 					</div>
 				</div>
 			</Link>
-			<div className='h-[1px] w-[80%] bg-border self-center'></div>
+			<div className='h-px w-[80%] bg-border self-center'></div>
 			<ul className='font-medium text-primary flex flex-col tb:gap-2.5 gap-1.5'>
 				<Link to={'/profile'}>
-					<li onClick={closeDropdown} className='flex items-center gap-4 '>
-						<img src='/assets/images/icons/profile.svg' alt='' />
+					<li onClick={closeDropdown} className='flex items-center gap-4 hover:brightness-150'>
+						<img src='/assets/images/icons/profile.svg' alt='profile icon' />
 						Profile
 					</li>
 				</Link>
 				<Link to={'/dashboard'}>
-					<li onClick={closeDropdown} className='flex items-center gap-4 '>
-						<img src='/assets/images/icons/dashboard.svg' alt='' />
+					<li onClick={closeDropdown} className='flex items-center gap-4 hover:brightness-150'>
+						<img src='/assets/images/icons/dashboard.svg' alt='dashboard icon' />
 						Dashboard
 					</li>
 				</Link>
 				<Link to={'/settings'}>
-					<li onClick={closeDropdown} className='flex items-center gap-4 '>
-						<img src='/assets/images/icons/settings.svg' alt='' />
+					<li onClick={closeDropdown} className='flex items-center gap-4 hover:brightness-150'>
+						<img src='/assets/images/icons/settings.svg' alt='settings icon' />
 						Settings
 					</li>
 				</Link>
@@ -45,8 +45,8 @@ function UserAvatarDropdown({ setIsDropdownOpen }) {
 			<div className='h-[1px] w-[80%] bg-border self-center'></div>
 			<ul>
 				<Link to={'/'}>
-					<li className='flex items-center gap-4 '>
-						<img src='/assets/images/icons/log-out.svg' alt='' />
+					<li className='flex items-center gap-4 hover:brightness-150'>
+						<img src='/assets/images/icons/log-out.svg' alt='logout icon' />
 						Log Out
 					</li>
 				</Link>

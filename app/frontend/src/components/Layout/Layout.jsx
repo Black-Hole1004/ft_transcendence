@@ -2,6 +2,7 @@ import Alert from '../Alert'
 import Header from './Header'
 import { Outlet } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { HeadersProvider } from '../HeadersContext'
 
 function Layout() {
 	const [showAlert, setShowAlert] = useState(true)
@@ -30,7 +31,9 @@ function Layout() {
 				/>
 			)} */}
 			<Header />
-			<Outlet />
+			<HeadersProvider>
+				<Outlet />
+			</HeadersProvider>
 		</div>
 	)
 }

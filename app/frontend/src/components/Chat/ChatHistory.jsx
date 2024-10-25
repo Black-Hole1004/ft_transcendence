@@ -1,20 +1,19 @@
 import User from './User'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import { useHeaders } from '../../components/HeadersContext.jsx'
+// import { useHeaders } from '../../components/HeadersContext.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({
 	setMyId,
+	headers,
 	messages,
 	setMessages,
 	selectedUserId,
 	setConversationId,
 	setSelectedUserId,
 }) {
-	const headers = useHeaders()
-
 	const [conversations, setConversations] = useState([])
 	const [small, setSmall] = useState(window.innerWidth < 768)
 
@@ -23,9 +22,10 @@ function ChatHistory({
 	})
 
 	useEffect(() => {
+		if (!headers) return
+
 		const getConversations = async () => {
 			try {
-				console.log('headers: ', headers)
 				const response = await axios.get(API_CHAT, { headers })
 				setMyId(response.data[0].my_id)
 				setConversations(response.data)
@@ -35,14 +35,14 @@ function ChatHistory({
 		}
 
 		getConversations()
-	}, [messages])
+	}, [messages, headers])
 
 	return (
 		<div
 			className='flex flex-col tb:w-[34%] max-tb:border border-primary lg:rounded-3xl rounded-2xl
 			tb:h-chat h-leftside-chat-ms gap-y-3 bg-[rgba(27,22,17,0.5)]'
 		>
-			<div className='history-input flex justify-center items-center tb:h-[20%] tb:mt-0 mt-2 z-50'>
+			<div className='history-input flex justify-center items-center tb:h-[20%] tb:mt-0 mt-2 z-10'>
 				<div className='flex items-center border border-border rounded-2xl pl-2.5 tb:w-[85%]'>
 					<img
 						src='/assets/images/icons/search-icon.png'

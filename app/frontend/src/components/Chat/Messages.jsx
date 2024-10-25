@@ -2,11 +2,10 @@ import { useEffect, useRef } from 'react'
 import Message from './Message.jsx'
 
 const Messages = ({ messages, selectedUserId, selectedUserImage }) => {
-
 	const messagesEndRef = useRef(null)
 
 	useEffect(() => {
-		messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" })
+		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
 	}, [messages])
 
 	return (
@@ -14,14 +13,17 @@ const Messages = ({ messages, selectedUserId, selectedUserImage }) => {
 			id='container'
 			className='flex-1 w-[98%] ml-2 mr-4 overflow-y-auto flex flex-col gap-1.5'
 		>
-			{messages.map((message) => (
-				<Message
-					key={message.id}
-					message={message}
-					selectedUserId={selectedUserId}
-					selectedUserImage={selectedUserImage}
-				/>
-			))}
+			{messages.map((message, index) => {
+				return (
+					<div key={index}>
+						<Message
+							message={message}
+							selectedUserId={selectedUserId}
+							selectedUserImage={selectedUserImage}
+						/>
+					</div>
+				)
+			})}
 			<div ref={messagesEndRef} />
 		</div>
 	)

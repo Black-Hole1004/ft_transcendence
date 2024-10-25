@@ -52,7 +52,7 @@ function Header() {
 	return (
 		<header
 			className='relative flex items-center justify-between text-primary header-margin font-medium
-			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end'
+			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end z-50'
 		>
 			<Link to={'/dashboard'} aria-label='Go to Dashboard'>
 				<img
@@ -95,7 +95,7 @@ function Header() {
 					{!isNotificationOpen && (
 						<div
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
-						h-[30%] absolute z-50 rounded-full right-0 top-0'
+						h-[30%] absolute rounded-full right-0 top-0'
 						>
 							<p className='font-heavy text-[10px] p-0.5'>+99</p>
 						</div>
@@ -135,7 +135,7 @@ function Header() {
 				{isDropdownOpen && (
 					<div
 						ref={dropdownRef}
-						className='dropdown absolute z-50 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
+						className='dropdown absolute right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
 					>
 						<UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} />
 					</div>

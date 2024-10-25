@@ -1,6 +1,7 @@
 import './Chat.css'
 import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import Messages from '../../components/Chat/Messages.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
@@ -11,37 +12,21 @@ const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
 	const headers = useHeaders()
+	const location = useLocation()
 
+	const chatSocket = useRef(null)
 	const MessageInputRef = useRef(null)
 
 	const [myId, setMyId] = useState(0)
 	const [user, setUser] = useState(null)
-	const chatSocket = useRef(null)
 	const [messages, setMessages] = useState([])
 	const [selectedUserId, setSelectedUserId] = useState(0)
 	const [conversationId, setConversationId] = useState(0)
+	const [isUrlProcessed, setIsUrlProcessed] = useState(false)
 	const [selectedUserImage, setSelectedUserImage] = useState(null)
 
-
-	const joinRoom = (ws, roomId) => {
-		ws.send(
-			JSON.stringify({
-				message_type: 'join',
-				conversation_id: roomId,
-			})
-		)
-	}
-
 	useEffect(() => {
-		let ws = chatSocket.current
-
-		if (ws && ws.readyState === WebSocket.OPEN) {
-			joinRoom(ws ,conversationId)
-		}
-	}, [conversationId])
-
-
-	useEffect(() => {
+		console.log(location.pathname)
 		const uri = window.location.pathname
 			.split('/')
 			.slice(2, 4)
@@ -51,56 +36,78 @@ const Chat = () => {
 			setMessages([])
 			setConversationId(uri[0])
 			setSelectedUserId(uri[1])
+			setIsUrlProcessed(true)
+			console.log('conversation id:', conversationId)
 		}
-	}, [])
+		else {
+			setIsUrlProcessed(false)
+		}
+
+	}, [location.pathname])
 
 	useEffect(() => {
-		let ws
 
-		const connect = () => {
-			ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
-			chatSocket.current = ws
+		const handleOpen = () => {
+			console.log('WebSocket connected')
+			if (isUrlProcessed) {
+				chatSocket.current?.send(
+					JSON.stringify({
+						message_type: 'join',
+						conversation_id: conversationId,
+						selected_user_id: selectedUserId,
+					})
+				)
+			}
+		}
 
-			const handleOpen = () => {
-				console.log('WebSocket connected')
-				if (conversationId) {
-					joinRoom(ws, conversationId)
-				}
+		const handleClose = () => {
+			console.log('WebSocket disconnected')
+			chatSocket.current = null
+			setTimeout(setupConnection, 3000)
+		}
+
+		const handleMessage = (e) => {
+			console.log('handle message')
+			const data = JSON.parse(e.data)
+			setMessages((prevMessages) => [...prevMessages, {
+				sender_id: data.sender,
+				content: data.message,
+				sent_datetime: data.timestamp
+			}])
+		}
+
+		const setupConnection = () => {
+			if (!chatSocket.current) {
+				const ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
+				chatSocket.current = ws
 			}
 
-			const handleClose = () => {
-				console.log('WebSocket disconnected')
-				setTimeout(connect, 3000)
-			}
+			chatSocket.current.addEventListener('open', handleOpen)
+			chatSocket.current.addEventListener('close', handleClose)
+			chatSocket.current.addEventListener('message', handleMessage)
 
-			const handleMessage = (e) => {
-				const data = JSON.parse(e.data)
-				setMessages((prevMessages) => [...prevMessages, {
-					sender_id: data.sender,
-					content: data.message,
-					sent_datetime: data.timestamp
-				}])
-			}
-			
-			ws.addEventListener('open', handleOpen)
-			ws.addEventListener('close', handleClose)
-			ws.addEventListener('message', handleMessage)
+		}
 
-			return () => {
+		setupConnection()
+
+
+		return () => {
+			console.log('cleanup running')
+			if (chatSocket.current) {
+				const ws = chatSocket.current
+
+				// if (ws.readyState === WebSocket.OPEN) {
+				// 	ws.close()
+				// }
+
 				ws.removeEventListener('open', handleOpen)
 				ws.removeEventListener('close', handleClose)
 				ws.removeEventListener('message', handleMessage)
-				ws.close()
-				console.log('WebSocket disconnected')
+
+				// chatSocket.current = null
 			}
 		}
-		
-		const cleanup = connect()
-		
-		return () => {
-			if (cleanup) cleanup()
-		}
-	}, [])
+	}, [isUrlProcessed, conversationId])
 
 
 	const handleKeyPress = (e) => {
@@ -150,6 +157,9 @@ const Chat = () => {
 		}
 	}
 
+
+
+
 	return (
 		<section className='section-margin'>
 			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
@@ -159,6 +169,7 @@ const Chat = () => {
 				>
 					<ChatHistory
 						setMyId={setMyId}
+						headers={headers}
 						messages={messages}
 						setMessages={setMessages}
 						selectedUserId={selectedUserId}
@@ -207,7 +218,8 @@ const Chat = () => {
 									selectedUserImage={selectedUserImage}
 								/>
 								<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
-									<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]'>
+									<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container 
+										border border-border border-chat rounded-[50px]'>
 										<button>
 											<img
 												src='/assets/images/icons/paperclip.svg'
@@ -219,22 +231,23 @@ const Chat = () => {
 											type='text'
 											maxLength={1000}
 											name='chat-input'
+											autoComplete='off'
 											ref={MessageInputRef}
 											onKeyDown={handleKeyPress}
 											placeholder='Type your message here...'
-											className='w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
+											className='myDiv w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
 										/>
 										<button>
 											<img
 												src='/assets/images/icons/emoji.svg'
-												className='select-none'
+												className='select-none hover:brightness-125 hover:scale-110 duration-200 '
 												alt='emojies-icon'
 											/>
 										</button>
 										<button type='submit' onClick={sendMessage}>
 											<img
 												src='/assets/images/icons/send-icon.svg'
-												className='select-none'
+												className='select-none hover:brightness-125 hover:scale-110 hover:rotate-45 duration-200 '
 												alt='send-icon'
 											/>
 										</button>
@@ -253,3 +266,74 @@ const Chat = () => {
 }
 
 export default Chat
+
+
+
+
+
+
+	// const joinRoom = (ws, roomId) => {
+	// 	ws.send(
+	// 		JSON.stringify({
+	// 			message_type: 'join',
+	// 			conversation_id: roomId,
+	// 		})
+	// 	)
+	// }
+
+	// useEffect(() => {
+	// 	let ws = chatSocket.current
+
+	// 	if (ws && ws.readyState === WebSocket.OPEN) {
+	// 		joinRoom(ws ,conversationId)
+	// 	}
+	// }, [conversationId])
+
+
+
+
+		// let ws
+
+		// const connect = () => {
+		// 	ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
+		// 	chatSocket.current = ws
+
+		// 	const handleOpen = () => {
+		// 		console.log('WebSocket connected')
+		// 		if (conversationId) {
+		// 			joinRoom(ws, conversationId)
+		// 		}
+		// 	}
+
+		// 	const handleClose = () => {
+		// 		console.log('WebSocket disconnected')
+		// 		setTimeout(connect, 3000)
+		// 	}
+
+		// 	const handleMessage = (e) => {
+		// 		const data = JSON.parse(e.data)
+		// 		setMessages((prevMessages) => [...prevMessages, {
+		// 			sender_id: data.sender,
+		// 			content: data.message,
+		// 			sent_datetime: data.timestamp
+		// 		}])
+		// 	}
+			
+		// 	ws.addEventListener('open', handleOpen)
+		// 	ws.addEventListener('close', handleClose)
+		// 	ws.addEventListener('message', handleMessage)
+
+		// 	return () => {
+		// 		ws.removeEventListener('open', handleOpen)
+		// 		ws.removeEventListener('close', handleClose)
+		// 		ws.removeEventListener('message', handleMessage)
+		// 		ws.close()
+		// 		console.log('WebSocket disconnected')
+		// 	}
+		// }
+		
+		// const cleanup = connect()
+		
+		// return () => {
+		// 	if (cleanup) cleanup()
+		// }
