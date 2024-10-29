@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'UserManagement',
     'social_django',
     'core',
+    'channels',
+    'game',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -63,7 +66,11 @@ SOCIALACCOUNT_PROVIDERS = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
 }
 
 MIDDLEWARE = [
@@ -79,10 +86,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+# backend/core/settings.py
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # Add your template directories here
+            os.path.join(BASE_DIR, 'game', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,7 +108,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
-
+ASGI_APPLICATION = 'core.asgi.application'  # Ensure it points to core.asgi : this is the entry point for ASGI
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -148,6 +160,13 @@ STATIC_URL = "profile_pictures/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "profile_pictures",
+]
+
+
+TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
+# Add a new setting for tables
+TABLES_STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/public/assets/images/tables'),
 ]
 
 # Default primary key field type
@@ -218,8 +237,19 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 #todo: Creds should be changed in production
 
 SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-cdcc23cff090940f13730afd65feb14fe10adba125685f2f6b47055c98256fd7'
-SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_SECRET = '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'
 SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'http://localhost:8000/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
+
+
+# Set up Redis as the channel layer backend
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

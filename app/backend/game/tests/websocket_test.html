@@ -1,0 +1,52 @@
+<!-- backend/game/tests/websocket_test.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h2>WebSocket Test</h2>
+    <div id="status">Disconnected</div>
+    <button onclick="connect()">Connect</button>
+    <button onclick="sendPaddleMove()">Send Paddle Move</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <div id="messages"></div>
+
+    <script>
+        let ws;
+
+        function connect() {
+            ws = new WebSocket(`ws://${window.location.host}/ws/game/1/`);
+            
+            ws.onopen = () => {
+                document.getElementById('status').textContent = 'Connected';
+            };
+            
+            ws.onmessage = (event) => {
+                const messages = document.getElementById('messages');
+                messages.innerHTML += `<p>Received: ${event.data}</p>`;
+            };
+            
+            ws.onclose = () => {
+                document.getElementById('status').textContent = 'Disconnected';
+            };
+        }
+
+        function sendPaddleMove() {
+            if (ws) {
+                ws.send(JSON.stringify({
+                    type: 'paddle_move',
+                    player: 'player1',
+                    position: 150
+                }));
+            }
+        }
+
+        function disconnect() {
+            if (ws) {
+                ws.close();
+            }
+        }
+    </script>
+</body>
+</html>

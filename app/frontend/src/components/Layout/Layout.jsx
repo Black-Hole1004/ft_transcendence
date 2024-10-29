@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 function Layout() {
 	const [showAlert, setShowAlert] = useState(true)
-	const [alertType, setAlertType] = useState('error')
+	const [alertType, setAlertType] = useState('info')
 	const [alertMessage, setAlertMessage] = useState(
 		'A problem has been occured while submitting your data.'
 	)

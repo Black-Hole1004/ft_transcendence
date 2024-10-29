@@ -13,6 +13,7 @@ const RemoteGame = lazy(() => import('./pages/Game/RemoteGame'))
 const Custom = lazy(() => import('./pages/Custom/Custom'))
 const LocalGameSetup = lazy(() => import('./pages/Game/LocalGameSetup'))
 const RemoteGameSetup = lazy(() => import('./pages/Game/RemoteGameSetup'))
+const MatchMaking = lazy(() => import('./components/Game/MatchMaking'))
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path='/local-game-setup' element={<LocalGameSetup />} />
             <Route path='/remote-game-setup' element={<RemoteGameSetup />} />
             <Route path='/Tournament' element={<Tournament />} />
+            <Route path='/matchmaking' element={<MatchMaking />} />
           </Route>
         </Routes>
       </Suspense>
