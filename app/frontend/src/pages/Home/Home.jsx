@@ -8,10 +8,12 @@ import useAuth from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 
+
+
 const Home = () => {
 	const dialogRef = useRef(null)
 	const [isSigningIn, setIsSigningIn] = useState(false)
-	const Navigate = useNavigate()
+	const navigate = useNavigate()
 
 	const {authTokens, user} = useAuth()
 
@@ -30,10 +32,6 @@ const Home = () => {
 		setIsSigningIn(buttonId === 'sign-in')
 		openDialog()
 	}
-	useEffect(() => {
-		if (authTokens && user)
-			Navigate('/settings')
-	}, [])
 
 	return (
 		<>

@@ -2,7 +2,7 @@ import './Settings.css'
 import Header from '../../components/Header'
 import Button from '../../components/Home/Buttons/Button'
 import { useEffect , useState } from 'react'
-import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import useAuth from '../../context/AuthContext'
 
@@ -65,7 +65,8 @@ const s = () => {
 	const [preview, setPreview] = useState(null)
 	const [selectedFile, setSelectedFile] = useState(null)
 
-	const {authTokens} = useAuth()
+	const {authTokens, verify_token, logout} = useAuth()
+	const navigate = useNavigate()
 
 	const fetchUser = async () => {
 		try 
@@ -92,12 +93,20 @@ const s = () => {
 	};
 	  
 	useEffect(() => {
-		const fetchData = async () => {
-			const fetchedData = await fetchUser();
-			if (fetchedData)
-				setUser(fetchedData);
-		};
-		fetchData();
+		if (!verify_token)
+			logout;
+		if (authTokens) {
+			console.log('truetrue')
+			const fetchData = async () => {
+				const fetchedData = await fetchUser();
+				if (fetchedData)
+					setUser(fetchedData);
+			};
+			fetchData();
+		} else {
+			console.log('wah liyam wah');
+			navigate('/')
+		}
 	}, []);
 
 	useEffect(() => {

@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 import useAuth from '../../../context/AuthContext'
+import RegistrationNotification from '../../ShowNotification'
 
 const API_LOGIN = import.meta.env.VITE_API_LOGIN
 const API_REGISTER = import.meta.env.VITE_API_REGISTER
@@ -15,7 +16,7 @@ const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => setIsSigningIn(!isSigningIn)
 	
-	const {email, password, confirmPassword} = useAuth()
+	const {email, password, confirmPassword, showNotification} = useAuth()
 
 
 	const {login, register , setEmail, setPassword, setConfirmPassword, isSigningIn1} = useAuth()
@@ -220,6 +221,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 								</button>
 							</p>
 						)}
+						
 					</div>
 				</div>
 			</div>

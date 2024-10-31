@@ -1,16 +1,45 @@
-version: '2.1'
+version: '3.8'
+
+
+networks:
+  app-network:
+    driver: bridge
+  
+volumes:
+  postgres_data:
 
 services:
-  pingpong:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    # environment:
-      # to be changed
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     ports:
-      - 8000:8000
-
-# networks:
-#   inception:
-#     driver: bridge
-
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  
+  backend:
+    build:
+      context: app/backend/.
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - DJANGO_SETTINGS_MODULE=backend.settings
+    depends_on:
+      - db
+    networks:
+      - app-network
+  
+  frontend:
+    build:
+      context: app/frontend/.
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network

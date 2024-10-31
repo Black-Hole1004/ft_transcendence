@@ -28,6 +28,10 @@ import jwt
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 # from .forms import UserProfileForm
 #pass=Ahaloui@@13+
 #gmail=aymene@gmail.com
@@ -144,6 +148,7 @@ def register(request):
         form = UserCreationForm(data)
         if form.is_valid():
             user = form.save(commit=False)
+            user.username = generate_random_username()
             user.save()
             return JsonResponse({'message': 'User created successfully'}, status=201)
         else:
@@ -152,12 +157,28 @@ def register(request):
     else:
         return render(request, 'register.html')
 
-@csrf_exempt  # Disable CSRF for this view for testing purposes
-def logout_view(request):
-    # delete the access token cookie
-    response = JsonResponse({'message': 'User logged out successfully'})
-    response.delete_cookie('access_token')
-    return response
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data.get('refresh')
+            if refresh_token:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+
+                return(Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK))
+            else:
+                return (
+                    Response(
+                    {"error": "Refresh token is required"}, 
+                    status=status.HTTP_400_BAD_REQUEST)
+                )
+        except Exception as  e:
+             return Response(
+                {"error": str(e)}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 def generate_random_username():
@@ -175,6 +196,7 @@ def getRoutes(request):
         '/api/token/verify',
         '/api/login',
         '/api/register',
+        'api/logout'
     ]
 
     return Response(routes)

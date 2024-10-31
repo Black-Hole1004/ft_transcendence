@@ -3,7 +3,7 @@ import React from 'react'
 // import CircularProgress from '@mui/material/CircularProgress'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
-import PrivateRoute from './utils/PrivateRoute'
+import { Navigate} from "react-router-dom"
 const Home = React.lazy(() => import('./pages/Home/Home'))
 const Chat = React.lazy(() => import('./pages/Chat/Chat'))
 const Game = React.lazy(() => import('./pages/Game/Game'))
@@ -16,13 +16,23 @@ const Tournament = React.lazy(() => import('./pages/Tournament/Tournament'))
 // <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 // 	<CircularProgress />
 // </Box>
+
+import useAuth from './context/AuthContext'
+
+function PrivateRoute({ children }) {
+    const { user } = useAuth();
+	if (user) {
+		return (children)
+	}
+	return ( <Navigate to="/" />)
+}
 function App() {
 	return (
 		<Router>
 			<AuthProvider>
 				<React.Suspense fallback={<div>Loading...</div>}>
 					<Routes>
-						<Route exact path='/' element={<Home />} />
+						<Route path='/' element={<Home />} />
 
 						{/* Protect these routes using PrivateRoute */}
             			<Route path='/Game' element={<PrivateRoute><Game /></PrivateRoute>} />
