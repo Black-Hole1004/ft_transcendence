@@ -1,7 +1,7 @@
 import './Settings.css'
 import Header from '../../components/Header'
 import Button from '../../components/Home/Buttons/Button'
-import { useEffect , useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import useAuth from '../../context/AuthContext'
@@ -10,7 +10,7 @@ const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg';
 
-function Input({id, type, label, placeholder, value, onChange}) {
+function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
 		<div className='flex flex-col'>
 			<label htmlFor={id} className='font-regular text-light sections-title'>
@@ -32,10 +32,10 @@ function Input({id, type, label, placeholder, value, onChange}) {
 
 const s = () => {
 
-	window.addEventListener('load', function() {
+	window.addEventListener('load', function () {
 		var resetButton = document.getElementById('resetButton');
-		
-		resetButton.addEventListener('click', function() {
+
+		resetButton.addEventListener('click', function () {
 			var forms = document.getElementsByTagName('form');
 			for (var i = 0; i < forms.length; i++) {
 				forms[i].reset();
@@ -65,12 +65,11 @@ const s = () => {
 	const [preview, setPreview] = useState(null)
 	const [selectedFile, setSelectedFile] = useState(null)
 
-	const {authTokens, verify_token, logout} = useAuth()
+	const { authTokens, verify_token, logout } = useAuth()
 	const navigate = useNavigate()
 
 	const fetchUser = async () => {
-		try 
-		{
+		try {
 			const response = await fetch(USER_API, {
 				method: 'GET',
 				headers: {
@@ -84,14 +83,13 @@ const s = () => {
 			} else {
 				return (null)
 			}
-		} 
-		catch (error) 
-		{
+		}
+		catch (error) {
 			console.log(error);
 			return (null);
 		}
 	};
-	  
+
 	useEffect(() => {
 		if (!verify_token)
 			logout;
@@ -110,12 +108,12 @@ const s = () => {
 	}, []);
 
 	useEffect(() => {
-		if (!user) 
+		if (!user)
 			return;
 		setFirst_name(user.first_name)
 		setLast_name(user.last_name)
 		setEmail(user.email)
-		setMobile_number(user.mobile_number )
+		setMobile_number(user.mobile_number)
 		setUsername(user.username)
 		setDisplay_name(user.display_name)
 		setBio(user.bio)
@@ -154,10 +152,9 @@ const s = () => {
 		for (const [key, value] of Object.entries(user)) {
 			if (key === 'profile_picture')
 				continue;
-			if (value !== get_value(key))
-			{
+			if (value !== get_value(key)) {
 				userProfileData.append(key, get_value(key));
-				setUser({...user, [key]: get_value(key)});
+				setUser({ ...user, [key]: get_value(key) });
 			}
 		}
 		if (selectedFile && user.profile_picture !== selectedFile)
@@ -167,37 +164,41 @@ const s = () => {
 		return userProfileData;
 	}
 
-	const update_user = async () =>
-	{
+	const update_user = async () => {
 		const userProfileData = create_form_data(user, selectedFile);
-		// axios.put(USER_API, userProfileData, {headers: header})
-		// .then((response) => {
-		// 	console.log(response)
-		// })
-		// .catch((error) => {
-		// 	console.log(error)
-		// })
-		const response = await fetch(USER_API, {
-			method: 'POST',
+		axios.put(USER_API, userProfileData, {
 			headers: {
 				'Content-Type': 'appliction/json',
 				'Authorization': 'Bearer ' + String(authTokens.access_token)
-			},
-			body: userProfileData
+			}
 		})
-		const data = await response.json()
-		if (response.ok) {
-			console.log('data', data);
-		} else {
-			console.log('data', data);
-		}
+			.then((response) => {
+				console.log(response)
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+		// const response = await fetch(USER_API, {
+		// 	method: 'PUT',
+		// headers: {
+		// 	'Content-Type': 'appliction/json',
+		// 		'Authorization': 'Bearer ' + String(authTokens.access_token)
+		// },
+		// 	body: userProfileData
+		// })
+		// const data = await response.json()
+		// if (response.ok) {
+		// 	console.log('data', data);
+		// } else {
+		// 	console.log('data', data);
+		// }
 	}
 	/**********************  Update User Data ************************/
 
 
 	/**********************  Handle Input Change ************************/
 	const handleInputChange = (e) => {
-		const {name, value} = e.target;
+		const { name, value } = e.target;
 		switch (name) {
 			case 'first_name':
 				setFirst_name(value);
@@ -225,8 +226,7 @@ const s = () => {
 		}
 	}
 
-	const handleUploadClick = (e) =>
-	{
+	const handleUploadClick = (e) => {
 		document.getElementById('profile_picture').click();
 	}
 
@@ -269,8 +269,8 @@ const s = () => {
 
 							<div>
 								<img
-									
-									src= {preview || `${BASE_URL}${profile_picture}`}
+
+									src={preview || `${BASE_URL}${profile_picture}`}
 									className='rounded-full border border-primary profile-pic'
 									alt='Profile Picture'
 								/>
@@ -282,13 +282,13 @@ const s = () => {
 									type='file'
 									id='profile_picture'
 									name='profile_picture'
-									style={{display: 'none'}}
+									style={{ display: 'none' }}
 									onChange={handleImageChange}
 								/>
 								<Button
 									className={'rounded-md border-border font-regular buttons-text update-button'}
 									onClick={handleUploadClick}
-									>
+								>
 									Update Profile Picture
 								</Button>
 								<Button
@@ -315,10 +315,10 @@ const s = () => {
 								Change identifying details for your account.
 							</p>
 						</div>
-							
+
 						<div className='flex items-center'>
 
-							
+
 							<form id='form1' className='flex flex-col lp:gap-4 gap-2'>
 								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
 									<Input
@@ -382,7 +382,7 @@ const s = () => {
 										value={''}
 									/>
 								</div>
-							
+
 
 							</form>
 						</div>

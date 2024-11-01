@@ -212,6 +212,7 @@ class UserProfileView(APIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     # Disable CSRF for this view for testing purposes
     def get(self, request):
+        print(" -------------- Request data1 --------------------")
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
             print(f"Payload: {payload}")
@@ -223,10 +224,9 @@ class UserProfileView(APIView):
         return Response(serializer.data)
 
     def put(self, request):
-        print(f" ---- Request data -----: {request.data}")
+        print(" -------------- Request data2 --------------------")
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
-            print(f"Payload: {payload}")
             user_id = payload['user_id']
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -234,8 +234,6 @@ class UserProfileView(APIView):
         
         # Create a mutable copy of the data
         mutable_data = request.data.copy()
-        print(f"Mutable data: {mutable_data}")
-        
         # Handle profile picture update or removal
         if 'profile_picture' in mutable_data:
             if mutable_data['profile_picture'] in [None, '', 'null']:
