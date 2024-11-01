@@ -167,16 +167,30 @@ const s = () => {
 		return userProfileData;
 	}
 
-	const update_user = () =>
-	{ 
+	const update_user = async () =>
+	{
 		const userProfileData = create_form_data(user, selectedFile);
-		axios.put(USER_API, userProfileData, {headers: header})
-		.then((response) => {
-			console.log(response)
+		// axios.put(USER_API, userProfileData, {headers: header})
+		// .then((response) => {
+		// 	console.log(response)
+		// })
+		// .catch((error) => {
+		// 	console.log(error)
+		// })
+		const response = await fetch(USER_API, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'appliction/json',
+				'Authorization': 'Bearer ' + String(authTokens.access_token)
+			},
+			body: userProfileData
 		})
-		.catch((error) => {
-			console.log(error)
-		})
+		const data = await response.json()
+		if (response.ok) {
+			console.log('data', data);
+		} else {
+			console.log('data', data);
+		}
 	}
 	/**********************  Update User Data ************************/
 

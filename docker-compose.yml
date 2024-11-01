@@ -4,15 +4,7 @@ version: '3.8'
 networks:
   ft_transcendence_network:
     name: ft_transcendence_network
-  
-volumes:
-  postgres_data:
-    name: postgres_data
-    driver: local
-    driver_opts:
-      type: none
-      device: /Users/ahaloui/goinfre/postgres_data
-      o: bind
+
 
 services:
   postgres_db:
@@ -24,30 +16,30 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - ./app/postgres_data:/var/lib/postgresql/data
     networks:
       - ft_transcendence_network
     restart: always
   
-  backend:
-    container_name: backend
-    build: app/backend/.
-    ports:
-      - "8000:8000"
-    env_file:
-      - app/backend/.env
-    depends_on:
-      - postgres_db
-    networks:
-      - ft_transcendence_network
-    restart: always
+  # backend:
+  #   container_name: backend
+  #   build: app/backend/.
+  #   ports:
+  #     - "8000:8000"
+  #   env_file:
+  #     - app/backend/.env
+  #   depends_on:
+  #     - postgres_db
+  #   networks:
+  #     - ft_transcendence_network
+  #   restart: always
   
-  frontend:
-    container_name: frontend
-    build: app/frontend/.
-    ports:
-      - "3000:3000"
-    networks:
-      - ft_transcendence_network
-    restart: always
+  # frontend:
+  #   container_name: frontend
+  #   build: app/frontend/.
+  #   ports:
+  #     - "5173:5173"
+  #   networks:
+  #     - ft_transcendence_network
+  #   restart: always

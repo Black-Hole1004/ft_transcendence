@@ -210,7 +210,7 @@ def display_text(request):
 @permission_classes([IsAuthenticated])
 class UserProfileView(APIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
- # Disable CSRF for this view for testing purposes
+    # Disable CSRF for this view for testing purposes
     def get(self, request):
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
@@ -223,6 +223,7 @@ class UserProfileView(APIView):
         return Response(serializer.data)
 
     def put(self, request):
+        print(f" ---- Request data -----: {request.data}")
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
             print(f"Payload: {payload}")
