@@ -2,44 +2,52 @@ version: '3.8'
 
 
 networks:
-  app-network:
-    driver: bridge
+  ft_transcendence_network:
+    name: ft_transcendence_network
   
 volumes:
   postgres_data:
+    name: postgres_data
+    driver: local
+    driver_opts:
+      type: none
+      device: /Users/ahaloui/goinfre/postgres_data
+      o: bind
 
 services:
-  db:
+  postgres_db:
+    container_name: ft_transcendence_db
     image: postgres:14
-    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
     networks:
-      - app-network
+      - ft_transcendence_network
+    restart: always
   
   backend:
-    build:
-      context: app/backend/.
+    container_name: backend
+    build: app/backend/.
     ports:
       - "8000:8000"
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
-      - DJANGO_SETTINGS_MODULE=backend.settings
+    env_file:
+      - app/backend/.env
     depends_on:
-      - db
+      - postgres_db
     networks:
-      - app-network
+      - ft_transcendence_network
+    restart: always
   
   frontend:
-    build:
-      context: app/frontend/.
+    container_name: frontend
+    build: app/frontend/.
     ports:
       - "3000:3000"
     networks:
-      - app-network
+      - ft_transcendence_network
+    restart: always

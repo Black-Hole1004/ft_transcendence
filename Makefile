@@ -1,3 +1,5 @@
+.PHONY: all up build updetached down prune scan
+
 all: up
 
 up:
@@ -17,5 +19,3 @@ prune:
 
 scan: build
 	docker scan ft_transcendence-pingpong
-
-.PHONY: up down prune

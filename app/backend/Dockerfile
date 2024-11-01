@@ -8,10 +8,10 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-COPY script.sh .
+COPY entry_point.sh .
 
-RUN chmod +x script.sh
+RUN chmod +x entry_point.sh
 
 EXPOSE 8000
 
-CMD ["./script.sh"]
+CMD ["./entry_point.sh"]

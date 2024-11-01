@@ -1,5 +1,6 @@
 Django
 django-environ
+Pillow
 gunicorn
 djangorestframework-simplejwt
 python-dotenv
