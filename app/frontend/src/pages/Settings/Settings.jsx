@@ -51,7 +51,10 @@ const s = () => {
 		username: '',
 		display_name: '',
 		bio: '',
-		profile_picture: ''
+		password: '',
+		new_password: '',
+		confirm_password: ''
+		// profile_picture: '',
 	})
 
 	const [first_name, setFirst_name] = useState('')
@@ -64,6 +67,10 @@ const s = () => {
 	const [profile_picture, setProfile_picture] = useState('')
 	const [preview, setPreview] = useState(null)
 	const [selectedFile, setSelectedFile] = useState(null)
+
+	const [password, setPassword] = useState('')
+	const [new_password, setNewPassword] = useState('')
+	const [confirm_password, setConfirmPassword] = useState('')
 
 	const { authTokens, verify_token, logout } = useAuth()
 	const navigate = useNavigate()
@@ -90,21 +97,28 @@ const s = () => {
 		}
 	};
 
+	// useEffect(() => {
+	// 	if (!verify_token)
+	// 		logout;
+	// 	if (authTokens) {
+	// 		const fetchData = async () => {
+	// 			const fetchedData = await fetchUser();
+	// 			if (fetchedData)
+	// 				setUser(fetchedData);
+	// 		};
+	// 		fetchData();
+	// 	} else {
+	// 		console.log('wah liyam wah');
+	// 		navigate('/')
+	// 	}
+	// }, []);
+
 	useEffect(() => {
-		if (!verify_token)
-			logout;
-		if (authTokens) {
-			console.log('truetrue')
-			const fetchData = async () => {
-				const fetchedData = await fetchUser();
-				if (fetchedData)
-					setUser(fetchedData);
-			};
-			fetchData();
-		} else {
-			console.log('wah liyam wah');
-			navigate('/')
-		}
+		const fetchData = async () => {
+			const fetchedData = await fetchUser();
+			if (fetchedData)
+				setUser(fetchedData);
+		};
 	}, []);
 
 	useEffect(() => {
@@ -117,7 +131,10 @@ const s = () => {
 		setUsername(user.username)
 		setDisplay_name(user.display_name)
 		setBio(user.bio)
-		setProfile_picture(user.profile_picture)
+		setPassword(user.password)
+		setNewPassword(user.new_password)
+		setConfirmPassword(user.confirm_password)
+		// setProfile_picture(user.profile_picture)
 	}, [user])
 	/**********************  Fetch User Data ************************/
 
@@ -139,6 +156,12 @@ const s = () => {
 				return display_name;
 			case 'bio':
 				return bio;
+			case 'password':
+				return password;
+			case 'new_password':
+				return new_password;
+			case 'confirm_password':
+				return confirm_password;
 			default:
 				return '';
 		}
@@ -149,23 +172,34 @@ const s = () => {
 
 		if (!user)
 			return userProfileData;
-		for (const [key, value] of Object.entries(user)) {
-			if (key === 'profile_picture')
-				continue;
-			if (value !== get_value(key)) {
-				userProfileData.append(key, get_value(key));
-				setUser({ ...user, [key]: get_value(key) });
-			}
-		}
-		if (selectedFile && user.profile_picture !== selectedFile)
-			userProfileData.append('profile_picture', selectedFile);
-		else
-			userProfileData.append('profile_picture', "null");
+		userProfileData.append('first_name', first_name)
+		userProfileData.append('last_name', last_name)
+		userProfileData.append('email', email)
+		userProfileData.append('mobile_number', mobile_number)
+		userProfileData.append('username', username)
+		userProfileData.append('display_name', display_name)
+		userProfileData.append('bio', bio)
+		userProfileData.append('password', password)
+		userProfileData.append('new_password', new_password)
+		userProfileData.append('confirm_password', confirm_password)
+		// for (const [key, value] of Object.entries(user)) {
+		// 	if (key === 'profile_picture')
+		// 		continue;
+		// 	if (value !== get_value(key)) {
+		// 		userProfileData.append(key, get_value(key));
+		// 		setUser({ ...user, [key]: get_value(key) });
+		// 	}
+		// }
+		// if (selectedFile && user.profile_picture !== selectedFile)
+		// 	userProfileData.append('profile_picture', selectedFile);
+		// else
+		// 	userProfileData.append('profile_picture', "null");
 		return userProfileData;
 	}
 
 	const update_user = async () => {
 		const userProfileData = create_form_data(user, selectedFile);
+		console.log('userProfileData => ', userProfileData)
 		axios.put(USER_API, userProfileData, {
 			headers: {
 				'Content-Type': 'appliction/json',
@@ -178,20 +212,6 @@ const s = () => {
 			.catch((error) => {
 				console.log(error)
 			})
-		// const response = await fetch(USER_API, {
-		// 	method: 'PUT',
-		// headers: {
-		// 	'Content-Type': 'appliction/json',
-		// 		'Authorization': 'Bearer ' + String(authTokens.access_token)
-		// },
-		// 	body: userProfileData
-		// })
-		// const data = await response.json()
-		// if (response.ok) {
-		// 	console.log('data', data);
-		// } else {
-		// 	console.log('data', data);
-		// }
 	}
 	/**********************  Update User Data ************************/
 
@@ -220,6 +240,15 @@ const s = () => {
 				break;
 			case 'bio':
 				setBio(value);
+				break;
+			case 'password':
+				setPassword(value);
+				break;
+			case 'new_password':
+				setNewPassword(value);
+				break;
+			case 'confirm_password':
+				setConfirmPassword(value);
 				break;
 			default:
 				break;
@@ -363,23 +392,24 @@ const s = () => {
 										label={'Current Password'}
 										placeholder={'•••••••••••••'}
 										onChange={handleInputChange}
-										value={''}
+										value={password}
 									/>
+
 									<Input
-										id={'newpassword'}
+										id={'new_password'}
 										type={'password'}
 										label={'New Password'}
 										placeholder={'••••••••••'}
 										onChange={handleInputChange}
-										value={''}
+										value={new_password}
 									/>
 									<Input
-										id={'confirmpassword'}
+										id={'confirm_password'}
 										type={'password'}
 										label={'Confirm New Password'}
 										placeholder={'••••••••••'}
 										onChange={handleInputChange}
-										value={''}
+										value={confirm_password}
 									/>
 								</div>
 

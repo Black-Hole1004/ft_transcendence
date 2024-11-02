@@ -212,7 +212,6 @@ class UserProfileView(APIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     # Disable CSRF for this view for testing purposes
     def get(self, request):
-        print(" -------------- Request data1 --------------------")
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
             print(f"Payload: {payload}")
@@ -224,37 +223,45 @@ class UserProfileView(APIView):
         return Response(serializer.data)
 
     def put(self, request):
-        print(" -------------- Request data2 --------------------")
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
             user_id = payload['user_id']
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        # Create a mutable copy of the data
-        mutable_data = request.data.copy()
-        # Handle profile picture update or removal
-        if 'profile_picture' in mutable_data:
-            if mutable_data['profile_picture'] in [None, '', 'null']:
-                # Remove the current profile picture if it's not the default
-                if user.profile_picture and user.profile_picture.name != 'profile_pictures/avatar.jpg':
-                    if os.path.isfile(user.profile_picture.path):
-                        os.remove(user.profile_picture.path)
-                user.profile_picture = 'profile_pictures/avatar.jpg'
-                user.save(update_fields=['profile_picture'])
-                # Remove profile_picture from mutable_data
-                mutable_data.pop('profile_picture')
-            elif isinstance(mutable_data['profile_picture'], UploadedFile):
-                # New file uploaded, let the serializer handle it
-                pass
-            else:
-                # Invalid data for profile_picture, remove it to avoid serializer errors
-                mutable_data.pop('profile_picture')
-        
-        serializer = UserSerializer(user, data=mutable_data, partial=True)
+
+        serializer = UserSerializer(user, request.data, partial=True, context={'request': request})
         if serializer.is_valid():
+            if 'new_password' in serializer.validated_data:
+                new_password = serializer.validated_data['new_password']
+                user.set_password(new_password)
+                serializer.save()
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=200)
+
+        # # Create a mutable copy of the data
+        # mutable_data = request.data.copy()
+        # # Handle profile picture update or removal
+        # if 'profile_picture' in mutable_data:
+        #     if mutable_data['profile_picture'] in [None, '', 'null']:
+        #         # Remove the current profile picture if it's not the default
+        #         if user.profile_picture and user.profile_picture.name != 'profile_pictures/avatar.jpg':
+        #             if os.path.isfile(user.profile_picture.path):
+        #                 os.remove(user.profile_picture.path)
+        #         user.profile_picture = 'profile_pictures/avatar.jpg'
+        #         user.save(update_fields=['profile_picture'])
+        #         # Remove profile_picture from mutable_data
+        #         mutable_data.pop('profile_picture')
+        #     elif isinstance(mutable_data['profile_picture'], UploadedFile):
+        #         # New file uploaded, let the serializer handle it
+        #         pass
+        #     else:
+        #         # Invalid data for profile_picture, remove it to avoid serializer errors
+        #         mutable_data.pop('profile_picture')
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # serializer = UserSerializer(user, data=mutable_data, partial=True)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=400)
