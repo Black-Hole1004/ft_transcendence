@@ -72,7 +72,7 @@ const s = () => {
 	const [new_password, setNewPassword] = useState('')
 	const [confirm_password, setConfirmPassword] = useState('')
 
-	const { authTokens, verify_token, logout } = useAuth()
+	const { authTokens, logout } = useAuth()
 	const navigate = useNavigate()
 
 	const fetchUser = async () => {
@@ -88,11 +88,13 @@ const s = () => {
 			if (response.ok) {
 				return (data)
 			} else {
+				logout();
 				return (null)
 			}
 		}
 		catch (error) {
 			console.log(error);
+			logout();
 			return (null);
 		}
 	};
@@ -119,6 +121,7 @@ const s = () => {
 			if (fetchedData)
 				setUser(fetchedData);
 		};
+		fetchData();
 	}, []);
 
 	useEffect(() => {

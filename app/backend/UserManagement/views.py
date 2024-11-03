@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserCreationForm
@@ -29,7 +30,7 @@ from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-
+from rest_framework.authtoken.models import Token
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 # from .forms import UserProfileForm
@@ -232,36 +233,32 @@ class UserProfileView(APIView):
 
         serializer = UserSerializer(user, request.data, partial=True, context={'request': request})
         if serializer.is_valid():
+            # Check if a password change was requested
             if 'new_password' in serializer.validated_data:
                 new_password = serializer.validated_data['new_password']
+                current_password = request.data.get('password')
+
+                # Verify the current password is correct
+                if not user.check_password(current_password):
+                    return Response({'current_password': 'Current password is incorrect.'}, status=400)
+
+                # Set the new password
                 user.set_password(new_password)
-                serializer.save()
+                user.save()
+
+                # Logout the user and remove their token
+                logout(request)
+                
+                # Generate and return a new token for the user
+                new_token, _ = Token.objects.get_or_create(user=user)
+
+                return Response({
+                    'message': 'Password updated successfully.',
+                    'token': new_token.key
+                }, status=200)
+
+            # Save other fields if updating profile details without changing password
             serializer.save()
             return Response(serializer.data, status=200)
-
-        # # Create a mutable copy of the data
-        # mutable_data = request.data.copy()
-        # # Handle profile picture update or removal
-        # if 'profile_picture' in mutable_data:
-        #     if mutable_data['profile_picture'] in [None, '', 'null']:
-        #         # Remove the current profile picture if it's not the default
-        #         if user.profile_picture and user.profile_picture.name != 'profile_pictures/avatar.jpg':
-        #             if os.path.isfile(user.profile_picture.path):
-        #                 os.remove(user.profile_picture.path)
-        #         user.profile_picture = 'profile_pictures/avatar.jpg'
-        #         user.save(update_fields=['profile_picture'])
-        #         # Remove profile_picture from mutable_data
-        #         mutable_data.pop('profile_picture')
-        #     elif isinstance(mutable_data['profile_picture'], UploadedFile):
-        #         # New file uploaded, let the serializer handle it
-        #         pass
-        #     else:
-        #         # Invalid data for profile_picture, remove it to avoid serializer errors
-        #         mutable_data.pop('profile_picture')
-        
-        # serializer = UserSerializer(user, data=mutable_data, partial=True)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=400)

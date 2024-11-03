@@ -24,7 +24,7 @@ urlpatterns = [
     path('api/register/', views.register, name='register'),
     path('api/logout/', LogoutView.as_view(), name='logout'),
     path('api/display_text/', views.display_text, name='display-text'),
-    path('api/users/', UserProfileView.as_view(), name='user-profile'),
+    path('api/user/', UserProfileView.as_view(), name='user-profile'),
     path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
     path('social-auth/', include('social_django.urls', namespace='social')),
 ]

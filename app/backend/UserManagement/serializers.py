@@ -22,8 +22,13 @@ class UserSerializer(serializers.ModelSerializer):
         new_password = data.get('new_password')
         confirm_password = data.get('confirm_password')
 
+        print('password =>', password)
+        print('new_password =>', new_password)
+        print('confirm_password =>', confirm_password)
+
         ## Validate the current password
         if new_password or confirm_password:
+            print('testtest')
             user = self.context['request'].user
             if not user.check_password(password):
                 raise serializers.ValidationError({'current_password': 'Current password is incorrect.'})
