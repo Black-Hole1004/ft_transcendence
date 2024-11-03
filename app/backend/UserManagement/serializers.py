@@ -15,32 +15,26 @@ class UserSerializer(serializers.ModelSerializer):
         # extra_kwargs = {
         #     'profile_picture': {'required': False}
         # }
-    
-    def validate(self, data):
 
-        password = data.get('password')
-        new_password = data.get('new_password')
-        confirm_password = data.get('confirm_password')
-
-        print('password =>', password)
-        print('new_password =>', new_password)
-        print('confirm_password =>', confirm_password)
-
-        ## Validate the current password
-        if new_password or confirm_password:
-            print('testtest')
-            user = self.context['request'].user
-            if not user.check_password(password):
-                raise serializers.ValidationError({'current_password': 'Current password is incorrect.'})
-        
-            # Check if the new password is different from the current password
-            if password == new_password:
-                raise serializers.ValidationError({'new_password': 'New password must be different from the current password.'})
-
-            # Confirm the new password matches
-            if new_password != confirm_password:
-                raise serializers.ValidationError({'error': 'New password and confirm password do not match.'})
-        return data
-
-
+################## for tommorow    ###############
+# def validate(self, data):
+#     user = self.context['request'].user  # Get the authenticated user
+#     password = data.get('password')
+#     new_password = data.get('new_password')
+#     confirm_password = data.get('confirm_password')
+#     # If changing password, perform necessary validations
+#     if new_password or confirm_password:
+#         # Check if current password is provided
+#         if not password:
+#             raise serializers.ValidationError({'error': 'Current password is required to change password.'})
+#         # Check if the current password is correct
+#         if not user.check_password(password):
+#             raise serializers.ValidationError({'error': 'Current password is incorrect.'})
+#         # Check if new password is different from the current password
+#         if password == new_password:
+#             raise serializers.ValidationError({'error': 'New password must be different from the current password.'})
+#         # Check if new password matches the confirmation
+#         if new_password != confirm_password:
+#             raise serializers.ValidationError({'error': 'New password and confirm password do not match.'})
+#     return data
 # ----------------------------------------------------------------------------------

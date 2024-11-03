@@ -207,6 +207,15 @@ def display_text(request):
     text = request.GET.get('text', '')
     return HttpResponse(f'Text: {text}')
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def check_user_password(request):
+    user = request.user  # Get the authenticated user
+    password = request.data.get('password')
+    if user.check_password(password):
+        return Response({'message': 'Password is correct.'})
+    else:
+        return Response({'error': 'Incorrect password.'}, status=status.HTTP_400_BAD_REQUEST)
 
 @permission_classes([IsAuthenticated])
 class UserProfileView(APIView):
@@ -232,33 +241,44 @@ class UserProfileView(APIView):
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = UserSerializer(user, request.data, partial=True, context={'request': request})
+
         if serializer.is_valid():
-            # Check if a password change was requested
-            if 'new_password' in serializer.validated_data:
-                new_password = serializer.validated_data['new_password']
-                current_password = request.data.get('password')
+        ############################################################################################################
+            password = request.data.get('password')
+            new_password = request.data.get('new_password')
+            confirm_password = request.data.get('confirm_password')
 
-                # Verify the current password is correct
-                if not user.check_password(current_password):
-                    return Response({'current_password': 'Current password is incorrect.'}, status=400)
+            # Proceed with password change validation only if all required fields are provided
+            if password or new_password or confirm_password:
+                # Validate that all fields are provided for a password change
+                if not password:
+                    return Response({'error': 'Current password is required to change password.'}, status=status.HTTP_400_BAD_REQUEST)
+                if not new_password:
+                    return Response({'error': 'New password is required to change password.'}, status=status.HTTP_400_BAD_REQUEST)
+                if not confirm_password:
+                    return Response({'error': 'Confirm password is required to change password.'}, status=status.HTTP_400_BAD_REQUEST)
 
-                # Set the new password
+                # Check if the current password is correct
+                if not user.check_password(password):
+                    return Response({'error': 'Current password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Check if the new password is different from the current password
+                if password == new_password:
+                    return Response({'error': 'New password must be different from the current password.'}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Check if new password matches confirmation
+                if new_password != confirm_password:
+                    return Response({'error': 'New password and confirm password do not match.'}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Set the new password and log out
                 user.set_password(new_password)
                 user.save()
-
-                # Logout the user and remove their token
                 logout(request)
                 
-                # Generate and return a new token for the user
-                new_token, _ = Token.objects.get_or_create(user=user)
-
                 return Response({
-                    'message': 'Password updated successfully.',
-                    'token': new_token.key
-                }, status=200)
+                    'message': 'password updated successfully.',
+                }, status=status.HTTP_200_OK)
 
-            # Save other fields if updating profile details without changing password
             serializer.save()
-            return Response(serializer.data, status=200)
-        
-        return Response(serializer.errors, status=400)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
