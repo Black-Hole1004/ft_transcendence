@@ -18,8 +18,9 @@ export const AuthProvider = ({ children }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [showNotification, setShowNotification] = useState(false)
-    const [isValidToken, setIsValidToken] = useState(null);
+    
+    const [showAlert, setShowAlert] = useState(false);
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
 
     const initialAuthTokens = localStorage.getItem('authTokens')
@@ -57,6 +58,7 @@ export const AuthProvider = ({ children }) => {
             }
             else {
                 console.log('Login failed', data)
+                setShowSuccessAlert(true)
             }
         } catch (error) {
             console.error('error', error)
@@ -81,9 +83,10 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json();
             if (response.ok) {
                 console.log('registration successful', data)
-                setShowNotification(true)
+                setShowAlert(true)
             } else {
                 console.log('registartion failed', data)
+                setShowSuccessAlert(true)
             }
         } catch (error) {
             console.error('error', error)
@@ -192,7 +195,7 @@ export const AuthProvider = ({ children }) => {
         // } catch (error) {
         //     console.log('logout failed');
         // }
-        
+        console.log('logout');
         setAuthTokens(null);
         setUser(null);
         localStorage.removeItem('authTokens');
@@ -210,7 +213,6 @@ export const AuthProvider = ({ children }) => {
         setEmail: setEmail,
         setPassword: setPassword,
         setConfirmPassword: setConfirmPassword,
-        setShowNotification: setShowNotification,
 
         email: email,
         password: password,
@@ -218,7 +220,11 @@ export const AuthProvider = ({ children }) => {
 
         authTokens: authTokens,
         user: user,
-        showNotification: showNotification,
+
+        showAlert: showAlert,
+        setShowAlert: setShowAlert,
+        showSuccessAlert: showSuccessAlert,
+        setShowSuccessAlert: setShowSuccessAlert
     }
 
     return (

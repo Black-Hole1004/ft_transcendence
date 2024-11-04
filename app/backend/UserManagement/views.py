@@ -213,6 +213,7 @@ def display_text(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def check_user_password(request):
+    print(f"Request data: {request.data}")
     user = request.user  # Get the authenticated user
     password = request.data.get('password')
     if user.check_password(password):
@@ -223,7 +224,8 @@ def check_user_password(request):
 @permission_classes([IsAuthenticated])
 class UserProfileView(APIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
-    # Disable CSRF for this view for testing purposes
+
+
     def get(self, request):
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
@@ -235,6 +237,7 @@ class UserProfileView(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
+
     def put(self, request):
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
@@ -244,7 +247,6 @@ class UserProfileView(APIView):
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = UserSerializer(user, request.data, partial=True, context={'request': request})
-
         if serializer.is_valid():
         ############################################################################################################
             password = request.data.get('password')

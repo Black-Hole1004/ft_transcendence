@@ -55,9 +55,6 @@ const s = () => {
 		new_password: '',
 		confirm_password: ''
 		// profile_picture: '',
-
-
-		
 	})
 
 	const [first_name, setFirst_name] = useState('')
@@ -101,22 +98,6 @@ const s = () => {
 			return (null);
 		}
 	};
-
-	// useEffect(() => {
-	// 	if (!verify_token)
-	// 		logout;
-	// 	if (authTokens) {
-	// 		const fetchData = async () => {
-	// 			const fetchedData = await fetchUser();
-	// 			if (fetchedData)
-	// 				setUser(fetchedData);
-	// 		};
-	// 		fetchData();
-	// 	} else {
-	// 		console.log('wah liyam wah');
-	// 		navigate('/')
-	// 	}
-	// }, []);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -178,16 +159,16 @@ const s = () => {
 
 		if (!user)
 			return userProfileData;
-		userProfileData.append('first_name', first_name)
-		userProfileData.append('last_name', last_name)
-		userProfileData.append('email', email)
-		userProfileData.append('mobile_number', mobile_number)
-		userProfileData.append('username', username)
-		userProfileData.append('display_name', display_name)
-		userProfileData.append('bio', bio)
-		userProfileData.append('password', password)
-		userProfileData.append('new_password', new_password)
-		userProfileData.append('confirm_password', confirm_password)
+		userProfileData.append('first_name', first_name || '')
+		userProfileData.append('last_name', last_name || '')
+		userProfileData.append('email', email || '')
+		userProfileData.append('mobile_number', mobile_number || '')
+		userProfileData.append('username', username || '')
+		userProfileData.append('display_name', display_name || '')
+		userProfileData.append('bio', bio || '')
+		userProfileData.append('password', password || '')
+		userProfileData.append('new_password', new_password || '')
+		userProfileData.append('confirm_password', confirm_password || '')
 		// for (const [key, value] of Object.entries(user)) {
 		// 	if (key === 'profile_picture')
 		// 		continue;
@@ -205,19 +186,30 @@ const s = () => {
 
 	const update_user = async () => {
 		const userProfileData = create_form_data(user, selectedFile);
-		console.log('userProfileData => ', userProfileData)
+		console.log('password => ', userProfileData.get('password'));
 		axios.put(USER_API, userProfileData, {
 			headers: {
 				'Content-Type': 'appliction/json',
 				'Authorization': 'Bearer ' + String(authTokens.access_token)
 			}
 		})
-			.then((response) => {
-				console.log(response)
-			})
-			.catch((error) => {
-				console.log(error)
-			})
+		.then((response) => {
+			if (response.status === 200) {
+				if (response.data.message === 'password updated successfully.') {
+					console.log('Password updated successfully');
+					logout();
+				}
+				else {
+					console.log('User data updated successfully');
+					navigate('/dashboard');
+				}
+			} else {
+				console.log('Failed to update user data');
+			}
+		})
+		.catch((error) => {
+			console.log(error)
+		})
 	}
 	/**********************  Update User Data ************************/
 

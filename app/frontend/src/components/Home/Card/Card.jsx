@@ -13,13 +13,43 @@ const API_REGISTER = import.meta.env.VITE_API_REGISTER
 const API_42 = import.meta.env.VITE_API_42
 const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 
+
+const InvalidCredentialsAlert = ({ show, setShow }) => {
+    return (
+        <div className={`alert alert-danger ${show ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative`} role="alert">
+            <strong className="font-bold">Error!</strong>
+            <span className="block sm:inline"> Invalid credentials. Please try again.</span>
+            <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShow(false)}>
+                <svg className="fill-current h-6 w-6 text-red-500" role="button" viewBox="0 0 20 20">
+                    <title>Close</title>
+                    <path d="M10 9l5-5 1.414 1.414L11.414 10l5 5-1.414 1.414L10 11.414l-5 5-1.414-1.414 5-5-5-5L4.586 4z" />
+                </svg>
+            </span>
+        </div>
+    );
+};
+
+const SuccessLoginAlert = ({ show, setShow }) => {
+    return (
+        <div className={`alert alert-success ${show ? 'block' : 'hidden'} bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative`} role="alert">
+            <strong className="font-bold">Success!</strong>
+            <span className="block sm:inline"> You have logged in successfully.</span>
+            <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShow(false)}>
+                <svg className="fill-current h-6 w-6 text-green-500" role="button" viewBox="0 0 20 20">
+                    <title>Close</title>
+                    <path d="M10 9l5-5 1.414 1.414L11.414 10l5 5-1.414 1.414L10 11.414l-5 5-1.414-1.414 5-5-5-5L4.586 4z" />
+                </svg>
+            </span>
+        </div>
+    );
+};
+
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => setIsSigningIn(!isSigningIn)
 	
-	const {email, password, confirmPassword, showNotification} = useAuth()
+	const {email, password, confirmPassword, showAlert, showSuccessAlert} = useAuth()
 
-
-	const {login, register , setEmail, setPassword, setConfirmPassword, isSigningIn1} = useAuth()
+	const {login, register , setEmail, setPassword, setConfirmPassword, setShowAlert, setShowSuccessAlert} = useAuth()
 	// --------------------------- moudrib code -------------------------------------------
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
@@ -73,32 +103,9 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	]
 	// --------------------------------------------------------------------------------------------
 
-
-
-	const handleOauth = (provider) => {
-		const API_URLS = {
-		  "google": API_GOOGLE,
-		  '42': API_42,
-		};
-		const apiUrl = API_URLS[provider];
-		if (apiUrl) {
-			window.location.href = apiUrl;
-			const cookie = Cookies.get('access_token');
-			console.log(cookie);
-		} else {
-			console.error(`Unsupported OAuth provider: ${provider}`);
-		}
-	};
-
-	
-
-
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		if (isSigningIn)
-			login()
-		else 
-			register()
+		isSigningIn ? login() : register()
 	}
 	// --------------------------------------------------------------------------------------------
 
@@ -170,6 +177,10 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						>
 							{isSigningIn ? <>Sign in</> : <>Sign up</>}
 						</CardButton>
+
+						
+						<InvalidCredentialsAlert show={showSuccessAlert} setShow={setShowSuccessAlert} />
+						<SuccessLoginAlert show={showAlert} setShow={setShowAlert} />
 					</form>
 
 					{!isSigningIn && (
