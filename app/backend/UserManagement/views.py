@@ -83,6 +83,7 @@ def decode_jwt_info(token):
 
 @csrf_exempt  # Disable CSRF for this view for testing purposes
 def login(request):
+    print(f" -------- Request method: {request.method} ---------")
     if request.method == 'POST':
         try:
             # Parse JSON data from request body
@@ -128,6 +129,8 @@ def login(request):
         # return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def generate_random_username():
+
+
     prefix = 'moha_'
     suffix = str(uuid.uuid4())[:8]
     return prefix + suffix

@@ -55,6 +55,9 @@ const s = () => {
 		new_password: '',
 		confirm_password: ''
 		// profile_picture: '',
+
+
+		
 	})
 
 	const [first_name, setFirst_name] = useState('')

@@ -7,7 +7,7 @@ networks:
 
 
 services:
-  postgres_db:
+  ft_transcendence_db:
     container_name: ft_transcendence_db
     image: postgres:14
     environment:
@@ -29,10 +29,15 @@ services:
       - "8000:8000"
     env_file:
       - app/backend/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=core.settings
     depends_on:
-      - postgres_db
+      - ft_transcendence_db
     networks:
       - ft_transcendence_network
+    volumes:
+      - ./app/backend:/app/backend
     restart: always
   
   frontend:
@@ -42,4 +47,6 @@ services:
       - "5173:5173"
     networks:
       - ft_transcendence_network
+    volumes:
+      - ./app/frontend:/app/frontend
     restart: always

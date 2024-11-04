@@ -16,6 +16,7 @@ down:
 
 prune:
 	docker system prune -af --volumes --force
+	@rm -rf ./app/postgres_data
 
 scan: build
 	docker scan ft_transcendence-pingpong
