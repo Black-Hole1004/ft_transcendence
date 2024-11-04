@@ -53,8 +53,8 @@ const s = () => {
 		bio: '',
 		password: '',
 		new_password: '',
-		confirm_password: ''
-		// profile_picture: '',
+		confirm_password: '',
+		profile_picture: '',
 	})
 
 	const [first_name, setFirst_name] = useState('')
@@ -67,6 +67,7 @@ const s = () => {
 	const [profile_picture, setProfile_picture] = useState('')
 	const [preview, setPreview] = useState(null)
 	const [selectedFile, setSelectedFile] = useState(null)
+	const [removeImage, setRemoveImage] = useState(false);
 
 	const [password, setPassword] = useState('')
 	const [new_password, setNewPassword] = useState('')
@@ -121,7 +122,7 @@ const s = () => {
 		setPassword(user.password)
 		setNewPassword(user.new_password)
 		setConfirmPassword(user.confirm_password)
-		// setProfile_picture(user.profile_picture)
+		setProfile_picture(user.profile_picture)
 	}, [user])
 	/**********************  Fetch User Data ************************/
 
@@ -169,24 +170,18 @@ const s = () => {
 		userProfileData.append('password', password || '')
 		userProfileData.append('new_password', new_password || '')
 		userProfileData.append('confirm_password', confirm_password || '')
-		// for (const [key, value] of Object.entries(user)) {
-		// 	if (key === 'profile_picture')
-		// 		continue;
-		// 	if (value !== get_value(key)) {
-		// 		userProfileData.append(key, get_value(key));
-		// 		setUser({ ...user, [key]: get_value(key) });
-		// 	}
-		// }
-		// if (selectedFile && user.profile_picture !== selectedFile)
-		// 	userProfileData.append('profile_picture', selectedFile);
-		// else
-		// 	userProfileData.append('profile_picture', "null");
+		if (selectedFile)
+		{
+			userProfileData.append('profile_picture', selectedFile);
+		}
+		else if (removeImage) {
+			userProfileData.append('remove_profile_picture', 'true');
+		}
 		return userProfileData;
 	}
 
 	const update_user = async () => {
 		const userProfileData = create_form_data(user, selectedFile);
-		console.log('password => ', userProfileData.get('password'));
 		axios.put(USER_API, userProfileData, {
 			headers: {
 				'Content-Type': 'appliction/json',
@@ -194,17 +189,15 @@ const s = () => {
 			}
 		})
 		.then((response) => {
-			if (response.status === 200) {
-				if (response.data.message === 'password updated successfully.') {
-					console.log('Password updated successfully');
-					logout();
-				}
-				else {
-					console.log('User data updated successfully');
-					navigate('/dashboard');
-				}
-			} else {
+			if (response.status !== 200) {
 				console.log('Failed to update user data');
+				return;
+			} else {
+				setUser(response.data);
+				setSelectedFile(null);
+				setPreview(null);
+				setRemoveImage(false);
+				console.log('User data updated successfully');
 			}
 		})
 		.catch((error) => {
@@ -262,14 +255,16 @@ const s = () => {
 		if (file) {
 			setPreview(URL.createObjectURL(file));
 			setSelectedFile(file);
+			setRemoveImage(false);
 		}
 	}
 	function handleRemoveImage() {
 		setPreview(null);
 		setSelectedFile(null);
 		setProfile_picture(DEFAULT_PROFILE_PICTURE);
+		setRemoveImage(true);
 	}
-	/**********************  Handle Input Change ************************/
+
 
 	return (
 		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>

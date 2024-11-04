@@ -93,85 +93,85 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const get_expiration_time = (token) => {
-        if (!token) {
-            return null
-        }
-        const decodedToken = jwtDecode(token)
-        return (decodedToken.exp ? decodedToken.exp * 1000 : null)
-    }
+    // const get_expiration_time = (token) => {
+    //     if (!token) {
+    //         return null
+    //     }
+    //     const decodedToken = jwtDecode(token)
+    //     return (decodedToken.exp ? decodedToken.exp * 1000 : null)
+    // }
 
-    const refres_token = async () => {
-        console.log('refresh_token');
-        try {
-            const response = await fetch(VITE_API_REFRESH, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "refresh": authTokens.refresh_token
-                })
-            })
-            const data = await response.json()
-            if (response.ok) {
-                const updatedTokens = {
-                    access_token: data.access,
-                    refresh_token: authTokens.refresh_token,
-                };
-                setAuthTokens(updatedTokens);
-                setUser(jwtDecode(data.access));
-                localStorage.setItem('authTokens', JSON.stringify(updatedTokens)); 
-            }
-            else {
-                console.log('Login failed', data)
-                logout()
-            }
-        } catch (error) {
-            console.error('error', error)
-            logout()
-        }
-    }
+    // const refres_token = async () => {
+    //     console.log('refresh_token');
+    //     try {
+    //         const response = await fetch(VITE_API_REFRESH, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 "refresh": authTokens.refresh_token
+    //             })
+    //         })
+    //         const data = await response.json()
+    //         if (response.ok) {
+    //             const updatedTokens = {
+    //                 access_token: data.access,
+    //                 refresh_token: authTokens.refresh_token,
+    //             };
+    //             setAuthTokens(updatedTokens);
+    //             setUser(jwtDecode(data.access));
+    //             localStorage.setItem('authTokens', JSON.stringify(updatedTokens)); 
+    //         }
+    //         else {
+    //             console.log('Login failed', data)
+    //             logout()
+    //         }
+    //     } catch (error) {
+    //         console.error('error', error)
+    //         logout()
+    //     }
+    // }
 
-    const verify_token = async () => {
-        try {
-            const response = await fetch (VITE_API_VERIFY, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"token": authTokens.access_token}),
-            })
-            if (response.ok)
-                return (true)
-            else {
-                logout()
-            }
-        } catch(error) {
-            logout()
-        }
-    }
+    // const verify_token = async () => {
+    //     try {
+    //         const response = await fetch (VITE_API_VERIFY, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({"token": authTokens.access_token}),
+    //         })
+    //         if (response.ok)
+    //             return (true)
+    //         else {
+    //             logout()
+    //         }
+    //     } catch(error) {
+    //         logout()
+    //     }
+    // }
 
-    useEffect(() => {
-        if (authTokens) {
-            const accessTokenExpirationTime = get_expiration_time(authTokens.access_token)
-            const refreshTokenExpirationTime = get_expiration_time(authTokens.refresh_token)
+    // useEffect(() => {
+    //     if (authTokens) {
+    //         const accessTokenExpirationTime = get_expiration_time(authTokens.access_token)
+    //         const refreshTokenExpirationTime = get_expiration_time(authTokens.refresh_token)
 
-            const accesTokenTimeout = setTimeout(() => {
-                refres_token()
-            }, accessTokenExpirationTime - Date.now() - 1000);
+    //         const accesTokenTimeout = setTimeout(() => {
+    //             refres_token()
+    //         }, accessTokenExpirationTime - Date.now() - 1000);
 
-            // const refreshTokenTimeout = setTimeout(() => {
-            //     console.log('refresh_expired');
-            //     logout()
-            // }, refreshTokenExpirationTime - Date.now() - 1000);
+    //         // const refreshTokenTimeout = setTimeout(() => {
+    //         //     console.log('refresh_expired');
+    //         //     logout()
+    //         // }, refreshTokenExpirationTime - Date.now() - 1000);
 
-            return (() => {
-                clearTimeout(accesTokenTimeout);
-                // clearTimeout(refreshTokenTimeout);
-            })
-        }
-    }, [authTokens])
+    //         return (() => {
+    //             clearTimeout(accesTokenTimeout);
+    //             // clearTimeout(refreshTokenTimeout);
+    //         })
+    //     }
+    // }, [authTokens])
 
     const logout = async () => {
         // try {
@@ -207,7 +207,7 @@ export const AuthProvider = ({ children }) => {
         register: register,
         logout: logout,
         // refres_token: refres_token,
-        verify_token: verify_token,
+        // verify_token: verify_token,
 
 
         setEmail: setEmail,

@@ -38,7 +38,10 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 #gmail=aymene@gmail.com
 
 
+from django.contrib.auth import get_user_model
 
+
+User = get_user_model()
 #todo: (DELETE THIS LATER) simple view to test permissions control and jwt decoding
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -229,7 +232,6 @@ class UserProfileView(APIView):
     def get(self, request):
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
-            print(f"Payload: {payload}")
             user_id = payload['user_id']
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -239,51 +241,92 @@ class UserProfileView(APIView):
 
 
     def put(self, request):
+        # try:
+        #     payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
+        #     user_id = payload['user_id']
+        #     user = User.objects.get(id=user_id)
+        # except User.DoesNotExist:
+        #     return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         try:
-            payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
-            user_id = payload['user_id']
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+            user = request.user
+            has_password_change = False
+            new_tokens = None
 
-        serializer = UserSerializer(user, request.data, partial=True, context={'request': request})
-        if serializer.is_valid():
-        ############################################################################################################
+            if request.data.get('remove_profile_picture') == 'true':
+                if user.profile_picture and 'avatar.jpg' not in user.profile_picture.name:
+                    if os.path.isfile(user.profile_picture.path):
+                        os.remove(user.profile_picture.path)
+                user.profile_picture = 'profile_pictures/avatar.jpg'
+                user.save()
+
+
             password = request.data.get('password')
             new_password = request.data.get('new_password')
             confirm_password = request.data.get('confirm_password')
 
-            # Proceed with password change validation only if all required fields are provided
-            if password or new_password or confirm_password:
-                # Validate that all fields are provided for a password change
-                if not password:
-                    return Response({'error': 'Current password is required to change password.'}, status=status.HTTP_400_BAD_REQUEST)
-                if not new_password:
-                    return Response({'error': 'New password is required to change password.'}, status=status.HTTP_400_BAD_REQUEST)
-                if not confirm_password:
-                    return Response({'error': 'Confirm password is required to change password.'}, status=status.HTTP_400_BAD_REQUEST)
+            if any([password, new_password, confirm_password]):
+                # Validate password fields
+                if not all([password, new_password, confirm_password]):
+                    return Response({
+                        'error': 'All password fields (password, new_password, confirm_password) are required'
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
-                # Check if the current password is correct
+                # Check current password
                 if not user.check_password(password):
-                    return Response({'error': 'Current password is incorrect'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({
+                        'error': 'Current password is incorrect'
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
-                # Check if the new password is different from the current password
-                if password == new_password:
-                    return Response({'error': 'New password must be different from the current password.'}, status=status.HTTP_400_BAD_REQUEST)
-
-                # Check if new password matches confirmation
+                # Check password confirmation
                 if new_password != confirm_password:
-                    return Response({'error': 'New password and confirm password do not match.'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({
+                        'error': 'New password and confirm password do not match'
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
-                # Set the new password and log out
+                # Check if new password is different
+                if password == new_password:
+                    return Response({
+                        'error': 'New password must be different from current password'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+                has_password_change = True
+
+            user_data = request.data.copy()
+            for field in ['password', 'new_password', 'confirm_password', 'remove_profile_picture']:
+                if field in user_data:
+                    user_data.pop(field)
+
+            if 'profile_picture' in request.FILES:
+                # Remove old profile picture if it exists and is not the default
+                if user.profile_picture and 'avatar.jpg' not in user.profile_picture.name:
+                    if os.path.isfile(user.profile_picture.path):
+                        os.remove(user.profile_picture.path)
+            
+            serializer = UserSerializer(user, data=user_data, partial=True)
+            if not serializer.is_valid():
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+            serializer.save()
+
+            if has_password_change:
                 user.set_password(new_password)
                 user.save()
-                logout(request)
-                
-                return Response({
-                    'message': 'password updated successfully.',
-                }, status=status.HTTP_200_OK)
 
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                refresh = RefreshToken.for_user(user)
+                new_tokens = {
+                    'access_token': str(refresh.access_token),
+                    'refresh_token': str(refresh)
+                }
+            
+            response_data = serializer.data
+            if new_tokens:
+                response_data.update({
+                    'message': 'Profile updated and password changed successfully',
+                    'new_tokens': new_tokens
+                })
+            else:
+                response_data['message'] = 'Profile updated successfully'
+            
+            return Response(response_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
