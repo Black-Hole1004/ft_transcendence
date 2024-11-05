@@ -89,6 +89,7 @@ const s = () => {
 			if (response.ok) {
 				return (data)
 			} else {
+				console.log('Failed to fetch user data');
 				logout();
 				return (null)
 			}

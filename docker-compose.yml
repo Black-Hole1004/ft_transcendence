@@ -49,4 +49,5 @@ services:
       - ft_transcendence_network
     volumes:
       - ./app/frontend:/app/frontend
+      - /app/frontend/node_modules
     restart: always

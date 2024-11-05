@@ -7,8 +7,9 @@ import ProfileBio from '../../components/Profile/ProfileBio'
 import ProgressBar from '../../components/Profile/ProgressBar'
 import AboutSection from '../../components/Profile/AboutSection'
 import UserStatsGraph from '../../components/Profile/UserStatsGraph'
+import useAuth from '../../context/AuthContext'
 
-import axios from 'axios';
+
 const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -16,6 +17,17 @@ const Profile = () => {
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
 
+	const [first_name, setFirst_name] = useState('')
+	const [last_name, setLast_name] = useState('')
+	const [email, setEmail] = useState('')
+	const [mobile_number, setMobile_number] = useState('')
+	const [username, setUsername] = useState('')
+	const [display_name, setDisplay_name] = useState('')
+	const [bio, setBio] = useState('')
+	const [profile_picture, setProfile_picture] = useState('')
+	const [preview, setPreview] = useState(null)
+
+	const { authTokens, logout } = useAuth()
 	useEffect(() => {
 		const calculateWidth = () => {
 			if (containerRef.current) {
@@ -30,17 +42,6 @@ const Profile = () => {
 		}
 	}, [])
 
-	/* my code */
-	const [first_name, setFirst_name] = useState('')
-	const [last_name, setLast_name] = useState('')
-	const [email, setEmail] = useState('')
-	const [mobile_number, setMobile_number] = useState('')
-	const [username, setUsername] = useState('')
-	const [display_name, setDisplay_name] = useState('')
-	const [bio, setBio] = useState('')
-	const [profile_picture, setProfile_picture] = useState('')
-	const [preview, setPreview] = useState(null)
-
 	const [user, setUser] = useState({
 		first_name: '',
 		last_name: '',
@@ -54,15 +55,27 @@ const Profile = () => {
 
 
 	const fetchUser = async () => {
-		try 
-		{
-			const response = await axios.get(USER_API, {headers: header});
-			return response.data;
-		} 
-		catch (error) 
-		{
+		try {
+			const response = await fetch(USER_API, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + String(authTokens.access_token)
+				}
+			})
+			const data = await response.json();
+			if (response.ok) {
+				return (data)
+			} else {
+				console.log('Failed to fetch user data');
+				logout();
+				return (null)
+			}
+		}
+		catch (error) {
 			console.log(error);
-			return null;
+			logout();
+			return (null);
 		}
 	};
 
@@ -88,22 +101,7 @@ const Profile = () => {
 		setProfile_picture(user.profile_picture);
 	} , [user]);
 
-	let cookies = document.cookie;
-	if (!cookies) {
-		console.log('No cookies found');
-		return;
-	}
 
-	let cookieArray = cookies.split(';');
-	if (cookieArray.length < 2) {
-		console.log('Not enough cookies found');
-		return;
-	}
-	// let refresh_token = cookieArray[0].split('=')[1];
-	let access_token = cookieArray[1].split('=')[1];
-	const header = {
-		'Authorization': `Bearer ${access_token}`
-	}
 
 
 
