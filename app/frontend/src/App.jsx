@@ -24,7 +24,7 @@ const ComponentPath = () => {
 	const location = useLocation()
 	return (
         <Routes>
-            {authTokens ? (
+            {(authTokens && user) ? (
                 <>
 					<Route path="/" element={<Navigate to="/Settings" replace /> && <Settings/>} />
                     <Route path="/Game" element={<Navigate to="/Game" replace /> && <Game/>} />

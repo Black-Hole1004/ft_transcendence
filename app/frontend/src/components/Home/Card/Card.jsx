@@ -6,7 +6,6 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 import useAuth from '../../../context/AuthContext'
-import RegistrationNotification from '../../ShowNotification'
 
 const API_LOGIN = import.meta.env.VITE_API_LOGIN
 const API_REGISTER = import.meta.env.VITE_API_REGISTER

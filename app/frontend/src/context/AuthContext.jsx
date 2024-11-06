@@ -1,8 +1,9 @@
 import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
-import { useEffect } from 'react'
 
+import Cookies from 'js-cookie'
+import { useEffect } from 'react'
 
 const AuthContext = createContext(null)
 const API_LOGIN = import.meta.env.VITE_API_LOGIN
@@ -23,17 +24,30 @@ export const AuthProvider = ({ children }) => {
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
 
-    const initialAuthTokens = localStorage.getItem('authTokens')
-        ? JSON.parse(localStorage.getItem('authTokens'))
-        : null;
 
 
-    const initialUser = initialAuthTokens && initialAuthTokens.access_token
-        ? jwtDecode(initialAuthTokens.access_token)
-        : null
+    const accessToken = Cookies.get('access_token');
+    const refreshToken = Cookies.get('refresh_token');
 
-    const [authTokens, setAuthTokens] = useState(initialAuthTokens)
+    const [authTokens, setAuthTokens] = useState(() => {
+        try {
+          return {
+            access_token: accessToken ? JSON.parse(accessToken) : null,
+            refresh_token: refreshToken ? JSON.parse(refreshToken) : null,
+          };
+        } catch (error) {
+            console.error('error', error)
+          return refres_token();
+        }
+    });
+
+
+    const initialUser = authTokens?.access_token && jwtDecode(authTokens.access_token)
     const [user, setUser] = useState(initialUser)
+    
+
+
+
     const navigate = useNavigate()
 
     const login = async () => {
@@ -53,7 +67,8 @@ export const AuthProvider = ({ children }) => {
                 console.log('Login successful', data)
                 setAuthTokens(data)
                 setUser(jwtDecode(data.access_token))
-                localStorage.setItem('authTokens', JSON.stringify(data))
+                Cookies.set('access_token', JSON.stringify(data.access_token))
+                Cookies.set('refresh_token', JSON.stringify(data.refresh_token))
                 navigate('/settings')
             }
             else {
@@ -64,7 +79,6 @@ export const AuthProvider = ({ children }) => {
             console.error('error', error)
         }
     }
-
 
 
     const register = async () => {
@@ -93,7 +107,22 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const getAuthHeaders = () => {
+        const access_token = Cookies.get('access_token')
+        if (access_token) {
+            const tokens = JSON.parse(access_token)
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + tokens,
+            }
+        }
+        return {
+            'Content-Type': 'application/json'
+        }
+    }
+
     const get_expiration_time = (token) => {
+      
         if (!token) {
             return null
         }
@@ -102,7 +131,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const refres_token = async () => {
-        console.log('refresh_token');
+        console.log('--- refreshing token ---')
         try {
             const response = await fetch(VITE_API_REFRESH, {
                 method: 'POST',
@@ -121,8 +150,8 @@ export const AuthProvider = ({ children }) => {
                 };
                 setAuthTokens(updatedTokens);
                 setUser(jwtDecode(data.access));
-                localStorage.setItem('authTokens', JSON.stringify(updatedTokens));
-                console.log('--- access token updated ---', data)
+                Cookies.set('access_token', JSON.stringify(updatedTokens.access_token))  
+                Cookies.set('refresh_token', JSON.stringify(updatedTokens.refresh_token))
             }
             else {
                 console.log('--- Login failed ---', data)
@@ -134,67 +163,36 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    // const verify_token = async () => {
-    //     try {
-    //         const response = await fetch (VITE_API_VERIFY, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({"token": authTokens.access_token}),
-    //         })
-    //         if (response.ok)
-    //             return (true)
-    //         else {
-    //             logout()
-    //         }
-    //     } catch(error) {
-    //         logout()
-    //     }
-    // }
+
+
 
     useEffect(() => {
         if (authTokens) {
-            const accessTokenExpirationTime = get_expiration_time(authTokens.access_token)
-            if (accessTokenExpirationTime) {
-                const accesTokenTimeout = setTimeout(() => {
-                    refres_token()
-                }, accessTokenExpirationTime - Date.now() - 1000);
-                return (() => {
-                    clearTimeout(accesTokenTimeout);
-                })
-            } else {
+            try {
+                const accessTokenExpirationTime = get_expiration_time(authTokens.access_token)
+                if (accessTokenExpirationTime) {
+                    const accesTokenTimeout = setTimeout(() => {
+                        refres_token()
+                    }, accessTokenExpirationTime - Date.now() - 1000);
+                    return (() => {
+                        clearTimeout(accesTokenTimeout);
+                    })
+                } else {
+                    logout()
+                }
+            } catch (error) {
+                console.error('error', error)
                 logout()
             }
         }
     }, [authTokens])
 
     const logout = async () => {
-        // try {
-        //     const response = await fetch(VITE_API_LOGOUT,{
-        //         method: "POST",
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             'Authorization': 'Bearer ' + String(authTokens.access_token)
-        //         },
-        //         body: JSON.stringify({"refresh": authTokens.refresh_token})
-        //     });
-        //     if (response.ok) {
-        //         console.log('logout successful');
-        //         setAuthTokens(null)
-        //         setUser(null)
-        //         localStorage.removeItem('authTokens')
-        //         navigate('/')
-        //     } else {
-        //         console.log('logout failed');
-        //     }
-        // } catch (error) {
-        //     console.log('logout failed');
-        // }
-        console.log('logout');
+        Cookies.remove('access_token');
+        Cookies.remove('refresh_token');
         setAuthTokens(null);
         setUser(null);
-        localStorage.removeItem('authTokens');
+        // navigate('/');
         console.log('logout successful');
     }
 
@@ -202,7 +200,7 @@ export const AuthProvider = ({ children }) => {
         login: login,
         register: register,
         logout: logout,
-        // refres_token: refres_token,
+        refres_token: refres_token,
         // verify_token: verify_token,
 
 
@@ -220,7 +218,11 @@ export const AuthProvider = ({ children }) => {
         showAlert: showAlert,
         setShowAlert: setShowAlert,
         showSuccessAlert: showSuccessAlert,
-        setShowSuccessAlert: setShowSuccessAlert
+        setShowSuccessAlert: setShowSuccessAlert,
+
+        getAuthHeaders: getAuthHeaders,
+
+        isAccessTokenValid: isAccessTokenValid
     }
 
     return (

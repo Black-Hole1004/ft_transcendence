@@ -27,7 +27,7 @@ const Profile = () => {
 	const [profile_picture, setProfile_picture] = useState('')
 	const [preview, setPreview] = useState(null)
 
-	const { authTokens, logout } = useAuth()
+	const { authTokens, logout, getAuthHeaders } = useAuth()
 	useEffect(() => {
 		const calculateWidth = () => {
 			if (containerRef.current) {
@@ -58,23 +58,20 @@ const Profile = () => {
 		try {
 			const response = await fetch(USER_API, {
 				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Bearer ' + String(authTokens.access_token)
-				}
+				headers: getAuthHeaders()
 			})
 			const data = await response.json();
 			if (response.ok) {
 				return (data)
 			} else {
 				console.log('Failed to fetch user data');
-				logout();
+				// logout();
 				return (null)
 			}
 		}
 		catch (error) {
 			console.log(error);
-			logout();
+			// logout();
 			return (null);
 		}
 	};

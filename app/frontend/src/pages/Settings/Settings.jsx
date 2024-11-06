@@ -73,17 +73,22 @@ const s = () => {
 	const [new_password, setNewPassword] = useState('')
 	const [confirm_password, setConfirmPassword] = useState('')
 
-	const { authTokens, logout } = useAuth()
-	const navigate = useNavigate()
+	const { authTokens, logout, getAuthHeaders, isAccessTokenValid, refres_token } = useAuth()
+
+
 
 	const fetchUser = async () => {
+
 		try {
+
+			if (!isAccessTokenValid()) {
+				console.log('--- Access token expired ---');
+				await refres_token();
+			} else
+				console.log('--- Access token is valid ---');
 			const response = await fetch(USER_API, {
 				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Bearer ' + String(authTokens.access_token)
-				}
+				headers: getAuthHeaders()
 			})
 			const data = await response.json();
 			if (response.ok) {
@@ -180,13 +185,13 @@ const s = () => {
 		}
 		return userProfileData;
 	}
-
 	const update_user = async () => {
+		
 		const userProfileData = create_form_data(user, selectedFile);
 		axios.put(USER_API, userProfileData, {
 			headers: {
 				'Content-Type': 'appliction/json',
-				'Authorization': 'Bearer ' + String(authTokens.access_token)
+				'Authorization': getAuthHeaders().Authorization
 			}
 		})
 		.then((response) => {
@@ -265,7 +270,6 @@ const s = () => {
 		setProfile_picture(DEFAULT_PROFILE_PICTURE);
 		setRemoveImage(true);
 	}
-
 
 	return (
 		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
