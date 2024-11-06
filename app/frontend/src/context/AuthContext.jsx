@@ -29,6 +29,16 @@ export const AuthProvider = ({ children }) => {
     const accessToken = Cookies.get('access_token');
     const refreshToken = Cookies.get('refresh_token');
 
+    const logout = async () => {
+        Cookies.remove('access_token');
+        Cookies.remove('refresh_token');
+        setAuthTokens(null);
+        setUser(null);
+        navigate('/');
+        console.log('logout successful');
+    }
+
+
     const [authTokens, setAuthTokens] = useState(() => {
         try {
           return {
@@ -36,13 +46,7 @@ export const AuthProvider = ({ children }) => {
             refresh_token: refreshToken ? JSON.parse(refreshToken) : null,
           };
         } catch (error) {
-            console.error('error', error)
-            Cookies.remove('access_token');
-            Cookies.remove('refresh_token');
-            setAuthTokens(null);
-            setUser(null);
-            // navigate('/');
-            console.log('logout successful');
+            logout()
         }
     });
 
@@ -50,9 +54,6 @@ export const AuthProvider = ({ children }) => {
     const initialUser = authTokens?.access_token && jwtDecode(authTokens.access_token)
     const [user, setUser] = useState(initialUser)
     
-
-
-
     const navigate = useNavigate()
 
     const login = async () => {
@@ -169,9 +170,6 @@ export const AuthProvider = ({ children }) => {
     }
 
 
-
-
-
     useEffect(() => {
         if (authTokens) {
             try {
@@ -195,14 +193,7 @@ export const AuthProvider = ({ children }) => {
 
 
 
-    const logout = async () => {
-        Cookies.remove('access_token');
-        Cookies.remove('refresh_token');
-        setAuthTokens(null);
-        setUser(null);
-        // navigate('/');
-        console.log('logout successful');
-    }
+
 
     const contextData = {
         login: login,

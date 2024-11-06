@@ -21,7 +21,6 @@ import useAuth from '../src/context/AuthContext'
 
 const ComponentPath = () => {
 	const {authTokens, user} = useAuth()
-	const location = useLocation()
 	return (
         <Routes>
             {(authTokens && user) ? (

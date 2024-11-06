@@ -6,6 +6,7 @@ import Achievements from '../../components/Dashboard/Achievements'
 import FriendsList from '../../components/Dashboard/FriendsList/FriendsList'
 import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
+import useAuth from '../../context/AuthContext'
 
 import axios from 'axios';
 const USER_API = import.meta.env.VITE_USER_API;
@@ -21,6 +22,20 @@ const Dashboard = () => {
 
 
 	/************************************************************************ */
+	const [user, setUser] = useState({
+		first_name: '',
+		last_name: '',
+		email: '',
+		mobile_number: '',
+		username: '',
+		display_name: '',
+		bio: '',
+		password: '',
+		new_password: '',
+		confirm_password: '',
+		profile_picture: '',
+	})
+
 	const [first_name, setFirst_name] = useState('')
 	const [last_name, setLast_name] = useState('')
 	const [email, setEmail] = useState('')
@@ -31,70 +46,52 @@ const Dashboard = () => {
 	const [profile_picture, setProfile_picture] = useState('')
 	const [preview, setPreview] = useState(null)
 
-	const [user, setUser] = useState({
-		first_name: '',
-		last_name: '',
-		email: '',
-		mobile_number: '',
-		username: '',
-		display_name: '',
-		bio: '',
-		profile_picture: ''
-	})
+	const { authTokens, logout, getAuthHeaders } = useAuth()
+	const fetchUser = async () => {
+		try {
+			const response = await fetch(USER_API, {
+				method: 'GET',
+				headers: getAuthHeaders()
+			})
+			const data = await response.json();
+			if (response.ok) {
+				return (data)
+			} else {
+				console.log('Failed to fetch user data');
+				logout();
+				return (null)
+			}
+		}
+		catch (error) {
+			console.log(error);
+			logout();
+			return (null);
+		}
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const fetchedData = await fetchUser();
+			if (fetchedData)
+				setUser(fetchedData);
+		};
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		if (!user) 
+			return;
+		setFirst_name(user.first_name);
+		setLast_name(user.last_name);
+		setEmail(user.email);
+		setMobile_number(user.mobile_number);
+		setUsername(user.username);
+		setDisplay_name(user.display_name);
+		setBio(user.bio);
+		setProfile_picture(user.profile_picture);
+	} , [user]);
 
 
-	// const fetchUser = async () => {
-	// 	try 
-	// 	{
-	// 		const response = await axios.get(USER_API, {headers: header});
-	// 		return response.data;
-	// 	} 
-	// 	catch (error) 
-	// 	{
-	// 		console.log(error);
-	// 		return null;
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const fetchedData = await fetchUser();
-	// 		if (fetchedData)
-	// 			setUser(fetchedData);
-	// 	};
-	// 	fetchData();
-	// }, []);
-
-	// useEffect(() => {
-	// 	if (!user) 
-	// 		return;
-	// 	setFirst_name(user.first_name);
-	// 	setLast_name(user.last_name);
-	// 	setEmail(user.email);
-	// 	setMobile_number(user.mobile_number);
-	// 	setUsername(user.username);
-	// 	setDisplay_name(user.display_name);
-	// 	setBio(user.bio);
-	// 	setProfile_picture(user.profile_picture);
-	// } , [user]);
-
-	// let cookies = document.cookie;
-	// if (!cookies) {
-	// 	console.log('No cookies found');
-	// 	return;
-	// }
-
-	// let cookieArray = cookies.split(';');
-	// if (cookieArray.length < 2) {
-	// 	console.log('Not enough cookies found');
-	// 	return;
-	// }
-	// // let refresh_token = cookieArray[0].split('=')[1];
-	// let access_token = cookieArray[1].split('=')[1];
-	// const header = {
-	// 	'Authorization': `Bearer ${access_token}`
-	// }
-	/************************************************************************ */
 
 	return (
 		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'>

@@ -73,7 +73,7 @@ const s = () => {
 	const [new_password, setNewPassword] = useState('')
 	const [confirm_password, setConfirmPassword] = useState('')
 
-	const { authTokens, logout, getAuthHeaders, isAccessTokenValid, refres_token } = useAuth()
+	const { authTokens, logout, getAuthHeaders } = useAuth()
 
 
 
