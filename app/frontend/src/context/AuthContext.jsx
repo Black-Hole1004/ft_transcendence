@@ -37,7 +37,12 @@ export const AuthProvider = ({ children }) => {
           };
         } catch (error) {
             console.error('error', error)
-          return refres_token();
+            Cookies.remove('access_token');
+            Cookies.remove('refresh_token');
+            setAuthTokens(null);
+            setUser(null);
+            // navigate('/');
+            console.log('logout successful');
         }
     });
 
@@ -166,6 +171,7 @@ export const AuthProvider = ({ children }) => {
 
 
 
+
     useEffect(() => {
         if (authTokens) {
             try {
@@ -187,6 +193,8 @@ export const AuthProvider = ({ children }) => {
         }
     }, [authTokens])
 
+
+
     const logout = async () => {
         Cookies.remove('access_token');
         Cookies.remove('refresh_token');
@@ -200,7 +208,7 @@ export const AuthProvider = ({ children }) => {
         login: login,
         register: register,
         logout: logout,
-        refres_token: refres_token,
+        // refres_token: refres_token,
         // verify_token: verify_token,
 
 
@@ -222,7 +230,7 @@ export const AuthProvider = ({ children }) => {
 
         getAuthHeaders: getAuthHeaders,
 
-        isAccessTokenValid: isAccessTokenValid
+        // isAccessTokenValid: isAccessTokenValid
     }
 
     return (

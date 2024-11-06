@@ -81,11 +81,11 @@ const s = () => {
 
 		try {
 
-			if (!isAccessTokenValid()) {
-				console.log('--- Access token expired ---');
-				await refres_token();
-			} else
-				console.log('--- Access token is valid ---');
+			// if (!isAccessTokenValid()) {
+			// 	console.log('--- Access token expired ---');
+			// 	await refres_token();
+			// } else
+			// 	console.log('--- Access token is valid ---');
 			const response = await fetch(USER_API, {
 				method: 'GET',
 				headers: getAuthHeaders()
