@@ -1,9 +1,10 @@
 import React from 'react'
 import '../Card/Card.css'
 
-function CardButton({ className, children}) {
+function CardButton({ className, children, onClick }) {
 	return (
 		<button
+			onClick={onClick}
 			type='submit'
 			className={`
 		border border-border transition duration-300 select-none

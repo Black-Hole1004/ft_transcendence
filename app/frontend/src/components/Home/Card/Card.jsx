@@ -3,7 +3,7 @@ import Input from '../Input'
 import CardButton from '../Buttons/CardButton'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 import useAuth from '../../../context/AuthContext'
 
@@ -101,6 +101,21 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 		},
 	]
 	// --------------------------------------------------------------------------------------------
+
+	const handleOauth = (provider) => {
+		console.log('provider', provider)
+		const API_URLS = {
+		  "google": API_GOOGLE,
+		  '42': API_42,
+		};
+	  
+		const apiUrl = API_URLS[provider];
+		if (apiUrl) {
+			window.location.href = apiUrl;
+		} else {
+		  console.error(`Unsupported OAuth provider: ${provider}`);
+		}
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault()

@@ -37,8 +37,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     # password = models.CharField(max_length=128)
     # new_password = models.CharField(max_length=128, default='')
     # confirm_password = models.CharField(max_length=128, default='')
-    mobile_number = models.CharField(max_length=15, default='', blank=True, unique=True, 
-        validators=[RegexValidator(regex='^\+?1?\d{9,15}$', message='Phone number must be entered in the format: +999999999. Up to 15 digits allowed.')])
+    # mobile_number = models.CharField(max_length=15, default='', blank=True, unique=True, 
+    #     validators=[RegexValidator(regex='^\+?1?\d{9,15}$', message='Phone number must be entered in the format: +999999999. Up to 15 digits allowed.')])
+    mobile_number = models.CharField(max_length=15, default='', blank=True)
     display_name = models.CharField(max_length=30, default='')
     bio = models.TextField(default='', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/avatar.jpg')

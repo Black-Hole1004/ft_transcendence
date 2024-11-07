@@ -2,7 +2,7 @@ import './Settings.css'
 import Header from '../../components/Header'
 import Button from '../../components/Home/Buttons/Button'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import useAuth from '../../context/AuthContext'
 
@@ -95,13 +95,13 @@ const s = () => {
 				return (data)
 			} else {
 				console.log('Failed to fetch user data');
-				logout();
+				// logout();
 				return (null)
 			}
 		}
 		catch (error) {
 			console.log(error);
-			logout();
+			// logout();
 			return (null);
 		}
 	};

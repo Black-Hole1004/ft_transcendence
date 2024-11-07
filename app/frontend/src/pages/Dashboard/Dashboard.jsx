@@ -12,7 +12,21 @@ import axios from 'axios';
 const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+
+// const params = new URLSearchParams(window.location.search);
+// 	const accessToken = params.get('access_token');
+// 	const refreshToken = params.get('refresh_token');
+
+// 	// if (!accessToken || !refreshToken) --> set the cookies
+// 	if (accessToken && refreshToken) {
+// 		document.cookie = `access_token=${accessToken}; path=/; secure; SameSite=Lax;`;
+// 		document.cookie = `refresh_token=${refreshToken}; path=/; secure; SameSite=Lax;`;
+// 		window.location.href = '/dashboard';
+// 	}
+
 const Dashboard = () => {
+	const { authTokens, logout, getAuthHeaders } = useAuth();
+
 	const xp = 6445
 	const [level, setLevel] = useState(null)
 
@@ -46,7 +60,7 @@ const Dashboard = () => {
 	const [profile_picture, setProfile_picture] = useState('')
 	const [preview, setPreview] = useState(null)
 
-	const { authTokens, logout, getAuthHeaders } = useAuth()
+	
 	const fetchUser = async () => {
 		try {
 			const response = await fetch(USER_API, {
@@ -58,13 +72,13 @@ const Dashboard = () => {
 				return (data)
 			} else {
 				console.log('Failed to fetch user data');
-				logout();
+				// logout();
 				return (null)
 			}
 		}
 		catch (error) {
 			console.log(error);
-			logout();
+			// logout();
 			return (null);
 		}
 	};
@@ -74,6 +88,8 @@ const Dashboard = () => {
 			const fetchedData = await fetchUser();
 			if (fetchedData)
 				setUser(fetchedData);
+			else
+				console.log('Failed to fetch user data');
 		};
 		fetchData();
 	}, []);
@@ -91,6 +107,8 @@ const Dashboard = () => {
 		setProfile_picture(user.profile_picture);
 	} , [user]);
 
+
+	console.log('---- authTokens => ', authTokens)
 
 
 	return (

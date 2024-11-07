@@ -24,10 +24,10 @@ class UserSerializer(serializers.ModelSerializer):
 
             return super().update(instance, validated_data)
         
-        def validate_mobile_number(self, value):
-        # Example: Check if mobile number is already used by another user
-            if User.objects.filter(mobile_number=value).exists():
-                raise serializers.ValidationError("This mobile number is already registered.")
-            return value
+        # def validate_mobile_number(self, value):
+        # # Example: Check if mobile number is already used by another user
+        #     if User.objects.filter(mobile_number=value).exists():
+        #         raise serializers.ValidationError("This mobile number is already registered.")
+        #     return value
 
 # ----------------------------------------------------------------------------------

@@ -102,24 +102,24 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 #for postgres
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': os.environ.get('POSTGRES_PORT'),
-    }
-}
-
-# for sqlite
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRES_DB'),
+#         'USER': os.environ.get('POSTGRES_USER'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+#         'HOST': os.environ.get('POSTGRES_HOST'),
+#         'PORT': os.environ.get('POSTGRES_PORT'),
 #     }
 # }
+
+# for sqlite
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 AUTH_USER_MODEL = 'UserManagement.User'
 
@@ -169,7 +169,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -232,8 +232,14 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 #todo: Creds should be changed in production
 
 SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-cdcc23cff090940f13730afd65feb14fe10adba125685f2f6b47055c98256fd7'
-SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_SECRET = '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'
 SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'http://localhost:8000/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'email', 
+    'profile',  # This scope is required for profile picture access
+    # 'https://www.googleapis.com/auth/user.phonenumbers.read',  # Request phone number
+]
