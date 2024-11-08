@@ -1,7 +1,9 @@
+# Description: Game session manager class for handling game session creation, joining, updating, and ending.
+# path: app/backend/game/managers.py
 from django.utils import timezone
 from django.db import transaction, models
 from django.core.exceptions import ValidationError
-from .models import GameSessions, GameMode, GameTable
+from .models import GameSessions
 
 
 class GameSessionManager:
@@ -83,25 +85,30 @@ class GameSessionManager:
         Update game state with validation and atomic transaction
         """
         try:
-            game = GameSessions.objects.select_for_update().get(gameSession_id=game_id)
-            
-            # Validate game is active
-            if game.status not in [GameSessions.GameStatus.IN_PROGRESS, GameSessions.GameStatus.PAUSED]:
-                raise ValidationError("Cannot update inactive game")
+            with transaction.atomic():
+                game = GameSessions.objects.select_for_update().get(gameSession_id=game_id)
+                
+                # Validate game is active
+                if game.status not in [GameSessions.GameStatus.IN_PROGRESS, GameSessions.GameStatus.PAUSED]:
+                    raise ValidationError("Cannot update inactive game")
 
-            # Update scores if provided
-            if score1 is not None:
-                game.score_player1 = score1
-            if score2 is not None:
-                game.score_player2 = score2
+                # Validate and update scores
+                if score1 is not None:
+                    if not isinstance(score1, int) or score1 < 0:
+                        raise ValidationError("Score must be a non-negative integer")
+                    game.score_player1 = score1
+                
+                if score2 is not None:
+                    if not isinstance(score2, int) or score2 < 0:
+                        raise ValidationError("Score must be a non-negative integer")
+                    game.score_player2 = score2
 
-            # Update pause state if provided
-            if is_paused is not None:
-                if is_paused != game.is_paused:
-                    game.toggle_pause()
+                # Update pause state
+                if is_paused is not None:
+                    game.is_paused = is_paused
 
-            game.save()
-            return game
+                game.save()
+                return game
 
         except GameSessions.DoesNotExist:
             raise ValidationError(f"Game {game_id} does not exist")
@@ -167,20 +174,27 @@ class GameSessionManager:
         return query.order_by('start_time')
 
     @staticmethod
-    @transaction.atomic
     def handle_disconnect(game_id, player_id):
         """
-        Handle player disconnection with atomic transaction
+        Handle player disconnection
         """
         try:
-            game = GameSessions.objects.select_for_update().get(gameSession_id=game_id)
-            
-            # Only handle disconnect for active games
-            if game.status in [GameSessions.GameStatus.IN_PROGRESS, GameSessions.GameStatus.PAUSED]:
-                # End game with disconnected player as loser
-                return GameSessionManager.end_game(game_id, forfeit_player_id=player_id)
-            
-            return game
+            with transaction.atomic():
+                game = GameSessions.objects.select_for_update().get(gameSession_id=game_id)
+                
+                if game.status in [GameSessions.GameStatus.IN_PROGRESS, GameSessions.GameStatus.PAUSED]:
+                    game.status = GameSessions.GameStatus.FINISHED
+                    game.end_time = timezone.now()
+                    
+                    if player_id == game.player1_id:
+                        game.winner_id = game.player2_id
+                        game.loser_id = game.player1_id
+                    else:
+                        game.winner_id = game.player1_id
+                        game.loser_id = game.player2_id
+                    
+                    game.save()
+                return game
 
         except GameSessions.DoesNotExist:
             raise ValidationError(f"Game {game_id} does not exist")

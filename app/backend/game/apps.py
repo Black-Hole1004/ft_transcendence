@@ -1,3 +1,5 @@
+# description: This file is used to configure the game app.
+# path app/backend/game/apps.py
 from django.apps import AppConfig
 
 

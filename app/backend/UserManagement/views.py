@@ -21,7 +21,7 @@ from django.http import HttpResponseRedirect
 from django.core.files.uploadedfile import UploadedFile
 
 from rest_framework.views import APIView
-
+from rest_framework.permissions import AllowAny
 
 from .models import User
 
@@ -232,3 +232,24 @@ class UserProfileView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# added by tabi3a
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def check_user_exists(request):
+    """Debug endpoint to check if user exists"""
+    email = request.data.get('email')
+    user = User.objects.filter(email=email).first()
+    
+    if user:
+        return Response({
+            'exists': True,
+            'is_active': user.is_active,
+            'email': user.email,
+            'username': user.username
+        })
+    return Response({
+        'exists': False,
+        'message': 'No user found with this email'
+    })

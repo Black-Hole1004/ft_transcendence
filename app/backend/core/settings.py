@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'core',
     'channels',
     'game',
+    'channels_redis',
+    'daphne',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -67,10 +69,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
+
+    # this ensures authentication errors are handled properly
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
 
 MIDDLEWARE = [
@@ -244,12 +245,49 @@ SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'http://localhost:8000/social-auth/complete/i
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
 
 
-# Set up Redis as the channel layer backend
+# Channel Layer Configuration (for WebSocket communication)
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('127.0.0.1', 6379)],  # Redis host and port
         },
     },
 }
+
+# Caching Configuration (for game state and other cache needs)
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Using Redis database 1 for caching
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+# for debugging purposes
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,  # This will disable existing loggers
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'game': {  # Your custom logger
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
+# Disable Django's logging
+import logging
+logging.getLogger('django').setLevel(logging.WARNING)
+logging.getLogger('django.server').setLevel(logging.WARNING)
+logging.getLogger('django.channels').setLevel(logging.WARNING)
+logging.getLogger('django.channels.server').setLevel(logging.WARNING)

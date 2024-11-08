@@ -5,7 +5,6 @@ from UserManagement.views import UserProfileView
 from django.contrib import admin
 # from UserManagement.views import UserUpdateView
 
-
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -26,5 +25,8 @@ urlpatterns = [
     path('api/users/', UserProfileView.as_view(), name='user-profile'),
     path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
     path('social-auth/', include('social_django.urls', namespace='social')),
+    # added by tabi3a : check user existence
+    path('api/check-user/', views.check_user_exists, name='check-user'),
+    
     path('api/game/', include('game.urls')),
 ]

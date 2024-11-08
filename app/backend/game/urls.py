@@ -1,10 +1,11 @@
-# backend/game/urls.py
+# description: This file contains the URL patterns for the game app
+# path : app/backend/game/urls.py
 from django.urls import path
 from . import views
 
 urlpatterns = [
+    
     # Game setup endpoints
-    path('tables/', views.get_available_tables, name='game_tables'),
     
     # Game session management
     path('create/', views.create_game, name='create_game'),

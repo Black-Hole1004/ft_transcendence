@@ -1,114 +1,147 @@
-from rest_framework.decorators import api_view, permission_classes
+# description: This file contains the views for the game and matchmaking
+# path app/backend/game/views.py
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.exceptions import ValidationError
 from .managers import GameSessionManager
-from .serializers import GameSessionSerializer, GameTableSerializer
-from .models import GameSessions, GameTable, GameMode
+from .serializers import GameSessionSerializer
+from .models import GameSessions
 from django.db.models import Q
-from django.shortcuts import render
-
+import jwt
+from django.conf import settings
+from django.db import models
 
 # views for the game
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_available_tables(request):
-    """Get all available game tables/backgrounds based on user's XP level"""
+
+# this function is used to get the user from the jwt token
+def get_user_from_token(request):
+    """Helper function to get user from token in either header or cookie"""
     try:
-        # Get user's XP to determine which tables are available
-        user_xp = request.user.xp
-        tables = GameTable.objects.all()
-        
-        # Add 'is_unlocked' field to each table
-        tables_data = []
-        for table in tables:
-            table_data = GameTableSerializer(table).data
-            table_data['is_unlocked'] = user_xp >= table.xp_required
-            tables_data.append(table_data)
+        # First try to get token from Authorization header
+        auth_header = request.headers.get('Authorization')
+        if auth_header and auth_header.startswith('Bearer '):
+            token = auth_header.split(' ')[1]
+        else:
+            # Try to get token from cookie
+            token = request.COOKIES.get('access')
             
-        return Response(tables_data)
-    except Exception as e:
-        return Response(
-            {'error': 'Failed to fetch available tables', 'detail': str(e)}, 
-            status=status.HTTP_400_BAD_REQUEST
+        if not token:
+            return None
+
+        # Decode token
+        payload = jwt.decode(
+            token,
+            key=settings.SECRET_KEY,
+            algorithms=["HS256"]
         )
+        return payload.get('user_id')
+        
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+        return None
+
+
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def create_game(request):
     """Create a new game session"""
     try:
+        # Get authenticated user
+        user = request.user
+        print(f"Creating game for user: {user.email} (ID: {user.id})")
+
+        # Get and validate input data
         mode_type = request.data.get('mode_type')
         table_id = request.data.get('table_id')
 
-        # Validate presence of mode_type and table_id
         if not all([mode_type, table_id]):
-            return Response(
-                {'error': 'Missing required fields', 'fields': ['mode_type', 'table_id']},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({
+                'error': 'Missing required fields',
+                'required_fields': {
+                    'mode_type': 'Game mode (1VS1, TOURNAMENT, or TRAINING)',
+                    'table_id': 'ID of the game table'
+                }
+            }, status=status.HTTP_400_BAD_REQUEST)
+        # Check if user is already in an active game
+        active_game = GameSessions.objects.filter(
+            (models.Q(player1_id=user.id) | models.Q(player2_id=user.id)) &
+            models.Q(status__in=[
+                GameSessions.GameStatus.WAITING,
+                GameSessions.GameStatus.IN_PROGRESS
+            ])
+        ).first()
 
-        # Get GameMode instance by mode string (e.g., '1VS1', 'TOURNAMENT', etc.)
-        try:
-            mode = GameMode.objects.get(mode=mode_type)
-        except GameMode.DoesNotExist:
-            return Response(
-                {'error': f"Game mode '{mode_type}' does not exist"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        if active_game:
+            return Response({
+                'error': 'Already in an active game',
+                'game_id': active_game.gameSession_id,
+                'status': active_game.status
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate table_id as integer and retrieve GameTable object
-        if not isinstance(table_id, int):
-            return Response(
-                {'error': 'Invalid table_id; must be an integer'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        try:
-            table = GameTable.objects.get(table_id=table_id)
-        except GameTable.DoesNotExist:
-            return Response(
-                {'error': f"Game table with ID '{table_id}' does not exist"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # Create game using manager
+        # Create the game session
         game = GameSessionManager.create_game(
-            player1_id=request.user.id, # get the id of the authenticated user
-            # player1_id=request.data.get('player1_id'),
-            mode=mode,      # Pass GameMode instance
-            table=table      # Pass GameTable instance
+            player1_id=user.id,
         )
 
-        return Response(
-            GameSessionSerializer(game).data,
-            status=status.HTTP_201_CREATED
-        )
-    except ValidationError as e:
-        return Response(
-            {'error': 'Game creation failed', 'detail': str(e)},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        # Return created game data
+        return Response({
+            'message': 'Game created successfully',
+            'game_id': game.gameSession_id,
+            'status': game.status,
+            'player1_id': game.player1_id,
+            'created_at': game.start_time,
+            'waiting_for_opponent': True
+        }, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        print(f"Error creating game: {str(e)}")
+        return Response({
+            'error': f'Unexpected error: {str(e)}',
+            'type': str(type(e).__name__)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def join_game(request, game_id):
-    """Join an existing game session as player 2"""
+    """Join an existing game session"""
     try:
-        game = GameSessionManager.join_game(
-            game_id=game_id,
-            player2_id=request.user.id
-        )
+        print(f"Attempting to join game {game_id} with user {request.user.id}")
+        game = GameSessions.objects.get(gameSession_id=game_id)
+        print(f"Found game: {game}")
+        
+        if not game.player1_id:
+            game.player1_id = request.user
+        elif not game.player2_id:
+            game.player2_id = request.user
+        else:
+            return Response(
+                {'error': 'Game is full'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        game.save()
+        print(f"Successfully joined game. Players: {game.player1_id}, {game.player2_id}")
+        
         return Response(GameSessionSerializer(game).data)
-    except ValidationError as e:
+    except GameSessions.DoesNotExist:
+        print(f"Game {game_id} not found")
+        return Response(
+            {'error': 'Game not found'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        print(f"Error joining game: {e}")
         return Response(
             {'error': 'Failed to join game', 'detail': str(e)},
             status=status.HTTP_400_BAD_REQUEST
         )
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def update_game_state(request, game_id):
     """Update game state (score, pause status)"""
     try:
@@ -212,10 +245,6 @@ def handle_disconnect(request, game_id):
             status=status.HTTP_400_BAD_REQUEST
         )
         
-
-
-
-
 
 # views for the matchmaking
 @api_view(['GET'])
