@@ -69,6 +69,8 @@ const Dashboard = () => {
 			})
 			const data = await response.json();
 			if (response.ok) {
+				console.log('Successfully fetched user data');
+				console.log('data =>', data);
 				return (data)
 			} else {
 				console.log('Failed to fetch user data');
@@ -106,9 +108,6 @@ const Dashboard = () => {
 		setBio(user.bio);
 		setProfile_picture(user.profile_picture);
 	} , [user]);
-
-
-	console.log('---- authTokens => ', authTokens)
 
 
 	return (

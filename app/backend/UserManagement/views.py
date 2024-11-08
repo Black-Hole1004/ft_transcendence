@@ -264,7 +264,7 @@ class UserProfileView(APIView):
             new_password = request.data.get('new_password')
             confirm_password = request.data.get('confirm_password')
 
-            if any([password, new_password, confirm_password]):
+            if any([password, new_password, confirm_password])
                 # Validate password fields
                 if not all([password, new_password, confirm_password]):
                     return Response({
