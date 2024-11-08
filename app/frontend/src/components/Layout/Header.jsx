@@ -119,7 +119,7 @@ function Header() {
 					<img
 						src='/assets/images/moudrib.jpeg'
 						alt='user photo'
-						className='nav-icons border-[1px] rounded-full border-primary select-none'
+						className='nav-icons rounded-full ring-1 ring-primary select-none'
 					/>
 					<div
 						className='flex justify-center items-center bg-secondary border border-[#0B0B0B]

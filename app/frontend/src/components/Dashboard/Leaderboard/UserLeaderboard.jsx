@@ -31,7 +31,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp }) {
 					<p className='nickname-size'>{'#' + `${rank}`}</p>
 					<img
 						src='/assets/images/moudrib.jpeg'
-						className='h-[80%] rounded-full ring-1 ring-orange-100 select-none'
+						className='h-[80%] rounded-full ring-1 ring-primary select-none'
 						alt='user-image'
 						loading='eager'
 					/>

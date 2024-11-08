@@ -10,7 +10,7 @@ function UserInfos({ user }) {
 					<div className="flex lg:flex-col gap-2 max-ml:flex-col">
 						<img
 							src={`${user.profile_picture}`}
-							className='rounded-full lg:border-2 border border-primary user-info-image select-none self-center'
+							className='rounded-full lg:border-2 ring-1 ring-primary user-info-image select-none self-center'
 							alt='User image'
 						/>
 						<div className='flex flex-col justify-center font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>

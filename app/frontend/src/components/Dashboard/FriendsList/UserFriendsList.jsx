@@ -33,7 +33,7 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 				/>
 				<img
 					src='/assets/images/lmoudir.jpg'
-					className='h-[80%] rounded-full tb:border border-0.7 border-primary select-none'
+					className='h-[80%] rounded-full ring-1 ring-primary select-none'
 					alt='user-image'
 					loading='eager'
 				/>

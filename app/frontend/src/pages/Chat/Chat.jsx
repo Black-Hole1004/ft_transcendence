@@ -33,6 +33,7 @@ const Chat = () => {
 			.map((id) => parseInt(id))
 
 		if (uri.length > 0) {
+			console.log('url processed')
 			setMessages([])
 			setConversationId(uri[0])
 			setSelectedUserId(uri[1])
@@ -45,11 +46,14 @@ const Chat = () => {
 
 	}, [location.pathname])
 
+
+
 	useEffect(() => {
 
 		const handleOpen = () => {
 			console.log('WebSocket connected')
 			if (isUrlProcessed) {
+				console.log('join')
 				chatSocket.current?.send(
 					JSON.stringify({
 						message_type: 'join',
@@ -92,8 +96,8 @@ const Chat = () => {
 
 
 		return () => {
-			console.log('cleanup running')
 			if (chatSocket.current) {
+				console.log('cleanup running')
 				const ws = chatSocket.current
 
 				// if (ws.readyState === WebSocket.OPEN) {
@@ -104,17 +108,18 @@ const Chat = () => {
 				ws.removeEventListener('close', handleClose)
 				ws.removeEventListener('message', handleMessage)
 
-				// chatSocket.current = null
+				chatSocket.current = null
 			}
 		}
-	}, [isUrlProcessed, conversationId])
+	}, [isUrlProcessed])
 
 
-	const handleKeyPress = (e) => {
-		if (e.key === 'Enter') {
-			sendMessage()
-		}
-	}
+
+
+
+
+
+
 
 	useEffect(() => {
 		const getUserInfos = async () => {
@@ -139,6 +144,18 @@ const Chat = () => {
 		}
 	}, [selectedUserId])
 
+
+
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			sendMessage()
+		}
+	}
+
+
+
+
 	const sendMessage = () => {
 		let ws = chatSocket.current
 		
@@ -156,6 +173,14 @@ const Chat = () => {
 			}
 		}
 	}
+
+
+
+
+
+
+
+
 
 
 
@@ -187,7 +212,7 @@ const Chat = () => {
 								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
 									<img
 										src={`${selectedUserImage}`}
-										className='w-20 rounded-full border border-primary select-none'
+										className='w-20 rounded-full ring-1 ring-primary select-none'
 										alt='user image'
 									/>
 									<div>

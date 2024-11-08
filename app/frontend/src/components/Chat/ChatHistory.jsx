@@ -1,7 +1,6 @@
 import User from './User'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-// import { useHeaders } from '../../components/HeadersContext.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
 

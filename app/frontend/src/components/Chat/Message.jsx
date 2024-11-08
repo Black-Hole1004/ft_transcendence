@@ -13,7 +13,7 @@ const Message = ({ message, selectedUserId, selectedUserImage }) => {
 			{selectedUserId === senderId ? (
 				<img
 					src={`${selectedUserImage}`}
-					className='rounded-full border border-primary message-image select-none'
+					className='rounded-full ring-1 ring-primary message-image select-none'
 					alt='friend-image'
 				/>
 			) : (

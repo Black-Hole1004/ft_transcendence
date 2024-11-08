@@ -12,7 +12,7 @@ function UserAvatarDropdown({ setIsDropdownOpen }) {
 				<div onClick={closeDropdown} className='flex items-center gap-1'>
 					<img
 						src='/assets/images/moudrib.jpeg'
-						className='rounded-full border border-primary dropdown-user-photo'
+						className='rounded-full ring-1 ring-primary dropdown-user-photo'
 						alt='user photo'
 					/>
 					<div className='font-medium'>

@@ -43,7 +43,7 @@ function User({ setConversationId, conversation, selectedUserId, setSelectedUser
 		>
 			<img
 				src={`http://localhost:8000${conversation.other_user.profile_picture}`}
-				className='rounded-full border border-primary select-none'
+				className='rounded-full ring-1 ring-primary select-none'
 				alt='user image'
 			/>
 			<div className='font-medium tb:w-[80%]'>
