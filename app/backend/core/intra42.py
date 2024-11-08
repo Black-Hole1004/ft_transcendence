@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 import requests
 from django.utils.crypto import get_random_string
 from django.core.files.base import ContentFile
+from django.contrib.auth import login as auth_login
 
 class Intra42OAuth2(BaseOAuth2):
     """Intra42 OAuth2 authentication backend"""
@@ -94,6 +95,11 @@ class Intra42OAuth2(BaseOAuth2):
         Complete the OAuth2 authorization process by exchanging the authorization
         code for an access token, then fetching user data.
         """
+
+        request = kwargs.get('request')
+        if not request:
+            raise Exception("Request object not found.")
+
         # Get the authorization code from the request
         code = self.data.get('code')
         if not code:
@@ -133,9 +139,13 @@ class Intra42OAuth2(BaseOAuth2):
                 image_response = requests.get(profile_image_url)
             if image_response and image_response.status_code == 200:
                 user.profile_picture.save(f"{user.username}_profile.jpg", ContentFile(image_response.content), save=True)
-
-            user.is_logged_from_oauth = True
             
+            # ----------------- had save li ltaht hta narja3 hna -----------------
+            # user.save()
+
+            # add by me ahaloui
+            auth_login(request, user, backend='Intra42OAuth2')
+
             # Generate JWT tokens
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)

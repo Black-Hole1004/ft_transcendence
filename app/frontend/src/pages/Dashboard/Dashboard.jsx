@@ -13,17 +13,6 @@ const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 
-// const params = new URLSearchParams(window.location.search);
-// 	const accessToken = params.get('access_token');
-// 	const refreshToken = params.get('refresh_token');
-
-// 	// if (!accessToken || !refreshToken) --> set the cookies
-// 	if (accessToken && refreshToken) {
-// 		document.cookie = `access_token=${accessToken}; path=/; secure; SameSite=Lax;`;
-// 		document.cookie = `refresh_token=${refreshToken}; path=/; secure; SameSite=Lax;`;
-// 		window.location.href = '/dashboard';
-// 	}
-
 const Dashboard = () => {
 	const { authTokens, logout, getAuthHeaders } = useAuth();
 
@@ -70,7 +59,7 @@ const Dashboard = () => {
 			const data = await response.json();
 			if (response.ok) {
 				console.log('Successfully fetched user data');
-				console.log('data =>', data);
+	
 				return (data)
 			} else {
 				console.log('Failed to fetch user data');

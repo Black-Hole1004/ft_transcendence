@@ -14,41 +14,41 @@ const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 
 
 const InvalidCredentialsAlert = ({ show, setShow }) => {
-    return (
-        <div className={`alert alert-danger ${show ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative`} role="alert">
-            <strong className="font-bold">Error!</strong>
-            <span className="block sm:inline"> Invalid credentials. Please try again.</span>
-            <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShow(false)}>
-                <svg className="fill-current h-6 w-6 text-red-500" role="button" viewBox="0 0 20 20">
-                    <title>Close</title>
-                    <path d="M10 9l5-5 1.414 1.414L11.414 10l5 5-1.414 1.414L10 11.414l-5 5-1.414-1.414 5-5-5-5L4.586 4z" />
-                </svg>
-            </span>
-        </div>
-    );
+	return (
+		<div className={`alert alert-danger ${show ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative`} role="alert">
+			<strong className="font-bold">Error!</strong>
+			<span className="block sm:inline"> Invalid credentials. Please try again.</span>
+			<span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShow(false)}>
+				<svg className="fill-current h-6 w-6 text-red-500" role="button" viewBox="0 0 20 20">
+					<title>Close</title>
+					<path d="M10 9l5-5 1.414 1.414L11.414 10l5 5-1.414 1.414L10 11.414l-5 5-1.414-1.414 5-5-5-5L4.586 4z" />
+				</svg>
+			</span>
+		</div>
+	);
 };
 
 const SuccessLoginAlert = ({ show, setShow }) => {
-    return (
-        <div className={`alert alert-success ${show ? 'block' : 'hidden'} bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative`} role="alert">
-            <strong className="font-bold">Success!</strong>
-            <span className="block sm:inline"> You have logged in successfully.</span>
-            <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShow(false)}>
-                <svg className="fill-current h-6 w-6 text-green-500" role="button" viewBox="0 0 20 20">
-                    <title>Close</title>
-                    <path d="M10 9l5-5 1.414 1.414L11.414 10l5 5-1.414 1.414L10 11.414l-5 5-1.414-1.414 5-5-5-5L4.586 4z" />
-                </svg>
-            </span>
-        </div>
-    );
+	return (
+		<div className={`alert alert-success ${show ? 'block' : 'hidden'} bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative`} role="alert">
+			<strong className="font-bold">Success!</strong>
+			<span className="block sm:inline"> You have logged in successfully.</span>
+			<span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShow(false)}>
+				<svg className="fill-current h-6 w-6 text-green-500" role="button" viewBox="0 0 20 20">
+					<title>Close</title>
+					<path d="M10 9l5-5 1.414 1.414L11.414 10l5 5-1.414 1.414L10 11.414l-5 5-1.414-1.414 5-5-5-5L4.586 4z" />
+				</svg>
+			</span>
+		</div>
+	);
 };
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => setIsSigningIn(!isSigningIn)
-	
-	const {email, password, confirmPassword, showAlert, showSuccessAlert} = useAuth()
 
-	const {login, register , setEmail, setPassword, setConfirmPassword, setShowAlert, setShowSuccessAlert} = useAuth()
+	const { email, password, confirmPassword, showAlert, showSuccessAlert } = useAuth()
+
+	const { login, register, setEmail, setPassword, setConfirmPassword, setShowAlert, setShowSuccessAlert } = useAuth()
 	// --------------------------- moudrib code -------------------------------------------
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
@@ -88,13 +88,13 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 
 	const buttons = [
 		{
-			id : 'google',
+			id: 'google',
 			iconPath: 'google',
 			alt: 'google-logo',
 			content: 'Continue with Google',
 		},
 		{
-			id : '42',
+			id: '42',
 			iconPath: '42-logo',
 			alt: '42-logo',
 			content: 'Continue with 42 Intra',
@@ -105,15 +105,15 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleOauth = (provider) => {
 		console.log('provider', provider)
 		const API_URLS = {
-		  "google": API_GOOGLE,
-		  '42': API_42,
+			"google": API_GOOGLE,
+			'42': API_42,
 		};
-	  
+
 		const apiUrl = API_URLS[provider];
 		if (apiUrl) {
 			window.location.href = apiUrl;
 		} else {
-		  console.error(`Unsupported OAuth provider: ${provider}`);
+			console.error(`Unsupported OAuth provider: ${provider}`);
 		}
 	};
 
@@ -138,20 +138,20 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						className='absolute right-2 top-1 select-none close-button'
 						src='/assets/images/icons/close.png'
 						loading='lazy'
-						/>
+					/>
 					<div className='card-separator h-0.5 flex-1'></div>
 					<img
 						className='select-none pointer-events-none logo'
 						src='/assets/images/logo.webp'
 						loading='lazy'
-						/>
+					/>
 					<div className='card-separator h-0.5 flex-1'></div>
 				</div>
 				<div className='flex flex-col justify-center form-padding text-light font-heavy lp:mb-8 mb-5'>
 					{isSigningIn ? (
 						<div className='w-full flex flex-col items-center welcome-message'>
 							<h1 className='sign-in-title'>Welcome back!</h1>
-							<p className='sign-in-phrases'>Sign in to access your dashboard.</p>
+							<p className='sign-in-phrases'>Sign in to access your .</p>
 						</div>
 					) : (
 						<h1 className='sign-in-title text-center create-account'>
@@ -164,25 +164,25 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					<form className='flex flex-col form-gap' onSubmit={handleSubmit}>
 						{
 							inputs.slice(0, isSigningIn ? 2 : 3).map((input, index) => (
-							<Input
-								key={index}
-								iconPath={`/assets/images/icons/${input.iconPath}.png`}
-								placeholder={input.placeholder}
-								value={
-									index === 0
-										? email
-										: index === 1
-										? password
-										: confirmPassword
-								}
-								onChange = {(e) => {
-									if (index === 0) setEmail(e.target.value)
-									else if (index === 1) setPassword(e.target.value)
-									else setConfirmPassword(e.target.value)
-								}}
-							>
-							</Input>
-						))
+								<Input
+									key={index}
+									iconPath={`/assets/images/icons/${input.iconPath}.png`}
+									placeholder={input.placeholder}
+									value={
+										index === 0
+											? email
+											: index === 1
+												? password
+												: confirmPassword
+									}
+									onChange={(e) => {
+										if (index === 0) setEmail(e.target.value)
+										else if (index === 1) setPassword(e.target.value)
+										else setConfirmPassword(e.target.value)
+									}}
+								>
+								</Input>
+							))
 						}
 						<CardButton
 							className={
@@ -192,7 +192,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 							{isSigningIn ? <>Sign in</> : <>Sign up</>}
 						</CardButton>
 
-						
+
 						<InvalidCredentialsAlert show={showSuccessAlert} setShow={setShowSuccessAlert} />
 						<SuccessLoginAlert show={showAlert} setShow={setShowAlert} />
 					</form>
@@ -217,13 +217,13 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					<div className='flex flex-col buttons-gap font-medium sign-in-phrases'>
 						{buttons.map((button, index) => (
 							<CardButton
-								id = {button.id}
+								id={button.id}
 								key={index}
 								className={
 									'text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
 										flex flex-row items-center justify-center gap-2'
 								}
-								onClick = {() => handleOauth(button.id)}
+								onClick={() => handleOauth(button.id)}
 							>
 								<img
 									src={`/assets/images/icons/${button.iconPath}.png`}
@@ -232,7 +232,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									loading='lazy'
 								/>
 								<p>{button.content}</p>
-								
+
 							</CardButton>
 						))}
 						{isSigningIn && (
@@ -246,7 +246,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 								</button>
 							</p>
 						)}
-						
+
 					</div>
 				</div>
 			</div>

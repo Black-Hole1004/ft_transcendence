@@ -124,13 +124,26 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        Cookies.remove('access_token');
-        Cookies.remove('refresh_token');
-        setAuthTokens(null);
-        setUser(null);
-        navigate('/');
-        console.log('logout successful');
-      };
+        try {
+            const response = await fetch(VITE_API_LOGOUT, {
+                method: 'POST',
+                headers: getAuthHeaders()
+            })
+            const data = await response.json()
+            if (response.ok) {
+                console.log('Logout successful', data)
+                Cookies.remove('access_token')
+                Cookies.remove('refresh_token')
+                setAuthTokens(null)
+                setUser(null)
+                navigate('/')
+            } else {
+                console.log('Logout failed', data)
+            }
+        } catch (error) {
+            console.error('error', error)
+        } 
+    };
 
 
 

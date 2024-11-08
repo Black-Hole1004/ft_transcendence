@@ -66,17 +66,16 @@ const OAuthHandler = () => {
 
 		if (accessToken && refreshToken) {
 			// Set the tokens in cookies and in `authTokens`
-			document.cookie = `access_token=${accessToken}; path=/; secure; SameSite=Lax;`;
-			document.cookie = `refresh_token=${refreshToken}; path=/; secure; SameSite=Lax;`;
+			// document.cookie = `access_token=${accessToken}; path=/; secure; SameSite=Lax;`;
+			// document.cookie = `refresh_token=${refreshToken}; path=/; secure; SameSite=Lax;`;
+			Cookies.set('access_token', JSON.stringify(accessToken));
+			Cookies.set('refresh_token', JSON.stringify(refreshToken));
 			const data = {
 				access_token: accessToken,
 				refresh_token: refreshToken
 			}
 			setAuthTokens(data)
 			setUser(jwtDecode(accessToken));
-			console.log('user infos => ', jwtDecode(accessToken))
-			Cookies.set('access_token', JSON.stringify(accessToken));
-			Cookies.set('refresh_token', JSON.stringify(refreshToken));
 			navigate("/dashboard", { replace: true });
 		}
 	}, [setAuthTokens, navigate]);

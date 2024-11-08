@@ -13,7 +13,7 @@ import json
 import uuid
 from rest_framework import status
 from .serializers import UserSerializer
-from django.contrib.auth import logout
+from django.contrib.auth import logout as django_logout
 
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import parser_classes
@@ -23,7 +23,7 @@ from django.http import HttpResponseRedirect
 from django.core.files.uploadedfile import UploadedFile
 from rest_framework.views import APIView
 from .models import User
-
+from .models import UserSession
 import os
 import jwt
 from django.conf import settings
@@ -37,6 +37,9 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 #pass=Ahaloui@@13+
 #gmail=aymene@gmail.com
 
+
+from .models import UserSession
+from django.utils import timezone
 
 from django.contrib.auth import get_user_model
 
@@ -164,28 +167,18 @@ def register(request):
     else:
         return render(request, 'register.html')
 
-class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        try:
-            refresh_token = request.data.get('refresh')
-            if refresh_token:
-                token = RefreshToken(refresh_token)
-                token.blacklist()
-
-                return(Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK))
-            else:
-                return (
-                    Response(
-                    {"error": "Refresh token is required"}, 
-                    status=status.HTTP_400_BAD_REQUEST)
-                )
-        except Exception as  e:
-             return Response(
-                {"error": str(e)}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    user = request.user
+    session = None
+    if user.is_authenticated:
+        session = UserSession.objects.filter(user=user, logout_time__isnull=True).first()
+    if session:
+        session.logout_time = timezone.now()
+        session.save()
+    django_logout(request)
+    return Response({'message': 'User logged out successfully'})
 
 
 def generate_random_username():
@@ -241,12 +234,7 @@ class UserProfileView(APIView):
 
 
     def put(self, request):
-        # try:
-        #     payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
-        #     user_id = payload['user_id']
-        #     user = User.objects.get(id=user_id)
-        # except User.DoesNotExist:
-        #     return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
         try:
             user = request.user
             has_password_change = False
@@ -259,12 +247,11 @@ class UserProfileView(APIView):
                 user.profile_picture = 'profile_pictures/avatar.jpg'
                 user.save()
 
-
             password = request.data.get('password')
             new_password = request.data.get('new_password')
             confirm_password = request.data.get('confirm_password')
 
-            if any([password, new_password, confirm_password])
+            if any([password, new_password, confirm_password]):
                 # Validate password fields
                 if not all([password, new_password, confirm_password]):
                     return Response({
@@ -288,8 +275,6 @@ class UserProfileView(APIView):
                     return Response({
                         'error': 'New password must be different from current password'
                     }, status=status.HTTP_400_BAD_REQUEST)
-
-                has_password_change = True
 
             user_data = request.data.copy()
             for field in ['password', 'new_password', 'confirm_password', 'remove_profile_picture']:
@@ -330,3 +315,12 @@ class UserProfileView(APIView):
             return Response(response_data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_time_spent(request):
+    user = request.user  # Assuming user is authenticated
+    sessions = UserSession.objects.time_spent_per_day(user)
+
+    # Return the sessions with time spent in seconds or minutes
+    return JsonResponse({'data': list(sessions)})

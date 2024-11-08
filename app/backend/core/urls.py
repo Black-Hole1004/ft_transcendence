@@ -2,8 +2,8 @@ from django.urls import path, include
 from UserManagement import views
 
 from UserManagement.views import UserProfileView
-from UserManagement.views import LogoutView
 # from UserManagement.views import UserUpdateView
+
 
 
 from rest_framework_simplejwt.views import (
@@ -22,10 +22,11 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('api/login/', views.login, name='login'),
     path('api/register/', views.register, name='register'),
-    path('api/logout/', LogoutView.as_view(), name='logout'),
     path('api/display_text/', views.display_text, name='display-text'),
     path('api/user/', UserProfileView.as_view(), name='user-profile'),
     path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('api/check_password/', views.check_user_password, name='check_user_password'),
+    path('api/time-spent/', views.get_user_time_spent, name='time_spent'),
+    path('api/logout/', views.logout, name='logout'),
 ]

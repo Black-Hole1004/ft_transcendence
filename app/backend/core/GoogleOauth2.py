@@ -9,19 +9,11 @@ import random
 import string
 from UserManagement.models import User
 
+
 class CustomGoogleOAuth2(GoogleOAuth2):
     """
     Custom Google OAuth2 backend that handles setting JWT tokens in cookies after authentication.
     """
-
-    # @staticmethod
-    # def generate_unique_username(base_username):
-    #     """Generate a unique username if the base username already exists."""
-    #     username = base_username
-    #     while User.objects.filter(username=username).exists():
-    #         # Append a random string to the base username to make it unique
-    #         username = f"{base_username}{''.join(random.choices(string.ascii_letters + string.digits, k=4))}"
-    #     return username
 
     def auth_complete(self, *args, **kwargs):
         """
@@ -34,23 +26,6 @@ class CustomGoogleOAuth2(GoogleOAuth2):
             google_data = user.social_auth.get(provider='google-oauth2')
             extra_data = google_data.extra_data
             
-            
-            # # Get the username from Google (usually it's the full name or email)
-            # print('--- Google Data: -----', extra_data)
-            # google_username = google_data.extra_data.get('name', '').replace(' ', '').upper()
-            # if not google_username:
-            #     google_username = f"{extra_data.get('given_name', '')} {extra_data.get('family_name', '')}".strip()
-            # user.username = CustomGoogleOAuth2.generate_unique_username(google_username)
-
-            # if not google_username:
-            #     google_username = extra_data.get('email', '').split('@')[0].upper()
-            # # Generate a unique username using the Google username or email
-            # user.username = CustomGoogleOAuth2.generate_unique_username(google_username)
-            # print('------------------------------------')
-            # print(f"Generated username: {user.username}")
-            # print('------------------------------------')
-
-
             access_token = extra_data.get('access_token')
             profile_url = 'https://www.googleapis.com/oauth2/v3/userinfo'
             response = requests.get(profile_url, headers={'Authorization': f'Bearer {access_token}'})
@@ -76,14 +51,16 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                     image_response = requests.get(profile_image_url)
                     if image_response.status_code == 200:
                         user.profile_picture.save(f"{user.username}_profile.jpg", ContentFile(image_response.content), save=True)
+                        print(f"Profile picture URL: {user.profile_picture.url}")
                 except Exception as e:
                     print('Error saving profile picture:', e)
             
             user.first_name = user_details['first_name']
             user.email = user_details['email']
             user.username = user_details['username']
-            user.is_logged_from_oauth = True
             user.save()
+
+            auth_login(self.strategy.request, user)
 
             # Generate JWT tokens
             refresh = RefreshToken.for_user(user)

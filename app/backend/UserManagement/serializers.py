@@ -3,6 +3,8 @@ from .models import User
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from .models import UserSession
+from rest_framework.response import Response
 
 
 User = get_user_model()
@@ -29,5 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
         #     if User.objects.filter(mobile_number=value).exists():
         #         raise serializers.ValidationError("This mobile number is already registered.")
         #     return value
+
+class UserSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserSession
+        fields = ['user', 'login_time', 'logout_time', 'duration']
 
 # ----------------------------------------------------------------------------------
