@@ -2,6 +2,7 @@ import './Chat.css'
 import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
+import Footer from '../../components/Chat/Footer.jsx'
 import Messages from '../../components/Chat/Messages.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
@@ -9,6 +10,9 @@ import { useHeaders } from '../../components/HeadersContext.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
+
+
+
 
 const Chat = () => {
 	const headers = useHeaders()
@@ -174,17 +178,6 @@ const Chat = () => {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
 	return (
 		<section className='section-margin'>
 			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
@@ -242,42 +235,11 @@ const Chat = () => {
 									selectedUserId={selectedUserId}
 									selectedUserImage={selectedUserImage}
 								/>
-								<div className='footer flex justify-center items-center w-full h-[10%] py-2'>
-									<div className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container 
-										border border-border border-chat rounded-[50px]'>
-										<button>
-											<img
-												src='/assets/images/icons/paperclip.svg'
-												className='select-none'
-												alt='paperclip-icon'
-											/>
-										</button>
-										<input
-											type='text'
-											maxLength={1000}
-											name='chat-input'
-											autoComplete='off'
-											ref={MessageInputRef}
-											onKeyDown={handleKeyPress}
-											placeholder='Type your message here...'
-											className='myDiv w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
-										/>
-										<button>
-											<img
-												src='/assets/images/icons/emoji.svg'
-												className='select-none hover:brightness-125 hover:scale-110 duration-200 '
-												alt='emojies-icon'
-											/>
-										</button>
-										<button type='submit' onClick={sendMessage}>
-											<img
-												src='/assets/images/icons/send-icon.svg'
-												className='select-none hover:brightness-125 hover:scale-110 hover:rotate-45 duration-200 '
-												alt='send-icon'
-											/>
-										</button>
-									</div>
-								</div>
+								<Footer
+									MessageInputRef={MessageInputRef}
+									handleKeyPress={handleKeyPress}
+									sendMessage={sendMessage}
+								/>
 							</>
 						) : (
 							<StartConversation />
