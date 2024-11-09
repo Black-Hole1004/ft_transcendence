@@ -13,7 +13,7 @@ updetached:
 
 down:
 	docker-compose down
-	@rm -rf ./app/postgres_data
+	@rm -rf ./app/postgres_data/*
 
 prune:
 	docker system prune -af --volumes --force

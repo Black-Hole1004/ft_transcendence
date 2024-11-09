@@ -45,13 +45,16 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 'profile_picture': user_data.get('picture'),
             }
 
-            profile_image_url = user_details['profile_picture']
-            if profile_image_url:
+            # Only update profile picture if `is_custom_profile_picture` is False
+            if user_details['profile_picture']:
                 try:
-                    image_response = requests.get(profile_image_url)
+                    image_response = requests.get(user_details['profile_picture'])
                     if image_response.status_code == 200:
-                        user.profile_picture.save(f"{user.username}_profile.jpg", ContentFile(image_response.content), save=True)
-                        print(f"Profile picture URL: {user.profile_picture.url}")
+                        user.profile_picture.save(
+                            f"{user.username}_profile.jpg", 
+                            ContentFile(image_response.content), 
+                            save=True
+                        )
                 except Exception as e:
                     print('Error saving profile picture:', e)
             
@@ -61,6 +64,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
             user.save()
 
             auth_login(self.strategy.request, user)
+            self.strategy.request.session.flush()
 
             # Generate JWT tokens
             refresh = RefreshToken.for_user(user)

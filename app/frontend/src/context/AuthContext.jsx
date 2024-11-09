@@ -23,8 +23,6 @@ export const AuthProvider = ({ children }) => {
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
 
-
-
     const accessToken = Cookies.get('access_token');
     const refreshToken = Cookies.get('refresh_token');
 

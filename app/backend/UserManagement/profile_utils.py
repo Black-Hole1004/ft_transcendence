@@ -9,6 +9,7 @@ def remove_profile_picture(user):
         if os.path.isfile(user.profile_picture.path):
             os.remove(user.profile_picture.path)
     user.profile_picture = 'profile_pictures/avatar.jpg'
+    # user.is_custom_profile_picture = False
     user.save()
 
 def update_profile_picture(user, profile_picture):
@@ -18,6 +19,7 @@ def update_profile_picture(user, profile_picture):
             if os.path.isfile(user.profile_picture.path):
                 os.remove(user.profile_picture.path)
         user.profile_picture = profile_picture
+        # user.is_custom_profile_picture = True
         user.save()
         
 

@@ -245,6 +245,7 @@ class UserProfileView(APIView):
             user_data = request.data.copy()
             profile_picture = request.FILES.get('profile_picture', None)
 
+            print(f"before User data: {user_data}")
             # Handle profile picture removal if requested
             if request.data.get('remove_profile_picture') == 'true':
                 remove_profile_picture(user)
@@ -256,18 +257,17 @@ class UserProfileView(APIView):
             
             for field in ['password', 'new_password', 'confirm_password']:
                 if field in user_data:
-                    del user_data[field]
+                    user_data.pop(field, None)
             
             # Handle profile picture update if new picture is uploaded
             if profile_picture:
                 update_profile_picture(user, profile_picture)
 
             # Serialize the data and update the user instance
-            print(f"User data: {user_data}")
             serializer = UserSerializer(user, data=user_data, partial=True)
             if not serializer.is_valid():
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
+            print(f"after User data: {user_data}")
             updated_user = serializer.save()
 
             # if password was changed, generate new tokens
@@ -276,13 +276,12 @@ class UserProfileView(APIView):
                 new_tokens = self.reauthenticate_and_generate_tokens(updated_user, user_data['new_password'])
             
             response_data = serializer.data
+            response_data['message'] = (
+                'Profile updated and password changed successfully' 
+                if new_tokens else 'Profile updated successfully'
+            )
             if new_tokens:
-                response_data.update({
-                    'message': 'Profile updated and password changed successfully',
-                    'new_tokens': new_tokens
-                })
-            else:
-                response_data.update({'message': 'Profile updated successfully'})
+                response_data['access_token'] = new_tokens
 
             return Response(response_data, status=status.HTTP_200_OK)
 
