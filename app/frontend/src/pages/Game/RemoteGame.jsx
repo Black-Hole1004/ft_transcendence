@@ -1,249 +1,165 @@
-// frontend/src/pages/Game/RemoteGame.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import GameScore from '../../components/Game/GameScore';
-import Player from '../../components/Game/Player';
-import PongTable from '../../components/Game/PongTable';
-import Timer from '../../components/Game/Timer';
-import { GameOverPopup } from './LocalGame';
+import React, { useState, useEffect, useRef } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import GameWebSocket from '../../services/GameWebSocket'
+import GameScore from '../../components/Game/GameScore'
+import Player from '../../components/Game/Player'
+import RemotePongTable from '../../components/Game/RemotePongTable'
+import Timer from '../../components/Game/Timer'
+import Confetti from 'react-confetti'
 
-const RemoteGame = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const wsRef = useRef(null);
-    const gameStateRef = useRef({
-        paddle1Y: 200,
-        paddle2Y: 200,
-        ballPos: { x: 400, y: 200 },
-        ballVelocity: { x: 5, y: 5 }
-    });
+const GameOverPopup = ({ winner, onRestart, onClose }) => (
+	<div className='fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50'>
+		<div className='bg-[#0E0B0A] border-2 border-[#76797Cff] text-[#E6DDC6] rounded-lg shadow-xl w-[480px] overflow-hidden relative'>
+			<div className='h-60 relative' style={{ filter: 'brightness(1.2)' }}>
+				<div className='absolute inset-0 bg-gradient-to-b from-transparent to-[#0E0B0A]'></div>
+				<div className='absolute inset-0 flex flex-col items-center justify-center'>
+					<h2 className='text-5xl font-bold text-[#E6DDC6] drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] tracking-wider'>
+						GAME OVER
+					</h2>
+				</div>
+			</div>
 
-    const [isPaused, setIsPaused] = useState(false);
-    const [isGameOver, setIsGameOver] = useState(false);
-    const [player1Score, setPlayer1Score] = useState(0);
-    const [player2Score, setPlayer2Score] = useState(0);
-    const [timeRemaining, setTimeRemaining] = useState(location.state?.duration || 60);
-    const [isConnected, setIsConnected] = useState(false);
-    const [playerId, setPlayerId] = useState(null); // 'player1' or 'player2'
-    const [gameError, setGameError] = useState(null);
+			<div className='p-8 relative z-10'>
+				{winner && (
+					<div className='text-center'>
+						<p className='text-4xl font-bold mb-4 text-[#BE794A]'>{winner}</p>
+						<p className='text-lg mb-6 text-[#E6DDC6] opacity-90'>Victory achieved!</p>
+					</div>
+				)}
 
-    useEffect(() => {
-        connectToGame();
+				<div className='flex justify-center space-x-6 mt-8'>
+					<button
+						onClick={onRestart}
+						className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full transition'
+					>
+						Play Again
+					</button>
+					<button
+						onClick={onClose}
+						className='bg-transparent hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full border-2 border-[#BE794A] transition'
+					>
+						Return to Menu
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+)
 
-        return () => {
-            if (wsRef.current) {
-                wsRef.current.close();
-            }
-        };
-    }, []);
+export default function RemoteGame() {
+	const location = useLocation()
+	const navigate = useNavigate()
+	const gameSocket = useRef(null)
+	const [gameState, setGameState] = useState({
+		player1Score: 0,
+		player2Score: 0,
+		winner: null,
+		playerNumber: null,
+		isGameOver: false,
+	})
+	const [showConfetti, setShowConfetti] = useState(false)
+	const [timeRemaining, setTimeRemaining] = useState(60)
 
-    const connectToGame = () => {
-        const gameId = location.state?.gameId;
-        if (!gameId) {
-            setGameError("No game ID provided");
-            return;
-        }
+	const { gameId, settings } = location.state || {}
 
-        const ws = new WebSocket(`ws://${window.location.host}/ws/game/${gameId}/`);
-        wsRef.current = ws;
+	useEffect(() => {
+		if (!gameId) {
+			console.log('No game ID provided, redirecting to custom')
+			navigate('/custom')
+			return
+		}
 
-        ws.onopen = () => {
-            setIsConnected(true);
-            console.log("Connected to game server");
-        };
+		console.log('Initializing game with ID:', gameId)
+		gameSocket.current = new GameWebSocket()
 
-        ws.onmessage = (event) => {
-            handleGameMessage(JSON.parse(event.data));
-        };
+		gameSocket.current.on('connect', () => {
+			console.log('Connected to game server')
+		})
 
-        ws.onclose = () => {
-            setIsConnected(false);
-            handleDisconnect();
-        };
+		gameSocket.current.on('game_info', (data) => {
+			console.log('Received game info:', data)
+			setGameState((prev) => ({
+				...prev,
+				playerNumber: data.player_number,
+			}))
+			gameSocket.current.sendPlayerReady()
+		})
 
-        ws.onerror = (error) => {
-            console.error("WebSocket error:", error);
-            setGameError("Connection error occurred");
-        };
-    };
+		gameSocket.current.on('state_update', (state) => {
+			console.log('Received state update:', state)
+			setGameState((prev) => ({
+				...prev,
+				player1Score: state.scores?.[1] ?? prev.player1Score,
+				player2Score: state.scores?.[2] ?? prev.player2Score,
+			}))
+		})
 
-    const handleGameMessage = (message) => {
-        switch (message.type) {
-            case 'game_state':
-                updateGameState(message.game);
-                break;
+		gameSocket.current.on('game_ended', (data) => {
+			console.log('Game ended:', data)
+			setGameState((prev) => ({
+				...prev,
+				isGameOver: true,
+				winner: `Player ${data.winner}`,
+			}))
+			setShowConfetti(true)
+			setTimeout(() => setShowConfetti(false), 5000)
+		})
 
-            case 'paddle_move':
-                handlePaddleMovement(message);
-                break;
+		console.log('Connecting to game...')
+		gameSocket.current.connect(gameId)
 
-            case 'ball_update':
-                handleBallUpdate(message);
-                break;
+		return () => {
+			console.log('Cleaning up game component')
+			gameSocket.current?.disconnect()
+		}
+	}, [gameId, navigate])
 
-            case 'score_update':
-                handleScoreUpdate(message);
-                break;
+	const handleRestart = () => {
+		console.log('Requesting game restart')
+		if (gameSocket.current) {
+			gameSocket.current.sendRestartGame()
+		}
+	}
 
-            case 'power_up':
-                handlePowerUp(message);
-                break;
+	const handleClose = () => {
+		console.log('Closing game')
+		navigate('/custom')
+	}
 
-            case 'game_paused':
-                setIsPaused(message.is_paused);
-                break;
+	return (
+		<div className='backdrop-blur-sm text-primary'>
+			<section className='flex'>
+				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
+					<GameScore
+						player1Score={gameState.player1Score}
+						player2Score={gameState.player2Score}
+					/>
+					<Timer timeRemaining={timeRemaining} />
 
-            case 'player_assignment':
-                setPlayerId(message.player);
-                break;
+					<div className='flex-1 w-full flex max-lg:flex-wrap max-lg:justify-around justify-between'>
+						<Player PlayerName='Player 1' GameMode='remote' />
 
-            case 'game_over':
-                handleGameOver(message);
-                break;
+						<RemotePongTable
+							gameSocket={gameSocket.current}
+							isGameOver={gameState.isGameOver}
+							settings={settings}
+							playerNumber={gameState.playerNumber}
+						/>
 
-            case 'error':
-                setGameError(message.message);
-                break;
-        }
-    };
+						<Player PlayerName='Player 2' GameMode='remote' />
+					</div>
+				</div>
+			</section>
 
-    const updateGameState = (state) => {
-        gameStateRef.current = state;
-        setPlayer1Score(state.score_player1);
-        setPlayer2Score(state.score_player2);
-        setIsPaused(state.is_paused);
-    };
+			{gameState.isGameOver && (
+				<GameOverPopup
+					winner={gameState.winner}
+					onRestart={handleRestart}
+					onClose={handleClose}
+				/>
+			)}
 
-    const handlePaddleMovement = (data) => {
-        const { player, position } = data;
-        gameStateRef.current[`${player}Y`] = position;
-    };
-
-    const handleBallUpdate = (data) => {
-        gameStateRef.current.ballPos = data.position;
-        gameStateRef.current.ballVelocity = data.velocity;
-    };
-
-    const handleScoreUpdate = (data) => {
-        setPlayer1Score(data.score.player1);
-        setPlayer2Score(data.score.player2);
-    };
-
-    const handlePowerUp = (data) => {
-        // Handle power-up activation
-    };
-
-    const handleGameOver = (data) => {
-        setIsGameOver(true);
-        // Show game over popup with results
-    };
-
-    const handleDisconnect = () => {
-        setGameError("Connection lost. Attempting to reconnect...");
-        // Implement reconnection logic if needed
-        setTimeout(connectToGame, 3000);
-    };
-
-    const sendGameEvent = (eventData) => {
-        if (wsRef.current?.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify(eventData));
-        }
-    };
-
-    const handlePause = () => {
-        sendGameEvent({
-            type: 'pause_game',
-            is_paused: !isPaused
-        });
-    };
-
-    const handlePaddleMove = (position) => {
-        sendGameEvent({
-            type: 'paddle_move',
-            player: playerId,
-            position: position
-        });
-    };
-
-    const handleClose = () => {
-        navigate('/dashboard');
-    };
-
-    if (gameError) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="bg-red-500 text-white p-4 rounded-lg shadow-lg">
-                    <h2 className="text-xl font-bold mb-2">Error</h2>
-                    <p>{gameError}</p>
-                    <button 
-                        onClick={handleClose}
-                        className="mt-4 bg-white text-red-500 px-4 py-2 rounded"
-                    >
-                        Return to Dashboard
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className={`backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}>
-            <section className='flex'>
-                <div className='flex-1 margin-page flex flex-col items-center gap-8'>
-                    <GameScore 
-                        player1Score={player1Score} 
-                        player2Score={player2Score} 
-                        isPaused={isPaused} 
-                    />
-                    <Timer 
-                        isPaused={isPaused} 
-                        timeRemaining={timeRemaining} 
-                    />
-                    <div className='flex-1 w-full flex max-lg:flex-wrap max-lg:justify-around justify-between font-dreamscape-sans'>
-                        <Player 
-                            isPaused={isPaused}
-                            PlayerName={location.state?.player1?.name}
-                            BadgeName={location.state?.player1?.badge}
-                            playerImage={location.state?.player1?.image}
-                            badgeImage={location.state?.player1?.badgeImage}
-                            GameMode="remote"
-                        />
-                        <PongTable 
-                            isPaused={isPaused}
-                            handlePause={handlePause}
-                            backgroundId={location.state?.backgroundId}
-                            isGameOver={isGameOver}
-                            player1Color={location.state?.player1?.color}
-                            player2Color={location.state?.player2?.color}
-                            ballColor={location.state?.ballColor}
-                            paddleHeight={location.state?.paddleHeight}
-                            ballRadius={location.state?.ballRadius}
-                            powerups={location.state?.powerUps}
-                            attacks={location.state?.attacks}
-                            isRemote={true}
-                            onPaddleMove={handlePaddleMove}
-                            gameState={gameStateRef.current}
-                            playerId={playerId}
-                        />
-                        <Player 
-                            isPaused={isPaused}
-                            PlayerName={location.state?.player2?.name}
-                            BadgeName={location.state?.player2?.badge}
-                            playerImage={location.state?.player2?.image}
-                            badgeImage={location.state?.player2?.badgeImage}
-                            GameMode="remote"
-                        />
-                    </div>
-                </div>
-            </section>
-            {isGameOver && (
-                <GameOverPopup
-                    winner={player1Score > player2Score ? location.state?.player1 : location.state?.player2}
-                    onClose={handleClose}
-                />
-            )}
-        </div>
-    );
-};
-
-export default RemoteGame;
+			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
+		</div>
+	)
+}

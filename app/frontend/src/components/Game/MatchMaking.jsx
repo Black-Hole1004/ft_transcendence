@@ -1,101 +1,126 @@
-// frontend/src/pages/Game/MatchMaking.jsx
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import MatchmakingService from '../../services/MatchmakingService'
+import './MatchMaking.css'
+import Player from './Player'
 
-const MatchMaking = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { gameId, settings } = location.state || {};
-    const [dots, setDots] = useState('');
-    const [secondsWaiting, setSecondsWaiting] = useState(0);
-    const [wsConnection, setWsConnection] = useState(null);
+const Matchmaking = () => {
+	const navigate = useNavigate()
+	const location = useLocation()
+	const [status, setStatus] = useState('connecting')
+	const [matchmakingService] = useState(new MatchmakingService())
 
-    // Animated dots for loading
-    useEffect(() => {
-        const dotsInterval = setInterval(() => {
-            setDots(prev => prev.length >= 5 ? '' : prev + '.');
-        }, 500);
+	// Log the incoming state
+	console.log('Matchmaking received state:', location.state)
 
-        return () => clearInterval(dotsInterval);
-    }, []);
+	useEffect(() => {
+		const settings = location.state?.settings
+		console.log('Initializing matchmaking with settings:', settings)
 
-    // Timer for waiting
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setSecondsWaiting(prev => prev + 1);
-        }, 1000);
+		// Initialize matchmaking service
+		matchmakingService.connect()
 
-        return () => clearInterval(timer);
-    }, []);
+		matchmakingService.on('connect', () => {
+			console.log('Connected to matchmaking service')
+			setStatus('connected')
+			matchmakingService.findMatch(settings)
+		})
 
-    // WebSocket connection to wait for opponent
-    useEffect(() => {
-        const ws = new WebSocket(`ws://${window.location.host}/ws/game/${gameId}/`);
-        setWsConnection(ws);
+		matchmakingService.on('searching', (data) => {
+			console.log('Searching for opponent:', data)
+			setStatus('searching')
+		})
 
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.type === 'opponent_joined') {
-                navigate('/remote-game', {
-                    state: {
-                        gameId,
-                        settings,
-                        player1: data.player1,
-                        player2: data.player2
-                    }
-                });
-            }
-        };
+		matchmakingService.on('match_found', (data) => {
+			console.log('Match found with data:', data)
 
-        return () => {
-            ws.close();
-        };
-    }, [gameId]);
+			// Add validation for game_id
+			if (!data.game_id) {
+				console.error('Server did not provide game_id')
+				setStatus('error')
+				return
+			}
+			// Get settings location state
+			const settings = location.state?.settings || {
+				// Default settings if none provided
+				backgroundId: 1,
+				paddleHeight: 110,
+				ballRadius: 15,
+				powerUps: 1,
+				attacks: 1,
+				Player1Color: '#ffffff',
+				Player2Color: '#ffffff',
+				BallColor: '#ffffff',
+				duration: 30,
+			}
 
-    const cancelMatchmaking = async () => {
-        try {
-            await fetch(`/api/game/${gameId}/cancel/`, {
-                method: 'POST',
-            });
-            wsConnection?.close();
-            navigate('/dashboard');
-        } catch (error) {
-            console.error('Failed to cancel matchmaking:', error);
-        }
-    };
+			// Navigate to remote game with validated data
+			navigate('/remote-game', {
+				state: {
+					gameId: data.game_id,
+					playerId: data.player_id, // Assuming server sends which player we are
+					settings: {
+						...settings,
+						// Add any additional settings from server if needed
+						playerInfo: {
+							player1: data.player1, // Server might send player information
+							player2: data.player2,
+						},
+						// You can add more game-specific settings here
+					},
+					matchData: {
+						// Include any additional match data from server
+						matchId: data.match_id,
+						startTime: data.start_time,
+						gameMode: data.mode,
+						// Add any other relevant match data
+					},
+				},
+			})
+		})
 
-    return (
-        <div className="min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary flex items-center justify-center">
-            <div className="bg-backdrop-80 p-8 rounded-lg shadow-lg text-center max-w-md w-full">
-                <div className="mb-8">
-                    <h2 className="text-2xl font-bold mb-2">
-                        Finding Opponent  {dots}
-                    </h2>
-                    <p className="text-gray-400">
-                        Time elapsed: {Math.floor(secondsWaiting / 60)}:
-                        {String(secondsWaiting % 60).padStart(2, '0')}
-                    </p>
-                </div>
+		return () => {
+			console.log('Cleaning up matchmaking')
+			matchmakingService.disconnect()
+		}
+	}, [])
 
-                <div className="mb-6">
-                    <p className="text-sm mb-2">Game Settings:</p>
-                    <div className="bg-backdrop-60 p-3 rounded text-left">
-                        <p>Paddle Height: {settings.paddleHeight}px</p>
-                        <p>Ball Radius: {settings.ballRadius}px</p>
-                        <p>Power-ups: {settings.powerUps}</p>
-                        <p>Attacks: {settings.attacks}</p>
-                    </div>
-                </div>
+	const handleCancel = () => {
+		console.log('Cancelling search')
+		matchmakingService.cancelSearch()
+		navigate('/remote-game-setup')
+	}
 
-                <button
-                    onClick={cancelMatchmaking}
-                    className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition"
-                >
-                    Cancel
-                </button>
-            </div>
-        </div>
-    );
-};
+	return (
+		<div className='matchmaking-container'>
+			<div className='matchmaking-content'>
+				<h2>Finding Opponent</h2>
+				<div className='status-message'>
+					{status === 'connecting' && 'Connecting to server...'}
+					{status === 'connected' && 'Connected, starting search...'}
+					{status === 'searching' && 'Searching for opponent...'}
+					{status === 'error' && 'Error finding match'}
+				</div>
 
-export default MatchMaking;
+				{/* Loading animation */}
+				<div className='loading-indicator'>
+					<div className='paddle left'></div>
+					<div className='ball'></div>
+					<div className='paddle right'></div>
+				</div>
+
+				<button onClick={handleCancel} className='cancel-button'>
+					Cancel
+				</button>
+
+				{/* Debug info */}
+				<div style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
+					<p>Current Status: {status}</p>
+					<p>WebSocket State: {matchmakingService.socket?.readyState}</p>
+				</div>
+			</div>
+		</div>
+	)
+}
+
+export default Matchmaking

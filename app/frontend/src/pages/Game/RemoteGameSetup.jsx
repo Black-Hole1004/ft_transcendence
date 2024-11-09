@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 const RemoteGameSetup = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -17,48 +16,21 @@ const RemoteGameSetup = () => {
         player1Color: '#ffffff',
         player2Color: '#ffffff',
         ballColor: '#ffffff',
-        duration: 30
+        duration: 30,
+        backgroundId
     });
 
-    const handleStartGame = async () => {
-        setIsLoading(true);
-        try {
-            // Create game session
-            const response = await fetch('http://localhost:8000/api/game/create/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Add any authentication headers if needed
-                },
-                body: JSON.stringify({
-                    mode_id: '1VS1', // this mode could be '1VS1', 'TOURNAMENT', 'TRAINING'
-                    table_id: backgroundId,
-                }),
-            });
-            
-            const data = await response.json();
-            
-            if (response.ok) {
-                // Navigate to matchmaking with game session data
-                navigate('/matchmaking', {
-                    state: {
-                        gameId: data.gameSession_id,
-                        settings: {
-                            ...settings,
-                            backgroundId
-                        }
-                    }
-                });
-            } else {
-                throw new Error(data.error || 'Failed to create game');
-            }
-        } catch (error) {
-            console.error('Failed to create game:', error);
-            toast.error('Failed to create game. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
+const handleFindOpponent = () => {
+        console.log('Navigating to matchmaking with settings:', settings);
+        navigate('/matchmaking', { 
+            state: { 
+                settings,
+                from: 'remote-game-setup' // this for debugging
+            } 
+        });
     };
+
+
 
     return (
         <div className="min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary">
@@ -164,7 +136,7 @@ const RemoteGameSetup = () => {
                     </div>
 
                     <button
-                        onClick={handleStartGame}
+                        onClick={handleFindOpponent}
                         className="w-full p-2 bg-primary text-backdrop-80 rounded hover:bg-primary-dark transition"
                     >
                         Find Opponent
@@ -176,5 +148,3 @@ const RemoteGameSetup = () => {
 };
 
 export default RemoteGameSetup;
-
-
