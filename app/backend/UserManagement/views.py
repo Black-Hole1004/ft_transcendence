@@ -43,6 +43,13 @@ from django.utils import timezone
 
 from django.contrib.auth import get_user_model
 
+from .profile_utils import (
+    remove_profile_picture,
+    update_profile_picture,
+    handle_password_change,
+    generate_new_tokens
+)
+
 
 User = get_user_model()
 #todo: (DELETE THIS LATER) simple view to test permissions control and jwt decoding
@@ -232,76 +239,41 @@ class UserProfileView(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-
     def put(self, request):
-
         try:
             user = request.user
-            has_password_change = False
-            new_tokens = None
-
-            if request.data.get('remove_profile_picture') == 'true':
-                if user.profile_picture and 'avatar.jpg' not in user.profile_picture.name:
-                    if os.path.isfile(user.profile_picture.path):
-                        os.remove(user.profile_picture.path)
-                user.profile_picture = 'profile_pictures/avatar.jpg'
-                user.save()
-
-            password = request.data.get('password')
-            new_password = request.data.get('new_password')
-            confirm_password = request.data.get('confirm_password')
-
-            if any([password, new_password, confirm_password]):
-                # Validate password fields
-                if not all([password, new_password, confirm_password]):
-                    return Response({
-                        'error': 'All password fields (password, new_password, confirm_password) are required'
-                    }, status=status.HTTP_400_BAD_REQUEST)
-
-                # Check current password
-                if not user.check_password(password):
-                    return Response({
-                        'error': 'Current password is incorrect'
-                    }, status=status.HTTP_400_BAD_REQUEST)
-
-                # Check password confirmation
-                if new_password != confirm_password:
-                    return Response({
-                        'error': 'New password and confirm password do not match'
-                    }, status=status.HTTP_400_BAD_REQUEST)
-
-                # Check if new password is different
-                if password == new_password:
-                    return Response({
-                        'error': 'New password must be different from current password'
-                    }, status=status.HTTP_400_BAD_REQUEST)
-
             user_data = request.data.copy()
-            for field in ['password', 'new_password', 'confirm_password', 'remove_profile_picture']:
-                if field in user_data:
-                    user_data.pop(field)
+            profile_picture = request.FILES.get('profile_picture', None)
 
-            if 'profile_picture' in request.FILES:
-                # Remove old profile picture if it exists and is not the default
-                if user.profile_picture and 'avatar.jpg' not in user.profile_picture.name:
-                    if os.path.isfile(user.profile_picture.path):
-                        os.remove(user.profile_picture.path)
+            # Handle profile picture removal if requested
+            if request.data.get('remove_profile_picture') == 'true':
+                remove_profile_picture(user)
             
+            # Check if any password fields are provided and handle validation
+            validation_response = handle_password_change(user, user_data)
+            if validation_response is not True:
+                return Response(validation_response.data, status=status.HTTP_400_BAD_REQUEST)
+            
+            for field in ['password', 'new_password', 'confirm_password']:
+                if field in user_data:
+                    del user_data[field]
+            
+            # Handle profile picture update if new picture is uploaded
+            if profile_picture:
+                update_profile_picture(user, profile_picture)
+
+            # Serialize the data and update the user instance
+            print(f"User data: {user_data}")
             serializer = UserSerializer(user, data=user_data, partial=True)
             if not serializer.is_valid():
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
-            serializer.save()
+            updated_user = serializer.save()
 
-            if has_password_change:
-                user.set_password(new_password)
-                user.save()
-
-                refresh = RefreshToken.for_user(user)
-                new_tokens = {
-                    'access_token': str(refresh.access_token),
-                    'refresh_token': str(refresh)
-                }
+            # if password was changed, generate new tokens
+            new_tokens = None
+            if 'new_password' in user_data:
+                new_tokens = self.reauthenticate_and_generate_tokens(updated_user, user_data['new_password'])
             
             response_data = serializer.data
             if new_tokens:
@@ -310,11 +282,23 @@ class UserProfileView(APIView):
                     'new_tokens': new_tokens
                 })
             else:
-                response_data['message'] = 'Profile updated successfully'
-            
+                response_data.update({'message': 'Profile updated successfully'})
+
             return Response(response_data, status=status.HTTP_200_OK)
+
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    def reauthenticate_and_generate_tokens(self, user, new_password):
+        """Reauthenticate the user using the new password and generate new JWT tokens."""
+        # Re-authenticate user using the new password to ensure the password change worked
+        user = authenticate(username=user.username, password=new_password)
+        
+        if not user:
+            raise ValidationError('Authentication failed. Invalid credentials.')
+
+        # If authentication is successful, generate new tokens
+        return generate_new_tokens(user)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

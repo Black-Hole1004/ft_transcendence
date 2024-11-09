@@ -6,6 +6,12 @@ from django.contrib.auth import get_user_model
 from .models import UserSession
 from rest_framework.response import Response
 
+from .profile_utils import (
+    handle_password_change,
+    remove_profile_picture,
+    update_profile_picture,
+    generate_new_tokens
+)
 
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
@@ -19,19 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
                 'username', 'display_name','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture'
             ]
         read_only_fields = ['id', 'email']
-        def update(self, instance, validated_data):
-            # Handle profile picture update
-            if 'profile_picture' in self.context.get('request').FILES:
-                instance.profile_picture = self.context.get('request').FILES['profile_picture']
-
-            return super().update(instance, validated_data)
-        
-        # def validate_mobile_number(self, value):
-        # # Example: Check if mobile number is already used by another user
-        #     if User.objects.filter(mobile_number=value).exists():
-        #         raise serializers.ValidationError("This mobile number is already registered.")
-        #     return value
-
+    
 class UserSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserSession

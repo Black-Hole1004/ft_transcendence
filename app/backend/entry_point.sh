@@ -5,7 +5,7 @@ echo "Starting entry point script..."
 
 # Allow some time for the database to start
 echo "Sleeping for 20 seconds..."
-sleep 30
+sleep 20
 
 # Run migrations and start the server
 # echo "Running migrations..."
