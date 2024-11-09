@@ -128,3 +128,7 @@
 .shadow {
 	background: linear-gradient(rgba(21,16,13,1), transparent);;
 }
+
+.search-badge {
+	width: clamp(1.875rem, 0.558vw + 1.607rem, 2.5rem);
+}

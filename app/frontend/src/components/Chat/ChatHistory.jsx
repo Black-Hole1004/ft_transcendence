@@ -13,6 +13,8 @@ function ChatHistory({
 	setConversationId,
 	setSelectedUserId,
 }) {
+	const [searchText, setSearchText] = useState('')
+	const [searchResult, setSearchResult] = useState(null)
 	const [conversations, setConversations] = useState([])
 	const [small, setSmall] = useState(window.innerWidth < 768)
 
@@ -36,6 +38,30 @@ function ChatHistory({
 		getConversations()
 	}, [messages, headers])
 
+	useEffect(() => {
+		const getUsers = async () => {
+			try {
+				if (searchText.length > 0) {
+					const response = await axios.get(`${API_CHAT}${searchText}/`, { headers })
+
+					if (response.data.search_result.length > 0) {
+						setSearchResult(response.data.search_result)
+					}
+					else {
+						setSearchResult(null)
+					}
+				}
+				else {
+					setSearchResult(null)
+				}
+			} catch {
+				console.error('Error fetching users:', error)
+			}
+		}
+
+		getUsers()
+	}, [searchText])
+
 	return (
 		<div
 			className='flex flex-col tb:w-[34%] max-tb:border border-primary lg:rounded-3xl rounded-2xl
@@ -51,6 +77,8 @@ function ChatHistory({
 					<input
 						type='text'
 						autoComplete='off'
+						value={searchText}
+						onChange={(e) => setSearchText(e.target.value)}
 						name='search for friends'
 						placeholder='Search for friends...'
 						className='font-medium bg-transparent text-primary outline-none search
@@ -62,16 +90,31 @@ function ChatHistory({
 				className={`flex tb:flex-col max-tb:justify-center flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
 							tb:overflow-y-auto ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
-				{conversations.map((conversation) => (
-					<User
-						key={conversation.id}
-						conversation={conversation}
-						selectedUserId={selectedUserId}
-						setSelectedUserId={setSelectedUserId}
-						setConversationId={setConversationId}
-						setMessages={setMessages}
-					/>
-				))}
+				{searchResult ? (
+					searchResult.map((conversation, index) => (
+						<User
+							key={index}
+							search={true}
+							setMessages={setMessages}
+							conversation={conversation}
+							selectedUserId={selectedUserId}
+							setSelectedUserId={setSelectedUserId}
+							setConversationId={setConversationId}
+							/>
+						))
+					) : (
+						conversations.map((conversation) => (
+							<User
+							search={false}
+							key={conversation.id}
+							setMessages={setMessages}
+							conversation={conversation}
+							selectedUserId={selectedUserId}
+							setSelectedUserId={setSelectedUserId}
+							setConversationId={setConversationId}
+						/>
+					))
+				)}
 			</div>
 		</div>
 	)
