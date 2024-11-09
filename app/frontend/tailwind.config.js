@@ -70,6 +70,7 @@ export default {
 				'shapes-lg': 'clamp(24.063rem, 21.607vw + 4.616rem, 39.188rem)',
 
 				'chat': 'clamp(29.688rem, 20.133vw + 25.913rem, 58.125rem)',
+				'chat-ms': 'clamp(37.5rem, 17.699vw + 34.181rem, 62.5rem)',
 				'users-div': 'clamp(29.375rem, 12.835vw + 23.214rem, 43.75rem)',
 				'leftside-chat-ms': 'clamp(10rem, 4.283vw + 9.197rem, 11.25rem)',
 				'leftside-chat-tb': 'clamp(9.375rem, 21.413vw + 5.36rem, 15.625rem)',

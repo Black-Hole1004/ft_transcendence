@@ -11,9 +11,6 @@ import StartConversation from '../../components/Chat/StartConversation.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
-
-
-
 const Chat = () => {
 	const headers = useHeaders()
 	const location = useLocation()
@@ -43,17 +40,12 @@ const Chat = () => {
 			setSelectedUserId(uri[1])
 			setIsUrlProcessed(true)
 			console.log('conversation id:', conversationId)
-		}
-		else {
+		} else {
 			setIsUrlProcessed(false)
 		}
-
 	}, [location.pathname])
 
-
-
 	useEffect(() => {
-
 		const handleOpen = () => {
 			console.log('WebSocket connected')
 			if (isUrlProcessed) {
@@ -77,11 +69,14 @@ const Chat = () => {
 		const handleMessage = (e) => {
 			console.log('handle message')
 			const data = JSON.parse(e.data)
-			setMessages((prevMessages) => [...prevMessages, {
-				sender_id: data.sender,
-				content: data.message,
-				sent_datetime: data.timestamp
-			}])
+			setMessages((prevMessages) => [
+				...prevMessages,
+				{
+					sender_id: data.sender,
+					content: data.message,
+					sent_datetime: data.timestamp,
+				},
+			])
 		}
 
 		const setupConnection = () => {
@@ -93,20 +88,14 @@ const Chat = () => {
 			chatSocket.current.addEventListener('open', handleOpen)
 			chatSocket.current.addEventListener('close', handleClose)
 			chatSocket.current.addEventListener('message', handleMessage)
-
 		}
 
 		setupConnection()
-
 
 		return () => {
 			if (chatSocket.current) {
 				console.log('cleanup running')
 				const ws = chatSocket.current
-
-				// if (ws.readyState === WebSocket.OPEN) {
-				// 	ws.close()
-				// }
 
 				ws.removeEventListener('open', handleOpen)
 				ws.removeEventListener('close', handleClose)
@@ -116,14 +105,6 @@ const Chat = () => {
 			}
 		}
 	}, [isUrlProcessed])
-
-
-
-
-
-
-
-
 
 	useEffect(() => {
 		const getUserInfos = async () => {
@@ -148,31 +129,27 @@ const Chat = () => {
 		}
 	}, [selectedUserId])
 
-
-
-
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') {
 			sendMessage()
 		}
 	}
 
-
-
-
 	const sendMessage = () => {
 		let ws = chatSocket.current
-		
+
 		if (ws && ws.readyState === WebSocket.OPEN) {
 			const value = MessageInputRef.current.value.trim()
 
 			if (value !== '') {
-				ws.send(JSON.stringify({
-					sender: myId,
-					message: value,
-					message_type: 'message',
-					conversation_id: conversationId,
-				}))
+				ws.send(
+					JSON.stringify({
+						sender: myId,
+						message: value,
+						message_type: 'message',
+						conversation_id: conversationId,
+					})
+				)
 				MessageInputRef.current.value = ''
 			}
 		}
@@ -197,8 +174,8 @@ const Chat = () => {
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
 					<div
-						className='flex-1 flex flex-col items-center max-tb:border border-primary
-									lg:rounded-3xl rounded-2xl tb:h-chat bg-[rgba(27,22,17,0.5)]'
+						className='tb:flex-1 flex flex-col items-center max-tb:border border-primary
+									lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
 					>
 						{user ? (
 							<>
@@ -253,74 +230,3 @@ const Chat = () => {
 }
 
 export default Chat
-
-
-
-
-
-
-	// const joinRoom = (ws, roomId) => {
-	// 	ws.send(
-	// 		JSON.stringify({
-	// 			message_type: 'join',
-	// 			conversation_id: roomId,
-	// 		})
-	// 	)
-	// }
-
-	// useEffect(() => {
-	// 	let ws = chatSocket.current
-
-	// 	if (ws && ws.readyState === WebSocket.OPEN) {
-	// 		joinRoom(ws ,conversationId)
-	// 	}
-	// }, [conversationId])
-
-
-
-
-		// let ws
-
-		// const connect = () => {
-		// 	ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
-		// 	chatSocket.current = ws
-
-		// 	const handleOpen = () => {
-		// 		console.log('WebSocket connected')
-		// 		if (conversationId) {
-		// 			joinRoom(ws, conversationId)
-		// 		}
-		// 	}
-
-		// 	const handleClose = () => {
-		// 		console.log('WebSocket disconnected')
-		// 		setTimeout(connect, 3000)
-		// 	}
-
-		// 	const handleMessage = (e) => {
-		// 		const data = JSON.parse(e.data)
-		// 		setMessages((prevMessages) => [...prevMessages, {
-		// 			sender_id: data.sender,
-		// 			content: data.message,
-		// 			sent_datetime: data.timestamp
-		// 		}])
-		// 	}
-			
-		// 	ws.addEventListener('open', handleOpen)
-		// 	ws.addEventListener('close', handleClose)
-		// 	ws.addEventListener('message', handleMessage)
-
-		// 	return () => {
-		// 		ws.removeEventListener('open', handleOpen)
-		// 		ws.removeEventListener('close', handleClose)
-		// 		ws.removeEventListener('message', handleMessage)
-		// 		ws.close()
-		// 		console.log('WebSocket disconnected')
-		// 	}
-		// }
-		
-		// const cleanup = connect()
-		
-		// return () => {
-		// 	if (cleanup) cleanup()
-		// }
