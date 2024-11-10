@@ -14,13 +14,14 @@ const Dashboard = React.lazy(() => import('./pages/Dashboard/Dashboard'))
 const Tournament = React.lazy(() => import('./pages/Tournament/Tournament'))
 const NotFound = React.lazy(() => import('./pages/NotFound/NotFound'))
 import { useEffect } from 'react'
-
+import Layout from './components/Layout/Layout'
 import useAuth from '../src/context/AuthContext'
 import { Suspense } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
 import Cookies from 'js-cookie'
+import { Toaster } from 'react-hot-toast'
 
 // <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 // 	<CircularProgress />
@@ -41,6 +42,16 @@ const ComponentPath = () => {
 			<Route path="/" element={authTokens  && authTokens.access_token  ? <Navigate to="/dashboard" replace /> : <Home />} />
 			
 			{/* Protected Routes */}
+			{/* <Route element={< Layout />}>
+				<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+				<Route path="/Game" element={<PrivateRoute><Game /></PrivateRoute>} />
+				<Route path="/Chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
+				<Route path="/Custom" element={<PrivateRoute><Custom /></PrivateRoute>} />
+				<Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+				<Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+				<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
+			</Route> */}
+
 			<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
 			<Route path="/Game" element={<PrivateRoute><Game /></PrivateRoute>} />
 			<Route path="/Chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
@@ -91,6 +102,7 @@ function App() {
 					<OAuthHandler />
 					<ComponentPath />
 				</React.Suspense>
+				<Toaster />
 			</AuthProvider>
 		</Router>
 	);

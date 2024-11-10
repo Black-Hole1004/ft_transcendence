@@ -4,6 +4,7 @@ import CardButton from '../Buttons/CardButton'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 // import { useNavigate } from 'react-router-dom'
+import Alert from '@mui/material/Alert'
 
 import useAuth from '../../../context/AuthContext'
 
@@ -13,42 +14,47 @@ const API_42 = import.meta.env.VITE_API_42
 const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 
 
-const InvalidCredentialsAlert = ({ show, setShow }) => {
-	return (
-		<div className={`alert alert-danger ${show ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative`} role="alert">
-			<strong className="font-bold">Error!</strong>
-			<span className="block sm:inline"> Invalid credentials. Please try again.</span>
-			<span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShow(false)}>
-				<svg className="fill-current h-6 w-6 text-red-500" role="button" viewBox="0 0 20 20">
-					<title>Close</title>
-					<path d="M10 9l5-5 1.414 1.414L11.414 10l5 5-1.414 1.414L10 11.414l-5 5-1.414-1.414 5-5-5-5L4.586 4z" />
-				</svg>
-			</span>
-		</div>
-	);
-};
+export function Toast({ type, message, onClose }) {
+    // Automatically close the toast after 3 seconds
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            onClose();
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [onClose]);
 
-const SuccessLoginAlert = ({ show, setShow }) => {
-	return (
-		<div className={`alert alert-success ${show ? 'block' : 'hidden'} bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative`} role="alert">
-			<strong className="font-bold">Success!</strong>
-			<span className="block sm:inline"> You have logged in successfully.</span>
-			<span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShow(false)}>
-				<svg className="fill-current h-6 w-6 text-green-500" role="button" viewBox="0 0 20 20">
-					<title>Close</title>
-					<path d="M10 9l5-5 1.414 1.414L11.414 10l5 5-1.414 1.414L10 11.414l-5 5-1.414-1.414 5-5-5-5L4.586 4z" />
-				</svg>
-			</span>
-		</div>
-	);
-};
+    const toastStyles = {
+        success: 'bg-green-500',
+        error: 'bg-red-500',
+        info: 'bg-blue-500',
+        warning: 'bg-yellow-500',
+    }[type] || 'bg-gray-800';
+
+    return (
+        <div
+            className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                p-6 rounded-lg text-white shadow-lg ${toastStyles}
+                ml:w-card-custom max-w-full w-screen
+                flex items-center justify-between`}
+        >
+            <span className="text-lg font-semibold">{message}</span>
+            <button 
+                onClick={onClose} 
+                className="ml-4 text-white text-2xl font-bold hover:opacity-80"
+            >
+                &times;
+            </button>
+        </div>
+    );
+}
+
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => setIsSigningIn(!isSigningIn)
 
-	const { email, password, confirmPassword, showAlert, showSuccessAlert } = useAuth()
+	const { email, password, confirmPassword, toast, setToast } = useAuth()
 
-	const { login, register, setEmail, setPassword, setConfirmPassword, setShowAlert, setShowSuccessAlert } = useAuth()
+	const { login, register, setEmail, setPassword, setConfirmPassword} = useAuth()
 	// --------------------------- moudrib code -------------------------------------------
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
@@ -102,6 +108,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	]
 	// --------------------------------------------------------------------------------------------
 
+	// --------------------------- moudrib code -------------------------------------------
 	const handleOauth = (provider) => {
 		console.log('provider', provider)
 		const API_URLS = {
@@ -131,6 +138,14 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'}
 			ml:border-1.5 border border-b-0 rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
+
+		{toast.show && (
+            <Toast
+                type={toast.type}
+                message={toast.message}
+                onClose={() => setToast({ ...toast, show: false })}
+            />
+        )}
 			<div className='m-2'>
 				<div className='relative w-full flex items-center'>
 					<img
@@ -192,9 +207,6 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 							{isSigningIn ? <>Sign in</> : <>Sign up</>}
 						</CardButton>
 
-
-						<InvalidCredentialsAlert show={showSuccessAlert} setShow={setShowSuccessAlert} />
-						<SuccessLoginAlert show={showAlert} setShow={setShowAlert} />
 					</form>
 
 					{!isSigningIn && (
@@ -246,7 +258,6 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 								</button>
 							</p>
 						)}
-
 					</div>
 				</div>
 			</div>

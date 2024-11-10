@@ -11,6 +11,8 @@ const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 const VITE_API_REFRESH = import.meta.env.VITE_API_REFRESH
 const VITE_API_VERIFY = import.meta.env.VITE_API_VERIFY
 const VITE_API_LOGOUT = import.meta.env.VITE_API_LOGOUT
+import toast, { Toaster } from 'react-hot-toast'
+import showToast from '../pages/Home/Home'
 
 export const AuthProvider = ({ children }) => {
 
@@ -19,8 +21,7 @@ export const AuthProvider = ({ children }) => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    const [showAlert, setShowAlert] = useState(false);
-    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+    
 
 
     const accessToken = Cookies.get('access_token');
@@ -43,7 +44,13 @@ export const AuthProvider = ({ children }) => {
 
     const initialUser = authTokens?.access_token && jwtDecode(authTokens.access_token)
     const [user, setUser] = useState(initialUser)
+	
 
+
+    const [toast, setToast] = useState({ show: false, type: '', message: '' })
+	const showToast = (type, message) => {
+		setToast({ show: true, type, message })
+	}
 
 
     const login = async () => {
@@ -68,8 +75,8 @@ export const AuthProvider = ({ children }) => {
                 navigate('/dashboard')
             }
             else {
+                showToast('error', 'login failed')
                 console.log('Login failed', data)
-                setShowSuccessAlert(true)
             }
         } catch (error) {
             console.error('error', error)
@@ -93,10 +100,10 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json();
             if (response.ok) {
                 console.log('registration successful', data)
-                setShowAlert(true)
+                showToast('success', 'registration successful')
             } else {
                 console.log('registartion failed', data)
-                setShowSuccessAlert(true)
+                showToast('error', 'registration failed')
             }
         } catch (error) {
             console.error('error', error)
@@ -167,13 +174,10 @@ export const AuthProvider = ({ children }) => {
         user: user,
         setUser: setUser,
 
-        showAlert: showAlert,
-        setShowAlert: setShowAlert,
-        showSuccessAlert: showSuccessAlert,
-        setShowSuccessAlert: setShowSuccessAlert,
-
         getAuthHeaders: getAuthHeaders,
 
+        toast: toast,
+        setToast: setToast,
     }
 
     return (
