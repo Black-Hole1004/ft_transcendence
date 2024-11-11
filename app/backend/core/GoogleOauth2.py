@@ -61,6 +61,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
             user.first_name = user_details['first_name']
             user.email = user_details['email']
             user.username = user_details['username']
+            user.is_logged_with_oauth = True
             user.save()
 
             auth_login(self.strategy.request, user)

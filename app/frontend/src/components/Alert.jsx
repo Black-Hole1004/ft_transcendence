@@ -1,6 +1,6 @@
 import './Alert.css'
 
-function Alert({ type, message, onClose }) {
+const Alert = ({ type, message, onClose }) => {
 	const AlertsStyles = {
 		info: 'bg-blue-500 bg-opacity-10 border-blue-500 text-blue-100',
 		error: 'bg-red-500 bg-opacity-10 border-red-500 text-red-100',
@@ -16,7 +16,7 @@ function Alert({ type, message, onClose }) {
 			role='alert'
 		>
 			<div className='flex gap-3 items-center mr-4'>
-				<img src={`./assets/images/icons/${type}.png`} className='alert-icon' alt='' />
+				<img src={`/assets/images/icons/${type}.png`} className='alert-icon' alt='' />
 				<span>{message}</span>
 			</div>
 			<button className='focus:outline-none px-2' onClick={onClose}>&times;</button>

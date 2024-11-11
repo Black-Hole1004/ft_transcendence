@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import { Link } from 'react-router-dom'
-import Header from '../../components/Header'
 import MatchStats from '../../components/Profile/MatchStats'
 import ProfileBio from '../../components/Profile/ProfileBio'
 import ProgressBar from '../../components/Profile/ProgressBar'
@@ -17,15 +16,7 @@ const Profile = () => {
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
 
-	const [first_name, setFirst_name] = useState('')
-	const [last_name, setLast_name] = useState('')
-	const [email, setEmail] = useState('')
-	const [mobile_number, setMobile_number] = useState('')
-	const [username, setUsername] = useState('')
-	const [display_name, setDisplay_name] = useState('')
-	const [bio, setBio] = useState('')
-	const [profile_picture, setProfile_picture] = useState('')
-	const [preview, setPreview] = useState(null)
+
 
 	const { authTokens, logout, getAuthHeaders } = useAuth()
 	useEffect(() => {
@@ -41,6 +32,16 @@ const Profile = () => {
 			window.removeEventListener('resize', calculateWidth)
 		}
 	}, [])
+
+	const [first_name, setFirst_name] = useState('')
+	const [last_name, setLast_name] = useState('')
+	const [email, setEmail] = useState('')
+	const [mobile_number, setMobile_number] = useState('')
+	const [username, setUsername] = useState('')
+	const [display_name, setDisplay_name] = useState('')
+	const [bio, setBio] = useState('')
+	const [profile_picture, setProfile_picture] = useState('')
+	const [preview, setPreview] = useState(null)
 
 	const [user, setUser] = useState({
 		first_name: '',
@@ -139,9 +140,6 @@ const Profile = () => {
 			ref={containerRef}
 			className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'
 		>
-			<Header src={`${BASE_URL}${profile_picture}`} preview={preview}
-				firstName={first_name} lastName={last_name} username={username}
-			/>
 			<section className='flex justify-center'>
 				<div className='lp:mt-20 my-10 relative flex flex-col max-lp:gap-y-3
 					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'>

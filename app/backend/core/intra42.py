@@ -1,4 +1,3 @@
-from UserManagement.views import login
 from UserManagement.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from social_core.backends.oauth import BaseOAuth2
@@ -8,7 +7,7 @@ from django.http import HttpResponseRedirect
 import requests
 from django.utils.crypto import get_random_string
 from django.core.files.base import ContentFile
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login
 
 class Intra42OAuth2(BaseOAuth2):
     """Intra42 OAuth2 authentication backend"""
@@ -52,7 +51,7 @@ class Intra42OAuth2(BaseOAuth2):
             'last_name': response.get('last_name'),
             'profile_image_url': response.get('image').get('link'),
             # add by me ahaloui
-            'mobile_number': response.get('phone'),
+            # 'mobile_number': response.get('phone', ''),
         }
 
     def user_data(self, access_token, *args, **kwargs):
@@ -127,12 +126,15 @@ class Intra42OAuth2(BaseOAuth2):
             # 'password': User.objects.make_random_password() i get an error here so i used the below line
             # add by me ahaloui
             # 'password': get_random_string(length=12), # Set a random password,
-            'mobile_number': user_details.get('mobile_number', ''),
+            # 'mobile_number': user_details.get('mobile_number', ''),
             }
         )
+        print('---------- user:============= 1' + str(user))
 
         if user:
             # add by me ahaloui
+            print('---------- user:============= 2 ' + str(user))
+            print('user: ' + str(user))
             image_response = None
             profile_image_url = user_details.get('profile_image_url')
             if profile_image_url and (created or user.profile_picture.name == 'profile_pictures/avatar.jpg'):
@@ -144,7 +146,11 @@ class Intra42OAuth2(BaseOAuth2):
             # user.save()
 
             # add by me ahaloui
-            auth_login(request, user, backend='Intra42OAuth2')
+            user.is_logged_with_oauth = True
+            user.save()
+            print('user.is_logged_with_oauth: ' + str(user.is_logged_with_oauth))
+            # auth_login(request, user, backend='Intra42OAuth2')
+            login(request, user, backend='Intra42OAuth2')
 
             # Generate JWT tokens
             refresh = RefreshToken.for_user(user)

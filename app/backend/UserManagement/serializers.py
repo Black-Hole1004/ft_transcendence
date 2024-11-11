@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
     profile_picture = serializers.ImageField(required=False)
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'mobile_number',
+        fields = ['first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth',
                 'username', 'display_name','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture'
             ]
         read_only_fields = ['id', 'email']

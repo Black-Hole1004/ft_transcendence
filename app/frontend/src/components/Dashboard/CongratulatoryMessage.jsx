@@ -1,20 +1,6 @@
 import { useEffect, useState } from 'react'
 
 function CongratulatoryMessage({ achievementId }) {
-	const [achievement, setAchievement] = useState(null)
-	let url = 'http://localhost:8000/achievements/'
-	useEffect(() => {
-		fetch(url + achievementId)
-			.then((res) => {
-				return res.json()
-			})
-			.then((data) => {
-				setAchievement(data)
-			})
-
-		console.log(achievement)
-	}, [])
-
 	return (
 		<div className='message-padding max-lp:pb-[60px]'>
 			{/* {achievement && ( */}

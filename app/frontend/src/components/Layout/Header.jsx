@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
 import React, { useState, useRef, useEffect } from 'react'
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
-function Header() {
+function Header({ user_data }) {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
@@ -52,7 +53,7 @@ function Header() {
 	return (
 		<header
 			className='relative flex items-center justify-between text-primary header-margin font-medium
-			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end'
+			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end z-50'
 		>
 			<Link to={'/dashboard'} aria-label='Go to Dashboard'>
 				<img
@@ -95,7 +96,7 @@ function Header() {
 					{!isNotificationOpen && (
 						<div
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
-						h-[30%] absolute z-10 rounded-full right-0 top-0'
+						h-[30%] absolute rounded-full right-0 top-0'
 						>
 							<p className='font-heavy text-[10px] p-0.5'>+99</p>
 						</div>
@@ -117,17 +118,17 @@ function Header() {
 					className='relative'
 				>
 					<img
-						src='/assets/images/moudrib.jpeg'
+						src={`${BASE_URL}${user_data.profile_picture}`}
 						alt='user photo'
-						className='nav-icons border-[1px] rounded-full border-primary select-none'
+						className='nav-icons rounded-full ring-1 ring-primary select-none'
 					/>
 					<div
 						className='flex justify-center items-center bg-secondary border border-[#0B0B0B]
 						w-[34%] h-[34%] absolute z-10 rounded-full right-0 bottom-0'
 					>
 						<img
-							src='assets/images/icons/Arrow-dropdown.svg'
-							className={`w-[60%] duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+							src='./assets/images/icons/Arrow-dropdown.svg'
+							className={`w-[60%] select-none duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
 							alt='arrow icon'
 						/>
 					</div>
@@ -135,9 +136,9 @@ function Header() {
 				{isDropdownOpen && (
 					<div
 						ref={dropdownRef}
-						className='dropdown absolute z-10 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
+						className='dropdown absolute right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
 					>
-						<UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} />
+						<UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} user_data={user_data} />
 					</div>
 				)}
 			</nav>

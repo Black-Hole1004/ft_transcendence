@@ -29,29 +29,42 @@ def handle_password_change(user, user_data):
     new_password = user_data.get('new_password')
     confirm_password = user_data.get('confirm_password')
 
-    if any([password, new_password, confirm_password]):
-        if not all ([password, new_password, confirm_password]):
+    if user.is_logged_with_oauth and any([password, new_password, confirm_password]):
+        print('User is logged with OAuth')
+        if all ([new_password, confirm_password]) and new_password == confirm_password and new_password != password:
+            user.set_password(new_password)
+            user.is_logged_with_oauth = False
+            print(f'--->> user:---------> {user}')
+            user.save()
+        else:
             return Response(
-                {'error': 'All password fields (password, new_password, confirm_password) are required'},
-                 status=status.HTTP_400_BAD_REQUEST
-            )
-        if not user.check_password(password):
-            return Response(
-                {'error': 'The current password is incorrect.'}, 
+                {'error': 'Please provide the new password and confirm password. The new password and confirm password must match and be different from the current password.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        if new_password != confirm_password:
-            return Response(
-                {'error': 'The new password and confirm password do not match.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        if new_password == password:
-            return Response(
-                {'error': 'The new password must be different from the current password.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        user.set_password(new_password)
-        user.save()
+    elif any([password, new_password, confirm_password]):
+        if not user.is_logged_with_oauth:
+            if not all ([password, new_password, confirm_password]):
+                return Response(
+                    {'error': 'All password fields (password, new_password, confirm_password) are required'},
+                     status=status.HTTP_400_BAD_REQUEST
+                )
+            if not user.check_password(password):
+                return Response(
+                    {'error': 'The current password is incorrect.'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            if new_password != confirm_password:
+                return Response(
+                    {'error': 'The new password and confirm password do not match.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            if new_password == password:
+                return Response(
+                    {'error': 'The new password must be different from the current password.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            user.set_password(new_password)
+            user.save()
 
     return True
 

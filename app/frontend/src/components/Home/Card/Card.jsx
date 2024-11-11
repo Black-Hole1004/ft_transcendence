@@ -14,47 +14,14 @@ const API_42 = import.meta.env.VITE_API_42
 const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 
 
-export function Toast({ type, message, onClose }) {
-    // Automatically close the toast after 3 seconds
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            onClose();
-        }, 3000);
-        return () => clearTimeout(timer);
-    }, [onClose]);
-
-    const toastStyles = {
-        success: 'bg-green-500',
-        error: 'bg-red-500',
-        info: 'bg-blue-500',
-        warning: 'bg-yellow-500',
-    }[type] || 'bg-gray-800';
-
-    return (
-        <div
-            className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                p-6 rounded-lg text-white shadow-lg ${toastStyles}
-                ml:w-card-custom max-w-full w-screen
-                flex items-center justify-between`}
-        >
-            <span className="text-lg font-semibold">{message}</span>
-            <button 
-                onClick={onClose} 
-                className="ml-4 text-white text-2xl font-bold hover:opacity-80"
-            >
-                &times;
-            </button>
-        </div>
-    );
-}
 
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const handleClick = () => setIsSigningIn(!isSigningIn)
 
-	const { email, password, confirmPassword, toast, setToast } = useAuth()
+	const { email, password, confirmPassword} = useAuth()
 
-	const { login, register, setEmail, setPassword, setConfirmPassword} = useAuth()
+	const { login, register, setEmail, setPassword, setConfirmPassword } = useAuth()
 	// --------------------------- moudrib code -------------------------------------------
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
@@ -132,6 +99,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 
 	return (
 		<dialog
+			id={'dialog'}
 			ref={dialogRef}
 			className={`max-ml:mb-0 ml:w-card-custom max-w-full w-screen
 			${isSigningIn ? 'h-[570px]' : 'h-[600px]'}
@@ -139,13 +107,6 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			ml:border-1.5 border border-b-0 rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
 
-		{toast.show && (
-            <Toast
-                type={toast.type}
-                message={toast.message}
-                onClose={() => setToast({ ...toast, show: false })}
-            />
-        )}
 			<div className='m-2'>
 				<div className='relative w-full flex items-center'>
 					<img

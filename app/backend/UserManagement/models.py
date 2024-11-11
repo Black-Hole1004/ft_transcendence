@@ -40,10 +40,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True)
     mobile_number = models.CharField(max_length=15, default='', blank=True,
         validators=[RegexValidator(regex='^\+?1?\d{9,15}$', message='Phone number must be entered in the format: +999999999. Up to 15 digits allowed.')])
-    display_name = models.CharField(max_length=30, default='')
+    display_name = models.CharField(max_length=30, default='', blank=True)
     bio = models.TextField(default='', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/avatar.jpg')
-    # is_custom_profile_picture = models.BooleanField(default=False)
+    is_logged_with_oauth = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']

@@ -1,5 +1,4 @@
 import './Settings.css'
-import Header from '../../components/Header'
 import Button from '../../components/Home/Buttons/Button'
 import { useEffect, useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
@@ -9,6 +8,7 @@ import useAuth from '../../context/AuthContext'
 const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg';
+import { useAlert } from '../../components/AlertContext'
 
 function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
@@ -30,7 +30,7 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 	)
 }
 
-const s = () => {
+const Settings = () => {
 
 	window.addEventListener('load', function () {
 		var resetButton = document.getElementById('resetButton');
@@ -74,18 +74,13 @@ const s = () => {
 	const [confirm_password, setConfirmPassword] = useState('')
 
 	const { authTokens, logout, getAuthHeaders } = useAuth()
+	const { triggerAlert } = useAlert()
 
 
 
 	const fetchUser = async () => {
 
 		try {
-
-			// if (!isAccessTokenValid()) {
-			// 	console.log('--- Access token expired ---');
-			// 	await refres_token();
-			// } else
-			// 	console.log('--- Access token is valid ---');
 			const response = await fetch(USER_API, {
 				method: 'GET',
 				headers: getAuthHeaders()
@@ -133,33 +128,6 @@ const s = () => {
 	/**********************  Fetch User Data ************************/
 
 
-	/**********************  Update User Data ************************/
-	function get_value(key) {
-		switch (key) {
-			case 'first_name':
-				return first_name;
-			case 'last_name':
-				return last_name;
-			case 'email':
-				return email;
-			case 'mobile_number':
-				return mobile_number;
-			case 'username':
-				return username;
-			case 'display_name':
-				return display_name;
-			case 'bio':
-				return bio;
-			case 'password':
-				return password;
-			case 'new_password':
-				return new_password;
-			case 'confirm_password':
-				return confirm_password;
-			default:
-				return '';
-		}
-	}
 
 	const create_form_data = (user, selectedFile) => {
 		const userProfileData = new FormData();
@@ -177,12 +145,9 @@ const s = () => {
 		userProfileData.append('new_password', new_password || '')
 		userProfileData.append('confirm_password', confirm_password || '')
 		if (selectedFile)
-		{
 			userProfileData.append('profile_picture', selectedFile);
-		}
-		else if (removeImage) {
+		else if (removeImage)
 			userProfileData.append('remove_profile_picture', 'true');
-		}
 		return userProfileData;
 	}
 	const update_user = async () => {
@@ -190,25 +155,36 @@ const s = () => {
 		const userProfileData = create_form_data(user, selectedFile);
 		axios.put(USER_API, userProfileData, {
 			headers: {
-				'Content-Type': 'appliction/json',
+				'Content-Type': 'application/json',
 				'Authorization': getAuthHeaders().Authorization
 			}
 		})
 		.then((response) => {
-			if (response.status !== 200) {
-				console.log('Failed to update user data');
-				return;
-			} else {
+			if (response.status === 200) {
 				setUser(response.data);
 				setSelectedFile(null);
 				setPreview(null);
 				setRemoveImage(false);
 				console.log('User data updated successfully');
+				triggerAlert('success', 'User data updated successfully');
 			}
 		})
 		.catch((error) => {
-			console.log(error)
-		})
+			if (error.response) {
+				// Server responded with a status other than 2xx
+				const errorMessage = error.response.data?.message || 'Failed to update user data';
+				triggerAlert('error', errorMessage);
+				console.error('Error:', errorMessage);
+			} else if (error.request) {
+				// Request was made but no response received
+				triggerAlert('error', 'No response from the server');
+				console.error('Error: No response from the server');
+			} else {
+				// Something happened while setting up the request
+				triggerAlert('error', error.message);
+				console.error('Error:', error.message);
+			}
+		});
 	}
 	/**********************  Update User Data ************************/
 
@@ -273,7 +249,6 @@ const s = () => {
 
 	return (
 		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
-			<Header src={`${BASE_URL}${profile_picture}`} preview={preview} />
 			<section className='flex justify-center'>
 				<div className='s max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
@@ -499,4 +474,4 @@ const s = () => {
 }
 
 
-export default s
+export default Settings

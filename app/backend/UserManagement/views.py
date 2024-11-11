@@ -228,7 +228,6 @@ def check_user_password(request):
 class UserProfileView(APIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
-
     def get(self, request):
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])

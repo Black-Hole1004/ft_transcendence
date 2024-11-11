@@ -1,7 +1,8 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import { jwtDecode } from 'jwt-decode'
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom';
+import { useAlert } from '../components/AlertContext';
 
 const AuthContext = createContext(null)
 const API_LOGIN = import.meta.env.VITE_API_LOGIN
@@ -11,23 +12,17 @@ const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 const VITE_API_REFRESH = import.meta.env.VITE_API_REFRESH
 const VITE_API_VERIFY = import.meta.env.VITE_API_VERIFY
 const VITE_API_LOGOUT = import.meta.env.VITE_API_LOGOUT
-import toast, { Toaster } from 'react-hot-toast'
-import showToast from '../pages/Home/Home'
-
+const USER_API = import.meta.env.VITE_USER_API;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const AuthProvider = ({ children }) => {
 
+    
     const [email, setEmail] = useState('')
-    const navigate = useNavigate();
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-
-    
-
-
+    const navigate = useNavigate();
     const accessToken = Cookies.get('access_token');
     const refreshToken = Cookies.get('refresh_token');
-
-
 
     const [authTokens, setAuthTokens] = useState(() => {
         try {
@@ -44,12 +39,85 @@ export const AuthProvider = ({ children }) => {
 
     const initialUser = authTokens?.access_token && jwtDecode(authTokens.access_token)
     const [user, setUser] = useState(initialUser)
+
+
+    // -----------------------------------------------------------------
+	const [user_fetched, setUser_fetched] = useState({
+		first_name: '',
+		last_name: '',
+		email: '',
+		mobile_number: '',
+		username: '',
+		display_name: '',
+		bio: '',
+		password: '',
+		new_password: '',
+		confirm_password: '',
+		profile_picture: '',
+	})
+
+	const [first_name, setFirst_name] = useState('')
+	const [last_name, setLast_name] = useState('')
+	const [email_, setEmail_] = useState('')
+	const [mobile_number, setMobile_number] = useState('')
+	const [username, setUsername] = useState('')
+	const [display_name, setDisplay_name] = useState('')
+	const [bio, setBio] = useState('')
+	const [profile_picture, setProfile_picture] = useState('')
+
 	
+	const fetchUser = async () => {
+		try {
+			const response = await fetch(USER_API, {
+				method: 'GET',
+				headers: getAuthHeaders()
+			})
+			const data = await response.json();
+			if (response.ok) {
+				console.log('Successfully fetched user data');
+	
+				return (data)
+			} else {
+				console.log('Failed to fetch user data');
+				// logout();
+				return (null)
+			}
+		}
+		catch (error) {
+			console.log(error);
+			// logout();
+			return (null);
+		}
+	};
 
+	useEffect(() => {
+		const fetchData = async () => {
+			const fetchedData = await fetchUser();
+			if (fetchedData)
+				setUser_fetched(fetchedData);
+			else
+				console.log('Failed to fetch user data');
+		};
+		fetchData();
+	}, []);
 
-    const [toast, setToast] = useState({ show: false, type: '', message: '' })
-	const showToast = (type, message) => {
-		setToast({ show: true, type, message })
+	useEffect(() => {
+		if (!user_fetched)
+			return;
+		setFirst_name(user_fetched.first_name);
+		setLast_name(user_fetched.last_name);
+		setEmail_(user_fetched.email);
+		setMobile_number(user_fetched.mobile_number);
+		setUsername(user_fetched.username);
+		setDisplay_name(user_fetched.display_name);
+		setBio(user_fetched.bio);
+		setProfile_picture(user_fetched.profile_picture);
+	} , [user_fetched]);
+
+    const { triggerAlert } = useAlert()
+
+	const handleSubmit = (type, message) => {
+		triggerAlert(type, message)
 	}
 
 
@@ -75,8 +143,8 @@ export const AuthProvider = ({ children }) => {
                 navigate('/dashboard')
             }
             else {
-                showToast('error', 'login failed')
                 console.log('Login failed', data)
+                handleSubmit('error', 'Login failed')
             }
         } catch (error) {
             console.error('error', error)
@@ -100,10 +168,10 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json();
             if (response.ok) {
                 console.log('registration successful', data)
-                showToast('success', 'registration successful')
+                handleSubmit('success', 'Registration successful')
             } else {
                 console.log('registartion failed', data)
-                showToast('error', 'registration failed')
+                handleSubmit('error', 'Registration failed')
             }
         } catch (error) {
             console.error('error', error)
@@ -176,8 +244,26 @@ export const AuthProvider = ({ children }) => {
 
         getAuthHeaders: getAuthHeaders,
 
-        toast: toast,
-        setToast: setToast,
+        // -----------------------------------------------------------
+        user_fetched: user_fetched,
+        setUser_fetched: setUser_fetched,
+        first_name: first_name,
+        setFirst_name: setFirst_name,
+        last_name: last_name,
+        setLast_name: setLast_name,
+        email_: email_,
+        setEmail_: setEmail_,
+        mobile_number: mobile_number,
+        setMobile_number: setMobile_number,
+        username: username,
+        setUsername: setUsername,
+        display_name: display_name,
+        setDisplay_name: setDisplay_name,
+        bio: bio,
+        setBio: setBio,
+        profile_picture: profile_picture,
+        setProfile_picture: setProfile_picture
+        // -----------------------------------------------------------
     }
 
     return (

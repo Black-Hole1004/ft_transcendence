@@ -7,6 +7,8 @@ import Button from '../../components/Home/Buttons/Button'
 import useAuth from '../../context/AuthContext'
 import Layout from '../../components/Layout/Layout'
 import { useEffect } from 'react'
+import {AlertWrapper} from '../../components/Layout/Layout'
+
 
 
 
@@ -31,8 +33,11 @@ const Home = () => {
 		openDialog()
 	}
 
+
+
 	return (
 		<>
+			<AlertWrapper cardRef={dialogRef} />
 			<Header handleClick={handleClick} />
 			<section className='text-primary responsive-text'>
 				<div className='flex lp:justify-start justify-center'>
