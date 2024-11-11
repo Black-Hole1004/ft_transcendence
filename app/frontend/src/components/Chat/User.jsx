@@ -1,6 +1,8 @@
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function User({
+	myId,
 	search,
 	setMessages,
 	conversation,
@@ -11,6 +13,7 @@ function User({
 	const navigate = useNavigate()
 	let hostname = 'http://localhost:8000'
 
+	// console.log('myid: ', myId)
 	let user_id = search ? conversation.id : conversation.other_user.id
 	let username = search ? conversation.username : conversation.other_user.username
 	let profile_picture = search
@@ -19,7 +22,7 @@ function User({
 
 	const getTimePassed = () => {
 		let currentTime = new Date()
-		let messageTime = new Date(conversation.last_message.sent_datetime)
+		let messageTime = new Date(conversation?.last_message?.sent_datetime)
 		let timePassed = (Date.parse(currentTime) - Date.parse(messageTime)) / 1000
 
 		timePassed =
@@ -38,20 +41,29 @@ function User({
 		return timePassed
 	}
 
-	const handleConversationSelect = (e) => {
+	const handleConversationSelect = () => {
 
+		let id = 0
 		setSelectedUserId((prev) => {
-			if (prev === user_id) return prev
+			if (prev === user_id) {
+				id = prev
+				return prev
+			}
 			setMessages([])
+			id = user_id
 			return user_id
 		})
 		setConversationId((prev) => {
 			if (prev === conversation.id) return prev
 			return conversation.id
 		})
+		let conversation_key = `${Math.min(id, user_id)}_${Math.max(id, user_id)}`
+		console.log(conversation_key)
 		navigate(`/chat/${conversation.id}/${user_id}`)
-		console.log('conversation', e.target.id, 'clicked')
+		// navigate(`/chat/${conversation_key}/${user_id}`)
+		// console.log('conversation', e.target.id, 'clicked')
 	}
+
 
 	return (
 		<div
@@ -63,7 +75,7 @@ function User({
 		>
 			<img
 				src={
-					profile_picture.startsWith('http')
+					profile_picture?.startsWith('http')
 						? profile_picture
 						: hostname + profile_picture
 				}
@@ -78,10 +90,10 @@ function User({
 					<p className='text-level last-message max-tb:hidden'>celestial master</p>
 				) : (
 					<div className='flex text-light max-tb:hidden last-message'>
-						{user_id !== conversation.last_message.sender_id && (
+						{user_id !== conversation?.last_message?.sender_id && (
 							<pre className='font-medium'>You: </pre>
 						)}
-						<p className='truncate'>{conversation.last_message.content}</p>
+						<p className='truncate'>{conversation?.last_message?.content}</p>
 						<pre className='font-medium'> &middot; {getTimePassed()}</pre>
 					</div>
 				)}

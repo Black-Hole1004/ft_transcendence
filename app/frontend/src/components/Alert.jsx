@@ -1,6 +1,6 @@
 import './Alert.css'
 
-function Alert({ type, message, onClose }) {
+const Alert = ({ type, message, onClose }) => {
 	const AlertsStyles = {
 		info: 'bg-blue-500 bg-opacity-10 border-blue-500 text-blue-100',
 		error: 'bg-red-500 bg-opacity-10 border-red-500 text-red-100',

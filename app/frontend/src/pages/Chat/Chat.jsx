@@ -9,6 +9,8 @@ import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 import { useHeaders } from '../../components/HeadersContext.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
 
+import { useAlert } from '../../components/AlertContext'
+
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
@@ -25,6 +27,14 @@ const Chat = () => {
 	const [conversationId, setConversationId] = useState(0)
 	const [isUrlProcessed, setIsUrlProcessed] = useState(false)
 	const [selectedUserImage, setSelectedUserImage] = useState(null)
+
+	const { triggerAlert } = useAlert()
+
+	const handleSubmit = () => {
+		// Trigger an alert on form submission or any other event
+		console.log('hh')
+		triggerAlert('success', 'Message sent successfuly!')
+	}
 
 	useEffect(() => {
 		console.log(location.pathname)
@@ -151,6 +161,7 @@ const Chat = () => {
 					})
 				)
 				MessageInputRef.current.value = ''
+				handleSubmit()
 			}
 		}
 	}
@@ -163,6 +174,7 @@ const Chat = () => {
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 				>
 					<ChatHistory
+						MyId={myId}
 						setMyId={setMyId}
 						headers={headers}
 						messages={messages}

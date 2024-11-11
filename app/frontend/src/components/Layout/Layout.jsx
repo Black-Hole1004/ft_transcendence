@@ -1,41 +1,38 @@
 import Alert from '../Alert'
 import Header from './Header'
+import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useAlert } from '../AlertContext'
+import { AlertProvider } from '../AlertContext'
 import { HeadersProvider } from '../HeadersContext'
 
 function Layout() {
-	const [showAlert, setShowAlert] = useState(true)
-	const [alertType, setAlertType] = useState('error')
-	const [alertMessage, setAlertMessage] = useState(
-		'A problem has been occured while submitting your data.'
+	return (
+		<AlertProvider>
+			<div className='relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'>
+				<AlertWrapper />
+				<Header />
+				<HeadersProvider>
+					<Outlet />
+				</HeadersProvider>
+			</div>
+		</AlertProvider>
 	)
+}
+
+function AlertWrapper() {
+	const { showAlert, alertType, alertMessage, dismissAlert } = useAlert()
 
 	useEffect(() => {
-		const timer = setTimeout(() => {
-			setShowAlert(false)
-		}, 10000)
-		return () => clearTimeout(timer)
-	}, [showAlert])
+		if (showAlert) {
+			const timer = setTimeout(() => {
+				dismissAlert()
+			}, 10000)
+			return () => clearTimeout(timer)
+		}
+	}, [showAlert, dismissAlert])
 
-	return (
-		<div
-			className='relative flex flex-col min-h-screen
-			backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'
-		>
-			{/* {showAlert && (
-				<Alert
-					type={alertType}
-					message={alertMessage}
-					onClose={() => setShowAlert(false)}
-				/>
-			)} */}
-			<Header />
-			<HeadersProvider>
-				<Outlet />
-			</HeadersProvider>
-		</div>
-	)
+	return showAlert && <Alert type={alertType} message={alertMessage} onClose={dismissAlert} />
 }
 
 export default Layout

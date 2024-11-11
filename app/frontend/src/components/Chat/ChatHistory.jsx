@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({
+	MyId,
 	setMyId,
 	headers,
 	messages,
@@ -46,12 +47,10 @@ function ChatHistory({
 
 					if (response.data.search_result.length > 0) {
 						setSearchResult(response.data.search_result)
-					}
-					else {
+					} else {
 						setSearchResult(null)
 					}
-				}
-				else {
+				} else {
 					setSearchResult(null)
 				}
 			} catch {
@@ -90,31 +89,18 @@ function ChatHistory({
 				className={`flex tb:flex-col max-tb:justify-center flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
 							tb:overflow-y-auto ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
-				{searchResult ? (
-					searchResult.map((conversation, index) => (
-						<User
-							key={index}
-							search={true}
-							setMessages={setMessages}
-							conversation={conversation}
-							selectedUserId={selectedUserId}
-							setSelectedUserId={setSelectedUserId}
-							setConversationId={setConversationId}
-							/>
-						))
-					) : (
-						conversations.map((conversation) => (
-							<User
-							search={false}
-							key={conversation.id}
-							setMessages={setMessages}
-							conversation={conversation}
-							selectedUserId={selectedUserId}
-							setSelectedUserId={setSelectedUserId}
-							setConversationId={setConversationId}
-						/>
-					))
-				)}
+				{(searchResult ? searchResult : conversations).map((conversation) => (
+					<User
+						MyId={MyId}
+						key={conversation.id}
+						setMessages={setMessages}
+						conversation={conversation}
+						selectedUserId={selectedUserId}
+						setSelectedUserId={setSelectedUserId}
+						setConversationId={setConversationId}
+						search={!!searchResult}
+					/>
+				))}
 			</div>
 		</div>
 	)
