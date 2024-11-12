@@ -15,12 +15,11 @@ class MessageSerializer(serializers.ModelSerializer):
 
 class ConversationSerializer(serializers.ModelSerializer):
     last_message = MessageSerializer()
-    my_id = serializers.SerializerMethodField()
     other_user = serializers.SerializerMethodField()
 
     class Meta:
         model = Conversation
-        fields = ['id', 'my_id', 'other_user', 'last_message', 'is_blocked']
+        fields = ['id', 'conversation_key', 'other_user', 'last_message', 'is_blocked']
 
     def get_other_user(self, obj):
         request = self.context.get('request')
@@ -32,12 +31,16 @@ class ConversationSerializer(serializers.ModelSerializer):
                 return UserSerializer(obj.user1_id).data
             return None
 
-    def get_my_id(self, obj):
-        request = self.context.get('request')
-        return request.user.id
 
 class UserInfosSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'bio', 'status', 'profile_picture']
+
+
+class SearchResultSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'status', 'profile_picture']

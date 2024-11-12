@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from UserManagement.models import User
 from Chat.models import Conversation, Message
-from .serializers import ConversationSerializer, UserInfosSerializer, MessageSerializer
+from .serializers import ConversationSerializer, UserInfosSerializer, MessageSerializer, SearchResultSerializer
 
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +14,6 @@ from django.db.models import F
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-# @authentication_classes([JWTAuthentication])
 @csrf_exempt
 def ConversationsList(request):
     conversations = (
@@ -26,7 +25,9 @@ def ConversationsList(request):
 
 
     serializer = ConversationSerializer(conversations, context={'request': request}, many=True)
-    return Response(serializer.data)
+    return Response({'id': request.user.id,
+                     'conversations':serializer.data
+                    })
 
 
 
@@ -34,16 +35,47 @@ def ConversationsList(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-# @authentication_classes([JWTAuthentication])
 @csrf_exempt
-def getUserinfos(request, conversation_id, user_id):
+def getUserinfos(request, conversation_key, user_id):
+
+    print('1')
     user_infos = User.objects.filter(id=user_id)
-    messages = Message.objects.filter(conversation_id=conversation_id)
-    
+    print(conversation_key)
+    print('2')
+    conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
+    if conversation:
+        messages = Message.objects.filter(conversation_id=conversation.id)
+        message_serializer = MessageSerializer(messages, context={'request': request}, many=True)
+    print('3')
+
     user_serializer = UserInfosSerializer(user_infos, context={'request': request}, many=True)
-    message_serializer = MessageSerializer(messages, context={'request': request}, many=True)
+
+    response = {
+        'user_infos': user_serializer.data,
+    }
+    if conversation:
+        response['messages'] = message_serializer.data
+    print(response)
+    return Response(response)
+    # return Response({
+    #     'user_infos': user_serializer.data,
+    #     'messages': message_serializer.data
+    # })
+
+
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def getSearchedUsers(request, user):
+    users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)
+    print(users)
+
+    search_serializer = SearchResultSerializer(users, context={'request': request}, many=True)
 
     return Response({
-        'user_infos': user_serializer.data,
-        'messages': message_serializer.data
+        'search_result': search_serializer.data
     })

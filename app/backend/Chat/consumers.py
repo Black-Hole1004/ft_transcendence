@@ -1,5 +1,6 @@
 import json
 
+from django.db.models import Q
 from .models import Message, Conversation
 
 import jwt
@@ -82,43 +83,71 @@ class ChatConsumer(AsyncWebsocketConsumer):
         conversation.save()
         return new_message
 
+    @database_sync_to_async
+    def check_conversation_existed(self, conversation_key, id1, id2):
+        try:
+            user1 = User.objects.get(id=id1)
+            user2 = User.objects.get(id=id2)
+            # conversation_key = f"{min(id1, id2)}_{max(id1, id2)}"
+            print('====>>>>>>>', conversation_key)
+            conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
+
+            if conversation:
+                print('----> ', conversation)
+            else:
+                print('===> conversation not found')
+                conversation = Conversation.objects.create(
+                    conversation_key = conversation_key,
+                    user1_id = user1,
+                    user2_id = user2
+                )
+                print('===> conversation created')
+                return conversation
+            return conversation
+
+        except Conversation.DoesNotExist:
+            print('Conversation does not exist')
+            return None
+
 
     async def receive(self, text_data):
         # print(f"text_data: {text_data}")
         data = json.loads(text_data)
         message_type = data['message_type']
         print(f"data: {data}")
-        print(self.channel_name)
+        # print(self.channel_name)
         if message_type == 'join':
-            self.conversation_id = data['conversation_id']
-            if self.conversation_id:
+            self.conversation_key = data['conversation_key']
+            if self.conversation_key:
                 self.other_user = data['selected_user_id']
-                print('other_user: ', self.other_user)
-                print(f"conversation_id: {self.conversation_id}")
-                self.room_group_name = f"chat_{self.conversation_id}"
-                print('room_group_name: ', self.room_group_name)
+                # print('other_user: ', self.other_user)
+                print(f"conversation_key: {self.conversation_key}")
+                self.room_group_name = f"chat_{self.conversation_key}"
+                # print('room_group_name: ', self.room_group_name)
 
                 await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-                print(f'my_id: {self.user.id} --- my_channel: {self.channel_name}')
+                # print(f'my_id: {self.user.id} --- my_channel: {self.channel_name}')
                 # print('joined group')
                 
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
-                print(f'other_user_id: {self.other_user} --- other_user_channel: {self.other_user_channel}')
+                # print(f'other_user_id: {self.other_user} --- other_user_channel: {self.other_user_channel}')
                 if self.other_user_channel:
-                    print('user_existed')
+                    # print('user_existed')
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
                     
                 else:
-                    print('not existed')
+                    pass
+                    # print('not existed')
 
         elif message_type == 'message':
-            print('room: ', self.room_group_name)
+            # print('room: ', self.room_group_name)
             if self.room_group_name:
                 sender = data['sender']
                 message = data['message']
-                conversation_id = data['conversation_id']
+                conversation_key = data['conversation_key']
                 # print(f"sender: {sender}")
                 # print(f"message: {message}")
+                # print(f"CONVERSATION_ID: {conversation_id}")
                 self.old_user_channel = self.other_user_channel
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
                 if self.old_user_channel is not self.other_user_channel:
@@ -126,15 +155,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
                 print(f'other_user_id: {self.other_user} --- other_user_channel: {self.other_user_channel}')
 
+                conversation = await self.check_conversation_existed(conversation_key, self.user.id, self.other_user)
+
                 # print('======>', conversation_id)
                 saved_message = await self.save_message(
-                    conversation_id = conversation_id,
+                    conversation_id = conversation.id,
                     sender_id = sender,
                     content = message
                 )
-                # print(saved_message)
+                print(saved_message)
 
-                # print('Message saved successfuly')
+                print('Message saved successfuly')
 
                 await self.channel_layer.group_send(
                     self.room_group_name, {
@@ -158,4 +189,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'sender': event['sender'],
             'timestamp': event['timestamp']
         }))
-        # print('Message sent')
+        print('Message sent')
+
+

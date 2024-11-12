@@ -24,6 +24,7 @@ class Message(models.Model):
         return f"Message {self.id} from {self.sender_id.username}: {self.content}"
 
 class Conversation(models.Model):
+    conversation_key = models.CharField(max_length=20, default='0_0')
     user1_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1', default=1)
     user2_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2', default=2)
     last_message = models.ForeignKey('Message', on_delete=models.SET_NULL, null=True, related_name='last_message')
