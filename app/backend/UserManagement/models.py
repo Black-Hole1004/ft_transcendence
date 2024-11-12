@@ -32,10 +32,17 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
+
+    status_choices = [
+        ('online', 'Online'),
+        ('offline', 'Offline'),
+        ('ingame', 'Ingame'),
+    ]
+
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    is_active = models.BooleanField(default=True)
+    status = models.CharField(max_length=8, choices=status_choices, default='offline')
     is_staff = models.BooleanField(default=False)
     username = models.CharField(max_length=30, unique=True)
     mobile_number = models.CharField(max_length=15, default='', blank=True,

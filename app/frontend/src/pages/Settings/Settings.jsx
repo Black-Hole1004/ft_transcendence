@@ -144,18 +144,24 @@ const Settings = () => {
 		userProfileData.append('password', password || '')
 		userProfileData.append('new_password', new_password || '')
 		userProfileData.append('confirm_password', confirm_password || '')
-		if (selectedFile)
-			userProfileData.append('profile_picture', selectedFile);
-		else if (removeImage)
-			userProfileData.append('remove_profile_picture', 'true');
+		if (selectedFile) {
+			if (selectedFile.size > 5 * 1024 * 1024) {
+				
+				triggerAlert('error', 'Image size must be less than 5MB');
+				return userProfileData;
+			}
+			userProfileData.append('profile_picture', selectedFile)
+		}
+		else if (removeImage) {
+			userProfileData.append('remove_profile_picture', true)
+		}
 		return userProfileData;
 	}
 	const update_user = async () => {
-		
 		const userProfileData = create_form_data(user, selectedFile);
 		axios.put(USER_API, userProfileData, {
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': 'multipart/form-data',
 				'Authorization': getAuthHeaders().Authorization
 			}
 		})
@@ -252,7 +258,7 @@ const Settings = () => {
 			<section className='flex justify-center'>
 				<div className='s max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
-						<h1 className='font-dreamscape-sans text-primary leading-[1]'>s</h1>
+						<h1 className='font-dreamscape-sans text-primary leading-[1]'>Settings</h1>
 					</div>
 					<div className='h-0.5 separators'></div>
 					<div
@@ -271,7 +277,6 @@ const Settings = () => {
 
 							<div>
 								<img
-
 									src={preview || `${BASE_URL}${profile_picture}`}
 									className='rounded-full border border-primary profile-pic'
 									alt='Profile Picture'
@@ -312,7 +317,7 @@ const Settings = () => {
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
 						<div className='font-regular sections-title tb:self-center self-start'>
-							<p className='text-primary'>Personal s</p>
+							<p className='text-primary'>Personal Settings</p>
 							<p className='text-light'>
 								Change identifying details for your account.
 							</p>
@@ -327,7 +332,7 @@ const Settings = () => {
 										id={'first_name'}
 										type={'text'}
 										label={'First Name'}
-										placeholder={'Mouad'}
+										placeholder={first_name}
 										onChange={handleInputChange}
 										value={first_name}
 									/>
@@ -335,7 +340,7 @@ const Settings = () => {
 										id={'last_name'}
 										type={'text'}
 										label={'Last Name'}
-										placeholder={'Oudrib'}
+										placeholder={last_name}
 										onChange={handleInputChange}
 										value={last_name}
 									/>
@@ -345,15 +350,15 @@ const Settings = () => {
 										id={'email'}
 										type={'email'}
 										label={'Email'}
-										placeholder={'transcendence@gmail.com'}
 										onChange={handleInputChange}
+										placeholder={email}
 										value={email}
 									/>
 									<Input
 										id={'mobile_number'}
 										type={'text'}
 										label={'Phone Number'}
-										placeholder={'+212611223344'}
+										placeholder={mobile_number}
 										onChange={handleInputChange}
 										value={mobile_number}
 									/>
@@ -396,7 +401,7 @@ const Settings = () => {
 						gap-5 max-tb:gap-y-3'
 					>
 						<div className='font-regular sections-title tb:self-center self-start'>
-							<p className='text-primary'>Profile s</p>
+							<p className='text-primary'>Profile Settings</p>
 						</div>
 						<div className='flex items-center'>
 
@@ -408,7 +413,7 @@ const Settings = () => {
 											id={'username'}
 											type={'text'}
 											label={'Username'}
-											placeholder={'mouad55'}
+											placeholder={username}
 											onChange={handleInputChange}
 											value={username}
 										/>
@@ -416,7 +421,7 @@ const Settings = () => {
 											id={'display_name'}
 											type={'text'}
 											label={'Display Name'}
-											placeholder={'Arobase'}
+											placeholder={display_name}
 											onChange={handleInputChange}
 											value={display_name}
 										/>
@@ -431,9 +436,7 @@ const Settings = () => {
 										<textarea
 											name='bio'
 											id='bio'
-											placeholder={
-												'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam, aperiam sit ratione officiis asperiores id quisquam, fugiat ipsa sed autem.'
-											}
+											placeholder={bio}
 											maxLength={'250'}
 											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
 											max-ms:w-full outline-none placeholders placeholder:text-border'

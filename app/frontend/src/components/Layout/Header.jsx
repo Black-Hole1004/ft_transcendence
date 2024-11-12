@@ -127,7 +127,7 @@ function Header({ user_data }) {
 						w-[34%] h-[34%] absolute z-10 rounded-full right-0 bottom-0'
 					>
 						<img
-							src='./assets/images/icons/Arrow-dropdown.svg'
+							src='assets/images/icons/Arrow-dropdown.svg'
 							className={`w-[60%] select-none duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
 							alt='arrow icon'
 						/>

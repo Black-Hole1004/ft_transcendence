@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import './Custom.css'
-import Header from '../../components/Header'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Custom = () => {
@@ -13,8 +12,6 @@ const Custom = () => {
 	const xp = 6231
 
 	return (
-		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
-			<Header />
 			<section>
 				<div className='page-margin flex flex-col'>
 					<div className='flex justify-center'>
@@ -48,7 +45,7 @@ const Custom = () => {
 								onClick={() => handleClick(id)}
 								className={`tables border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500`}
 								style={{
-									background: `url('./assets/images/tables/table${id}.png')`,
+									background: `url('/assets/images/tables/table${id}.png')`,
 									backgroundSize: 'cover',
 								}}
 								disabled={xp / 1000 < id && id > 1 ? true : false}
@@ -67,7 +64,6 @@ const Custom = () => {
 					</div>
 				</div>
 			</section>
-		</div>
 	)
 }
 

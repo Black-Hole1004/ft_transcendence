@@ -21,7 +21,7 @@ function UserAvatarDropdown({ setIsDropdownOpen, user_data }) {
 					/>
 					<div className='font-medium'>
 						<p className='text-primary fullname'>{user_data.first_name} {user_data.last_name}</p>
-						<p className='text-light username'>{user_data.username}</p>
+						<p className='text-light username'>@{user_data.username}</p>
 					</div>
 				</div>
 			</Link>

@@ -10,7 +10,7 @@ export const HeadersProvider = ({ children }) => {
 			const cookies = document.cookie.split(';')
 			const accessTokenCookie = cookies.find((cookie) =>
 				cookie.trim().startsWith('access_token=')
-		)
+			)
 
 			const access_token = accessTokenCookie ? accessTokenCookie.split('=')[1].trim() : null
 
@@ -21,8 +21,7 @@ export const HeadersProvider = ({ children }) => {
 			} else {
 				setHeaders(null)
 			}
-		} catch (error) 
-		{
+		} catch (error) {
 			console.error('Error initializing headers:', error)
 			setHeaders(null)
 		}

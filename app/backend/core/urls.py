@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.urls import path, include
 from UserManagement import views
 
@@ -15,7 +16,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     # admin/
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', views.getRoutes),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -29,4 +30,6 @@ urlpatterns = [
     path('api/check_password/', views.check_user_password, name='check_user_password'),
     path('api/time-spent/', views.get_user_time_spent, name='time_spent'),
     path('api/logout/', views.logout, name='logout'),
+    path('api/chat/', include('Chat.urls')),
+    path('chat/', include('Chat.urls'))
 ]

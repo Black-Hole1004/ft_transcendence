@@ -22,26 +22,27 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 	const achievementData = achievements[achievement]
 
 	return (
-		<div className='flex items-center justify-between gap-5 font-dreamscape-sans'>
-			<div className='flex-1 flex items-center xl:gap-3 tb:gap-2 gap-1 '>
+		<div className='user-container flex items-center justify-between font-dreamscape-sans
+			rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
+			<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[72%]'>
 				<img
 					src={achievementData.icon}
 					className='achievement-icon-fr select-none'
 					alt='achievement-icon'
-					loading='lazy'
+					loading='eager'
 				/>
 				<img
-					src='/assets/images/moudrib.jpeg'
-					className='user-image rounded-full tb:border border-0.7 border-primary select-none'
+					src='/assets/images/lmoudir.jpg'
+					className='h-[80%] rounded-full ring-1 ring-primary select-none'
 					alt='user-image'
-					loading='lazy'
+					loading='eager'
 				/>
 				<div className='flex flex-wrap items-center overflow-hidden'>
-					<p className='text-primary nickname-size leading-[1] truncate'>{nickname}</p>
-					<p className='text-achievement achievement-name ml-1'> {achievement}</p>
+					<p className='text-primary nickname-size leading-[1] truncate mr-1'>{nickname}</p>
+					<p className='text-achievement achievement-name '> {achievement}</p>
 				</div>
 			</div>
-			<div>
+			<div className='mx-1'>
 				{isFriend ? (
 					<p
 						className={` ${status == 'online' ? 'text-online' : status == 'offline' ? 'text-offline' : 'text-defeat'} status`}

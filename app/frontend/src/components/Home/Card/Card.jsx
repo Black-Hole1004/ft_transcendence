@@ -46,14 +46,17 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	}, [])
 	const inputs = [
 		{
+			id: 'email',
 			iconPath: 'email',
 			placeholder: 'Email',
 		},
 		{
+			id: 'password',
 			iconPath: 'lock',
 			placeholder: 'Password',
 		},
 		{
+			id: 'confirmpassword',
 			iconPath: 'lock',
 			placeholder: 'Confirm your password',
 		},
@@ -127,14 +130,13 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					{isSigningIn ? (
 						<div className='w-full flex flex-col items-center welcome-message'>
 							<h1 className='sign-in-title'>Welcome back!</h1>
-							<p className='sign-in-phrases'>Sign in to access your .</p>
+							<p className='sign-in-phrases'>Sign in to access your dashboard .</p>
 						</div>
 					) : (
 						<h1 className='sign-in-title text-center create-account'>
 							Create New Account
 						</h1>
 					)}
-
 
 					{/* -----------------------------------------------------------------------------------------*/}
 					<form className='flex flex-col form-gap' onSubmit={handleSubmit}>
@@ -202,10 +204,9 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									src={`/assets/images/icons/${button.iconPath}.png`}
 									className='card-images'
 									alt={button.alt}
-									loading='lazy'
+									loading='eager'
 								/>
 								<p>{button.content}</p>
-
 							</CardButton>
 						))}
 						{isSigningIn && (

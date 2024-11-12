@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Tournament = () => {
 	return (
 		<div className='text-sky-400'>

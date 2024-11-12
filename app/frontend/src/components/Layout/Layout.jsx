@@ -3,10 +3,8 @@ import Header from './Header'
 import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { useAlert } from '../AlertContext'
-import { HeadersProvider } from '../HeadersContext'
 import useAuth from '../../context/AuthContext'
 
-const BASE_URL = import.meta.env.VITE_BASE_URL
 function Layout() {
 	const { first_name, preview, last_name, username, profile_picture } = useAuth()
 	const user_data = { first_name, last_name, username, profile_picture }

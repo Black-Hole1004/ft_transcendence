@@ -75,17 +75,14 @@ export const AuthProvider = ({ children }) => {
 			const data = await response.json();
 			if (response.ok) {
 				console.log('Successfully fetched user data');
-	
 				return (data)
 			} else {
 				console.log('Failed to fetch user data');
-				// logout();
 				return (null)
 			}
 		}
 		catch (error) {
 			console.log(error);
-			// logout();
 			return (null);
 		}
 	};
@@ -96,10 +93,10 @@ export const AuthProvider = ({ children }) => {
 			if (fetchedData)
 				setUser_fetched(fetchedData);
 			else
-				console.log('Failed to fetch user data');
+				console.log('-- Failed to fetch user data --');
 		};
 		fetchData();
-	}, []);
+	}, [authTokens]);
 
 	useEffect(() => {
 		if (!user_fetched)
@@ -184,7 +181,6 @@ export const AuthProvider = ({ children }) => {
         if (access_token) {
             try {
                 const token = JSON.parse(access_token);
-                console.log(' --- access token found --- ');
                 return {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token,
@@ -205,12 +201,12 @@ export const AuthProvider = ({ children }) => {
             })
             const data = await response.json()
             if (response.ok) {
+                navigate('/')
                 console.log('Logout successful', data)
                 Cookies.remove('access_token')
                 Cookies.remove('refresh_token')
                 setAuthTokens(null)
                 setUser(null)
-                navigate('/')
             } else {
                 console.log('Logout failed', data)
             }
@@ -219,14 +215,77 @@ export const AuthProvider = ({ children }) => {
         } 
     };
 
+    const get_expiration_time = (token) => {
+      
+        if (!token) {
+            return null
+        }
+        const decodedToken = jwtDecode(token)
+        return (decodedToken.exp ? decodedToken.exp * 1000 : null)
+    }
+
+    const refres_token = async () => {
+        console.log('--- refreshing token ---')
+        try {
+            const response = await fetch(VITE_API_REFRESH, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "refresh": authTokens.refresh_token
+                })
+            })
+            const data = await response.json()
+            if (response.ok) {
+                const updatedTokens = {
+                    access_token: data.access,
+                    refresh_token: authTokens.refresh_token,
+                };
+                setAuthTokens(updatedTokens);
+                setUser(jwtDecode(data.access));
+                Cookies.set('access_token', JSON.stringify(updatedTokens.access_token))  
+                Cookies.set('refresh_token', JSON.stringify(updatedTokens.refresh_token))
+            }
+            else {
+                console.log('--- Login failed ---', data)
+                logout()
+            }
+        } catch (error) {
+            console.error('--- error ----', error)
+            logout()
+        }
+    }
+
+
+    useEffect(() => {
+        if (authTokens) {
+            try {
+                const accessTokenExpirationTime = get_expiration_time(authTokens.access_token)
+                if (accessTokenExpirationTime) {
+                    const accesTokenTimeout = setTimeout(() => {
+                        refres_token()
+                    }, accessTokenExpirationTime - Date.now() - 1000);
+                    return (() => {
+                        clearTimeout(accesTokenTimeout);
+                    })
+                } else {
+                    logout()
+                }
+            } catch (error) {
+                console.error('error', error)
+                logout()
+            }
+        }
+    }, [authTokens])
+
 
 
     const contextData = {
         login: login,
         register: register,
         logout: logout,
-        // refres_token: refres_token,
-        // verify_token: verify_token,
+        refres_token: refres_token,
 
 
         setEmail: setEmail,
