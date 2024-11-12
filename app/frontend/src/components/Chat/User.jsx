@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 function User({
 	myId,
@@ -7,13 +8,12 @@ function User({
 	setMessages,
 	conversation,
 	selectedUserId,
-	setConversationId,
+	setSearchResult,
 	setSelectedUserId,
+	setConversationKey,
 }) {
 	const navigate = useNavigate()
-	let hostname = 'http://localhost:8000'
 
-	// console.log('myid: ', myId)
 	let user_id = search ? conversation.id : conversation.other_user.id
 	let username = search ? conversation.username : conversation.other_user.username
 	let profile_picture = search
@@ -42,28 +42,23 @@ function User({
 	}
 
 	const handleConversationSelect = () => {
-
-		let id = 0
 		setSelectedUserId((prev) => {
 			if (prev === user_id) {
-				id = prev
 				return prev
 			}
 			setMessages([])
-			id = user_id
 			return user_id
 		})
-		setConversationId((prev) => {
-			if (prev === conversation.id) return prev
-			return conversation.id
-		})
-		let conversation_key = `${Math.min(id, user_id)}_${Math.max(id, user_id)}`
-		console.log(conversation_key)
-		navigate(`/chat/${conversation.id}/${user_id}`)
-		// navigate(`/chat/${conversation_key}/${user_id}`)
-		// console.log('conversation', e.target.id, 'clicked')
-	}
 
+		let conversation_key = `${Math.min(myId, user_id)}_${Math.max(myId, user_id)}`
+		console.log(conversation_key)
+
+		setConversationKey((prev) => {
+			if (prev === conversation_key) return prev
+			return conversation_key
+		})
+		navigate(`/chat/${conversation_key}/${user_id}`)
+	}
 
 	return (
 		<div
@@ -77,7 +72,7 @@ function User({
 				src={
 					profile_picture?.startsWith('http')
 						? profile_picture
-						: hostname + profile_picture
+						: BASE_URL + profile_picture
 				}
 				className='rounded-full ring-1 ring-primary select-none'
 				alt='user image'

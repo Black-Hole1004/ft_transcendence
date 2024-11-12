@@ -1,19 +1,20 @@
 import User from './User'
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({
-	MyId,
+	myId,
 	setMyId,
 	headers,
 	messages,
 	setMessages,
 	selectedUserId,
-	setConversationId,
 	setSelectedUserId,
+	setConversationKey,
 }) {
+	const searchRef = useRef(null)
 	const [searchText, setSearchText] = useState('')
 	const [searchResult, setSearchResult] = useState(null)
 	const [conversations, setConversations] = useState([])
@@ -24,13 +25,22 @@ function ChatHistory({
 	})
 
 	useEffect(() => {
+		if (searchRef.current) {
+			setSearchText('')
+			searchRef.current.value = ''
+		}
+	}, [selectedUserId])
+
+	useEffect(() => {
 		if (!headers) return
 
 		const getConversations = async () => {
 			try {
 				const response = await axios.get(API_CHAT, { headers })
-				setMyId(response.data[0].my_id)
-				setConversations(response.data)
+				if (response.data) {
+					setMyId(response.data.id)
+					setConversations(response.data.conversations)
+				}
 			} catch (error) {
 				console.error('Error fetching conversations:', error)
 			}
@@ -75,6 +85,7 @@ function ChatHistory({
 					/>
 					<input
 						type='text'
+						ref={searchRef}
 						autoComplete='off'
 						value={searchText}
 						onChange={(e) => setSearchText(e.target.value)}
@@ -91,13 +102,14 @@ function ChatHistory({
 			>
 				{(searchResult ? searchResult : conversations).map((conversation) => (
 					<User
-						MyId={MyId}
+						myId={myId}
 						key={conversation.id}
 						setMessages={setMessages}
 						conversation={conversation}
 						selectedUserId={selectedUserId}
+						setSearchResult={setSearchResult}
 						setSelectedUserId={setSelectedUserId}
-						setConversationId={setConversationId}
+						setConversationKey={setConversationKey}
 						search={!!searchResult}
 					/>
 				))}

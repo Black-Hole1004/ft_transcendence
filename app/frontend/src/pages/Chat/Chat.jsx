@@ -24,32 +24,28 @@ const Chat = () => {
 	const [user, setUser] = useState(null)
 	const [messages, setMessages] = useState([])
 	const [selectedUserId, setSelectedUserId] = useState(0)
-	const [conversationId, setConversationId] = useState(0)
 	const [isUrlProcessed, setIsUrlProcessed] = useState(false)
+	const [conversationKey, setConversationKey] = useState(null)
 	const [selectedUserImage, setSelectedUserImage] = useState(null)
 
 	const { triggerAlert } = useAlert()
 
 	const handleSubmit = () => {
-		// Trigger an alert on form submission or any other event
-		console.log('hh')
 		triggerAlert('success', 'Message sent successfuly!')
 	}
 
 	useEffect(() => {
 		console.log(location.pathname)
-		const uri = window.location.pathname
-			.split('/')
-			.slice(2, 4)
-			.map((id) => parseInt(id))
+		const uri = window.location.pathname.split('/').slice(2, 4)
 
 		if (uri.length > 0) {
 			console.log('url processed')
+			console.log('uri[0]: ', uri[0])
 			setMessages([])
-			setConversationId(uri[0])
-			setSelectedUserId(uri[1])
+			setConversationKey(uri[0])
+			setSelectedUserId(parseInt(uri[1]))
 			setIsUrlProcessed(true)
-			console.log('conversation id:', conversationId)
+			console.log('conversation key:', conversationKey)
 		} else {
 			setIsUrlProcessed(false)
 		}
@@ -60,10 +56,11 @@ const Chat = () => {
 			console.log('WebSocket connected')
 			if (isUrlProcessed) {
 				console.log('join')
+				console.log('===> ', conversationKey)
 				chatSocket.current?.send(
 					JSON.stringify({
 						message_type: 'join',
-						conversation_id: conversationId,
+						conversation_key: conversationKey,
 						selected_user_id: selectedUserId,
 					})
 				)
@@ -79,6 +76,8 @@ const Chat = () => {
 		const handleMessage = (e) => {
 			console.log('handle message')
 			const data = JSON.parse(e.data)
+			console.log(data)
+			console.log('messages: ', messages)
 			setMessages((prevMessages) => [
 				...prevMessages,
 				{
@@ -114,19 +113,20 @@ const Chat = () => {
 				chatSocket.current = null
 			}
 		}
-	}, [isUrlProcessed])
+	}, [isUrlProcessed, conversationKey])
 
 	useEffect(() => {
 		const getUserInfos = async () => {
 			try {
 				if (selectedUserId > 0) {
 					const response = await axios.get(
-						`${API_CHAT}${conversationId}/${selectedUserId}/`,
+						`${API_CHAT}${conversationKey}/${selectedUserId}/`,
 						{ headers }
 					)
-
+					console.log(response.data)
 					setUser(response.data.user_infos[0])
-					setMessages(response.data.messages)
+					const messages = response.data.messages ? response.data.messages : []
+					setMessages(messages)
 					setSelectedUserImage(response.data.user_infos[0].profile_picture)
 				}
 			} catch (error) {
@@ -157,7 +157,7 @@ const Chat = () => {
 						sender: myId,
 						message: value,
 						message_type: 'message',
-						conversation_id: conversationId,
+						conversation_key: conversationKey,
 					})
 				)
 				MessageInputRef.current.value = ''
@@ -174,14 +174,14 @@ const Chat = () => {
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 				>
 					<ChatHistory
-						MyId={myId}
+						myId={myId}
 						setMyId={setMyId}
 						headers={headers}
 						messages={messages}
 						setMessages={setMessages}
 						selectedUserId={selectedUserId}
 						setSelectedUserId={setSelectedUserId}
-						setConversationId={setConversationId}
+						setConversationKey={setConversationKey}
 					/>
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
@@ -225,9 +225,10 @@ const Chat = () => {
 									selectedUserImage={selectedUserImage}
 								/>
 								<Footer
-									MessageInputRef={MessageInputRef}
-									handleKeyPress={handleKeyPress}
 									sendMessage={sendMessage}
+									handleKeyPress={handleKeyPress}
+									selectedUserId={selectedUserId}
+									MessageInputRef={MessageInputRef}
 								/>
 							</>
 						) : (

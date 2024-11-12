@@ -13,7 +13,7 @@ const Messages = ({ messages, selectedUserId, selectedUserImage }) => {
 			id='container'
 			className='flex-1 w-[98%] ml-2 mr-4 py-0.5 overflow-y-auto flex flex-col gap-1.5'
 		>
-			{messages.map((message, index) => {
+			{messages?.map((message, index) => {
 				return (
 					<div key={index}>
 						<Message

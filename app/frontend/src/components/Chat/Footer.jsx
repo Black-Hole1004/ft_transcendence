@@ -1,8 +1,8 @@
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const Footer = ({ MessageInputRef, handleKeyPress, sendMessage }) => {
+const Footer = ({ selectedUserId, MessageInputRef, handleKeyPress, sendMessage }) => {
 	const [width, setWidth] = useState(0)
 	const [showEmoji, setShowEmoji] = useState(false)
 
@@ -20,6 +20,10 @@ const Footer = ({ MessageInputRef, handleKeyPress, sendMessage }) => {
 		let emoji = String.fromCodePoint(...arr)
 		MessageInputRef.current.value += emoji
 	}
+
+	useEffect(() => {
+		MessageInputRef.current.focus()
+	}, [selectedUserId])
 
 	return (
 		<>
