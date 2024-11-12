@@ -7,10 +7,7 @@ import { useAlert } from '../components/AlertContext';
 const AuthContext = createContext(null)
 const API_LOGIN = import.meta.env.VITE_API_LOGIN
 const API_REGISTER = import.meta.env.VITE_API_REGISTER
-const API_42 = import.meta.env.VITE_API_42
-const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 const VITE_API_REFRESH = import.meta.env.VITE_API_REFRESH
-const VITE_API_VERIFY = import.meta.env.VITE_API_VERIFY
 const VITE_API_LOGOUT = import.meta.env.VITE_API_LOGOUT
 const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
