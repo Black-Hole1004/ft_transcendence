@@ -1,2 +1,0 @@
-disable chat button in chat page
-fix long message

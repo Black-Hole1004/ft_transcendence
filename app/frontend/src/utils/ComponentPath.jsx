@@ -13,10 +13,10 @@ const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
 const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
 const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
 const Layout = React.lazy(() => import('../components/Layout/Layout'))
-const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
-const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
-const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
-const RemoteGameSetup = React.lazy(() => import('../pages/Game/RemoteGameSetup'))
+// const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
+// const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
+// const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
+// const RemoteGameSetup = React.lazy(() => import('../pages/Game/RemoteGameSetup'))
 
 
 
@@ -38,11 +38,11 @@ const ComponentPath = () => {
 					<Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
 					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
 					<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />
-					<Route path='/local-game' element={<LocalGame />} />
-            		<Route path='/remote-game' element={<RemoteGame />} />
-            		<Route path='/Custom' element={<Custom />} />
-            		<Route path='/local-game-setup' element={<LocalGameSetup />} />
-            		<Route path='/remote-game-setup' element={<RemoteGameSetup />} />
+					{/* <Route path='/local-game' element={<LocalGame />} />
+					<Route path='/remote-game' element={<RemoteGame />} />
+					<Route path='/Custom' element={<Custom />} />
+					<Route path='/local-game-setup' element={<LocalGameSetup />} />
+					<Route path='/remote-game-setup' element={<RemoteGameSetup />} /> */}
 				</Route>
 
 				{/* Catch-all route */}
