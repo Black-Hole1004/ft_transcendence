@@ -104,3 +104,14 @@ class UserSession(models.Model):
 
     # Attach the custom manager to the model
     objects = UserSessionManager()
+
+
+class Notification(models.Model):
+    sender = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='receiver')
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Notification from {self.sender.email} to {self.receiver.email}: {self.message}"

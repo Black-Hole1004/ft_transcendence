@@ -28,8 +28,13 @@ export const AuthProvider = ({ children }) => {
                 refresh_token: refreshToken ? JSON.parse(refreshToken) : null,
             };
         } catch (error) {
-           console.error('error', error)
-           logout()
+            console.error('error', error)
+            navigate('/')
+            console.log('Logout successful', data)
+            Cookies.remove('access_token')
+            Cookies.remove('refresh_token')
+            setAuthTokens(null)
+            setUser(null)
         }
     });
 

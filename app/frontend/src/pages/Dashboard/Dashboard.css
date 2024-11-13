@@ -111,7 +111,7 @@
 	font-size: clamp(0.25rem, 0.354vw + 0.184rem, 0.75rem);
 }
 
-/* Friends list */
+/*  */
 
 .user-container {
 	height: clamp(2.5rem, 0.885vw + 2.334rem, 3.75rem);

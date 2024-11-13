@@ -17,9 +17,19 @@ const Dashboard = () => {
 		setLevel((xp * 100) / 10000)
 	}, [level])
 
-
-	/************************************************************************ */
-	
+	useEffect(() => {
+		const socket = new WebSocket(`ws://${window.location.host}/ws/notifications/`);
+		socket.onmessage = function (e) {
+			const data = JSON.parse(e.data);
+			alert(data.message);
+		}
+		socket.onclose = function (e) {
+			console.error('Chat socket closed unexpectedly');
+		}
+		return () => {
+			socket.close();
+		}
+	}, [])
 
 	return (
 		<section className='flex lg:flex-row flex-col'>

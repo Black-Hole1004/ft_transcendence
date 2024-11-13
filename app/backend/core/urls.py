@@ -4,7 +4,7 @@ from UserManagement import views
 
 from UserManagement.views import UserProfileView
 # from UserManagement.views import UserUpdateView
-
+from UserManagement.views import UpdateUserStatus
 
 
 from rest_framework_simplejwt.views import (
@@ -31,5 +31,7 @@ urlpatterns = [
     path('api/time-spent/', views.get_user_time_spent, name='time_spent'),
     path('api/logout/', views.logout, name='logout'),
     path('api/chat/', include('Chat.urls')),
-    path('chat/', include('Chat.urls'))
+    path('chat/', include('Chat.urls')),
+    path('notifications/send_friend_request/<int:user_id>/', views.send_friend_request, name='send_friend_request'),
+    path('api/user/status/', UpdateUserStatus.as_view(), name='update_user_status'),
 ]

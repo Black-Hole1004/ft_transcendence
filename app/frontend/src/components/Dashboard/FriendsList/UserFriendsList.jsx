@@ -1,4 +1,6 @@
 import Button from '../../Home/Buttons/Button'
+import  useAuth  from '../../../context/AuthContext'
+import axios from 'axios'
 
 const achievements = {
 	'celestial master': {
@@ -20,6 +22,19 @@ const achievements = {
 
 function UserFriendsList({ nickname, achievement, status, isFriend }) {
 	const achievementData = achievements[achievement]
+	const { getAuthHeaders } = useAuth()
+
+	const handleAddFriend = async () => {
+		console.log('Friend added')
+		try {
+			await axios.post(`http://localhost:8000/send_friend_request/${user_id}/`, 
+				{}, 
+				{ headers: getAuthHeaders() }
+			)
+		} catch (error) {
+			console.error('Error adding friend')
+		}
+	}
 
 	return (
 		<div className='user-container flex items-center justify-between font-dreamscape-sans
@@ -50,7 +65,8 @@ function UserFriendsList({ nickname, achievement, status, isFriend }) {
 						{status}
 					</p>
 				) : (
-					<Button className={'font-heavy add-friend-button lg:rounded-lg rounded'}>
+					<Button className={'font-heavy add-friend-button lg:rounded-lg rounded'}
+						onClick={handleAddFriend}>
 						Add Friend
 					</Button>
 				)}

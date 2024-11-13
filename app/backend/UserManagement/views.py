@@ -19,7 +19,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import parser_classes
 
 from django.http import HttpResponseRedirect
-
+from django.contrib.auth.decorators import login_required
 from django.core.files.uploadedfile import UploadedFile
 from rest_framework.views import APIView
 from .models import User
@@ -37,11 +37,16 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 #pass=Ahaloui@@13+
 #gmail=aymene@gmail.com
 
-
+from .models import Notification
 from .models import UserSession
 from django.utils import timezone
 
 from django.contrib.auth import get_user_model
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from django.shortcuts import get_object_or_404
+
 
 from .profile_utils import (
     remove_profile_picture,
@@ -306,3 +311,34 @@ def get_user_time_spent(request):
 
     # Return the sessions with time spent in seconds or minutes
     return JsonResponse({'data': list(sessions)})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_friend_request(request, user_id):
+    receiver = get_object_or_404(User, id=user_id)
+    Notification.objects.create(
+        sender=request.user,
+        receiver=receiver,
+        message=f'{request.user.username} sent you a friend request'
+    )
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f'user_{receiver.id}',
+        {
+            'type': 'send_notification',
+            'message': 'You have a new friend request'
+        }
+    )
+    return JsonResponse({'status': 'Friend request sent'})
+
+@permission_classes([IsAuthenticated])
+class UpdateUserStatus(APIView):
+
+    def patch(self, request):
+        status = request.data.get('status')
+        if status in ['online', 'offline', 'ingame']:
+            user = request.user
+            user.status = status
+            user.save()
+            return Response({"status": status})
+        return Response({"error": "Invalid status"}, status=400)
