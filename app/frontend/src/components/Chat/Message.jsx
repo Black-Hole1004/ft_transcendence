@@ -1,9 +1,10 @@
+
 const Message = ({ message, selectedUserId, selectedUserImage }) => {
 	let content = message.content
 	let senderId = message.sender_id
 	let time = new Date(message.sent_datetime)
 
-	time = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+	const messageTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
 	return (
 		<div
@@ -13,7 +14,7 @@ const Message = ({ message, selectedUserId, selectedUserImage }) => {
 			{selectedUserId === senderId ? (
 				<img
 					src={`${selectedUserImage}`}
-					className='rounded-full ring-1 ring-primary message-image select-none'
+					className='rounded-full object-cover ring-1 ring-primary message-image select-none'
 					alt='friend-image'
 				/>
 			) : (
@@ -26,7 +27,7 @@ const Message = ({ message, selectedUserId, selectedUserImage }) => {
 				>
 					{content}
 				</p>
-				<p className='text-light font-regular message-time self-end'>{time}</p>
+				<p className='text-light font-regular message-time self-end'>{messageTime}</p>
 			</div>
 		</div>
 	)

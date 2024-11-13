@@ -16,7 +16,7 @@ function UserAvatarDropdown({ setIsDropdownOpen, user_data }) {
 				<div onClick={closeDropdown} className='flex items-center gap-1'>
 					<img
 						src={`${BASE_URL}${user_data.profile_picture}`}
-						className='rounded-full ring-1 ring-primary dropdown-user-photo'
+						className='rounded-full object-cover ring-1 ring-primary dropdown-user-photo'
 						alt='user photo'
 					/>
 					<div className='font-medium'>

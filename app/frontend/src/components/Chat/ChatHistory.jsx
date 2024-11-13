@@ -67,7 +67,7 @@ function ChatHistory({
 							'Authorization': getAuthHeaders().Authorization
 						}
 					})
-					console.log(response.data)
+					// console.log(response.data)
 					if (response.data.search_result.length > 0) {
 						setSearchResult(response.data.search_result)
 					} else {

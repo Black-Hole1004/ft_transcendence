@@ -25,6 +25,7 @@
 
 .profile-pic {
 	width: clamp(2.5rem, 2.655vw + 2.002rem, 6.25rem);
+	height: clamp(2.5rem, 2.655vw + 2.002rem, 6.25rem);
 }
 
 .sections-title {

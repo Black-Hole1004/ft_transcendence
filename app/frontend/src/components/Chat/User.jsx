@@ -51,7 +51,7 @@ function User({
 		})
 
 		let conversation_key = `${Math.min(myId, user_id)}_${Math.max(myId, user_id)}`
-		console.log(conversation_key)
+		// console.log(conversation_key)
 
 		setConversationKey((prev) => {
 			if (prev === conversation_key) return prev
@@ -74,7 +74,7 @@ function User({
 						? profile_picture
 						: BASE_URL + profile_picture
 				}
-				className='rounded-full ring-1 ring-primary select-none'
+				className='rounded-full object-cover ring-1 ring-primary select-none'
 				alt='user image'
 			/>
 			<div className='font-medium tb:w-[80%]'>

@@ -8,6 +8,7 @@
 
 .user-info-image {
 	width: clamp(3.813rem, 8.363vw + 2.244rem, 15.625rem);
+	height: clamp(3.813rem, 8.363vw + 2.244rem, 15.625rem);
 }
 
 .full-name {
@@ -110,6 +111,7 @@
 
 .message-image {
 	width: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
+	height: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
 }
 
 .message-content {

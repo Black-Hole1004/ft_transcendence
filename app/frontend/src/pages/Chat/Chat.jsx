@@ -37,17 +37,13 @@ const Chat = () => {
 	}
 
 	useEffect(() => {
-		console.log(location.pathname)
 		const uri = window.location.pathname.split('/').slice(2, 4)
 
 		if (uri.length > 0) {
-			console.log('url processed')
-			console.log('uri[0]: ', uri[0])
 			setMessages([])
 			setConversationKey(uri[0])
 			setSelectedUserId(parseInt(uri[1]))
 			setIsUrlProcessed(true)
-			console.log('conversation key:', conversationKey)
 		} else {
 			setIsUrlProcessed(false)
 		}
@@ -57,8 +53,8 @@ const Chat = () => {
 		const handleOpen = () => {
 			console.log('WebSocket connected')
 			if (isUrlProcessed) {
-				console.log('join')
-				console.log('===> ', conversationKey)
+				// console.log('join')
+				// console.log('===> ', conversationKey)
 				chatSocket.current?.send(
 					JSON.stringify({
 						message_type: 'join',
@@ -78,8 +74,8 @@ const Chat = () => {
 		const handleMessage = (e) => {
 			console.log('handle message')
 			const data = JSON.parse(e.data)
-			console.log(data)
-			console.log('messages: ', messages)
+			// console.log(data)
+			// console.log('messages: ', messages)
 			setMessages((prevMessages) => [
 				...prevMessages,
 				{
@@ -129,7 +125,7 @@ const Chat = () => {
 								'Authorization': getAuthHeaders().Authorization
 							}
 						})
-					console.log(response.data)
+					// console.log(response.data)
 					setUser(response.data.user_infos[0])
 					const messages = response.data.messages ? response.data.messages : []
 					setMessages(messages)
@@ -200,7 +196,7 @@ const Chat = () => {
 								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
 									<img
 										src={`${selectedUserImage}`}
-										className='w-20 rounded-full ring-1 ring-primary select-none'
+										className='w-20 object-contain rounded-full ring-1 ring-primary select-none'
 										alt='user image'
 									/>
 									<div>

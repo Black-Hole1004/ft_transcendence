@@ -120,14 +120,14 @@ function Header({ user_data }) {
 					<img
 						src={`${BASE_URL}${user_data.profile_picture}`}
 						alt='user photo'
-						className='nav-icons rounded-full ring-1 ring-primary select-none'
+						className='nav-icons object-cover rounded-full ring-1 ring-primary select-none'
 					/>
 					<div
 						className='flex justify-center items-center bg-secondary border border-[#0B0B0B]
 						w-[34%] h-[34%] absolute z-10 rounded-full right-0 bottom-0'
 					>
 						<img
-							src='assets/images/icons/Arrow-dropdown.svg'
+							src='/assets/images/icons/Arrow-dropdown.svg'
 							className={`w-[60%] select-none duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
 							alt='arrow icon'
 						/>
