@@ -23,7 +23,6 @@ function FriendsList() {
 	useEffect(() => {
 		get_all_users()
 	}, [])
-	console.log('users ========> ', users)
 	return (
 		<div
 			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px] card-height

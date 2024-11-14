@@ -12,9 +12,10 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 from UserManagement.views import SendFriendRequestView
-from UserManagement.views import AcceptFriendRequest
-from UserManagement.views import RejectFriendRequest
+from UserManagement.views import AcceptFriendRequestView
+from UserManagement.views import CancelFriendRequestView
 from UserManagement.views import LogoutView
+
 
 
 urlpatterns = [
@@ -39,6 +40,6 @@ urlpatterns = [
     # path('api/user/status/', UpdateUserStatus.as_view(), name='update_user_status'),
     path('api/users/', UserListView.as_view(), name='user-list'),
     path('api/send_friend_request/', SendFriendRequestView.as_view(), name='send_friend_request'),
-    path('api/accept_friend_request/<int:request_id>/', AcceptFriendRequest.as_view(), name='accept_friend_request'),
-    path('api/reject_friend_request/<int:request_id>/', RejectFriendRequest.as_view(), name='reject_friend_request'),
+     path('api/friend_request/accept/<int:friend_request_id>/', AcceptFriendRequestView.as_view(), name='accept-friend-request'),
+    path('api/friend_request/cancel/<int:friend_request_id>/', CancelFriendRequestView.as_view(), name='cancel-friend-request'),
 ]

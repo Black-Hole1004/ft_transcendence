@@ -17,25 +17,25 @@ const Dashboard = () => {
 		setLevel((xp * 100) / 10000)
 	}, [level])
 
-	useEffect(() => {
-		const socket = new WebSocket('ws://localhost:8000/ws/status/')
-		socket.onopen = () => {
-			console.log("WebSocket connection opened");
-		}
+	// useEffect(() => {
+	// 	const socket = new WebSocket('ws://localhost:8000//')
+	// 	socket.onopen = () => {
+	// 		console.log("WebSocket connection opened");
+	// 	}
 
-		socket.onmessage = (event) => {
-			const data = JSON.parse(event.data)
-			const { userId, status } = data;
-			setFriendsStatus((prev) => ({ ...prev, [userId]: status }))
-		}
+	// 	socket.onmessage = (event) => {
+	// 		const data = JSON.parse(event.data)
+	// 		const { userId, status } = data;
+	// 		setFriendsStatus((prev) => ({ ...prev, [userId]: status }))
+	// 	}
 
-		socket.onclose = () => {
-			console.log("WebSocket connection closed");
-		}
-		return () => {
-			socket.close()
-		}
-	}, [])
+	// 	socket.onclose = () => {
+	// 		console.log("WebSocket connection closed");
+	// 	}
+	// 	return () => {
+	// 		socket.close()
+	// 	}
+	// }, [])
 
 	return (
 		<section className='flex lg:flex-row flex-col'>

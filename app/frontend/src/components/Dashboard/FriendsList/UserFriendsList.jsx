@@ -1,6 +1,6 @@
 import Button from '../../Home/Buttons/Button'
-import  useAuth  from '../../../context/AuthContext'
-import axios from 'axios'
+import useAuth from '../../../context/AuthContext'
+import { useAlert } from '../../AlertContext'
 
 const achievements = {
 	'celestial master': {
@@ -22,22 +22,41 @@ const achievements = {
 
 function UserFriendsList({ user }) {
 
-	console.log('user id =>>>>>> ', user.id)
 	const achievementData = achievements[user.achievement]
 	const { getAuthHeaders } = useAuth()
+	const { triggerAlert } = useAlert()
+
+	const handleSubmit = (type, message) => {
+		triggerAlert(type, message)
+	}
+
 
 	const handleAddFriend = async (id) => {
 		try {
 			const response = await fetch('http://127.0.0.1:8000/api/send_friend_request/', {
 				method: 'POST',
 				body: JSON.stringify({ user_to: id }),
-				headers: {
-					...getAuthHeaders(), // Include authentication headers (e.g., Authorization)
-					'Content-Type': 'application/json', // Set the correct content type for JSON
-				},
+				headers: getAuthHeaders(),
 			});
 			const data = await response.json();
-			console.log('data =>>>>>> ', data);
+			if (response.status === 201) {
+				const friendRequestId = data.id; // This should be part of the response from your API
+				const fromUser = data.fromUser; // Same here, the `fromUser` should be returned by your backend
+
+				// Open WebSocket and send the notification with necessary data
+				const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/');
+				socket.onopen = () => {
+					socket.send(JSON.stringify({
+						message: `User ${fromUser} sent you a friend request!`,
+						id: friendRequestId, // Send the friend request ID
+						fromUser: fromUser,   // Send the fromUser information
+					}));
+					handleSubmit('success', 'Friend request sent successfully')
+				};
+
+			} else {
+				handleSubmit('error', data.message)
+			}
 		} catch (error) {
 			console.error('Error:', error);
 		}

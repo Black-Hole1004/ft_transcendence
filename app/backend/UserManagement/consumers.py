@@ -1,6 +1,64 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
+class FriendRequestConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.user = self.scope['user']
+        self.room_group_name = f"friend_request_{self.user.id}"
+
+        # Join the WebSocket group
+        await self.channel_layer.group_add(
+            self.room_group_name,
+            self.channel_name
+        )
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Leave the WebSocket group
+        await self.channel_layer.group_discard(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    # Receive message from WebSocket
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+        friend_request_id = text_data_json.get('id')
+        from_user = text_data_json.get('fromUser')
+
+        # Debug output to ensure values are present
+        print("Received message:", message)
+        print("Friend request ID:", friend_request_id)
+        print("From user:", from_user)
+
+        if not friend_request_id or not from_user:
+            print("Error: Missing friend request ID or fromUser")
+
+        # Send message to the WebSocket group
+        await self.channel_layer.group_send(
+        self.room_group_name,
+        {
+            'type': 'friend_request_message',
+            'message': message,
+            'id': friend_request_id,
+            'fromUser': from_user,
+        }
+    )
+
+    # Receive message from the group
+    async def friend_request_message(self, event):
+        message = event['message']
+        friend_request_id = event.get('id')
+        from_user = event.get('fromUser')
+
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'id': friend_request_id,
+            'fromUser': from_user
+        }))
+
 # class NotificationConsumer(AsyncWebsocketConsumer):
 #     async def connect(self):
 #         self.user = self.scope['user']
@@ -82,34 +140,34 @@ import json
 #             'status': status
 #         }))
 
-class StatusConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.user_group_name = f'user_{self.scope["user"].id}'
-        await self.channel_layer.group_add(
-            self.user_group_name,
-            self.channel_name
-        )
-        await self.accept()
+# class StatusConsumer(AsyncWebsocketConsumer):
+#     async def connect(self):
+#         self.user_group_name = f'user_{self.scope["user"].id}'
+#         await self.channel_layer.group_add(
+#             self.user_group_name,
+#             self.channel_name
+#         )
+#         await self.accept()
     
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.user_group_name,
-            self.channel_name
-        )
+#     async def disconnect(self, close_code):
+#         await self.channel_layer.group_discard(
+#             self.user_group_name,
+#             self.channel_name
+#         )
     
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        status = data['status', 'offline']
+#     async def receive(self, text_data):
+#         data = json.loads(text_data)
+#         status = data['status', 'offline']
     
-        # await self.channel_layer.group_send(
-        #     self.user_group_name,
-        #     {
-        #         'type': 'status_update',
-        #         'status': status
-        #     }
-        # )
+#         # await self.channel_layer.group_send(
+#         #     self.user_group_name,
+#         #     {
+#         #         'type': 'status_update',
+#         #         'status': status
+#         #     }
+#         # )
     
-    async def status_update(self, event):
-        await self.send(text_data=json.dumps({
-            'status': event['status']
-        }))
+#     async def status_update(self, event):
+#         await self.send(text_data=json.dumps({
+#             'status': event['status']
+#         }))
