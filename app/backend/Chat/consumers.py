@@ -45,32 +45,22 @@ def decode_jwt_info(token):
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        print('*******************************************')
         headers = self.scope['headers']
-        print('headers: --------------->', headers)
         access_token = extract_access_token(headers)
         access_token = access_token.replace('%22', '')
-        print('access_token: -------------->', access_token)
-        # print("Access Token:", access_token)
         userid = decode_jwt_info(access_token)['user_id']
-        print('userid: ', userid)
         self.user = await database_sync_to_async(User.objects.get)(id=userid)
-        print(self.user)
         cache.set(f"user_{userid}_channel", self.channel_name)
         if self.user.is_authenticated:
             await self.accept()
         else:
-            print('close')
             await self.close()
-        print('my_channel_name: ', self.channel_name)
-        print('==============================================')
 
 
     async def disconnect(self, close_code):
         cache.delete(f"user_{self.user.id}_channel")
         # if self.conversation_id:
             # await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-        print(f"===== Disconnected =====")
 
 
     @database_sync_to_async
@@ -92,83 +82,58 @@ class ChatConsumer(AsyncWebsocketConsumer):
             user1 = User.objects.get(id=id1)
             user2 = User.objects.get(id=id2)
             # conversation_key = f"{min(id1, id2)}_{max(id1, id2)}"
-            print('====>>>>>>>', conversation_key)
             conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
 
-            if conversation:
-                print('----> ', conversation)
-            else:
-                print('===> conversation not found')
+            if not conversation:
                 conversation = Conversation.objects.create(
                     conversation_key = conversation_key,
                     user1_id = user1,
                     user2_id = user2
                 )
-                print('===> conversation created')
                 return conversation
             return conversation
 
         except Conversation.DoesNotExist:
-            print('Conversation does not exist')
             return None
 
 
     async def receive(self, text_data):
-        # print(f"text_data: {text_data}")
         data = json.loads(text_data)
         message_type = data['message_type']
-        print(f"data: {data}")
-        # print(self.channel_name)
         if message_type == 'join':
             self.conversation_key = data['conversation_key']
             if self.conversation_key:
                 self.other_user = data['selected_user_id']
-                # print('other_user: ', self.other_user)
-                print(f"conversation_key: {self.conversation_key}")
                 self.room_group_name = f"chat_{self.conversation_key}"
-                # print('room_group_name: ', self.room_group_name)
 
                 await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-                # print(f'my_id: {self.user.id} --- my_channel: {self.channel_name}')
-                # print('joined group')
                 
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
-                # print(f'other_user_id: {self.other_user} --- other_user_channel: {self.other_user_channel}')
                 if self.other_user_channel:
-                    # print('user_existed')
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
                     
                 else:
                     pass
-                    # print('not existed')
 
         elif message_type == 'message':
-            # print('room: ', self.room_group_name)
             if self.room_group_name:
                 sender = data['sender']
                 message = data['message']
                 conversation_key = data['conversation_key']
-                # print(f"sender: {sender}")
-                # print(f"message: {message}")
-                # print(f"CONVERSATION_ID: {conversation_id}")
                 self.old_user_channel = self.other_user_channel
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
                 if self.old_user_channel is not self.other_user_channel:
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
 
-                print(f'other_user_id: {self.other_user} --- other_user_channel: {self.other_user_channel}')
 
                 conversation = await self.check_conversation_existed(conversation_key, self.user.id, self.other_user)
 
-                # print('======>', conversation_id)
                 saved_message = await self.save_message(
                     conversation_id = conversation.id,
                     sender_id = sender,
                     content = message
                 )
-                print(saved_message)
 
-                print('Message saved successfuly')
 
                 await self.channel_layer.group_send(
                     self.room_group_name, {
@@ -192,6 +157,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'sender': event['sender'],
             'timestamp': event['timestamp']
         }))
-        print('Message sent')
 
 

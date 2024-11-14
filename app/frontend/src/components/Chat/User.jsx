@@ -8,7 +8,6 @@ function User({
 	setMessages,
 	conversation,
 	selectedUserId,
-	setSearchResult,
 	setSelectedUserId,
 	setConversationKey,
 }) {
@@ -65,7 +64,7 @@ function User({
 			id={user_id}
 			onClick={handleConversationSelect}
 			className={`flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
-				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg user tb:p-user-div-px-tb
+				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg user tb:px-user-div-px-tb
 				${search ? '' : selectedUserId === user_id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
 		>
 			<img

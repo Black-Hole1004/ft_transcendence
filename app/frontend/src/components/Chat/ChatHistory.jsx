@@ -8,7 +8,6 @@ const API_CHAT = import.meta.env.VITE_API_CHAT
 function ChatHistory({
 	myId,
 	setMyId,
-	// headers,
 	messages,
 	setMessages,
 	selectedUserId,
@@ -34,15 +33,13 @@ function ChatHistory({
 
 	const { getAuthHeaders } = useAuth()
 	useEffect(() => {
-		// if (!headers) return
-
 		const getConversations = async () => {
 			try {
 				const response = await axios.get(API_CHAT, {
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': getAuthHeaders().Authorization
-					}
+						Authorization: getAuthHeaders().Authorization,
+					},
 				})
 				if (response.data) {
 					setMyId(response.data.id)
@@ -60,14 +57,12 @@ function ChatHistory({
 		const getUsers = async () => {
 			try {
 				if (searchText.length > 0) {
-					// console.log('headers:', headers);
 					const response = await axios.get(`${API_CHAT}${searchText}/`, {
 						headers: {
 							'Content-Type': 'application/json',
-							'Authorization': getAuthHeaders().Authorization
-						}
+							Authorization: getAuthHeaders().Authorization,
+						},
 					})
-					// console.log(response.data)
 					if (response.data.search_result.length > 0) {
 						setSearchResult(response.data.search_result)
 					} else {
@@ -76,7 +71,7 @@ function ChatHistory({
 				} else {
 					setSearchResult(null)
 				}
-			} catch (error){
+			} catch (error) {
 				console.error('Error fetching users:', error)
 			}
 		}
@@ -120,7 +115,6 @@ function ChatHistory({
 						setMessages={setMessages}
 						conversation={conversation}
 						selectedUserId={selectedUserId}
-						setSearchResult={setSearchResult}
 						setSelectedUserId={setSelectedUserId}
 						setConversationKey={setConversationKey}
 						search={!!searchResult}

@@ -43,7 +43,6 @@ def getUserinfos(request, conversation_key, user_id):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
     
     user_infos = User.objects.filter(id=user_id)
-    print(conversation_key)
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
     if conversation:
         messages = Message.objects.filter(conversation_id=conversation.id)
@@ -56,7 +55,6 @@ def getUserinfos(request, conversation_key, user_id):
     }
     if conversation:
         response['messages'] = message_serializer.data
-    print(response)
     return Response(response)
 
 
@@ -69,7 +67,6 @@ def getUserinfos(request, conversation_key, user_id):
 @csrf_exempt
 def getSearchedUsers(request, user):
     users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)
-    print(users)
 
     search_serializer = SearchResultSerializer(users, context={'request': request}, many=True)
 

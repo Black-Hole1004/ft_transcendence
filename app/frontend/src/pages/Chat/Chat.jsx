@@ -6,7 +6,6 @@ import Footer from '../../components/Chat/Footer.jsx'
 import Messages from '../../components/Chat/Messages.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
-import { useHeaders } from '../../components/HeadersContext.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
 
 import { useAlert } from '../../components/AlertContext'
@@ -15,9 +14,8 @@ import useAuth from '../../context/AuthContext.jsx'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
-	const { getAuthHeaders } = useAuth()
-	// const headers = useHeaders()
 	const location = useLocation()
+	const { getAuthHeaders } = useAuth()
 
 	const chatSocket = useRef(null)
 	const MessageInputRef = useRef(null)
@@ -53,8 +51,6 @@ const Chat = () => {
 		const handleOpen = () => {
 			console.log('WebSocket connected')
 			if (isUrlProcessed) {
-				// console.log('join')
-				// console.log('===> ', conversationKey)
 				chatSocket.current?.send(
 					JSON.stringify({
 						message_type: 'join',
@@ -74,8 +70,6 @@ const Chat = () => {
 		const handleMessage = (e) => {
 			console.log('handle message')
 			const data = JSON.parse(e.data)
-			// console.log(data)
-			// console.log('messages: ', messages)
 			setMessages((prevMessages) => [
 				...prevMessages,
 				{
@@ -122,9 +116,10 @@ const Chat = () => {
 						{
 							headers: {
 								'Content-Type': 'application/json',
-								'Authorization': getAuthHeaders().Authorization
-							}
-						})
+								Authorization: getAuthHeaders().Authorization,
+							},
+						}
+					)
 					// console.log(response.data)
 					setUser(response.data.user_infos[0])
 					const messages = response.data.messages ? response.data.messages : []
@@ -163,7 +158,7 @@ const Chat = () => {
 					})
 				)
 				MessageInputRef.current.value = ''
-				handleSubmit()
+				// handleSubmit()
 			}
 		}
 	}
@@ -178,7 +173,6 @@ const Chat = () => {
 					<ChatHistory
 						myId={myId}
 						setMyId={setMyId}
-						// headers={getAuthHeaders}
 						messages={messages}
 						setMessages={setMessages}
 						selectedUserId={selectedUserId}
@@ -196,7 +190,7 @@ const Chat = () => {
 								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
 									<img
 										src={`${selectedUserImage}`}
-										className='w-20 object-contain rounded-full ring-1 ring-primary select-none'
+										className='conversation-header-image object-cover rounded-full ring-1 ring-primary select-none'
 										alt='user image'
 									/>
 									<div>

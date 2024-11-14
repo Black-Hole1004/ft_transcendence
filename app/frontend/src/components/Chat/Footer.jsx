@@ -12,7 +12,6 @@ const Footer = ({ selectedUserId, MessageInputRef, handleKeyPress, sendMessage }
 		setWidth(window.innerWidth)
 	})
 
-
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
 			if (
@@ -84,9 +83,9 @@ const Footer = ({ selectedUserId, MessageInputRef, handleKeyPress, sendMessage }
 						{showEmoji && (
 							<div ref={emojiPickerRef} className='absolute bottom-full right-0'>
 								<Picker
-								style={{
-									backgroundColor: '#fff',
-								}}
+									style={{
+										backgroundColor: '#fff',
+									}}
 									data={data}
 									theme={'dark'}
 									icons={'outline'}
