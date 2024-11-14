@@ -17,7 +17,7 @@ from django.contrib.auth import logout as django_logout
 
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import parser_classes
-
+from rest_framework import generics
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.files.uploadedfile import UploadedFile
@@ -55,6 +55,10 @@ from .profile_utils import (
     generate_new_tokens
 )
 
+from rest_framework.exceptions import ValidationError
+from .serializers import FriendshipRequestSerializer
+from .serializers import FriendRequestSerializer
+from .models import FriendShipRequest
 
 User = get_user_model()
 #todo: (DELETE THIS LATER) simple view to test permissions control and jwt decoding
@@ -179,18 +183,39 @@ def register(request):
     else:
         return render(request, 'register.html')
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def logout(request):
-    user = request.user
-    session = None
-    if user.is_authenticated:
-        session = UserSession.objects.filter(user=user, logout_time__isnull=True).first()
-    if session:
-        session.logout_time = timezone.now()
-        session.save()
-    django_logout(request)
-    return Response({'message': 'User logged out successfully'})
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        session = None
+        
+        # Retrieve the refresh token from the request data
+        refresh_token = request.data.get("refresh_token")
+        
+        # Blacklist the refresh token if provided
+        if refresh_token:
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()  # Mark the refresh token as blacklisted
+            except Exception as e:
+                return Response({'error': str(e)}, status=400)
+        
+        # Check if the user is authenticated
+        if user.is_authenticated:
+            # Find the session that has not been logged out yet
+            session = UserSession.objects.filter(user=user, logout_time__isnull=True).first()
+        
+        # If a session is found, set the logout time and save it
+        if session:
+            session.logout_time = timezone.now()
+            session.save()
+
+        # Log out the user and clear session data
+        django_logout(request)
+
+        # Return a successful response
+        return Response({'message': 'User logged out successfully'})
 
 
 def generate_random_username():
@@ -312,33 +337,118 @@ def get_user_time_spent(request):
     # Return the sessions with time spent in seconds or minutes
     return JsonResponse({'data': list(sessions)})
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def send_friend_request(request, user_id):
-    receiver = get_object_or_404(User, id=user_id)
-    Notification.objects.create(
-        sender=request.user,
-        receiver=receiver,
-        message=f'{request.user.username} sent you a friend request'
-    )
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        f'user_{receiver.id}',
-        {
-            'type': 'send_notification',
-            'message': 'You have a new friend request'
-        }
-    )
-    return JsonResponse({'status': 'Friend request sent'})
+class UserListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
-@permission_classes([IsAuthenticated])
-class UpdateUserStatus(APIView):
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.exclude(id=user.id)
 
-    def patch(self, request):
-        status = request.data.get('status')
-        if status in ['online', 'offline', 'ingame']:
-            user = request.user
-            user.status = status
-            user.save()
-            return Response({"status": status})
-        return Response({"error": "Invalid status"}, status=400)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+
+class SendFriendRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = FriendRequestSerializer(data=request.data, context={'request': request})
+        
+        if serializer.is_valid():
+            user_from = request.user
+            user_to_id = serializer.validated_data['user_to']
+            user_to = User.objects.get(id=user_to_id)
+
+            # Handle the logic for adding friends
+            # Check if the request already exists, if needed:
+            if FriendShipRequest.objects.filter(user_from=user_from, user_to=user_to).exists():
+                return Response({"message": "Friend request already sent"}, status=400)
+
+            # Otherwise, create a new friend request
+            friend_request = FriendShipRequest(user_from=user_from, user_to=user_to)
+            friend_request.save()
+
+            return Response({
+                "message": "Friend request sent",
+            }, status=201)
+        
+        return Response(serializer.errors, status=400)
+
+class AcceptFriendRequest(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        friend_request_id = kwargs.get('request_id')
+        try:
+            friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+        except FriendShipRequest.DoesNotExist:
+            return Response({'error': 'Friend request not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if friend_request.user_to != request.user:
+            return Response({'error': 'You are not authorized to accept this request'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if friend_request.status == 'accepted':
+            return Response({'error': 'Friend request already accepted'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        friend_request.status = 'accepted'
+        friend_request.save()
+
+        return Response({'message': 'Friend request accepted successfully'})
+
+class RejectFriendRequest(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        friend_request_id = kwargs.get('request_id')
+        try:
+            friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+        except FriendShipRequest.DoesNotExist:
+            return Response({'error': 'Friend request not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if friend_request.user_to != request.user:
+            return Response({'error': 'You are not authorized to reject this request'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        if friend_request.status == 'accepted':
+            return Response({'error': 'Friend request already accepted'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        friend_request.status = 'rejected'
+        friend_request.save()
+
+        return Response({'message': 'Friend request rejected successfully'})
+
+
+
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def send_friend_request(request, user_id):
+#     receiver = get_object_or_404(User, id=user_id)
+#     Notification.objects.create(
+#         sender=request.user,
+#         receiver=receiver,
+#         message=f'{request.user.username} sent you a friend request'
+#     )
+#     channel_layer = get_channel_layer()
+#     async_to_sync(channel_layer.group_send)(
+#         f'user_{receiver.id}',
+#         {
+#             'type': 'send_notification',
+#             'message': 'You have a new friend request'
+#         }
+#     )
+#     return JsonResponse({'status': 'Friend request sent'})
+
+# @permission_classes([IsAuthenticated])
+# class UpdateUserStatus(APIView):
+
+#     def patch(self, request):
+#         status = request.data.get('status')
+#         if status in ['online', 'offline', 'ingame']:
+#             user = request.user
+#             user.status = status
+#             user.save()
+#             return Response({"status": status})
+#         return Response({"error": "Invalid status"}, status=400)

@@ -4,11 +4,11 @@ import Achievements from '../../components/Dashboard/Achievements'
 import FriendsList from '../../components/Dashboard/FriendsList/FriendsList'
 import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
-import useAuth from '../../context/AuthContext'
 import { useEffect, useState } from 'react'
 
 const Dashboard = () => {
-	const { authTokens, logout, getAuthHeaders } = useAuth();
+
+	const [frinedsStatus, setFriendsStatus] = useState({})
 
 	const xp = 6445
 	const [level, setLevel] = useState(null)
@@ -18,16 +18,22 @@ const Dashboard = () => {
 	}, [level])
 
 	useEffect(() => {
-		const socket = new WebSocket(`ws://${window.location.host}/ws/notifications/`);
-		socket.onmessage = function (e) {
-			const data = JSON.parse(e.data);
-			alert(data.message);
+		const socket = new WebSocket('ws://localhost:8000/ws/status/')
+		socket.onopen = () => {
+			console.log("WebSocket connection opened");
 		}
-		socket.onclose = function (e) {
-			console.error('Chat socket closed unexpectedly');
+
+		socket.onmessage = (event) => {
+			const data = JSON.parse(event.data)
+			const { userId, status } = data;
+			setFriendsStatus((prev) => ({ ...prev, [userId]: status }))
+		}
+
+		socket.onclose = () => {
+			console.log("WebSocket connection closed");
 		}
 		return () => {
-			socket.close();
+			socket.close()
 		}
 	}, [])
 

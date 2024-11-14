@@ -5,6 +5,9 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from .models import UserSession
 from rest_framework.response import Response
+from rest_framework import status
+from .models import Friendship
+from .models import FriendShipRequest
 
 from .profile_utils import (
     handle_password_change,
@@ -19,16 +22,48 @@ class UserSerializer(serializers.ModelSerializer):
     new_password = serializers.CharField(write_only=True, required=False, min_length=8)
     confirm_password = serializers.CharField(write_only=True, required=False, min_length=8)
     profile_picture = serializers.ImageField(required=False)
+    is_friend = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth',
+        fields = ['id', 'first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth', 'status', 'is_friend',
                 'username', 'display_name','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture'
             ]
         read_only_fields = ['id', 'email']
+
+    def get_is_friend(self, obj):
+        request = self.context.get('request', None)
+        if request and request.user.is_authenticated:
+            return Friendship.objects.filter(user_from=request.user, user_to=obj).exists()
+        return False
     
 class UserSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserSession
         fields = ['user', 'login_time', 'logout_time', 'duration']
 
+
+class FriendRequestSerializer(serializers.Serializer):
+    user_to = serializers.IntegerField()  # Or use a ForeignKey to the User model if required
+
+    def validate_user_to(self, value):
+        # Ensure that the user_to is not the same as the requesting user
+        if value == self.context['request'].user.id:
+            raise serializers.ValidationError("You cannot send a friend request to yourself.")
+        return value
+
+
+class FriendshipRequestSerializer(serializers.ModelSerializer):
+    user_from = serializers.StringRelatedField(read_only=True)
+    user_to = serializers.StringRelatedField(read_only=True)
+    class Meta:
+        model = FriendShipRequest
+        fields = ['user_from', 'user_to', 'status', 'created_at']
+    
+    def create(self, validated_data):
+        user_from = validated_data.get('user_from')
+        user_to = validated_data.get('user_to')
+        if Friendship.objects.filter(user_from=user_from, user_to=user_to, status='pending').exists():
+            raise ValidationError('Friendship request already pending')
+        
+        return FriendShipRequest.objects.create(**validated_data)
 # ----------------------------------------------------------------------------------

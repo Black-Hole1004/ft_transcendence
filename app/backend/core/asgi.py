@@ -8,6 +8,7 @@ from channels.security.websocket import AllowedHostsOriginValidator
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
 from Chat.routing import websocket_urlpatterns
+from UserManagement.routing import websocket_urlpatterns
 
 application = ProtocolTypeRouter(
     {

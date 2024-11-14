@@ -3,8 +3,7 @@ from django.urls import path, include
 from UserManagement import views
 
 from UserManagement.views import UserProfileView
-# from UserManagement.views import UserUpdateView
-from UserManagement.views import UpdateUserStatus
+from UserManagement.views import UserListView
 
 
 from rest_framework_simplejwt.views import (
@@ -12,6 +11,10 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from UserManagement.views import SendFriendRequestView
+from UserManagement.views import AcceptFriendRequest
+from UserManagement.views import RejectFriendRequest
+from UserManagement.views import LogoutView
 
 
 urlpatterns = [
@@ -29,9 +32,13 @@ urlpatterns = [
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('api/check_password/', views.check_user_password, name='check_user_password'),
     path('api/time-spent/', views.get_user_time_spent, name='time_spent'),
-    path('api/logout/', views.logout, name='logout'),
+    path('api/logout/', LogoutView.as_view(), name='logout'),
     path('api/chat/', include('Chat.urls')),
     path('chat/', include('Chat.urls')),
-    path('notifications/send_friend_request/<int:user_id>/', views.send_friend_request, name='send_friend_request'),
-    path('api/user/status/', UpdateUserStatus.as_view(), name='update_user_status'),
+    # path('notifications/send_friend_request/<int:user_id>/', views.send_friend_request, name='send_friend_request'),
+    # path('api/user/status/', UpdateUserStatus.as_view(), name='update_user_status'),
+    path('api/users/', UserListView.as_view(), name='user-list'),
+    path('api/send_friend_request/', SendFriendRequestView.as_view(), name='send_friend_request'),
+    path('api/accept_friend_request/<int:request_id>/', AcceptFriendRequest.as_view(), name='accept_friend_request'),
+    path('api/reject_friend_request/<int:request_id>/', RejectFriendRequest.as_view(), name='reject_friend_request'),
 ]
