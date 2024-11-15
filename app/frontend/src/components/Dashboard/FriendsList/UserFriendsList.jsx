@@ -1,6 +1,7 @@
 import Button from '../../Home/Buttons/Button'
 import useAuth from '../../../context/AuthContext'
 import { useAlert } from '../../AlertContext'
+import { useEffect, useState } from 'react'
 
 const achievements = {
 	'celestial master': {
@@ -21,7 +22,6 @@ const achievements = {
 }
 
 function UserFriendsList({ user }) {
-
 	const achievementData = achievements[user.achievement]
 	const { getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
@@ -62,6 +62,27 @@ function UserFriendsList({ user }) {
 		}
 	};
 
+	const [userStatus, setUserStatus] = useState(user.status);
+	// useEffect(() => {
+	// 	console.log('---- WebSocket connection started ------');
+	// 	const socket = new WebSocket('ws://127.0.0.1:8000/ws/user_status/');
+	// 	socket.onopen = () => console.log('---- WebSocket connection established ------');
+	// 	socket.onmessage = (event) => {
+	// 		console.log('WebSocket message =====>', event.data);
+	// 		const data = JSON.parse(event.data);
+	// 		console.log('WebSocket message =====>', data);
+	// 		if (data.status) {
+	// 			setUserStatus(data.status);  // Update the status to 'online' or 'offline'
+	// 		}
+	// 	};
+	// 	socket.onclose = () => console.warn('WebSocket closed');
+	// 	socket.onerror = (error) => console.error('WebSocket error:', error);
+	// 	return () => socket.close();
+	// }, []);
+
+	// console.log("user => ", user);
+	// console.log("userStatus => ", userStatus);
+
 	return (
 		<div className='user-container flex items-center justify-between font-dreamscape-sans
 			rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
@@ -84,15 +105,17 @@ function UserFriendsList({ user }) {
 				</div>
 			</div>
 			<div className='mx-1'>
-				{user.isFriend ? (
+				{user.is_friend ? (
 					<p
-						className={` ${user.status == 'online' ? 'text-online' : user.status == 'offline' ? 'text-offline' : 'text-defeat'} status`}
+						className={`status ${userStatus === 'online' ? 'text-online' : userStatus === 'offline' ? 'text-offline' : 'text-defeat'}`}
 					>
-						{user.status}
+						{userStatus === 'in_game' ? 'In Game' : userStatus}
 					</p>
 				) : (
-					<Button className={'font-heavy add-friend-button lg:rounded-lg rounded'}
-						onClick={(e) => handleAddFriend(user.id)} >
+					<Button
+						className={'font-heavy add-friend-button lg:rounded-lg rounded'}
+						onClick={() => handleAddFriend(user.id)}
+					>
 						Add Friend
 					</Button>
 				)}

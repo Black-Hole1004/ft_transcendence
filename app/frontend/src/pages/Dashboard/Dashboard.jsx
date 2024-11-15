@@ -8,34 +8,12 @@ import { useEffect, useState } from 'react'
 
 const Dashboard = () => {
 
-	const [frinedsStatus, setFriendsStatus] = useState({})
-
 	const xp = 6445
 	const [level, setLevel] = useState(null)
 
 	useEffect(() => {
 		setLevel((xp * 100) / 10000)
 	}, [level])
-
-	// useEffect(() => {
-	// 	const socket = new WebSocket('ws://localhost:8000//')
-	// 	socket.onopen = () => {
-	// 		console.log("WebSocket connection opened");
-	// 	}
-
-	// 	socket.onmessage = (event) => {
-	// 		const data = JSON.parse(event.data)
-	// 		const { userId, status } = data;
-	// 		setFriendsStatus((prev) => ({ ...prev, [userId]: status }))
-	// 	}
-
-	// 	socket.onclose = () => {
-	// 		console.log("WebSocket connection closed");
-	// 	}
-	// 	return () => {
-	// 		socket.close()
-	// 	}
-	// }, [])
 
 	return (
 		<section className='flex lg:flex-row flex-col'>

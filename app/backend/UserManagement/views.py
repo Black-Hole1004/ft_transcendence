@@ -414,7 +414,7 @@ class AcceptFriendRequestView(APIView):
             except IntegrityError:
                 return Response({"message": "Friendship already exists"}, status=400)
 
-            return Response({"message": "Friend request accepted and friendship created"}, status=200)
+            return Response({"message": "Friend request accepted and friendship created"}, status=201)
 
         except FriendShipRequest.DoesNotExist:
             return Response({"message": "Friend request not found"}, status=404)
@@ -436,7 +436,7 @@ class CancelFriendRequestView(APIView):
             friend_request.status = 'rejected'
             friend_request.save()
 
-            return Response({"message": "Friend request rejected"}, status=200)
+            return Response({"message": "Friend request rejected"}, status=201)
 
         except FriendShipRequest.DoesNotExist:
             return Response({"message": "Friend request not found"}, status=404)
