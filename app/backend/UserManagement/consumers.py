@@ -60,48 +60,49 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         }))
 
 
-class UserStatusConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        # Check if the user is authenticated
-        if self.scope["user"].is_authenticated:
-            print(f'User {self.scope["user"]} connected')
-            self.user = self.scope["user"]
-            self.group_name = f"user_{self.user.id}"
+# unlit i come back to this later
+# class UserStatusConsumer(AsyncWebsocketConsumer):
+#     async def connect(self):
+#         # Check if the user is authenticated
+#         if self.scope["user"].is_authenticated:
+#             print(f'User {self.scope["user"]} connected')
+#             self.user = self.scope["user"]
+#             self.group_name = f"user_{self.user.id}"
 
-            # Add user to the group
-            await self.channel_layer.group_add(
-                self.group_name,
-                self.channel_name
-            )
+#             # Add user to the group
+#             await self.channel_layer.group_add(
+#                 self.group_name,
+#                 self.channel_name
+#             )
 
-            self.accept()  # Accept the connection
-        else:
-            print(f"Unauthenticated user attempted to connect: {self.scope['user']}")
-            await self.close()  # Close connection if not authenticated
+#             self.accept()  # Accept the connection
+#         else:
+#             print(f"Unauthenticated user attempted to connect: {self.scope['user']}")
+#             await self.close()  # Close connection if not authenticated
 
-    async def disconnect(self, close_code):
-        # Handle disconnect
-        await self.channel_layer.group_discard(
-            self.group_name,
-            self.channel_name
-        )
+#     async def disconnect(self, close_code):
+#         # Handle disconnect
+#         await self.channel_layer.group_discard(
+#             self.group_name,
+#             self.channel_name
+#         )
 
-    async def receive(self, text_data):
-        # Handle messages received from WebSocket
-        text_data_json = json.loads(text_data)
-        status = text_data_json['status']
+#     async def receive(self, text_data):
+#         # Handle messages received from WebSocket
+#         text_data_json = json.loads(text_data)
+#         status = text_data_json['status']
 
-        # Send status update to the group
-        await self.channel_layer.group_send(
-            self.group_name,
-            {
-                'type': 'status_update',
-                'status': status
-            }
-        )
+#         # Send status update to the group
+#         await self.channel_layer.group_send(
+#             self.group_name,
+#             {
+#                 'type': 'status_update',
+#                 'status': status
+#             }
+#         )
 
-    async def status_update(self, event):
-        # Send status update to WebSocket
-        await self.send(text_data=json.dumps({
-            'status': event['status']
-        }))
+#     async def status_update(self, event):
+#         # Send status update to WebSocket
+#         await self.send(text_data=json.dumps({
+#             'status': event['status']
+#         }))
