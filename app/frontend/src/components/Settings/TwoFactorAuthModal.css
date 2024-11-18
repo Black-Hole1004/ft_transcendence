@@ -1,0 +1,17 @@
+.user-input input {
+	width: clamp(1.875rem, 2.212vw + 1.46rem, 5rem);
+	height: clamp(3.75rem, 3.097vw + 3.169rem, 8.125rem);
+	font-size: clamp(1.875rem, 2.212vw + 1.46rem, 5rem);
+}
+
+.modal-title {
+	font-size: clamp(1.25rem, 0.885vw + 1.084rem, 2.5rem);
+}
+
+.paragraph {
+	font-size: clamp(0.75rem, 0.136vw + 0.724rem, 0.938rem)
+}
+
+.sep {
+	width: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
+}

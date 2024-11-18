@@ -1,14 +1,15 @@
 import './Settings.css'
 import Button from '../../components/Home/Buttons/Button'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import useAuth from '../../context/AuthContext'
 
-const USER_API = import.meta.env.VITE_USER_API;
-const BASE_URL = import.meta.env.VITE_BASE_URL;
-const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg';
+const USER_API = import.meta.env.VITE_USER_API
+const BASE_URL = import.meta.env.VITE_BASE_URL
+const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
 import { useAlert } from '../../components/AlertContext'
+import TwoFactorAuthModal from '../../components/Settings/TwoFactorAuthModal'
 
 function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
@@ -31,14 +32,30 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 }
 
 const Settings = () => {
+	const dialogRef = useRef(null)
+	const [showTwoFactorModal, setShowTwoFactorModal] = useState(false)
+
+	const openDialog = () => {
+		if (dialogRef.current) {
+			dialogRef.current.showModal()
+		}
+	}
+
+	const closeDialog = () => {
+		dialogRef.current.close()
+	}
+
+	const handle2FAModal = () => {
+		openDialog()
+	}
 
 	window.addEventListener('load', function () {
-		var resetButton = document.getElementById('resetButton');
+		var resetButton = document.getElementById('resetButton')
 
 		resetButton.addEventListener('click', function () {
-			var forms = document.getElementsByTagName('form');
+			var forms = document.getElementsByTagName('form')
 			for (var i = 0; i < forms.length; i++) {
-				forms[i].reset();
+				forms[i].reset()
 			}
 		})
 	})
@@ -67,7 +84,7 @@ const Settings = () => {
 	const [profile_picture, setProfile_picture] = useState('')
 	const [preview, setPreview] = useState(null)
 	const [selectedFile, setSelectedFile] = useState(null)
-	const [removeImage, setRemoveImage] = useState(false);
+	const [removeImage, setRemoveImage] = useState(false)
 
 	const [password, setPassword] = useState('')
 	const [new_password, setNewPassword] = useState('')
@@ -76,43 +93,37 @@ const Settings = () => {
 	const { authTokens, logout, getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
 
-
-
 	const fetchUser = async () => {
-
 		try {
 			const response = await fetch(USER_API, {
 				method: 'GET',
-				headers: getAuthHeaders()
+				headers: getAuthHeaders(),
 			})
-			const data = await response.json();
+			const data = await response.json()
 			if (response.ok) {
-				return (data)
+				return data
 			} else {
-				console.log('Failed to fetch user data');
+				console.log('Failed to fetch user data')
 				// logout();
-				return (null)
+				return null
 			}
-		}
-		catch (error) {
-			console.log(error);
+		} catch (error) {
+			console.log(error)
 			// logout();
-			return (null);
+			return null
 		}
-	};
+	}
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const fetchedData = await fetchUser();
-			if (fetchedData)
-				setUser(fetchedData);
-		};
-		fetchData();
-	}, []);
+			const fetchedData = await fetchUser()
+			if (fetchedData) setUser(fetchedData)
+		}
+		fetchData()
+	}, [])
 
 	useEffect(() => {
-		if (!user)
-			return;
+		if (!user) return
 		setFirst_name(user.first_name)
 		setLast_name(user.last_name)
 		setEmail(user.email)
@@ -127,13 +138,10 @@ const Settings = () => {
 	}, [user])
 	/**********************  Fetch User Data ************************/
 
-
-
 	const create_form_data = (user, selectedFile) => {
-		const userProfileData = new FormData();
+		const userProfileData = new FormData()
 
-		if (!user)
-			return userProfileData;
+		if (!user) return userProfileData
 		userProfileData.append('first_name', first_name || '')
 		userProfileData.append('last_name', last_name || '')
 		userProfileData.append('email', email || '')
@@ -146,115 +154,114 @@ const Settings = () => {
 		userProfileData.append('confirm_password', confirm_password || '')
 		if (selectedFile) {
 			if (selectedFile.size > 5 * 1024 * 1024) {
-				
-				triggerAlert('error', 'Image size must be less than 5MB');
-				return userProfileData;
+				triggerAlert('error', 'Image size must be less than 5MB')
+				return userProfileData
 			}
 			userProfileData.append('profile_picture', selectedFile)
-		}
-		else if (removeImage) {
+		} else if (removeImage) {
 			userProfileData.append('remove_profile_picture', true)
 		}
-		return userProfileData;
+		return userProfileData
 	}
 	const update_user = async () => {
-		const userProfileData = create_form_data(user, selectedFile);
-		axios.put(USER_API, userProfileData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-				'Authorization': getAuthHeaders().Authorization
-			}
-		})
-		.then((response) => {
-			if (response.status === 200) {
-				setUser(response.data);
-				setSelectedFile(null);
-				setPreview(null);
-				setRemoveImage(false);
-				console.log('User data updated successfully');
-				triggerAlert('success', 'User data updated successfully');
-			}
-		})
-		.catch((error) => {
-			if (error.response) {
-				// Server responded with a status other than 2xx
-				const errorMessage = error.response.data?.message || 'Failed to update user data';
-				triggerAlert('error', errorMessage);
-				console.error('Error:', errorMessage);
-			} else if (error.request) {
-				// Request was made but no response received
-				triggerAlert('error', 'No response from the server');
-				console.error('Error: No response from the server');
-			} else {
-				// Something happened while setting up the request
-				triggerAlert('error', error.message);
-				console.error('Error:', error.message);
-			}
-		});
+		const userProfileData = create_form_data(user, selectedFile)
+		axios
+			.put(USER_API, userProfileData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					Authorization: getAuthHeaders().Authorization,
+				},
+			})
+			.then((response) => {
+				if (response.status === 200) {
+					setUser(response.data)
+					setSelectedFile(null)
+					setPreview(null)
+					setRemoveImage(false)
+					console.log('User data updated successfully')
+					triggerAlert('success', 'User data updated successfully')
+				}
+			})
+			.catch((error) => {
+				if (error.response) {
+					// Server responded with a status other than 2xx
+					const errorMessage =
+						error.response.data?.message || 'Failed to update user data'
+					triggerAlert('error', errorMessage)
+					console.error('Error:', errorMessage)
+				} else if (error.request) {
+					// Request was made but no response received
+					triggerAlert('error', 'No response from the server')
+					console.error('Error: No response from the server')
+				} else {
+					// Something happened while setting up the request
+					triggerAlert('error', error.message)
+					console.error('Error:', error.message)
+				}
+			})
 	}
 	/**********************  Update User Data ************************/
 
-
 	/**********************  Handle Input Change ************************/
 	const handleInputChange = (e) => {
-		const { name, value } = e.target;
+		const { name, value } = e.target
 		switch (name) {
 			case 'first_name':
-				setFirst_name(value);
-				break;
+				setFirst_name(value)
+				break
 			case 'last_name':
-				setLast_name(value);
-				break;
+				setLast_name(value)
+				break
 			case 'email':
-				setEmail(value);
-				break;
+				setEmail(value)
+				break
 			case 'mobile_number':
-				setMobile_number(value);
-				break;
+				setMobile_number(value)
+				break
 			case 'username':
-				setUsername(value);
-				break;
+				setUsername(value)
+				break
 			case 'display_name':
-				setDisplay_name(value);
-				break;
+				setDisplay_name(value)
+				break
 			case 'bio':
-				setBio(value);
-				break;
+				setBio(value)
+				break
 			case 'password':
-				setPassword(value);
-				break;
+				setPassword(value)
+				break
 			case 'new_password':
-				setNewPassword(value);
-				break;
+				setNewPassword(value)
+				break
 			case 'confirm_password':
-				setConfirmPassword(value);
-				break;
+				setConfirmPassword(value)
+				break
 			default:
-				break;
+				break
 		}
 	}
 
 	const handleUploadClick = (e) => {
-		document.getElementById('profile_picture').click();
+		document.getElementById('profile_picture').click()
 	}
 
 	const handleImageChange = (e) => {
-		const file = e.target.files[0];
+		const file = e.target.files[0]
 		if (file) {
-			setPreview(URL.createObjectURL(file));
-			setSelectedFile(file);
-			setRemoveImage(false);
+			setPreview(URL.createObjectURL(file))
+			setSelectedFile(file)
+			setRemoveImage(false)
 		}
 	}
 	function handleRemoveImage() {
-		setPreview(null);
-		setSelectedFile(null);
-		setProfile_picture(DEFAULT_PROFILE_PICTURE);
-		setRemoveImage(true);
+		setPreview(null)
+		setSelectedFile(null)
+		setProfile_picture(DEFAULT_PROFILE_PICTURE)
+		setRemoveImage(true)
 	}
 
 	return (
-		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
+		<>
 			<section className='flex justify-center'>
 				<div className='s max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
@@ -272,19 +279,16 @@ const Settings = () => {
 							</p>
 						</div>
 
-
-						<div className='flex items-center max-ms:flex-col lp:gap-14 tb:gap-8 gap-5' >
-
+						<div className='flex items-center max-ms:flex-col lp:gap-14 tb:gap-8 gap-5'>
 							<div>
 								<img
 									src={preview || `${BASE_URL}${profile_picture}`}
-									className='rounded-full object-cover border border-primary profile-pic'
+									className='rounded-full object-cover ring-1 ring-primary profile-pic'
 									alt='Profile Picture'
 								/>
 							</div>
 
 							<div className='flex max-ms:flex-col lp:gap-2 gap-1'>
-
 								<input
 									type='file'
 									id='profile_picture'
@@ -293,7 +297,9 @@ const Settings = () => {
 									onChange={handleImageChange}
 								/>
 								<Button
-									className={'rounded-md border-border font-regular buttons-text update-button'}
+									className={
+										'rounded-md border-border font-regular buttons-text update-button'
+									}
 									onClick={handleUploadClick}
 								>
 									Update Profile Picture
@@ -307,8 +313,6 @@ const Settings = () => {
 									Remove
 								</Button>
 							</div>
-
-
 						</div>
 					</div>
 					<div className='h-0.5 separators'></div>
@@ -324,8 +328,6 @@ const Settings = () => {
 						</div>
 
 						<div className='flex items-center'>
-
-
 							<form id='form1' className='flex flex-col lp:gap-4 gap-2'>
 								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
 									<Input
@@ -390,22 +392,21 @@ const Settings = () => {
 										value={confirm_password}
 									/>
 								</div>
-
-
 							</form>
 						</div>
 					</div>
 					<div className='h-0.5 separators'></div>
 					<div
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
-						gap-5 max-tb:gap-y-3'
+					gap-5 max-tb:gap-y-3'
 					>
 						<div className='font-regular sections-title tb:self-center self-start'>
 							<p className='text-primary'>Profile Settings</p>
+							<p className='text-light max-w-[410px]'>
+								Edit your display name, bio, and other public details.
+							</p>
 						</div>
 						<div className='flex items-center'>
-
-
 							<form id='form2' className='flex flex-col lp:gap-4 gap-2'>
 								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
 									<div className='flex flex-col gap-3'>
@@ -439,16 +440,37 @@ const Settings = () => {
 											placeholder={bio}
 											maxLength={'250'}
 											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
-											max-ms:w-full outline-none placeholders placeholder:text-border'
+										max-ms:w-full outline-none placeholders placeholder:text-border'
 											onChange={handleInputChange}
 											value={bio}
 										></textarea>
 									</div>
 								</div>
 							</form>
-
-
 						</div>
+					</div>
+					<div className='h-0.5 separators'></div>
+					<div
+						className='sections-ml flex tb:flex-row flex-col items-center picture-section
+					gap-5 max-tb:gap-y-3'
+					>
+						<div className='font-regular sections-title tb:self-center self-start'>
+							<p className='text-primary'>Security Settings</p>
+							<p className='text-light max-w-[410px]'>
+								Update your password and enable two-factor authentication for added
+								security.
+							</p>
+						</div>
+						<Button
+							className={
+								'rounded-md border-border font-regular buttons-text remove-button'
+							}
+							type='submit'
+							onClick={handle2FAModal}
+						>
+							Enable 2FA
+						</Button>
+						<div className='flex items-center'></div>
 					</div>
 					<div className='flex justify-end save-button my-3 tb:gap-2 gap-1'>
 						<Button
@@ -472,9 +494,12 @@ const Settings = () => {
 					</div>
 				</div>
 			</section>
-		</div>
+			<TwoFactorAuthModal
+				dialogRef={dialogRef}
+				closeDialog={closeDialog}
+			/>
+		</>
 	)
 }
-
 
 export default Settings

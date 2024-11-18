@@ -63,8 +63,8 @@ function User({
 		<div
 			id={user_id}
 			onClick={handleConversationSelect}
-			className={`flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
-				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg user tb:px-user-div-px-tb
+			className={`user-skeleton flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
+				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg tb:px-user-div-px-tb
 				${search ? '' : selectedUserId === user_id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
 		>
 			<img
@@ -73,7 +73,7 @@ function User({
 						? profile_picture
 						: BASE_URL + profile_picture
 				}
-				className='rounded-full object-cover ring-1 ring-primary select-none'
+				className='chat-history-image rounded-full object-cover ring-1 ring-primary select-none'
 				alt='user image'
 			/>
 			<div className='font-medium tb:w-[80%]'>
@@ -93,12 +93,10 @@ function User({
 				)}
 			</div>
 			{search && (
-				<div className='search-badge max-tb:hidden'>
-					<img
-						src='/assets/images/Achievements/celestial-master.png'
-						className='select-none'
-					/>
-				</div>
+				<img
+					src='/assets/images/Achievements/celestial-master.png'
+					className='select-none search-badge max-tb:hidden'
+				/>
 			)}
 		</div>
 	)

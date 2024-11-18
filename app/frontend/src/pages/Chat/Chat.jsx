@@ -8,7 +8,7 @@ import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
 
-import { useAlert } from '../../components/AlertContext'
+// import { useAlert } from '../../components/AlertContext'
 import useAuth from '../../context/AuthContext.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
@@ -28,11 +28,11 @@ const Chat = () => {
 	const [conversationKey, setConversationKey] = useState(null)
 	const [selectedUserImage, setSelectedUserImage] = useState(null)
 
-	const { triggerAlert } = useAlert()
+	// const { triggerAlert } = useAlert()
 
-	const handleSubmit = () => {
-		triggerAlert('success', 'Message sent successfuly!')
-	}
+	// const handleSubmit = () => {
+	// 	triggerAlert('success', 'Message sent successfuly!')
+	// }
 
 	useEffect(() => {
 		const uri = window.location.pathname.split('/').slice(2, 4)
@@ -102,10 +102,12 @@ const Chat = () => {
 				ws.removeEventListener('close', handleClose)
 				ws.removeEventListener('message', handleMessage)
 
+				// ws.close()
+				// console.log('closed')
 				chatSocket.current = null
 			}
 		}
-	}, [isUrlProcessed, conversationKey])
+	}, [isUrlProcessed])
 
 	useEffect(() => {
 		const getUserInfos = async () => {
