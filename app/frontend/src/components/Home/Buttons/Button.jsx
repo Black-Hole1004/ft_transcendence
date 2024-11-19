@@ -1,15 +1,15 @@
 import React from 'react'
 
-function Button({id, onClick, className, children }) {
+function Button({id, disabled, onClick, className, children }) {
 	return (
 		<button
 			id={id}
 			onClick={onClick}
 			className={`
 			border border-primary transition duration-300 select-none
-			hover:bg-primary hover:text-secondary ${className || ''}`}
+			hover:bg-primary hover:text-secondary ${className || ''} ${disabled ? 'brightness-75' : ''}`}
 		>
-			{children}
+			{disabled ? 'Disable Two-factor Authentication' : children}
 		</button>
 	)
 }

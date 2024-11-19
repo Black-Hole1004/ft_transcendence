@@ -10,6 +10,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
 import { useAlert } from '../../components/AlertContext'
 import TwoFactorAuthModal from '../../components/Settings/TwoFactorAuthModal'
+import ConfirmationModal from '../../components/Settings/ConfirmationModal'
 
 function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
@@ -33,7 +34,8 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 
 const Settings = () => {
 	const dialogRef = useRef(null)
-	const [showTwoFactorModal, setShowTwoFactorModal] = useState(false)
+	// const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+	const [twoFactorAuthEnabled, setTwoFactorAuthEnabled] = useState(false)
 
 	const openDialog = () => {
 		if (dialogRef.current) {
@@ -45,8 +47,17 @@ const Settings = () => {
 		dialogRef.current.close()
 	}
 
-	const handle2FAModal = () => {
-		openDialog()
+	// const handle2FAModal = () => {
+	// 	openDialog()
+	// }
+
+	const enableDesable2FA = () => {
+		if (!twoFactorAuthEnabled) {
+			setTwoFactorAuthEnabled(true)
+		} else {
+			console.log(twoFactorAuthEnabled)
+			openDialog()
+		}
 	}
 
 	window.addEventListener('load', function () {
@@ -466,10 +477,17 @@ const Settings = () => {
 								'rounded-md border-border font-regular buttons-text remove-button'
 							}
 							type='submit'
-							onClick={handle2FAModal}
+							onClick={enableDesable2FA}
+							disabled={twoFactorAuthEnabled}
 						>
-							Enable 2FA
+							Enable Two-factor Authentication
 						</Button>
+						<button
+							className='rounded-md border-border font-regular buttons-text remove-button border 
+						transition duration-300 select-none bg-red-700 hover:bg-red-800'
+						>
+							Delete acount
+						</button>
 						<div className='flex items-center'></div>
 					</div>
 					<div className='flex justify-end save-button my-3 tb:gap-2 gap-1'>
@@ -494,9 +512,16 @@ const Settings = () => {
 					</div>
 				</div>
 			</section>
-			<TwoFactorAuthModal
+			{/* <TwoFactorAuthModal
 				dialogRef={dialogRef}
 				closeDialog={closeDialog}
+			/> */}
+			<ConfirmationModal
+				dialogRef={dialogRef}
+				closeDialog={closeDialog}
+				setTwoFactorAuthEnabled={setTwoFactorAuthEnabled}
+				// setShowConfirmationModal={setShowConfirmationModal}
+				// closeDialog={closeDialog}
 			/>
 		</>
 	)
