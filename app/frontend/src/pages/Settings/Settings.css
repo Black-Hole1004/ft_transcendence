@@ -32,6 +32,10 @@
 	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
 }
 
+.parts {
+	width: clamp(14.938rem, 10.531vw + 12.963rem, 29.813rem);
+}
+
 .buttons-text {
 	font-size: clamp(0.5rem, 0.31vw + 0.442rem, 0.938rem);
 }

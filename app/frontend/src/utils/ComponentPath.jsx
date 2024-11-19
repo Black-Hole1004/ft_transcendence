@@ -13,6 +13,7 @@ const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
 const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
 const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
 const Layout = React.lazy(() => import('../components/Layout/Layout'))
+const TwoFactorAuth = React.lazy(() => import('../pages/TwoFactorAuth/TwoFactorAuth'))
 // const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
 // const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
 // const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
@@ -27,6 +28,7 @@ const ComponentPath = () => {
 			<Routes>
 				{/* Redirect to /Dashboard if authenticated on the home path */}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
+				<Route path="/2fa" element={<TwoFactorAuth />} />
 
 				{/* Layout wrapping all private routes */}
 				<Route element={<Layout />}>

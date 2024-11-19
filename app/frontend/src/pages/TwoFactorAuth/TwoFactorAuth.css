@@ -15,3 +15,13 @@
 .sep {
 	width: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
 }
+
+.container {
+	width: clamp(18.125rem, 31.416vw + 12.235rem, 62.5rem);
+	height: clamp(25rem, 8.85vw + 23.341rem, 37.5rem);
+	transform: translate(-50%, -50%);
+}
+
+.verify {
+	width: clamp(16.875rem, 14.602vw + 14.137rem, 37.5rem);
+}

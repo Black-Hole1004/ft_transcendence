@@ -9,7 +9,6 @@ const USER_API = import.meta.env.VITE_USER_API
 const BASE_URL = import.meta.env.VITE_BASE_URL
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
 import { useAlert } from '../../components/AlertContext'
-import TwoFactorAuthModal from '../../components/Settings/TwoFactorAuthModal'
 import ConfirmationModal from '../../components/Settings/ConfirmationModal'
 
 function Input({ id, type, label, placeholder, value, onChange }) {
@@ -34,7 +33,6 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 
 const Settings = () => {
 	const dialogRef = useRef(null)
-	// const [showConfirmationModal, setShowConfirmationModal] = useState(false)
 	const [twoFactorAuthEnabled, setTwoFactorAuthEnabled] = useState(false)
 
 	const openDialog = () => {
@@ -283,7 +281,7 @@ const Settings = () => {
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
 						xl:gap-[110px] lg:gap-[80px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start'>
+						<div className='font-regular sections-title tb:self-center self-start parts'>
 							<p className='text-primary'>Profile Picture</p>
 							<p className='text-light'>
 								Must be JPEG, PNG, or GIF and cannot exceed 5MB.
@@ -331,7 +329,7 @@ const Settings = () => {
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start'>
+						<div className='font-regular sections-title tb:self-center self-start parts '>
 							<p className='text-primary'>Personal Settings</p>
 							<p className='text-light'>
 								Change identifying details for your account.
@@ -409,11 +407,11 @@ const Settings = () => {
 					<div className='h-0.5 separators'></div>
 					<div
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
-					gap-5 max-tb:gap-y-3'
+						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start'>
+						<div className='font-regular sections-title tb:self-center self-start parts '>
 							<p className='text-primary'>Profile Settings</p>
-							<p className='text-light max-w-[410px]'>
+							<p className='text-light '>
 								Edit your display name, bio, and other public details.
 							</p>
 						</div>
@@ -463,32 +461,33 @@ const Settings = () => {
 					<div className='h-0.5 separators'></div>
 					<div
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
-					gap-5 max-tb:gap-y-3'
+						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start'>
+						<div className='font-regular sections-title tb:self-center self-start parts '>
 							<p className='text-primary'>Security Settings</p>
-							<p className='text-light max-w-[410px]'>
+							<p className='text-light'>
 								Update your password and enable two-factor authentication for added
 								security.
 							</p>
 						</div>
-						<Button
-							className={
-								'rounded-md border-border font-regular buttons-text remove-button'
-							}
-							type='submit'
-							onClick={enableDesable2FA}
-							disabled={twoFactorAuthEnabled}
-						>
-							Enable Two-factor Authentication
-						</Button>
-						<button
-							className='rounded-md border-border font-regular buttons-text remove-button border 
-						transition duration-300 select-none bg-red-700 hover:bg-red-800'
-						>
-							Delete acount
-						</button>
-						<div className='flex items-center'></div>
+						<div className='flex gap-4'>
+							<Button
+								className={
+									'rounded-md border-border font-regular buttons-text remove-button'
+								}
+								type='submit'
+								onClick={enableDesable2FA}
+								disabled={twoFactorAuthEnabled}
+							>
+								Enable Two-factor Authentication
+							</Button>
+							<button
+								className='rounded-md border-border font-regular buttons-text remove-button border 
+							transition duration-300 select-none bg-red-700 hover:bg-red-800'
+							>
+								Delete acount
+							</button>
+						</div>
 					</div>
 					<div className='flex justify-end save-button my-3 tb:gap-2 gap-1'>
 						<Button
@@ -512,16 +511,10 @@ const Settings = () => {
 					</div>
 				</div>
 			</section>
-			{/* <TwoFactorAuthModal
-				dialogRef={dialogRef}
-				closeDialog={closeDialog}
-			/> */}
 			<ConfirmationModal
 				dialogRef={dialogRef}
 				closeDialog={closeDialog}
 				setTwoFactorAuthEnabled={setTwoFactorAuthEnabled}
-				// setShowConfirmationModal={setShowConfirmationModal}
-				// closeDialog={closeDialog}
 			/>
 		</>
 	)
