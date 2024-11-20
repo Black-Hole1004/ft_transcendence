@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import Message from './Message.jsx'
 
-const Messages = ({ messages, selectedUserId, selectedUserImage }) => {
+const Messages = ({ myId, messages, selectedUserImage }) => {
 	const messagesEndRef = useRef(null)
 
 	const getDate = (timestamp) => {
@@ -55,7 +55,7 @@ const Messages = ({ messages, selectedUserId, selectedUserImage }) => {
 				<div key={date} className='flex flex-col gap-3'>
 					<div className='flex items-center gap-1 mr-2'>
 						<div className='h-px flex-1 bg-border brightness-50'></div>
-						<p className='font-heavy text-border message-time'>{date}</p>
+						<p className='font-heavy text-border message-time select-none'>{date}</p>
 						<div className='h-px flex-1 bg-border brightness-50'></div>
 					</div>
 					<div>
@@ -63,7 +63,7 @@ const Messages = ({ messages, selectedUserId, selectedUserImage }) => {
 							<div key={index}>
 								<Message
 									message={message}
-									selectedUserId={selectedUserId}
+									myId={myId}
 									selectedUserImage={selectedUserImage}
 								/>
 							</div>

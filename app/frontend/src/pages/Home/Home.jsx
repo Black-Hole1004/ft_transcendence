@@ -74,9 +74,9 @@ const Home = () => {
 				{/* <LazyCard */}
 				<Card
 					dialogRef={dialogRef}
-					// closeDialog={closeDialog}
-					// isSigningIn={isSigningIn}
-					// setIsSigningIn={setIsSigningIn}
+					closeDialog={closeDialog}
+					isSigningIn={isSigningIn}
+					setIsSigningIn={setIsSigningIn}
 				/>
 			</React.Suspense>
 		</>

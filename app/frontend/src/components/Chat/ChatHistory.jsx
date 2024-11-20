@@ -12,6 +12,7 @@ function ChatHistory({
 	setMessages,
 	selectedUserId,
 	setSelectedUserId,
+	conversationKey,
 	setConversationKey,
 }) {
 	const searchRef = useRef(null)
@@ -29,7 +30,7 @@ function ChatHistory({
 			setSearchText('')
 			searchRef.current.value = ''
 		}
-	}, [selectedUserId])
+	}, [conversationKey])
 
 	const { getAuthHeaders } = useAuth()
 	useEffect(() => {
@@ -57,7 +58,7 @@ function ChatHistory({
 		const getUsers = async () => {
 			try {
 				if (searchText.length > 0) {
-					const response = await axios.get(`${API_CHAT}${searchText}/`, {
+					const response = await axios.get(`${API_CHAT}search/${searchText}/`, {
 						headers: {
 							'Content-Type': 'application/json',
 							Authorization: getAuthHeaders().Authorization,

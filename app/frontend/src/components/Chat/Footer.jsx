@@ -2,7 +2,7 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { useEffect, useState, useRef } from 'react'
 
-const Footer = ({ selectedUserId, MessageInputRef, handleKeyPress, sendMessage }) => {
+const Footer = ({ conversationKey, MessageInputRef, handleKeyPress, sendMessage }) => {
 	const [width, setWidth] = useState(0)
 	const [showEmoji, setShowEmoji] = useState(false)
 	const emojiPickerRef = useRef(null)
@@ -43,7 +43,7 @@ const Footer = ({ selectedUserId, MessageInputRef, handleKeyPress, sendMessage }
 
 	useEffect(() => {
 		MessageInputRef.current.focus()
-	}, [selectedUserId])
+	}, [conversationKey])
 
 	const toggleEmojiPicker = () => {
 		setShowEmoji(!showEmoji)

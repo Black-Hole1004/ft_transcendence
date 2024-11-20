@@ -1,7 +1,7 @@
 import './Chat.css'
 import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Footer from '../../components/Chat/Footer.jsx'
 import Messages from '../../components/Chat/Messages.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
@@ -15,6 +15,7 @@ const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
 	const location = useLocation()
+	const navigate = useNavigate()
 	const { getAuthHeaders } = useAuth()
 
 	const chatSocket = useRef(null)
@@ -55,7 +56,6 @@ const Chat = () => {
 					JSON.stringify({
 						message_type: 'join',
 						conversation_key: conversationKey,
-						selected_user_id: selectedUserId,
 					})
 				)
 			}
@@ -110,11 +110,12 @@ const Chat = () => {
 	}, [isUrlProcessed])
 
 	useEffect(() => {
+		console.log('my_id: ', myId)
 		const getUserInfos = async () => {
 			try {
-				if (selectedUserId > 0) {
+				if (conversationKey) {
 					const response = await axios.get(
-						`${API_CHAT}${conversationKey}/${selectedUserId}/`,
+						`${API_CHAT}${conversationKey}/`,
 						{
 							headers: {
 								'Content-Type': 'application/json',
@@ -130,13 +131,14 @@ const Chat = () => {
 				}
 			} catch (error) {
 				console.error('Error fetching user infos:', error)
+				navigate('/404')
 			}
 		}
 
-		if (selectedUserId > 0) {
+		if (conversationKey) {
 			getUserInfos()
 		}
-	}, [selectedUserId])
+	}, [conversationKey])
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') {
@@ -179,6 +181,7 @@ const Chat = () => {
 						setMessages={setMessages}
 						selectedUserId={selectedUserId}
 						setSelectedUserId={setSelectedUserId}
+						conversationKey={conversationKey}
 						setConversationKey={setConversationKey}
 					/>
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
@@ -218,14 +221,14 @@ const Chat = () => {
 									</div>
 								</div>
 								<Messages
+									myId={myId}
 									messages={messages}
-									selectedUserId={selectedUserId}
 									selectedUserImage={selectedUserImage}
 								/>
 								<Footer
 									sendMessage={sendMessage}
 									handleKeyPress={handleKeyPress}
-									selectedUserId={selectedUserId}
+									conversationKey={conversationKey}
 									MessageInputRef={MessageInputRef}
 								/>
 							</>
@@ -234,7 +237,7 @@ const Chat = () => {
 						)}
 					</div>
 				</div>
-				{selectedUserId > 0 && <UserInfos user={user} />}
+				{conversationKey && <UserInfos user={user} />}
 			</div>
 		</section>
 	)

@@ -50,7 +50,6 @@ function User({
 		})
 
 		let conversation_key = `${Math.min(myId, user_id)}_${Math.max(myId, user_id)}`
-		// console.log(conversation_key)
 
 		setConversationKey((prev) => {
 			if (prev === conversation_key) return prev

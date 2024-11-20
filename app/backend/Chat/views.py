@@ -26,7 +26,7 @@ def ConversationsList(request):
 
     serializer = ConversationSerializer(conversations, context={'request': request}, many=True)
     return Response({'id': request.user.id,
-                     'conversations':serializer.data
+                     'conversations': serializer.data
                     })
 
 
@@ -36,12 +36,15 @@ def ConversationsList(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @csrf_exempt
-def getUserinfos(request, conversation_key, user_id):
+def getUserinfos(request, conversation_key):
 
     ids = conversation_key.split('_')
-    if request.user.id not in map(int, ids):
+
+    if len(ids) != 2 or not all(id.isdigit() for id in ids) or request.user.id not in map(int, ids):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
-    
+
+    user_id = int(ids[0]) if ids[0] != request.user.id else int(ids[1])
+
     user_infos = User.objects.filter(id=user_id)
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
     if conversation:

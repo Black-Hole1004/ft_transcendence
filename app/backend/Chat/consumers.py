@@ -48,10 +48,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         headers = self.scope['headers']
         access_token = extract_access_token(headers)
         access_token = access_token.replace('%22', '')
-        userid = decode_jwt_info(access_token)['user_id']
-        self.user = await database_sync_to_async(User.objects.get)(id=userid)
-        cache.set(f"user_{userid}_channel", self.channel_name)
+        self.userid = decode_jwt_info(access_token)['user_id']
+        self.user = await database_sync_to_async(User.objects.get)(id=self.userid)
+        cache.set(f"user_{self.userid}_channel", self.channel_name)
         if self.user.is_authenticated:
+            print('accepted')
             await self.accept()
         else:
             await self.close()
@@ -60,7 +61,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         cache.delete(f"user_{self.user.id}_channel")
         # if self.conversation_id:
-            # await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+        print('group discarded')
+        # await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
 
     @database_sync_to_async
@@ -81,7 +83,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         try:
             user1 = User.objects.get(id=id1)
             user2 = User.objects.get(id=id2)
-            # conversation_key = f"{min(id1, id2)}_{max(id1, id2)}"
             conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
 
             if not conversation:
@@ -99,11 +100,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
+        print('data: ', data)
         message_type = data['message_type']
+        self.conversation_key = data['conversation_key']
+        self.participants = data['conversation_key'].split('_')
+        
+        if self.userid not in map(int, self.participants):
+            print('heeeeere')
+            return
+        
+        print('userid: ', self.userid)
+        print('conversation_key: ', self.conversation_key)
+        self.other_user = int(self.participants[0]) if self.participants[0] != self.userid else int(self.participants[1])
+        print('other_user: ', self.other_user)
+
         if message_type == 'join':
-            self.conversation_key = data['conversation_key']
-            if self.conversation_key:
-                self.other_user = data['selected_user_id']
+            if self.participants:
                 self.room_group_name = f"chat_{self.conversation_key}"
 
                 await self.channel_layer.group_add(self.room_group_name, self.channel_name)
@@ -111,9 +123,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
                 if self.other_user_channel:
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
-                    
-                else:
-                    pass
+                # else:
+                #     pass
 
         elif message_type == 'message':
             if self.room_group_name:
