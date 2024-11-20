@@ -29,6 +29,7 @@ DEBUG = True
 
 # Application definition
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,8 +45,7 @@ INSTALLED_APPS = [
     'core',
     'channels',
     'game',
-    'channels_redis',
-    'daphne',
+    'channels_redis'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
