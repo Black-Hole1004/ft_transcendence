@@ -75,7 +75,7 @@ export default {
 				'leftside-chat-ms': 'clamp(10rem, 4.283vw + 9.197rem, 11.25rem)',
 				'leftside-chat-tb': 'clamp(9.375rem, 21.413vw + 5.36rem, 15.625rem)',
 
-				'user-tb': 'clamp(3.125rem, 2.232vw + 2.054rem, 5.625rem)',
+				'user-tb': 'clamp(3.5rem, 2.232vw + 2.429rem, 6rem)',
 
 				'profile': 'clamp(31.64rem, 13.9246rem + 27.6803vw, 58.213125rem)',
 			},

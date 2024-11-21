@@ -9,9 +9,6 @@ function ChatHistory({
 	myId,
 	setMyId,
 	messages,
-	setMessages,
-	selectedUserId,
-	setSelectedUserId,
 	conversationKey,
 	setConversationKey,
 }) {
@@ -106,19 +103,17 @@ function ChatHistory({
 				</div>
 			</div>
 			<div
-				className={`flex tb:flex-col max-tb:justify-center flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
-							tb:overflow-y-auto ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
+				className={`max-tb:flex max-tb:justify-center gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
+							 ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				{(searchResult ? searchResult : conversations).map((conversation) => (
 					<User
 						myId={myId}
 						key={conversation.id}
-						setMessages={setMessages}
-						conversation={conversation}
-						selectedUserId={selectedUserId}
-						setSelectedUserId={setSelectedUserId}
-						setConversationKey={setConversationKey}
 						search={!!searchResult}
+						conversation={conversation}
+						conversationKey={conversationKey}
+						setConversationKey={setConversationKey}
 					/>
 				))}
 			</div>

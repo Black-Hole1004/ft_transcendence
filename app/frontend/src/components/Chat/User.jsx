@@ -2,18 +2,18 @@ import { useNavigate } from 'react-router-dom'
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
-function User({
-	myId,
-	search,
-	setMessages,
-	conversation,
-	selectedUserId,
-	setSelectedUserId,
-	setConversationKey,
-}) {
+function User({ myId, search, conversation, conversationKey, setConversationKey }) {
 	const navigate = useNavigate()
 
+	// console.log(myId)
+	// console.log(conversationKey)
 	let user_id = search ? conversation.id : conversation.other_user.id
+	const ids = conversationKey?.split('_').map((id) => parseInt(id))
+	// console.log('ids: ', ids)
+	let selectedUserId = null
+	if (ids) selectedUserId = ids[0] === myId ? ids[1] : ids[0]
+	// console.log(selectedUserId)
+
 	let username = search ? conversation.username : conversation.other_user.username
 	let profile_picture = search
 		? conversation.profile_picture
@@ -41,29 +41,21 @@ function User({
 	}
 
 	const handleConversationSelect = () => {
-		setSelectedUserId((prev) => {
-			if (prev === user_id) {
-				return prev
-			}
-			setMessages([])
-			return user_id
-		})
-
 		let conversation_key = `${Math.min(myId, user_id)}_${Math.max(myId, user_id)}`
 
 		setConversationKey((prev) => {
 			if (prev === conversation_key) return prev
 			return conversation_key
 		})
-		navigate(`/chat/${conversation_key}/${user_id}`)
+		navigate(`/chat/${conversation_key}`)
 	}
 
 	return (
 		<div
 			id={user_id}
 			onClick={handleConversationSelect}
-			className={`user-skeleton flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
-				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg tb:px-user-div-px-tb
+			className={`flex max-tb:flex-col max-tb:justify-around items-center gap-2
+			tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg tb:px-user-div-px-tb
 				${search ? '' : selectedUserId === user_id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
 		>
 			<img

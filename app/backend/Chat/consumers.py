@@ -100,19 +100,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        print('data: ', data)
+        # print('data: ', data)
         message_type = data['message_type']
         self.conversation_key = data['conversation_key']
         self.participants = data['conversation_key'].split('_')
-        
-        if self.userid not in map(int, self.participants):
+        # print('list: ', self.participants)
+
+        if len(set(self.participants)) == 1 or self.userid not in map(int, self.participants):
             print('heeeeere')
             return
-        
-        print('userid: ', self.userid)
-        print('conversation_key: ', self.conversation_key)
-        self.other_user = int(self.participants[0]) if self.participants[0] != self.userid else int(self.participants[1])
-        print('other_user: ', self.other_user)
+
+        # print('userid: ', self.userid)
+        # print('conversation_key: ', self.conversation_key)
+        self.other_user = int(self.participants[0]) if int(self.participants[0]) != self.userid else int(self.participants[1])
+        # print('other_user: ', self.other_user)
 
         if message_type == 'join':
             if self.participants:
@@ -136,14 +137,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 if self.old_user_channel is not self.other_user_channel:
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
 
+                print('self.user.id', self.user.id)
+                print('self.other_user', self.other_user)
 
                 conversation = await self.check_conversation_existed(conversation_key, self.user.id, self.other_user)
-
+                print('1')
                 saved_message = await self.save_message(
                     conversation_id = conversation.id,
                     sender_id = sender,
                     content = message
                 )
+                print('2')
 
 
                 await self.channel_layer.group_send(

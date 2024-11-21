@@ -24,7 +24,6 @@ const Chat = () => {
 	const [myId, setMyId] = useState(0)
 	const [user, setUser] = useState(null)
 	const [messages, setMessages] = useState([])
-	const [selectedUserId, setSelectedUserId] = useState(0)
 	const [isUrlProcessed, setIsUrlProcessed] = useState(false)
 	const [conversationKey, setConversationKey] = useState(null)
 	const [selectedUserImage, setSelectedUserImage] = useState(null)
@@ -36,12 +35,10 @@ const Chat = () => {
 	// }
 
 	useEffect(() => {
-		const uri = window.location.pathname.split('/').slice(2, 4)
-
-		if (uri.length > 0) {
+		const uri = window.location.pathname.split('/').slice(2, 3)
+		if (uri.length === 1) {
 			setMessages([])
 			setConversationKey(uri[0])
-			setSelectedUserId(parseInt(uri[1]))
 			setIsUrlProcessed(true)
 		} else {
 			setIsUrlProcessed(false)
@@ -110,20 +107,16 @@ const Chat = () => {
 	}, [isUrlProcessed])
 
 	useEffect(() => {
-		console.log('my_id: ', myId)
+		// console.log('my_id: ', myId)
 		const getUserInfos = async () => {
 			try {
 				if (conversationKey) {
-					const response = await axios.get(
-						`${API_CHAT}${conversationKey}/`,
-						{
-							headers: {
-								'Content-Type': 'application/json',
-								Authorization: getAuthHeaders().Authorization,
-							},
-						}
-					)
-					// console.log(response.data)
+					const response = await axios.get(`${API_CHAT}${conversationKey}/`, {
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: getAuthHeaders().Authorization,
+						},
+					})
 					setUser(response.data.user_infos[0])
 					const messages = response.data.messages ? response.data.messages : []
 					setMessages(messages)
@@ -178,9 +171,6 @@ const Chat = () => {
 						myId={myId}
 						setMyId={setMyId}
 						messages={messages}
-						setMessages={setMessages}
-						selectedUserId={selectedUserId}
-						setSelectedUserId={setSelectedUserId}
 						conversationKey={conversationKey}
 						setConversationKey={setConversationKey}
 					/>
@@ -195,7 +185,7 @@ const Chat = () => {
 								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
 									<img
 										src={`${selectedUserImage}`}
-										className='conversation-header-image object-cover rounded-full ring-1 ring-primary select-none'
+										className='chat-history-image object-cover rounded-full ring-1 ring-primary select-none'
 										alt='user image'
 									/>
 									<div>

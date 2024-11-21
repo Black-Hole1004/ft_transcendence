@@ -81,8 +81,6 @@
 }
 
 .chat-header img {
-	width: clamp(1.875rem, 1.991vw + 1.502rem, 4.688rem);
-	height: clamp(1.875rem, 1.991vw + 1.502rem, 4.688rem);
 	margin-left: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem);
 }
 
