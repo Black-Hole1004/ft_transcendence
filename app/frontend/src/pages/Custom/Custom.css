@@ -2,6 +2,10 @@
 	margin: 40px clamp(0.313rem, 21.903vw - 3.794rem, 31.25rem);
 }
 
+.mode-card {
+	width: clamp(37.5rem, 22.124vw + 33.352rem, 68.75rem);
+}
+
 .selected-table {
 	height: clamp(11.25rem, 14.159vw + 8.595rem, 31.25rem);
 }

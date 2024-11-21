@@ -20,7 +20,7 @@ const TwoFactorAuth = () => {
 			<section className='relative w-full h-screen text-primary backdrop-blur-md backdrop-brightness-50'>
 				<div
 					className={`flex flex-col absolute container top-1/2 left-1/2 tb:px-4 px-2
-					text-center text-primary py-14 border-1.5 rounded-xl`}
+					text-center text-primary py-14 border-1.5 border-primary rounded-xl`}
 				>
 					<h1 className='modal-title font-heavy'>Enter code</h1>
 					<p className='font-regular paragraph'>We sent a code to 00mouad00@gmail.com.</p>

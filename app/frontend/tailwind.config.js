@@ -54,7 +54,9 @@ export default {
 				'chart-lp': 'clamp(25rem, 19.531vw + 12.5rem, 43.75rem)',
 				'chart-ms': 'clamp(18.625rem, 41.77vw + 10.793rem, 37.5rem)',
 
-				'profile-cards': 'clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem)'
+				'profile-cards': 'clamp(57.75rem, 50.521vw + 25.417rem, 106.25rem)',
+
+				'custom': 'clamp(37.5rem, 22.124vw + 33.352rem, 68.75rem)',
 			},
 			height: {
 				'chart-lp': 'clamp(8.75rem, 12.37vw + 0.833rem, 20.625rem)',

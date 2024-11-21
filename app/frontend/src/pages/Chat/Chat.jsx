@@ -62,7 +62,7 @@ const Chat = () => {
 		const onWebSocketClose = () => {
 			console.log('WebSocket disconnected')
 			webSocketRef.current = null
-			setTimeout(setupConnection, 3000)
+			setTimeout(initializeWebSocket, 3000)
 		}
 
 		const onWebSocketMessage = (e) => {
@@ -161,95 +161,93 @@ const Chat = () => {
 	}
 
 	return (
-		<section className='section-margin'>
-			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
-				<div
-					className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
+		<section className='section-margin flex lg:flex-row flex-col lg:justify-between gap-4'>
+			<div
+				className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
-				>
-					{/* Chat History Component */}
-					<ChatHistory
-						currentUserId={currentUserId}
-						setCurrentUserId={setCurrentUserId}
-						chatMessages={chatMessages}
-						conversationKey={conversationKey}
-						setConversationKey={setConversationKey}
-					/>
+			>
+				{/* Chat History Component */}
+				<ChatHistory
+					currentUserId={currentUserId}
+					setCurrentUserId={setCurrentUserId}
+					chatMessages={chatMessages}
+					conversationKey={conversationKey}
+					setConversationKey={setConversationKey}
+				/>
 
-					{/* Separator */}
-					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
+				{/* Separator */}
+				<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
-					{/* Chat Area */}
-					<div
-						className='tb:flex-1 flex flex-col items-center max-tb:border border-primary
+				{/* Chat Area */}
+				<div
+					className='tb:flex-1 flex flex-col items-center max-tb:border border-primary
 									lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
-					>
-						{recipientInfo ? (
-							<>
-								{/* Chat Header */}
-								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
-									<img
-										src={`${recipientProfileImage}`}
-										className='chat-history-image object-cover rounded-full ring-1 ring-primary select-none'
-										alt='user image'
-									/>
-									<div>
-										<p className='font-heavy friend-name text-primary'>
-											{`${recipientInfo.first_name} ${recipientInfo.last_name}`}
-										</p>
-										<div className='flex items-center gap-0.5'>
-											<div
-												className={`w-1.5 h-1.5 rounded-full ${
-													recipientInfo.status === 'online'
-														? 'bg-online'
-														: recipientInfo.status === 'offline'
-															? 'bg-offline'
-															: 'bg-defeat'
-												}`}
-											></div>
-											<p
-												className={`last-message font-heavy ${
-													recipientInfo.status === 'online'
-														? 'text-online'
-														: recipientInfo.status === 'offline'
-															? 'text-offline'
-															: 'text-defeat'
-												}`}
-											>
-												{recipientInfo.status === 'online'
-													? 'Online'
+				>
+					{recipientInfo ? (
+						<>
+							{/* Chat Header */}
+							<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
+								<img
+									src={`${recipientProfileImage}`}
+									className='chat-history-image object-cover rounded-full ring-1 ring-primary select-none'
+									alt='user image'
+								/>
+								<div>
+									<p className='font-heavy friend-name text-primary'>
+										{`${recipientInfo.first_name} ${recipientInfo.last_name}`}
+									</p>
+									<div className='flex items-center gap-0.5'>
+										<div
+											className={`w-1.5 h-1.5 rounded-full ${
+												recipientInfo.status === 'online'
+													? 'bg-online'
 													: recipientInfo.status === 'offline'
-														? 'Offline'
-														: 'In-Game'}
-											</p>
-										</div>
+														? 'bg-offline'
+														: 'bg-defeat'
+											}`}
+										></div>
+										<p
+											className={`last-message font-heavy ${
+												recipientInfo.status === 'online'
+													? 'text-online'
+													: recipientInfo.status === 'offline'
+														? 'text-offline'
+														: 'text-defeat'
+											}`}
+										>
+											{recipientInfo.status === 'online'
+												? 'Online'
+												: recipientInfo.status === 'offline'
+													? 'Offline'
+													: 'In-Game'}
+										</p>
 									</div>
 								</div>
+							</div>
 
-								{/* Chat Messages */}
-								<Messages
-									currentUserId={currentUserId}
-									chatMessages={chatMessages}
-									recipientProfileImage={recipientProfileImage}
-								/>
+							{/* Chat Messages */}
+							<Messages
+								currentUserId={currentUserId}
+								chatMessages={chatMessages}
+								recipientProfileImage={recipientProfileImage}
+							/>
 
-								{/* Chat Footer */}
-								<Footer
-									sendChatMessage={sendChatMessage}
-									currentMessage={currentMessage}
-									handleKeyPress={handleKeyPress}
-									conversationKey={conversationKey}
-								/>
-							</>
-						) : (
-							<StartConversation />
-						)}
-					</div>
+							{/* Chat Footer */}
+							<Footer
+								sendChatMessage={sendChatMessage}
+								currentMessage={currentMessage}
+								handleKeyPress={handleKeyPress}
+								conversationKey={conversationKey}
+							/>
+						</>
+					) : (
+						<StartConversation />
+					)}
 				</div>
-
-				{/* User Information Sidebar */}
-				{conversationKey && <UserInfos recipientInfo={recipientInfo} />}
 			</div>
+
+			{/* User Information Sidebar */}
+			{conversationKey && <UserInfos recipientInfo={recipientInfo} />}
 		</section>
 	)
 }

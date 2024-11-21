@@ -10,7 +10,7 @@ const ConfirmationModal = ({ dialogRef, closeDialog, setTwoFactorAuthEnabled }) 
 		<dialog
 			id={'dialog'}
 			ref={dialogRef}
-			className={`dialog-shape max-w-full text-primary pr-4
+			className={`dialog-shape max-w-full text-primary pr-4 border-primary
 			ml:border-1.5 border rounded-xl bg-transparent backdrop:bg-backdrop-40 backdrop:backdrop-blur-md`}
 		>
 			<div className='flex flex-col gap-8'>
