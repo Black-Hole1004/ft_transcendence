@@ -18,15 +18,15 @@ const Chat = () => {
 	const navigate = useNavigate()
 	const { getAuthHeaders } = useAuth()
 
-	const chatSocket = useRef(null)
-	const MessageInputRef = useRef(null)
+	const webSocketRef = useRef(null)
+	const currentMessage = useRef(null)
 
-	const [myId, setMyId] = useState(0)
-	const [user, setUser] = useState(null)
-	const [messages, setMessages] = useState([])
-	const [isUrlProcessed, setIsUrlProcessed] = useState(false)
+	const [currentUserId, setCurrentUserId] = useState(0)
+	const [recipientInfo, setRecipientInfo] = useState(null)
+	const [chatMessages, setChatMessages] = useState([])
+	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [conversationKey, setConversationKey] = useState(null)
-	const [selectedUserImage, setSelectedUserImage] = useState(null)
+	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
 
 	// const { triggerAlert } = useAlert()
 
@@ -35,21 +35,22 @@ const Chat = () => {
 	// }
 
 	useEffect(() => {
+		// Extract conversation key from URL
 		const uri = window.location.pathname.split('/').slice(2, 3)
 		if (uri.length === 1) {
-			setMessages([])
+			setChatMessages([])
 			setConversationKey(uri[0])
-			setIsUrlProcessed(true)
+			setIsConversationLoaded(true)
 		} else {
-			setIsUrlProcessed(false)
+			setIsConversationLoaded(false)
 		}
 	}, [location.pathname])
 
 	useEffect(() => {
-		const handleOpen = () => {
+		const onWebSocketOpen = () => {
 			console.log('WebSocket connected')
-			if (isUrlProcessed) {
-				chatSocket.current?.send(
+			if (isConversationLoaded) {
+				webSocketRef.current?.send(
 					JSON.stringify({
 						message_type: 'join',
 						conversation_key: conversationKey,
@@ -58,16 +59,16 @@ const Chat = () => {
 			}
 		}
 
-		const handleClose = () => {
+		const onWebSocketClose = () => {
 			console.log('WebSocket disconnected')
-			chatSocket.current = null
+			webSocketRef.current = null
 			setTimeout(setupConnection, 3000)
 		}
 
-		const handleMessage = (e) => {
-			console.log('handle message')
+		const onWebSocketMessage = (e) => {
+			console.log('WebSocket message received')
 			const data = JSON.parse(e.data)
-			setMessages((prevMessages) => [
+			setChatMessages((prevMessages) => [
 				...prevMessages,
 				{
 					sender_id: data.sender,
@@ -77,38 +78,37 @@ const Chat = () => {
 			])
 		}
 
-		const setupConnection = () => {
-			if (!chatSocket.current) {
+		const initializeWebSocket = () => {
+			if (!webSocketRef.current) {
+				// console.log(window.location.protocol)
 				const ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
-				chatSocket.current = ws
-			}
+				webSocketRef.current = ws
 
-			chatSocket.current.addEventListener('open', handleOpen)
-			chatSocket.current.addEventListener('close', handleClose)
-			chatSocket.current.addEventListener('message', handleMessage)
+				webSocketRef.current.addEventListener('open', onWebSocketOpen)
+				webSocketRef.current.addEventListener('close', onWebSocketClose)
+				webSocketRef.current.addEventListener('message', onWebSocketMessage)
+			}
 		}
 
-		setupConnection()
+		initializeWebSocket()
 
 		return () => {
-			if (chatSocket.current) {
+			if (webSocketRef.current) {
 				console.log('cleanup running')
-				const ws = chatSocket.current
+				const ws = webSocketRef.current
 
-				ws.removeEventListener('open', handleOpen)
-				ws.removeEventListener('close', handleClose)
-				ws.removeEventListener('message', handleMessage)
+				ws.removeEventListener('open', onWebSocketOpen)
+				ws.removeEventListener('close', onWebSocketClose)
+				ws.removeEventListener('message', onWebSocketMessage)
 
-				// ws.close()
-				// console.log('closed')
-				chatSocket.current = null
+				ws.close()
+				webSocketRef.current = null
 			}
 		}
-	}, [isUrlProcessed])
+	}, [isConversationLoaded, conversationKey])
 
 	useEffect(() => {
-		// console.log('my_id: ', myId)
-		const getUserInfos = async () => {
+		const fetchConversationDetails = async () => {
 			try {
 				if (conversationKey) {
 					const response = await axios.get(`${API_CHAT}${conversationKey}/`, {
@@ -117,10 +117,10 @@ const Chat = () => {
 							Authorization: getAuthHeaders().Authorization,
 						},
 					})
-					setUser(response.data.user_infos[0])
+					setRecipientInfo(response.data.user_infos[0])
 					const messages = response.data.messages ? response.data.messages : []
-					setMessages(messages)
-					setSelectedUserImage(response.data.user_infos[0].profile_picture)
+					setChatMessages(messages)
+					setrecipientProfileImage(response.data.user_infos[0].profile_picture)
 				}
 			} catch (error) {
 				console.error('Error fetching user infos:', error)
@@ -129,32 +129,32 @@ const Chat = () => {
 		}
 
 		if (conversationKey) {
-			getUserInfos()
+			fetchConversationDetails()
 		}
-	}, [conversationKey])
+	}, [conversationKey, getAuthHeaders])
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') {
-			sendMessage()
+			sendChatMessage()
 		}
 	}
 
-	const sendMessage = () => {
-		let ws = chatSocket.current
+	const sendChatMessage = () => {
+		let ws = webSocketRef.current
 
 		if (ws && ws.readyState === WebSocket.OPEN) {
-			const value = MessageInputRef.current.value.trim()
+			const value = currentMessage.current.value.trim()
 
 			if (value !== '') {
 				ws.send(
 					JSON.stringify({
-						sender: myId,
+						sender: currentUserId,
 						message: value,
 						message_type: 'message',
 						conversation_key: conversationKey,
 					})
 				)
-				MessageInputRef.current.value = ''
+				currentMessage.current.value = ''
 				// handleSubmit()
 			}
 		}
@@ -167,59 +167,78 @@ const Chat = () => {
 					className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
 				>
+					{/* Chat History Component */}
 					<ChatHistory
-						myId={myId}
-						setMyId={setMyId}
-						messages={messages}
+						currentUserId={currentUserId}
+						setCurrentUserId={setCurrentUserId}
+						chatMessages={chatMessages}
 						conversationKey={conversationKey}
 						setConversationKey={setConversationKey}
 					/>
+
+					{/* Separator */}
 					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
+					{/* Chat Area */}
 					<div
 						className='tb:flex-1 flex flex-col items-center max-tb:border border-primary
 									lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
 					>
-						{user ? (
+						{recipientInfo ? (
 							<>
+								{/* Chat Header */}
 								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
 									<img
-										src={`${selectedUserImage}`}
+										src={`${recipientProfileImage}`}
 										className='chat-history-image object-cover rounded-full ring-1 ring-primary select-none'
 										alt='user image'
 									/>
 									<div>
 										<p className='font-heavy friend-name text-primary'>
-											{`${user.first_name} ${user.last_name}`}
+											{`${recipientInfo.first_name} ${recipientInfo.last_name}`}
 										</p>
 										<div className='flex items-center gap-0.5'>
 											<div
-												className={`w-1.5 h-1.5 rounded-full
-												${user.status === 'online' ? 'bg-online' : user.status === 'offline' ? 'bg-offline' : 'bg-defeat'}`}
+												className={`w-1.5 h-1.5 rounded-full ${
+													recipientInfo.status === 'online'
+														? 'bg-online'
+														: recipientInfo.status === 'offline'
+															? 'bg-offline'
+															: 'bg-defeat'
+												}`}
 											></div>
 											<p
-												className={`last-message font-heavy
-												${user.status === 'online' ? 'text-online' : user.status === 'offline' ? 'text-offline' : 'text-defeat'}`}
+												className={`last-message font-heavy ${
+													recipientInfo.status === 'online'
+														? 'text-online'
+														: recipientInfo.status === 'offline'
+															? 'text-offline'
+															: 'text-defeat'
+												}`}
 											>
-												{user.status === 'online'
+												{recipientInfo.status === 'online'
 													? 'Online'
-													: user.status === 'offline'
+													: recipientInfo.status === 'offline'
 														? 'Offline'
 														: 'In-Game'}
 											</p>
 										</div>
 									</div>
 								</div>
+
+								{/* Chat Messages */}
 								<Messages
-									myId={myId}
-									messages={messages}
-									selectedUserImage={selectedUserImage}
+									currentUserId={currentUserId}
+									chatMessages={chatMessages}
+									recipientProfileImage={recipientProfileImage}
 								/>
+
+								{/* Chat Footer */}
 								<Footer
-									sendMessage={sendMessage}
+									sendChatMessage={sendChatMessage}
+									currentMessage={currentMessage}
 									handleKeyPress={handleKeyPress}
 									conversationKey={conversationKey}
-									MessageInputRef={MessageInputRef}
 								/>
 							</>
 						) : (
@@ -227,7 +246,9 @@ const Chat = () => {
 						)}
 					</div>
 				</div>
-				{conversationKey && <UserInfos user={user} />}
+
+				{/* User Information Sidebar */}
+				{conversationKey && <UserInfos recipientInfo={recipientInfo} />}
 			</div>
 		</section>
 	)

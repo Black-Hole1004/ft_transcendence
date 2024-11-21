@@ -116,25 +116,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # print('other_user: ', self.other_user)
 
         if message_type == 'join':
+            print('===============================')
             if self.participants:
                 self.room_group_name = f"chat_{self.conversation_key}"
 
                 await self.channel_layer.group_add(self.room_group_name, self.channel_name)
                 
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
+                print('===> self.other_user_channel', self.other_user_channel)
+                
                 if self.other_user_channel:
+                    print('join')
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
                 # else:
                 #     pass
 
         elif message_type == 'message':
+            print('++++++++++++++++++++++++++++')
             if self.room_group_name:
                 sender = data['sender']
                 message = data['message']
                 conversation_key = data['conversation_key']
                 self.old_user_channel = self.other_user_channel
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
+                print('===> self.old_user_channel', self.old_user_channel)
                 if self.old_user_channel is not self.other_user_channel:
+                    print('message') 
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
 
                 print('self.user.id', self.user.id)

@@ -2,7 +2,7 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { useEffect, useState, useRef } from 'react'
 
-const Footer = ({ conversationKey, MessageInputRef, handleKeyPress, sendMessage }) => {
+const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationKey }) => {
 	const [width, setWidth] = useState(0)
 	const [showEmoji, setShowEmoji] = useState(false)
 	const emojiPickerRef = useRef(null)
@@ -38,11 +38,11 @@ const Footer = ({ conversationKey, MessageInputRef, handleKeyPress, sendMessage 
 			arr.push('0x' + element)
 		})
 		let emoji = String.fromCodePoint(...arr)
-		MessageInputRef.current.value += emoji
+		currentMessage.current.value += emoji
 	}
 
 	useEffect(() => {
-		MessageInputRef.current.focus()
+		currentMessage.current.focus()
 	}, [conversationKey])
 
 	const toggleEmojiPicker = () => {
@@ -68,7 +68,7 @@ const Footer = ({ conversationKey, MessageInputRef, handleKeyPress, sendMessage 
 						maxLength={1000}
 						name='chat-input'
 						autoComplete='off'
-						ref={MessageInputRef}
+						ref={currentMessage}
 						onKeyDown={handleKeyPress}
 						placeholder='Type your message here...'
 						className='myDiv w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
@@ -97,7 +97,7 @@ const Footer = ({ conversationKey, MessageInputRef, handleKeyPress, sendMessage 
 							</div>
 						)}
 					</button>
-					<button type='submit' onClick={sendMessage}>
+					<button type='submit' onClick={sendChatMessage}>
 						<img
 							src='/assets/images/icons/send-icon.svg'
 							className='select-none hover:brightness-125 hover:scale-110 hover:rotate-45 duration-200 '

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import Message from './Message.jsx'
 
-const Messages = ({ myId, messages, selectedUserImage }) => {
+const Messages = ({ currentUserId, chatMessages, recipientProfileImage }) => {
 	const messagesEndRef = useRef(null)
 
 	const getDate = (timestamp) => {
@@ -29,8 +29,8 @@ const Messages = ({ myId, messages, selectedUserImage }) => {
 		return isToday ? 'Today' : isYesterday ? 'Yesterday' : formattedDate
 	}
 
-	function groupMessagesByDate(messages) {
-		return messages.reduce((grouped, message) => {
+	function groupMessagesByDate(chatMessages) {
+		return chatMessages.reduce((grouped, message) => {
 			const date = formatDate(message.sent_datetime)
 			if (!grouped[date]) {
 				grouped[date] = []
@@ -42,16 +42,16 @@ const Messages = ({ myId, messages, selectedUserImage }) => {
 
 	useEffect(() => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-	}, [messages])
+	}, [chatMessages])
 
-	const groupedMessages = groupMessagesByDate(messages)
+	const groupedMessages = groupMessagesByDate(chatMessages)
 
 	return (
 		<div
 			id='container'
 			className='flex-1 w-[98%] ml-2 mr-4 py-0.5 overflow-y-auto flex flex-col gap-1.5'
 		>
-			{Object.entries(groupedMessages).map(([date, messages]) => (
+			{Object.entries(groupedMessages).map(([date, chatMessages]) => (
 				<div key={date} className='flex flex-col gap-3'>
 					<div className='flex items-center gap-1 mr-2'>
 						<div className='h-px flex-1 bg-border brightness-50'></div>
@@ -59,12 +59,12 @@ const Messages = ({ myId, messages, selectedUserImage }) => {
 						<div className='h-px flex-1 bg-border brightness-50'></div>
 					</div>
 					<div>
-						{messages.map((message, index) => (
+						{chatMessages.map((message, index) => (
 							<div key={index}>
 								<Message
 									message={message}
-									myId={myId}
-									selectedUserImage={selectedUserImage}
+									currentUserId={currentUserId}
+									recipientProfileImage={recipientProfileImage}
 								/>
 							</div>
 						))}

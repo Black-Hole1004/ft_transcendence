@@ -6,9 +6,9 @@ import useAuth from '../../context/AuthContext'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({
-	myId,
-	setMyId,
-	messages,
+	currentUserId,
+	setCurrentUserId,
+	chatMessages,
 	conversationKey,
 	setConversationKey,
 }) {
@@ -40,7 +40,7 @@ function ChatHistory({
 					},
 				})
 				if (response.data) {
-					setMyId(response.data.id)
+					setCurrentUserId(response.data.id)
 					setConversations(response.data.conversations)
 				}
 			} catch (error) {
@@ -49,7 +49,7 @@ function ChatHistory({
 		}
 
 		getConversations()
-	}, [messages])
+	}, [chatMessages])
 
 	useEffect(() => {
 		const getUsers = async () => {
@@ -108,7 +108,7 @@ function ChatHistory({
 			>
 				{(searchResult ? searchResult : conversations).map((conversation) => (
 					<User
-						myId={myId}
+						currentUserId={currentUserId}
 						key={conversation.id}
 						search={!!searchResult}
 						conversation={conversation}
