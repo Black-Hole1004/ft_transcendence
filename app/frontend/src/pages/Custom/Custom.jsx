@@ -56,12 +56,12 @@ const Custom = () => {
 					</div>
 
 					{/* Background selection grid */}
-					<div className='grid lg:gap-8 tb:gap-6 gap-4 lg:grid-cols-4 lg:grid-rows-2 lp:grid-cols-3 lp:grid-rows-3 grid-cols-2 grid-rows-4'>
+					<div className='grid xl:gap-8 gap-4 lg:grid-cols-4 lg:grid-rows-2 lp:grid-cols-3 lp:grid-rows-3 grid-cols-2 grid-rows-4'>
 						{[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
 							<button
 								key={id}
 								onClick={() => handleClick(id)}
-								className={`tables border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500`}
+								className={`border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500 aspect-video`}
 								style={{
 									background: `url('/assets/images/tables/table${id}.png')`,
 									backgroundSize: 'cover',
@@ -83,21 +83,67 @@ const Custom = () => {
 			)}
 
 			{step === 2 && (
-				<div className='border border-primary bg-backdrop-80 p-6 rounded-lg shadow-lg self-center mt-36 tb:w-custom w-[92%]'>
-					<h2 className='text-2xl font-dreamscape-sans my-4'>Choose Game Mode</h2>
-					<div className='flex max-mtb:flex-col font-dreamscape justify-between gap-2'>
-						<button
-							onClick={() => handleGameModeSelect('local')}
-							className='text-secondary bg-primary rounded flex-1 h-60'
-						>
-							Local Game
-						</button>
-						<button
+				<div className='rounded-lg self-center mt-36 tb:w-custom ml:w-[92%] w-[96%]'>
+					<h2 className='text-2xl font-dreamscape-sans mt-6 mb-10 custom-title'>
+						Choose Game Mode
+					</h2>
+					<div className='flex max-mtb:flex-col justify-between gap-4 mb-12'>
+						<div
 							onClick={() => handleGameModeSelect('remote')}
-							className='text-secondary bg-primary rounded flex-1 h-60'
+							className='relative mode-button text-primary border border-primary rounded flex-1
+								overflow-hidden hover:text-transparent aspect-video bg-primary bg-opacity-90 transition ease-in duration-700'
 						>
-							Remote Game
-						</button>
+							<img
+								src='assets/images/new.png'
+								className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 brightness-[20%] select-none'
+								alt=''
+							/>
+							<p
+								className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+								pt-1 mode-title font-dreamscape'
+							>
+								Online Battle
+							</p>
+							<div className='overlay'>
+								<p className='mode-title  font-dreamscape-sans'>Online Battle</p>
+								<p className='mb-2'>Play online with others.</p>
+								<button
+									className='
+										border border-primary transition duration-300 select-none text-primary px-2 py-1
+										rounded-md hover:bg-primary hover:text-secondary'
+								>
+									Ready, Go!
+								</button>
+							</div>
+						</div>
+						<div
+							onClick={() => handleGameModeSelect('remote')}
+							className='relative mode-button text-primary border border-primary rounded flex-1
+								overflow-hidden hover:text-transparent aspect-video bg-primary bg-opacity-90 transition ease-in duration-700'
+						>
+							<img
+								src='assets/images/new.png'
+								className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 brightness-[20%] select-none'
+								alt=''
+							/>
+							<p
+								className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+								pt-1 mode-title  font-dreamscape'
+							>
+								Local Battle
+							</p>
+							<div className='overlay'>
+								<p className='mode-title  font-dreamscape-sans'>Local Battle</p>
+								<p className='mb-2'>Play on the same device.</p>
+								<button
+									className='
+										border border-primary transition duration-300 select-none text-primary px-2 py-1
+										rounded-md hover:bg-primary hover:text-secondary'
+								>
+									Start Battle
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			)}
@@ -106,3 +152,36 @@ const Custom = () => {
 }
 
 export default Custom
+
+// <div className='flex max-mtb:flex-col font-dreamscape justify-between gap-4 mb-12'>
+// 	<button
+// 		onClick={() => handleGameModeSelect('remote')}
+// 		className='relative text-primary border border-primary rounded flex-1
+// 			overflow-hidden hover:text-transparent ease-out duration-500 aspect-video'
+// 	>
+// 		<img
+// 			src='assets/images/remote.png'
+// 			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 brightness-[20%]
+// 				hover:brightness-90 ease-out duration-500'
+// 			alt=''
+// 		/>
+// 		<p className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ease-out duration-500 mode-title'>
+// 			Remote Game
+// 		</p>
+// 	</button>
+// 	<button
+// 		onClick={() => handleGameModeSelect('local')}
+// 		className='relative text-primary border border-primary rounded flex-1
+// 			overflow-hidden hover:text-transparent ease-out duration-500 aspect-video'
+// 	>
+// 		<img
+// 			src='assets/images/local.png'
+// 			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 brightness-[20%]
+// 				hover:brightness-90 ease-out duration-500'
+// 			alt=''
+// 		/>
+// 		<p className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ease-out duration-500 mode-title'>
+// 			Local Game
+// 		</p>
+// 	</button>
+// </div>
