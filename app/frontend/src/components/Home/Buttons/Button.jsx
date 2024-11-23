@@ -1,4 +1,5 @@
 import React from 'react'
+import '../../../pages/Custom/Custom.css'
 
 function Button({id, disabled, onClick, className, children }) {
 	return (

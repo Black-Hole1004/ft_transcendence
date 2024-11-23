@@ -25,37 +25,18 @@
 }
 
 .mode-title {
-	font-size: clamp(0.875rem, 0.265vw + 0.825rem, 1.25rem);
+	font-size: clamp(0.75rem, 0.354vw + 0.684rem, 1.25rem);
 }
 
-.overlay {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 0;
-  background: linear-gradient(transparent, #0b0b0b 60%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 0 40px;
-  text-align: center;
-  transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
-  opacity: 0;
+.mode-description {
+	font-size: clamp(0.625rem, 0.354vw + 0.559rem, 1.125rem);
 }
 
-.mode-button:hover .overlay {
-  height: 70%;
-  opacity: 1;
+.mode-card:hover .overlay {
+	height: 100%;
+	opacity: 1;
 }
 
-.mode-button img {
-  display: block;
-  transition: transform 0.5s;
-}
-
-.overlay p {
-  color: white;
-  margin: 5px 0;
+.start-battle {
+	padding: clamp(0.25rem, 0.265vw + 0.2rem, 0.625rem) clamp(0.313rem, 0.442vw + 0.23rem, 0.938rem);
 }
