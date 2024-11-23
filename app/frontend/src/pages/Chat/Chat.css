@@ -75,16 +75,17 @@
 	}
 }
 
-.chat-header {
-	padding-left: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem);
+.chat-header, .history-input {
+	box-shadow: 20px 40px 100px 0 rgba(21,16,13,1);
 }
 
-.chat-header .friend-name {
+.friend-name {
 	font-size: clamp(0.813rem, 0.531vw + 0.713rem, 1.563rem);
 }
 
 .chat-header img {
 	width: clamp(1.875rem, 1.991vw + 1.502rem, 4.688rem);
+	margin-left: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem);
 }
 
 .chat-input-container {
@@ -117,4 +118,17 @@
 
 .message-time {
 	font-size: clamp(0.438rem, 0.177vw + 0.404rem, 0.688rem);
+}
+
+#container > :first-child {
+    margin-top: auto !important;
+}
+
+
+.shadow {
+	background: linear-gradient(rgba(21,16,13,1), transparent);;
+}
+
+.search-badge {
+	width: clamp(1.875rem, 0.558vw + 1.607rem, 2.5rem);
 }

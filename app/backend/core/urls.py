@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.urls import path, include
 from UserManagement import views
 
@@ -22,11 +23,16 @@ urlpatterns = [
     path('api/login/', views.login, name='login'),
     path('api/register/', views.register, name='register'),
     path('api/display_text/', views.display_text, name='display-text'),
-    path('api/users/', UserProfileView.as_view(), name='user-profile'),
+    path('api/user/', UserProfileView.as_view(), name='user-profile'),
     path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
     path('social-auth/', include('social_django.urls', namespace='social')),
     # added by tabi3a : check user existence
     path('api/check-user/', views.check_user_exists, name='check-user'),
-    
     path('api/game/', include('game.urls')),
+    
+    path('api/check_password/', views.check_user_password, name='check_user_password'),
+    path('api/time-spent/', views.get_user_time_spent, name='time_spent'),
+    path('api/logout/', views.logout, name='logout'),
+    path('api/chat/', include('Chat.urls')),
+    path('chat/', include('Chat.urls'))
 ]

@@ -1,7 +1,11 @@
-import { Suspense, lazy } from 'react'
-import Layout from './components/Layout/Layout'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext';
+import OauthHandler from './utils/OauthHandler';
+import ComponentPath from './utils/ComponentPath';
+import { AlertProvider } from './components/AlertContext';
 
+<<<<<<< HEAD
 const Home = lazy(() => import('./pages/Home/Home'))
 const Chat = lazy(() => import('./pages/Chat/Chat'))
 const Profile = lazy(() => import('./pages/Profile/Profile'))
@@ -38,6 +42,22 @@ function App() {
       </Suspense>
     </Router>
   )
+=======
+
+function App() {
+	return (
+		<Router>
+			<AlertProvider>
+				<AuthProvider>
+					<React.Suspense fallback={<div>Loading...</div>}>
+						<OauthHandler />
+						<ComponentPath />
+					</React.Suspense>
+				</AuthProvider>
+			</AlertProvider>
+		</Router>
+	);
+>>>>>>> origin/master
 }
 
-export default App
+export default App;

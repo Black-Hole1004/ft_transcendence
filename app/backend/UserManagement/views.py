@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserCreationForm
@@ -12,6 +13,7 @@ import json
 import uuid
 from rest_framework import status
 from .serializers import UserSerializer
+from django.contrib.auth import logout as django_logout
 
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import parser_classes
@@ -19,23 +21,39 @@ from rest_framework.decorators import parser_classes
 from django.http import HttpResponseRedirect
 
 from django.core.files.uploadedfile import UploadedFile
-
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 from .models import User
-
+from .models import UserSession
 import os
 import jwt
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 # from .forms import UserProfileForm
 #pass=Ahaloui@@13+
 #gmail=aymene@gmail.com
 
 
+from .models import UserSession
+from django.utils import timezone
 
+from django.contrib.auth import get_user_model
+
+from .profile_utils import (
+    remove_profile_picture,
+    update_profile_picture,
+    handle_password_change,
+    generate_new_tokens
+)
+
+
+User = get_user_model()
 #todo: (DELETE THIS LATER) simple view to test permissions control and jwt decoding
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -80,6 +98,7 @@ def decode_jwt_info(token):
 
 @csrf_exempt  # Disable CSRF for this view for testing purposes
 def login(request):
+    print(f" -------- Request method: {request.method} ---------")
     if request.method == 'POST':
         try:
             # Parse JSON data from request body
@@ -125,6 +144,8 @@ def login(request):
         # return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def generate_random_username():
+
+
     prefix = 'moha_'
     suffix = str(uuid.uuid4())[:8]
     return prefix + suffix
@@ -146,6 +167,7 @@ def register(request):
         form = UserCreationForm(data)
         if form.is_valid():
             user = form.save(commit=False)
+            user.username = generate_random_username()
             user.save()
             return JsonResponse({'message': 'User created successfully'}, status=201)
         else:
@@ -153,6 +175,20 @@ def register(request):
             return JsonResponse(form.errors, status=400)
     else:
         return render(request, 'register.html')
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    user = request.user
+    session = None
+    if user.is_authenticated:
+        session = UserSession.objects.filter(user=user, logout_time__isnull=True).first()
+    if session:
+        session.logout_time = timezone.now()
+        session.save()
+    django_logout(request)
+    return Response({'message': 'User logged out successfully'})
+
 
 def generate_random_username():
     prefix = 'moha_'
@@ -169,6 +205,7 @@ def getRoutes(request):
         '/api/token/verify',
         '/api/login',
         '/api/register',
+        'api/logout'
     ]
 
     return Response(routes)
@@ -178,16 +215,25 @@ def display_text(request):
     text = request.GET.get('text', '')
     return HttpResponse(f'Text: {text}')
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def check_user_password(request):
+    print(f"Request data: {request.data}")
+    user = request.user  # Get the authenticated user
+    password = request.data.get('password')
+    if user.check_password(password):
+        return Response({'message': 'Password is correct.'})
+    else:
+        return Response({'error': 'Incorrect password.'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @permission_classes([IsAuthenticated])
 class UserProfileView(APIView):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
-
     def get(self, request):
         try:
             payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
-            print(f"Payload: {payload}")
             user_id = payload['user_id']
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -197,44 +243,70 @@ class UserProfileView(APIView):
 
     def put(self, request):
         try:
-            payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
-            print(f"Payload: {payload}")
-            user_id = payload['user_id']
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        # Create a mutable copy of the data
-        mutable_data = request.data.copy()
-        print(f"Mutable data: {mutable_data}")
-        
-        # Handle profile picture update or removal
-        if 'profile_picture' in mutable_data:
-            if mutable_data['profile_picture'] in [None, '', 'null']:
-                # Remove the current profile picture if it's not the default
-                if user.profile_picture and user.profile_picture.name != 'profile_pictures/avatar.jpg':
-                    if os.path.isfile(user.profile_picture.path):
-                        os.remove(user.profile_picture.path)
-                user.profile_picture = 'profile_pictures/avatar.jpg'
-                user.save(update_fields=['profile_picture'])
-                # Remove profile_picture from mutable_data
-                mutable_data.pop('profile_picture')
-            elif isinstance(mutable_data['profile_picture'], UploadedFile):
-                # New file uploaded, let the serializer handle it
-                pass
-            else:
-                # Invalid data for profile_picture, remove it to avoid serializer errors
-                mutable_data.pop('profile_picture')
-        
-        serializer = UserSerializer(user, data=mutable_data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            user = request.user
+            user_data = request.data.copy()
+            profile_picture = request.FILES.get('profile_picture', None)
+
+            # Handle profile picture removal if requested
+            if request.data.get('remove_profile_picture') == 'true':
+                remove_profile_picture(user)
+            
+            # Check if any password fields are provided and handle validation
+            validation_response = handle_password_change(user, user_data)
+            if validation_response is not True:
+                return Response(validation_response.data, status=status.HTTP_400_BAD_REQUEST)
+            
+            for field in ['password', 'new_password', 'confirm_password']:
+                if field in user_data:
+                    user_data.pop(field, None)
+            
+            # Handle profile picture update or removal
+            if 'profile_picture' in user_data:
+                if profile_picture:
+                    update_profile_picture(user, profile_picture)
+                elif user_data['profile_picture'] in [None, '', 'null']:
+                    # Remove the current profile picture if it's not the default
+                    if user.profile_picture and user.profile_picture.name != 'profile_pictures/avatar.jpg':
+                        if os.path.isfile(user.profile_picture.path):
+                            os.remove(user.profile_picture.path)
+                    user.profile_picture = 'profile_pictures/avatar.jpg'
+                    user.save(update_fields=['profile_picture'])
+                    user_data.pop('profile_picture')
+            
+            # Serialize the data and update the user instance
+            serializer = UserSerializer(user, data=user_data, partial=True)
+            if not serializer.is_valid():
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            
+            updated_user = serializer.save()
+
+            # If password was changed, generate new tokens
+            new_tokens = None
+            if 'new_password' in user_data:
+                new_tokens = self.reauthenticate_and_generate_tokens(updated_user, user_data['new_password'])
+            
+            response_data = serializer.data
+            response_data['message'] = (
+                'Profile updated and password changed successfully' 
+                if new_tokens else 'Profile updated successfully'
+            )
+            if new_tokens:
+                response_data['access_token'] = new_tokens
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    def reauthenticate_and_generate_tokens(self, user, new_password):
+        """Reauthenticate the user using the new password and generate new JWT tokens."""
+        user = authenticate(username=user.username, password=new_password)
+        if not user:
+            raise ValidationError('Authentication failed. Invalid credentials.')
+
+        return generate_new_tokens(user)
 
 
-# added by tabi3a
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def check_user_exists(request):
@@ -253,3 +325,12 @@ def check_user_exists(request):
         'exists': False,
         'message': 'No user found with this email'
     })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_time_spent(request):
+    user = request.user
+    sessions = UserSession.objects.time_spent_per_day(user)
+
+    return JsonResponse({'data': list(sessions)})

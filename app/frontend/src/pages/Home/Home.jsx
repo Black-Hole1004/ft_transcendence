@@ -4,9 +4,16 @@ import './Home.css'
 import Card from '../../components/Home/Card/Card'
 import Header from '../../components/Home/Header/Header'
 import Button from '../../components/Home/Buttons/Button'
-import Alert from '../../components/Alert'
+import useAuth from '../../context/AuthContext'
+import Layout from '../../components/Layout/Layout'
+import { useEffect } from 'react'
+import {AlertWrapper} from '../../components/Layout/Layout'
+
+
+
 
 const Home = () => {
+
 	const dialogRef = useRef(null)
 	const [isSigningIn, setIsSigningIn] = useState(false)
 
@@ -26,8 +33,11 @@ const Home = () => {
 		openDialog()
 	}
 
+
+
 	return (
 		<>
+			<AlertWrapper cardRef={dialogRef} />
 			<Header handleClick={handleClick} />
 			<section className='text-primary responsive-text'>
 				<div className='flex lp:justify-start justify-center'>

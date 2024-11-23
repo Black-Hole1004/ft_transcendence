@@ -7,20 +7,29 @@ For more information on this file, see
 https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 """
 
-# core/asgi.py
 import os
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
-from game import routing  # Corrected to import from 'game' app
+from channels.security.websocket import AllowedHostsOriginValidator
+
+# Import WebSocket routing from different apps
+from game import routing as game_routing
+from Chat.routing import websocket_urlpatterns as chat_routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),  # Handle HTTP requests
-    "websocket": AuthMiddlewareStack(
-        URLRouter(
-            routing.websocket_urlpatterns  # Use WebSocket URLs from 'game'
-        )
-    ),
-})
+# Merged WebSocket URL patterns from 'game' and 'Chat' apps
+websocket_urlpatterns = game_routing.websocket_urlpatterns + chat_routing
+
+# Application setup
+application = ProtocolTypeRouter(
+    {
+        "http": get_asgi_application(),
+        "websocket": AllowedHostsOriginValidator(
+            AuthMiddlewareStack(
+                URLRouter(websocket_urlpatterns)
+            )
+        ),
+    }
+)

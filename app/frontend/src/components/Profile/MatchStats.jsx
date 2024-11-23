@@ -6,13 +6,13 @@ function MatchStats() {
 		>
 			<div className='flex items-center gap-2'>
 				<img
-					src='./assets/images/moudrib.jpeg'
+					src='/assets/images/moudrib.jpeg'
 					className='border border-online match-winner'
 					alt='player image'
 				/>
 				<div className='points flex'>
 					<img
-						src='./assets/images/Achievements/celestial-master.png'
+						src='/assets/images/Achievements/celestial-master.png'
 						alt='achievement badge'
 					/>
 					<p className='text-online self-end'>+45</p>
@@ -26,12 +26,12 @@ function MatchStats() {
 				<div className='points flex'>
 					<p className='text-defeat self-end'>-33</p>
 					<img
-						src='./assets/images/Achievements/celestial-master.png'
+						src='/assets/images/Achievements/celestial-master.png'
 						alt='achievement badge'
 					/>
 				</div>
 				<img
-					src='./assets/images/moudrib.jpeg'
+					src='/assets/images/moudrib.jpeg'
 					className='border border-defeat match-loser'
 					alt='player image'
 				/>

@@ -1,4 +1,3 @@
-from UserManagement.views import login
 from UserManagement.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from social_core.backends.oauth import BaseOAuth2
@@ -6,6 +5,9 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 import requests
+from django.utils.crypto import get_random_string
+from django.core.files.base import ContentFile
+from django.contrib.auth import login
 
 class Intra42OAuth2(BaseOAuth2):
     """Intra42 OAuth2 authentication backend"""
@@ -48,6 +50,8 @@ class Intra42OAuth2(BaseOAuth2):
             'first_name': response.get('first_name'),
             'last_name': response.get('last_name'),
             'profile_image_url': response.get('image').get('link'),
+            # add by me ahaloui
+            # 'mobile_number': response.get('phone', ''),
         }
 
     def user_data(self, access_token, *args, **kwargs):
@@ -90,6 +94,11 @@ class Intra42OAuth2(BaseOAuth2):
         Complete the OAuth2 authorization process by exchanging the authorization
         code for an access token, then fetching user data.
         """
+
+        request = kwargs.get('request')
+        if not request:
+            raise Exception("Request object not found.")
+
         # Get the authorization code from the request
         code = self.data.get('code')
         if not code:
@@ -114,11 +123,34 @@ class Intra42OAuth2(BaseOAuth2):
             'email': user_details['email'],
             'username': user_details['username'],
             'first_name': user_details['first_name'],
-            'password': User.objects.make_random_password()  # Set a random password
+            # 'password': User.objects.make_random_password() i get an error here so i used the below line
+            # add by me ahaloui
+            # 'password': get_random_string(length=12), # Set a random password,
+            # 'mobile_number': user_details.get('mobile_number', ''),
             }
         )
+        print('---------- user:============= 1' + str(user))
 
         if user:
+            # add by me ahaloui
+            print('---------- user:============= 2 ' + str(user))
+            print('user: ' + str(user))
+            image_response = None
+            profile_image_url = user_details.get('profile_image_url')
+            if profile_image_url and (created or user.profile_picture.name == 'profile_pictures/avatar.jpg'):
+                image_response = requests.get(profile_image_url)
+            if image_response and image_response.status_code == 200:
+                user.profile_picture.save(f"{user.username}_profile.jpg", ContentFile(image_response.content), save=True)
+            
+            # ----------------- had save li ltaht hta narja3 hna -----------------
+            # user.save()
+
+            # add by me ahaloui
+            user.is_logged_with_oauth = True
+            user.save()
+            print('user.is_logged_with_oauth: ' + str(user.is_logged_with_oauth))
+            # auth_login(request, user, backend='Intra42OAuth2')
+            login(request, user, backend='Intra42OAuth2')
 
             # Generate JWT tokens
             refresh = RefreshToken.for_user(user)
@@ -127,7 +159,6 @@ class Intra42OAuth2(BaseOAuth2):
 
             # Redirect to front-end URL and include tokens in the query parameters
             redirect_url = f"http://localhost:5173/dashboard?access_token={access_token}&refresh_token={refresh_token}"
-
             return HttpResponseRedirect(redirect_url)
 
         else:
@@ -138,4 +169,3 @@ class Intra42OAuth2(BaseOAuth2):
     def get_redirect_uri(self, state=None):
         """Returns the redirect URI to be passed in the token exchange request"""
         return self.setting('REDIRECT_URI')  # Ensure this is set in your settings
-

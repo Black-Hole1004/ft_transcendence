@@ -1,16 +1,24 @@
+import React, { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import { Link } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
 import MatchStats from '../../components/Profile/MatchStats'
 import ProfileBio from '../../components/Profile/ProfileBio'
 import ProgressBar from '../../components/Profile/ProgressBar'
 import AboutSection from '../../components/Profile/AboutSection'
 import UserStatsGraph from '../../components/Profile/UserStatsGraph'
+import useAuth from '../../context/AuthContext'
+
+
+const USER_API = import.meta.env.VITE_USER_API;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const Profile = () => {
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
 
+
+
+	const { authTokens, logout, getAuthHeaders } = useAuth()
 	useEffect(() => {
 		const calculateWidth = () => {
 			if (containerRef.current) {
@@ -18,23 +26,90 @@ const Profile = () => {
 				setWidth(containerWidth)
 			}
 		}
-
 		calculateWidth()
-
 		window.addEventListener('resize', calculateWidth)
-
 		return () => {
 			window.removeEventListener('resize', calculateWidth)
 		}
 	}, [])
 
+	const [first_name, setFirst_name] = useState('')
+	const [last_name, setLast_name] = useState('')
+	const [email, setEmail] = useState('')
+	const [mobile_number, setMobile_number] = useState('')
+	const [username, setUsername] = useState('')
+	const [display_name, setDisplay_name] = useState('')
+	const [bio, setBio] = useState('')
+	const [profile_picture, setProfile_picture] = useState('')
+	const [preview, setPreview] = useState(null)
+
+	const [user, setUser] = useState({
+		first_name: '',
+		last_name: '',
+		email: '',
+		mobile_number: '',
+		username: '',
+		display_name: '',
+		bio: '',
+		profile_picture: ''
+	})
+
+
+	const fetchUser = async () => {
+		try {
+			const response = await fetch(USER_API, {
+				method: 'GET',
+				headers: getAuthHeaders()
+			})
+			const data = await response.json();
+			if (response.ok) {
+				return (data)
+			} else {
+				console.log('Failed to fetch user data');
+				// logout();
+				return (null)
+			}
+		}
+		catch (error) {
+			console.log(error);
+			// logout();
+			return (null);
+		}
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const fetchedData = await fetchUser();
+			if (fetchedData)
+				setUser(fetchedData);
+		};
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		if (!user) 
+			return;
+		setFirst_name(user.first_name);
+		setLast_name(user.last_name);
+		setEmail(user.email);
+		setMobile_number(user.mobile_number);
+		setUsername(user.username);
+		setDisplay_name(user.display_name);
+		setBio(user.bio);
+		setProfile_picture(user.profile_picture);
+	} , [user]);
+
+
+
+
+
+	/************************************************************************ */
 	const wins = 102
 	const totalGames = 123
-
 	const [winRate, setWinRate] = useState(null)
 
 	useEffect(() => {
-		setWinRate(((wins / totalGames) * 100).toFixed(2))
+		setWinRate((wins / totalGames * 100).toFixed(2))
 	}, [totalGames])
 
 	const xp = 5445
@@ -45,121 +120,127 @@ const Profile = () => {
 	useEffect(() => {
 		setAchievementProgress((progress * 100) / 2000)
 	}, [achievementProgress])
-
 	const [level, setLevel] = useState(null)
-
 	useEffect(() => {
-		setLevel(xp > 10000 ? 100 : ((xp * 100) / 10000).toFixed(2))
+		setLevel(xp > 10000 ? 100 : (xp * 100 / 10000).toFixed(2))
 	}, [level])
 
-	// const [filled, setFilled] = useState(0);
-
-	// useEffect(() => {
-	// 	if (filled < achievementProgress)
-	// 		setTimeout(() => setFilled(prev => prev + 1), 20)
-	// }, [filled, achievementProgress]);
+	const stats = [
+		{
+			winner: 'mouad55',
+			loser: 'arabiai',
+			winnerScore: 7,
+			loserScore: 2,
+		}
+	]
+	/************************************************************************ */
 
 	return (
-		<section ref={containerRef} className='flex justify-center'>
-			<div
-				className='lp:mt-20 my-10 relative flex flex-col max-lp:gap-y-3
-					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'
-			>
-				<div
-					className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
+		<div
+			ref={containerRef}
+			className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'
+		>
+			<section className='flex justify-center'>
+				<div className='lp:mt-20 my-10 relative flex flex-col max-lp:gap-y-3
+					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'>
+					<div
+						className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
 						lp:self-start max-ms:w-full flex flex-col`}
-				>
-					<div className='font-dreamscape text-primary cards-title text-center relative'>
-						<Link to={'/dashboard'}>
-							<img
-								src='./assets/images/icons/arrow.svg'
-								className='arrow absolute left-[4%]'
-								alt='arrow icon'
-							/>
-						</Link>
-						<h1>profile</h1>
-					</div>
-					<ProfileBio />
-					<div
-						className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
+					>
+						<div className='font-dreamscape text-primary cards-title text-center relative'>
+							<Link to={'/dashboard'}>
+								<img
+									src='./assets/images/icons/arrow.svg'
+									className='arrow absolute left-[4%]'
+									alt='arrow icon'
+								/>
+							</Link>
+							<h1>profile</h1>
+						</div>
+						<ProfileBio src={`${BASE_URL}${profile_picture}`} bio={bio} />
+						<div
+							className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
-					>
-						<AboutSection />
-						<div className='flex flex-col items-center gap-2'>
-							<p className='titles max-mtb:self-start max-mtb:ml-3'>
-								Achievements Progression
-							</p>
-							<div className='progressbar justify-self-center'>
-								<ProgressBar value={level} />
+						>
+							<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} />
+							<div className='flex flex-col items-center gap-2'>
+								<p className='titles max-mtb:self-start max-mtb:ml-3'>
+									Achievements Progression
+								</p>
+								<div className='progressbar justify-self-center'>
+									<ProgressBar value={level}/>
+								</div>
 							</div>
 						</div>
+						<UserStatsGraph />
 					</div>
-					<UserStatsGraph />
-				</div>
 
-				<div
-					className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
-						bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}
-				>
-					<div className='font-dreamscape text-primary cards-title text-center'>
-						<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
-					</div>
-					<div className='flex-1 flex items-center justify-center'>
-						<div>
-							<img
-								src='./assets/images/Achievements/celestial-master.png'
-								className='hover:scale-[1.05] transition duration-500 select-none'
-								alt='achievement badge'
-							/>
-						</div>
-						<div className='flex flex-col font-dreamscape-sans'>
-							<p className='text-level text-center achievement-title'>
-								celestial master
-							</p>
-							<div className='flex justify-between text-primary progress'>
-								<p>{progressStart}xp</p>
-								<p>{progressStart + 2000}xp</p>
-							</div>
-							<div className='level lg:h-2 tb:h-1.5 h-1 rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
-								<div
-									className={`rounded-lg h-[100%] bg-level ease-out duration-500`}
-									style={{
-										width: `${xp > 10000 ? 100 : achievementProgress}%`,
-									}}
-								></div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div
-					className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
-						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
-				>
-					<div className='font-dreamscape text-primary cards-title text-center'>
-						<h1 className='lg:pl-40 lp:pl-28'>match history</h1>
-					</div>
 					<div
-						className='match-history flex-1 flex mtb:flex-row flex-col
-							justify-end max-lp:self-center mb-3'
+						className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
+						bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}
 					>
-						<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
-							<p className='titles lp:self-center self-start font-medium'>Win Rate</p>
-							<div className='win-rate justify-self-center'>
-								<ProgressBar value={winRate} />
+						<div className='font-dreamscape text-primary cards-title text-center'>
+							<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
+						</div>
+						<div className='flex-1 flex items-center justify-center'>
+							<div>
+								<img
+									src='./assets/images/Achievements/celestial-master.png'
+									className='hover:scale-[1.05] transition duration-500 select-none'
+									alt='achievement badge'
+								/>
+							</div>
+							<div className='flex flex-col '>
+								<p className='font-dreamscape-sans text-level text-center achievement-title'>
+									celestial master
+								</p>
+								<div className='flex justify-between text-primary font-medium progress'>
+									<p>{progressStart}xp</p>
+									<p>{progressStart + 2000}xp</p>
+								</div>
+								<div className='level xl:h-[11px] tb:h-2 h-[7px] rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
+									<div
+										className={`lp:mx-2 mx-1 rounded-lg h-[65%] bg-level`}
+										style={{
+											width: `${xp > 10000 ? 100 : achievementProgress}%`,
+										}}
+									></div>
+								</div>
 							</div>
 						</div>
-						<div className='flex flex-col gap-1'>
-							<MatchStats />
-							<MatchStats />
-							<MatchStats />
-							<MatchStats />
-							<MatchStats />
+					</div>
+
+					<div
+						className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
+						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
+					>
+						<div className='font-dreamscape text-primary cards-title text-center'>
+							<h1 className='lg:pl-40 lp:pl-28'>match history</h1>
+						</div>
+						<div
+							className='match-history flex-1 flex mtb:flex-row flex-col
+							justify-end max-lp:self-center mb-3'
+						>
+							<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
+								<p className='titles lp:self-center self-start font-medium'>
+									Win Rate
+								</p>
+								<div className='win-rate justify-self-center'>
+									<ProgressBar value={winRate}/>
+								</div>
+							</div>
+							<div className='flex flex-col gap-1'>
+								<MatchStats />
+								<MatchStats />
+								<MatchStats />
+								<MatchStats />
+								<MatchStats />
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</div>
 	)
 }
 

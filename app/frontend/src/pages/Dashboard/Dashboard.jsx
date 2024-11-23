@@ -1,30 +1,25 @@
 import './Dashboard.css'
-import { useState, useEffect } from 'react'
 import GameModes from '../../components/Dashboard/GameModes'
 import Achievements from '../../components/Dashboard/Achievements'
 import FriendsList from '../../components/Dashboard/FriendsList/FriendsList'
 import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
-
-// Extract query parameters from the URL
-const params = new URLSearchParams(window.location.search);
-const accessToken = params.get('access_token');
-const refreshToken = params.get('refresh_token');
-
-// if (!accessToken || !refreshToken) --> set the cookies
-if (accessToken && refreshToken) {
-	document.cookie = `access_token=${accessToken}; path=/; secure; SameSite=Lax;`;
-	document.cookie = `refresh_token=${refreshToken}; path=/; secure; SameSite=Lax;`;
-	window.location.href = '/dashboard';
-}
+import useAuth from '../../context/AuthContext'
+import { useEffect, useState } from 'react'
 
 const Dashboard = () => {
+	const { authTokens, logout, getAuthHeaders } = useAuth();
+
 	const xp = 6445
 	const [level, setLevel] = useState(null)
 
 	useEffect(() => {
 		setLevel((xp * 100) / 10000)
 	}, [level])
+
+
+	/************************************************************************ */
+	
 
 	return (
 		<section className='flex lg:flex-row flex-col'>

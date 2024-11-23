@@ -1,16 +1,63 @@
-version: '2.1'
+version: '3.8'
+
+
+networks:
+  ft_transcendence_network:
+    name: ft_transcendence_network
+
 
 services:
-  pingpong:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    # environment:
-      # to be changed
+  ft_transcendence_db:
+    container_name: ft_transcendence_db
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - 8000:8000
-
-# networks:
-#   inception:
-#     driver: bridge
-
+      - "5432:5432"
+    volumes:
+      - ./app/postgres_data:/var/lib/postgresql/data
+    networks:
+      - ft_transcendence_network
+    restart: always
+  
+  backend:
+    container_name: backend
+    build: app/backend/.
+    ports:
+      - "8000:8000"
+    env_file:
+      - app/backend/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=core.settings
+    depends_on:
+      - ft_transcendence_db
+      - redis
+    networks:
+      - ft_transcendence_network
+    volumes:
+      - ./app/backend:/app/backend
+    restart: always
+  
+  frontend:
+    container_name: frontend
+    build: app/frontend/.
+    ports:
+      - "5173:5173"
+    networks:
+      - ft_transcendence_network
+    volumes:
+      - ./app/frontend:/app/frontend
+      - /app/frontend/node_modules
+    restart: always
+  
+  redis:
+    container_name: redis
+    image: redis:7
+    ports:
+      - "6379:6379"
+    networks:
+      - ft_transcendence_network
+    restart: always

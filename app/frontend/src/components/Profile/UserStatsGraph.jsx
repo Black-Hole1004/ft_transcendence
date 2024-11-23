@@ -1,35 +1,94 @@
+import { useEffect } from 'react'
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts'
-
+import { useState } from 'react'
+import useAuth from '../../context/AuthContext'
+const API_TIME_SPENT = import.meta.env.VITE_API_TIME_SPENT
 function UserStatsGraph() {
-	const data = [
-		{ name: 'Mon', min: 80 },
-		{ name: 'Tue', min: 60 },
-		{ name: 'Wed', min: 150 },
-		{ name: 'Thu', min: 130 },
-		{ name: 'Fri', min: 240 },
-		{ name: 'Sat', min: 290 },
-		{ name: 'Sun', min: 240 },
-	]
+	const [userData, setUserData] = useState([])
+	const { getAuthHeaders } = useAuth()
 
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				console.log(API_TIME_SPENT)
+				const response = await fetch(API_TIME_SPENT, {
+					method: 'GET',
+					headers: getAuthHeaders(),
+				})
+				const result = await response.json()
+
+				if (response.ok && Array.isArray(result.data)) {
+					// Default data for all days of the week
+					const allDays = [
+						{ name: 'Mon', min: 0 },
+						{ name: 'Tue', min: 0 },
+						{ name: 'Wed', min: 0 },
+						{ name: 'Thu', min: 0 },
+						{ name: 'Fri', min: 0 },
+						{ name: 'Sat', min: 0 },
+						{ name: 'Sun', min: 0 },
+					]
+
+					// Process data from the API to map it to days of the week
+					const apiData = result.data.map((item) => {
+						const date = new Date(item.date)
+						const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }) // "Mon", "Tue", etc.
+						const minutes = item.total_time_spent_seconds ? Math.round(item.total_time_spent_seconds / 60) : 0
+
+						return {
+							name: dayName,
+							min: minutes
+						}
+					})
+
+					// Merge the default days with API data
+					const mergedData = allDays.map((day) => {
+						const dayData = apiData.find((d) => d.name === day.name)
+						return {
+							...day,
+							min: dayData ? dayData.min : day.min
+						}
+					})
+
+					setUserData(mergedData)
+				} else {
+					console.log('Failed to fetch user data')
+					// logout()
+				}
+			} catch (error) {
+				console.error('Error:', error)
+			}
+		}
+		fetchUserData()
+	}, [])
+
+	// console.log('userData ===> ', userData)
+
+
+
+	// const data = [
+	// 	{ name: 'Mon', min: 0 },
+	// 	{ name: 'Tue', min: 10 },
+	// 	{ name: 'Wed', min: 0 },
+	// 	{ name: 'Thu', min: 0 },
+	// 	{ name: 'Fri', min: 1},
+	// 	{ name: 'Sat', min: 0 },
+	// 	{ name: 'Sun', min: 1 },
+	// ]
 	return (
-		<div
-			className='font-medium rounded-xl mt-2 lp:ml-2 chart-card max-lp:self-center flex flex-col
-			lp:h-chart-lp h-chart-ms lp:w-chart-lp w-chart-ms'
-		>
-			<p className='text-primary chart-title m-2'>
-				Weekly User Engagement: Time Spent on Platform
-			</p>
-			<ResponsiveContainer width='95%' height='90%' className={'self-center'}>
-				<AreaChart data={data}>
+		<div className="font-medium rounded-xl mt-2 lp:ml-2 chart-card max-lp:self-center flex flex-col lp:h-chart-lp h-chart-ms lp:w-chart-lp w-chart-ms">
+			<p className="text-primary chart-title m-2">Weekly User Engagement: Time Spent on Platform</p>
+			<ResponsiveContainer width="95%" height="90%" className={'self-center'}>
+				<AreaChart data={userData}>
 					<defs>
-						<linearGradient id='min' x1='0' y1='0' x2='0' y2='1'>
-							<stop offset='5%' stopColor='#FFCE9E' stopOpacity={0.8} />
-							<stop offset='95%' stopColor='#FFCE9E' stopOpacity={0} />
+						<linearGradient id="min" x1="0" y1="0" x2="0" y2="1">
+							<stop offset="5%" stopColor="#FFCE9E" stopOpacity={0.8} />
+							<stop offset="95%" stopColor="#FFCE9E" stopOpacity={0} />
 						</linearGradient>
 					</defs>
 					<XAxis
-						dataKey='name'
-						scale='point'
+						dataKey="name"
+						scale="point"
 						padding={{ left: 15, right: 15 }}
 						axisLine={false}
 						tickLine={false}
@@ -50,11 +109,11 @@ function UserStatsGraph() {
 						}}
 					/>
 					<Area
-						type='monotone'
-						dataKey='min'
-						stroke='#FFCE9E'
+						type="monotone"
+						dataKey="min"
+						stroke="#FFCE9E"
 						fillOpacity={1}
-						fill='url(#min)'
+						fill="url(#min)"
 						strokeWidth={2}
 						dot={{
 							stroke: '#79624C',
@@ -66,7 +125,6 @@ function UserStatsGraph() {
 				</AreaChart>
 			</ResponsiveContainer>
 		</div>
-	)
+	);
 }
-
 export default UserStatsGraph

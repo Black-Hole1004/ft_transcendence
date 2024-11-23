@@ -1,14 +1,16 @@
 import './Settings.css'
 import Button from '../../components/Home/Buttons/Button'
-import { useEffect , useState } from 'react'
-
+import { useEffect, useState } from 'react'
+// import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import useAuth from '../../context/AuthContext'
 
 const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg';
+import { useAlert } from '../../components/AlertContext'
 
-function Input({id, type, label, placeholder, value, onChange}) {
+function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
 		<div className='flex flex-col'>
 			<label htmlFor={id} className='font-regular text-light sections-title'>
@@ -28,12 +30,12 @@ function Input({id, type, label, placeholder, value, onChange}) {
 	)
 }
 
-const s = () => {
+const Settings = () => {
 
-	window.addEventListener('load', function() {
+	window.addEventListener('load', function () {
 		var resetButton = document.getElementById('resetButton');
-		
-		resetButton.addEventListener('click', function() {
+
+		resetButton.addEventListener('click', function () {
 			var forms = document.getElementsByTagName('form');
 			for (var i = 0; i < forms.length; i++) {
 				forms[i].reset();
@@ -49,7 +51,10 @@ const s = () => {
 		username: '',
 		display_name: '',
 		bio: '',
-		profile_picture: ''
+		password: '',
+		new_password: '',
+		confirm_password: '',
+		profile_picture: '',
 	})
 
 	const [first_name, setFirst_name] = useState('')
@@ -62,29 +67,40 @@ const s = () => {
 	const [profile_picture, setProfile_picture] = useState('')
 	const [preview, setPreview] = useState(null)
 	const [selectedFile, setSelectedFile] = useState(null)
+	const [removeImage, setRemoveImage] = useState(false);
 
-	let cookies = document.cookie;
-	let cookieArray = cookies.split(';');
+	const [password, setPassword] = useState('')
+	const [new_password, setNewPassword] = useState('')
+	const [confirm_password, setConfirmPassword] = useState('')
 
-	let refresh_token = cookieArray[0].split('=')[1];
-	let access_token = cookieArray[1].split('=')[1];
-	const header = {
-		'Authorization': `Bearer ${access_token}`
-	}
-	/**********************  Fetch User Data ************************/
+	const { authTokens, logout, getAuthHeaders } = useAuth()
+	const { triggerAlert } = useAlert()
+
+
+
 	const fetchUser = async () => {
-		try 
-		{
-			const response = await axios.get(USER_API, {headers: header});
-			return response.data;
-		} 
-		catch (error) 
-		{
+
+		try {
+			const response = await fetch(USER_API, {
+				method: 'GET',
+				headers: getAuthHeaders()
+			})
+			const data = await response.json();
+			if (response.ok) {
+				return (data)
+			} else {
+				console.log('Failed to fetch user data');
+				// logout();
+				return (null)
+			}
+		}
+		catch (error) {
 			console.log(error);
-			return null;
+			// logout();
+			return (null);
 		}
 	};
-	  
+
 	useEffect(() => {
 		const fetchData = async () => {
 			const fetchedData = await fetchUser();
@@ -95,80 +111,93 @@ const s = () => {
 	}, []);
 
 	useEffect(() => {
-		if (!user) 
+		if (!user)
 			return;
 		setFirst_name(user.first_name)
 		setLast_name(user.last_name)
 		setEmail(user.email)
-		setMobile_number(user.mobile_number )
+		setMobile_number(user.mobile_number)
 		setUsername(user.username)
 		setDisplay_name(user.display_name)
 		setBio(user.bio)
+		setPassword(user.password)
+		setNewPassword(user.new_password)
+		setConfirmPassword(user.confirm_password)
 		setProfile_picture(user.profile_picture)
 	}, [user])
 	/**********************  Fetch User Data ************************/
 
 
-	/**********************  Update User Data ************************/
-	function get_value(key) {
-		switch (key) {
-			case 'first_name':
-				return first_name;
-			case 'last_name':
-				return last_name;
-			case 'email':
-				return email;
-			case 'mobile_number':
-				return mobile_number;
-			case 'username':
-				return username;
-			case 'display_name':
-				return display_name;
-			case 'bio':
-				return bio;
-			default:
-				return '';
-		}
-	}
 
 	const create_form_data = (user, selectedFile) => {
 		const userProfileData = new FormData();
 
 		if (!user)
 			return userProfileData;
-		for (const [key, value] of Object.entries(user)) {
-			if (key === 'profile_picture')
-				continue;
-			if (value !== get_value(key))
-			{
-				userProfileData.append(key, get_value(key));
-				setUser({...user, [key]: get_value(key)});
+		userProfileData.append('first_name', first_name || '')
+		userProfileData.append('last_name', last_name || '')
+		userProfileData.append('email', email || '')
+		userProfileData.append('mobile_number', mobile_number || '')
+		userProfileData.append('username', username || '')
+		userProfileData.append('display_name', display_name || '')
+		userProfileData.append('bio', bio || '')
+		userProfileData.append('password', password || '')
+		userProfileData.append('new_password', new_password || '')
+		userProfileData.append('confirm_password', confirm_password || '')
+		if (selectedFile) {
+			if (selectedFile.size > 5 * 1024 * 1024) {
+				
+				triggerAlert('error', 'Image size must be less than 5MB');
+				return userProfileData;
 			}
+			userProfileData.append('profile_picture', selectedFile)
 		}
-		if (selectedFile && user.profile_picture !== selectedFile)
-			userProfileData.append('profile_picture', selectedFile);
-		else
-			userProfileData.append('profile_picture', "null");
+		else if (removeImage) {
+			userProfileData.append('remove_profile_picture', true)
+		}
 		return userProfileData;
 	}
-
-	const update_user = () =>
-	{ 
+	const update_user = async () => {
 		const userProfileData = create_form_data(user, selectedFile);
-		axios.put(USER_API, userProfileData, {headers: header})
+		axios.put(USER_API, userProfileData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				'Authorization': getAuthHeaders().Authorization
+			}
+		})
 		.then((response) => {
-			console.log(response)
+			if (response.status === 200) {
+				setUser(response.data);
+				setSelectedFile(null);
+				setPreview(null);
+				setRemoveImage(false);
+				console.log('User data updated successfully');
+				triggerAlert('success', 'User data updated successfully');
+			}
 		})
 		.catch((error) => {
-			console.log(error)
-		})
+			if (error.response) {
+				// Server responded with a status other than 2xx
+				const errorMessage = error.response.data?.message || 'Failed to update user data';
+				triggerAlert('error', errorMessage);
+				console.error('Error:', errorMessage);
+			} else if (error.request) {
+				// Request was made but no response received
+				triggerAlert('error', 'No response from the server');
+				console.error('Error: No response from the server');
+			} else {
+				// Something happened while setting up the request
+				triggerAlert('error', error.message);
+				console.error('Error:', error.message);
+			}
+		});
 	}
 	/**********************  Update User Data ************************/
 
 
 	/**********************  Handle Input Change ************************/
 	const handleInputChange = (e) => {
-		const {name, value} = e.target;
+		const { name, value } = e.target;
 		switch (name) {
 			case 'first_name':
 				setFirst_name(value);
@@ -191,13 +220,21 @@ const s = () => {
 			case 'bio':
 				setBio(value);
 				break;
+			case 'password':
+				setPassword(value);
+				break;
+			case 'new_password':
+				setNewPassword(value);
+				break;
+			case 'confirm_password':
+				setConfirmPassword(value);
+				break;
 			default:
 				break;
 		}
 	}
 
-	const handleUploadClick = (e) =>
-	{
+	const handleUploadClick = (e) => {
 		document.getElementById('profile_picture').click();
 	}
 
@@ -206,22 +243,22 @@ const s = () => {
 		if (file) {
 			setPreview(URL.createObjectURL(file));
 			setSelectedFile(file);
+			setRemoveImage(false);
 		}
 	}
 	function handleRemoveImage() {
 		setPreview(null);
 		setSelectedFile(null);
 		setProfile_picture(DEFAULT_PROFILE_PICTURE);
+		setRemoveImage(true);
 	}
-	/**********************  Handle Input Change ************************/
 
 	return (
 		<div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'>
-			<Header src={`${BASE_URL}${profile_picture}`} preview={preview} />
 			<section className='flex justify-center'>
 				<div className='s max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
-						<h1 className='font-dreamscape-sans text-primary leading-[1]'>s</h1>
+						<h1 className='font-dreamscape-sans text-primary leading-[1]'>Settings</h1>
 					</div>
 					<div className='h-0.5 separators'></div>
 					<div
@@ -240,8 +277,7 @@ const s = () => {
 
 							<div>
 								<img
-									
-									src= {preview || `${BASE_URL}${profile_picture}`}
+									src={preview || `${BASE_URL}${profile_picture}`}
 									className='rounded-full border border-primary profile-pic'
 									alt='Profile Picture'
 								/>
@@ -253,13 +289,13 @@ const s = () => {
 									type='file'
 									id='profile_picture'
 									name='profile_picture'
-									style={{display: 'none'}}
+									style={{ display: 'none' }}
 									onChange={handleImageChange}
 								/>
 								<Button
 									className={'rounded-md border-border font-regular buttons-text update-button'}
 									onClick={handleUploadClick}
-									>
+								>
 									Update Profile Picture
 								</Button>
 								<Button
@@ -281,22 +317,22 @@ const s = () => {
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
 						<div className='font-regular sections-title tb:self-center self-start'>
-							<p className='text-primary'>Personal s</p>
+							<p className='text-primary'>Personal Settings</p>
 							<p className='text-light'>
 								Change identifying details for your account.
 							</p>
 						</div>
-							
+
 						<div className='flex items-center'>
 
-							
+
 							<form id='form1' className='flex flex-col lp:gap-4 gap-2'>
 								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
 									<Input
 										id={'first_name'}
 										type={'text'}
 										label={'First Name'}
-										placeholder={'Mouad'}
+										placeholder={first_name}
 										onChange={handleInputChange}
 										value={first_name}
 									/>
@@ -304,7 +340,7 @@ const s = () => {
 										id={'last_name'}
 										type={'text'}
 										label={'Last Name'}
-										placeholder={'Oudrib'}
+										placeholder={last_name}
 										onChange={handleInputChange}
 										value={last_name}
 									/>
@@ -314,15 +350,15 @@ const s = () => {
 										id={'email'}
 										type={'email'}
 										label={'Email'}
-										placeholder={'transcendence@gmail.com'}
 										onChange={handleInputChange}
+										placeholder={email}
 										value={email}
 									/>
 									<Input
 										id={'mobile_number'}
 										type={'text'}
 										label={'Phone Number'}
-										placeholder={'+212611223344'}
+										placeholder={mobile_number}
 										onChange={handleInputChange}
 										value={mobile_number}
 									/>
@@ -334,26 +370,27 @@ const s = () => {
 										label={'Current Password'}
 										placeholder={'•••••••••••••'}
 										onChange={handleInputChange}
-										value={''}
+										value={password}
 									/>
+
 									<Input
-										id={'newpassword'}
+										id={'new_password'}
 										type={'password'}
 										label={'New Password'}
 										placeholder={'••••••••••'}
 										onChange={handleInputChange}
-										value={''}
+										value={new_password}
 									/>
 									<Input
-										id={'confirmpassword'}
+										id={'confirm_password'}
 										type={'password'}
 										label={'Confirm New Password'}
 										placeholder={'••••••••••'}
 										onChange={handleInputChange}
-										value={''}
+										value={confirm_password}
 									/>
 								</div>
-							
+
 
 							</form>
 						</div>
@@ -364,7 +401,7 @@ const s = () => {
 						gap-5 max-tb:gap-y-3'
 					>
 						<div className='font-regular sections-title tb:self-center self-start'>
-							<p className='text-primary'>Profile s</p>
+							<p className='text-primary'>Profile Settings</p>
 						</div>
 						<div className='flex items-center'>
 
@@ -376,7 +413,7 @@ const s = () => {
 											id={'username'}
 											type={'text'}
 											label={'Username'}
-											placeholder={'mouad55'}
+											placeholder={username}
 											onChange={handleInputChange}
 											value={username}
 										/>
@@ -384,7 +421,7 @@ const s = () => {
 											id={'display_name'}
 											type={'text'}
 											label={'Display Name'}
-											placeholder={'Arobase'}
+											placeholder={display_name}
 											onChange={handleInputChange}
 											value={display_name}
 										/>
@@ -399,9 +436,7 @@ const s = () => {
 										<textarea
 											name='bio'
 											id='bio'
-											placeholder={
-												'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolor quam, aperiam sit ratione officiis asperiores id quisquam, fugiat ipsa sed autem.'
-											}
+											placeholder={bio}
 											maxLength={'250'}
 											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
 											max-ms:w-full outline-none placeholders placeholder:text-border'
@@ -442,4 +477,4 @@ const s = () => {
 }
 
 
-export default s
+export default Settings
