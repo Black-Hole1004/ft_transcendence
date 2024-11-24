@@ -4,6 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 import { MuiColorInput } from 'mui-color-input'
 
+import Slider from '@mui/material/Slider'
+import Checkbox from '@mui/material/Checkbox'
+import FormControlLabel from '@mui/material/FormControlLabel'
+
 const LocalGameSetup = () => {
 	const [player1Name, setPlayer1Name] = useState('')
 	const [player2Name, setPlayer2Name] = useState('')
@@ -11,8 +15,8 @@ const LocalGameSetup = () => {
 	const [player1Color, setPlayer1Color] = useState('#ffffff')
 	const [player2Color, setPlayer2Color] = useState('#ffffff')
 	const [ballColor, setBallColor] = useState('#ffffff')
-	const [paddleHeight, setPaddleHeight] = useState(110)
-	const [ballRadius, setBallRadius] = useState(15)
+	const [paddleSize, setPaddleSize] = useState(35)
+	const [ballSize, setBallSize] = useState(8)
 	const [removeBackground, setRemoveBackground] = useState(false)
 	const [powerUps, setPowerUps] = useState(1)
 	const [attacks, setAttacks] = useState(1)
@@ -22,10 +26,10 @@ const LocalGameSetup = () => {
 
 	const canvasWidth = 800
 	const canvasHeight = 400
-	const maxPaddleHeight = 350
-	const minPaddleHeight = 50
-	const maxBallRadius = 100
-	const minBallRadius = 5
+	const maxPaddleSize = 100
+	const minPaddleSize = 5
+	const maxBallSize = 100
+	const minBallSize = 5
 	const maxPowerUps = 3
 	const maxAttacks = 3
 
@@ -40,8 +44,8 @@ const LocalGameSetup = () => {
 					ballColor: ballColor,
 					duration: gameDuration,
 					backgroundId: removeBackground ? null : backgroundId,
-					paddleHeight,
-					ballRadius,
+					paddleSize,
+					ballSize,
 					powerUps,
 					attacks,
 				},
@@ -69,133 +73,133 @@ const LocalGameSetup = () => {
 		setPlayer1Color('#ffffff')
 		setPlayer2Color('#ffffff')
 		setBallColor('#ffffff')
-		setPaddleHeight(100)
-		setBallRadius(10)
+		setPaddleSize(35)
+		setBallSize(8)
 		setRemoveBackground(false)
 		setPowerUps(1)
 		setAttacks(1)
 	}
 
-	const GamePreview = ({
-		player1Color,
-		player2Color,
-		ballColor,
-		paddleHeight,
-		ballRadius,
-		backgroundId,
-		removeBackground,
-	}) => {
-		const canvasRef = useRef(null)
-		const scale = 0.75
-		const scaledWidth = canvasWidth * scale
-		const scaledHeight = canvasHeight * scale
+	// const GamePreview = ({
+	// 	player1Color,
+	// 	player2Color,
+	// 	ballColor,
+	// 	paddleSize,
+	// 	ballSize,
+	// 	backgroundId,
+	// 	removeBackground,
+	// }) => {
+	// 	const canvasRef = useRef(null)
+	// 	const scale = 0.75
+	// 	const scaledWidth = canvasWidth * scale
+	// 	const scaledHeight = canvasHeight * scale
 
-		useEffect(() => {
-			const canvas = canvasRef.current
-			const ctx = canvas.getContext('2d')
+	// 	useEffect(() => {
+	// 		const canvas = canvasRef.current
+	// 		const ctx = canvas.getContext('2d')
 
-			ctx.fillStyle = '#000000'
-			ctx.fillRect(0, 0, scaledWidth, scaledHeight)
+	// 		ctx.fillStyle = '#000000'
+	// 		ctx.fillRect(0, 0, scaledWidth, scaledHeight)
 
-			if (!removeBackground) {
-				const backgroundImage = new Image()
-				backgroundImage.src = `/assets/images/tables/table${backgroundId}.png`
-				backgroundImage.onload = () => {
-					ctx.drawImage(backgroundImage, 0, 0, scaledWidth, scaledHeight)
-					drawGameElements()
-				}
-				backgroundImage.onerror = () => {
-					console.error('Failed to load background image')
-					drawGameElements()
-				}
-			} else {
-				drawGameElements()
-			}
+	// 		if (!removeBackground) {
+	// 			const backgroundImage = new Image()
+	// 			backgroundImage.src = `/assets/images/tables/table${backgroundId}.png`
+	// 			backgroundImage.onload = () => {
+	// 				ctx.drawImage(backgroundImage, 0, 0, scaledWidth, scaledHeight)
+	// 				drawGameElements()
+	// 			}
+	// 			backgroundImage.onerror = () => {
+	// 				console.error('Failed to load background image')
+	// 				drawGameElements()
+	// 			}
+	// 		} else {
+	// 			drawGameElements()
+	// 		}
 
-			function drawGameElements() {
-				const paddleWidth = 15 * scale
-				ctx.fillStyle = player1Color
-				ctx.fillRect(
-					10,
-					(scaledHeight - paddleHeight * scale) / 2,
-					paddleWidth,
-					paddleHeight * scale
-				)
-				ctx.beginPath()
-				ctx.arc(
-					10 + paddleWidth / 2,
-					(scaledHeight - paddleHeight * scale) / 2,
-					paddleWidth / 2,
-					0,
-					Math.PI * 2
-				)
-				ctx.arc(
-					10 + paddleWidth / 2,
-					(scaledHeight + paddleHeight * scale) / 2,
-					paddleWidth / 2,
-					0,
-					Math.PI * 2
-				)
-				ctx.closePath()
-				ctx.fill()
+	// 		function drawGameElements() {
+	// 			const paddleWidth = 15 * scale
+	// 			ctx.fillStyle = player1Color
+	// 			ctx.fillRect(
+	// 				10,
+	// 				(scaledHeight - paddleSize * scale) / 2,
+	// 				paddleWidth,
+	// 				paddleSize * scale
+	// 			)
+	// 			ctx.beginPath()
+	// 			ctx.arc(
+	// 				10 + paddleWidth / 2,
+	// 				(scaledHeight - paddleSize * scale) / 2,
+	// 				paddleWidth / 2,
+	// 				0,
+	// 				Math.PI * 2
+	// 			)
+	// 			ctx.arc(
+	// 				10 + paddleWidth / 2,
+	// 				(scaledHeight + paddleSize * scale) / 2,
+	// 				paddleWidth / 2,
+	// 				0,
+	// 				Math.PI * 2
+	// 			)
+	// 			ctx.closePath()
+	// 			ctx.fill()
 
-				ctx.fillStyle = player2Color
-				ctx.fillRect(
-					scaledWidth - paddleWidth - 10,
-					(scaledHeight - paddleHeight * scale) / 2,
-					paddleWidth,
-					paddleHeight * scale
-				)
-				ctx.beginPath()
-				ctx.arc(
-					scaledWidth - paddleWidth - 10 + paddleWidth / 2,
-					(scaledHeight - paddleHeight * scale) / 2,
-					paddleWidth / 2,
-					0,
-					Math.PI * 2
-				)
-				ctx.arc(
-					scaledWidth - paddleWidth - 10 + paddleWidth / 2,
-					(scaledHeight + paddleHeight * scale) / 2,
-					paddleWidth / 2,
-					0,
-					Math.PI * 2
-				)
-				ctx.closePath()
-				ctx.fill()
+	// 			ctx.fillStyle = player2Color
+	// 			ctx.fillRect(
+	// 				scaledWidth - paddleWidth - 10,
+	// 				(scaledHeight - paddleSize * scale) / 2,
+	// 				paddleWidth,
+	// 				paddleSize * scale
+	// 			)
+	// 			ctx.beginPath()
+	// 			ctx.arc(
+	// 				scaledWidth - paddleWidth - 10 + paddleWidth / 2,
+	// 				(scaledHeight - paddleSize * scale) / 2,
+	// 				paddleWidth / 2,
+	// 				0,
+	// 				Math.PI * 2
+	// 			)
+	// 			ctx.arc(
+	// 				scaledWidth - paddleWidth - 10 + paddleWidth / 2,
+	// 				(scaledHeight + paddleSize * scale) / 2,
+	// 				paddleWidth / 2,
+	// 				0,
+	// 				Math.PI * 2
+	// 			)
+	// 			ctx.closePath()
+	// 			ctx.fill()
 
-				ctx.beginPath()
-				ctx.arc(scaledWidth / 2, scaledHeight / 2, (ballRadius + 2) * scale, 0, Math.PI * 2)
-				ctx.fillStyle = ballColor
-				ctx.fill()
-			}
-		}, [
-			player1Color,
-			player2Color,
-			ballColor,
-			paddleHeight,
-			ballRadius,
-			backgroundId,
-			removeBackground,
-			scaledWidth,
-			scaledHeight,
-		])
+	// 			ctx.beginPath()
+	// 			ctx.arc(scaledWidth / 2, scaledHeight / 2, (ballSize + 2) * scale, 0, Math.PI * 2)
+	// 			ctx.fillStyle = ballColor
+	// 			ctx.fill()
+	// 		}
+	// 	}, [
+	// 		player1Color,
+	// 		player2Color,
+	// 		ballColor,
+	// 		paddleSize,
+	// 		ballSize,
+	// 		backgroundId,
+	// 		removeBackground,
+	// 		scaledWidth,
+	// 		scaledHeight,
+	// 	])
 
-		return (
-			<canvas
-				ref={canvasRef}
-				width={scaledWidth}
-				height={scaledHeight}
-				className='border rounded'
-				style={{
-					width: `${scaledWidth}px`,
-					height: `${scaledHeight}px`,
-					background: '#000000',
-					borderRadius: '20px',
-				}}
-			/>
-		)
-	}
+	// 	return (
+	// 		<canvas
+	// 			ref={canvasRef}
+	// 			width={scaledWidth}
+	// 			height={scaledHeight}
+	// 			className='border rounded'
+	// 			style={{
+	// 				width: `${scaledWidth}px`,
+	// 				height: `${scaledHeight}px`,
+	// 				background: '#000000',
+	// 				borderRadius: '20px',
+	// 			}}
+	// 		/>
+	// 	)
+	// }
 
 	return (
 		<section className='flex justify-center mt-40'>
@@ -203,14 +207,94 @@ const LocalGameSetup = () => {
 				className='flex max-w-[96%] max-lp:flex-col max-lp:gap-3 p-4
 				border-1.5 border-primary rounded-lg game-customization-card aspect-video'
 			>
-				<div className='flex-1 flex flex-col rounded-lg lp:pr-4'>
+
+				<div className='flex-1 flex flex-col lp:pr-4'>
+					<h3 className='title-size font-heavy text-2xl mt-5 mb-8'>
+						Personalize Your Game
+					</h3>
+					<div className='flex-1 flex flex-col justify-between max-lp:gap-7'>
+						<div className='flex flex-col'>
+							<PersonalizeGame
+								id={'paddleSize'}
+								size={paddleSize}
+								minSize={minPaddleSize}
+								maxSize={maxPaddleSize}
+								setSize={setPaddleSize}
+							/>
+							<PersonalizeGame
+								id={'ballSize'}
+								size={ballSize}
+								minSize={minBallSize}
+								maxSize={maxBallSize}
+								setSize={setBallSize}
+							/>
+							<div className='labels font-medium text-primary'>
+								<FormControlLabel
+									control={
+										<Checkbox
+											onChange={(e) => setRemoveBackground(e.target.checked)}
+											sx={{
+												'& .MuiSvgIcon-root': {
+													fontSize: 'clamp(1rem, 0.177vw + 0.967rem, 1.25rem)',
+												},
+												color: '#FBFBEE',
+												'&.Mui-checked': {
+													color: '#FBFBEE',
+												},
+											}}
+										/>
+									}
+									label='Remove Background' // font-family
+								/>
+							</div>
+						</div>
+						<div className='flex flex-col'>
+							<h2 className='font-heavy labels text-primary'>Preview</h2>
+							<div
+								className={`relative self-center w-[92%] aspect-video border border-primary rounded-lg overflow-hidden
+								${removeBackground ? 'bg-black' : ''}`}
+							>
+								<img
+									src={`/assets/images/tables/table${backgroundId}.png`}
+									className={`${removeBackground ? 'hidden' : ''} select-none brightness-[50%]`}
+									alt='table image'
+								/>
+								<div
+									className={`absolute top-1/2 left-2 z-10 transform -translate-y-1/2
+									w-3 border-0.7 border-border rounded-lg`}
+									style={{
+										height: `${paddleSize}%`,
+										background: `${player1Color}`,
+									}}
+								></div>
+								<div
+									className={`absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2
+									aspect-square border-0.7 border-border rounded-full`}
+									style={{
+										height: `${ballSize}%`,
+										background: `${ballColor}`,
+									}}
+								></div>
+								<div
+									className={`absolute top-1/2 right-2 z-10 transform -translate-y-1/2
+									w-3 border-0.7 border-border rounded-lg`}
+									style={{
+										height: `${paddleSize}%`,
+										background: `${player2Color}`,
+									}}
+								></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className='flex-1 flex flex-col lp:pl-4 lp:border-l border-border'>
 					<h3 className='title-size font-heavy text-2xl mt-5 mb-8'>Prepare for Battle</h3>
 					<form
 						onSubmit={handleSubmit}
-						className='flex-1 flex flex-col lp:gap-7 gap-12 justify-between'
+						className='flex-1 flex flex-col max-lp:gap-12 justify-between'
 					>
 						<div className='flex flex-col gap-4'>
-							<Input
+							<MatchConfiguration
 								name={'Player 1'}
 								playerId={'player1Name'}
 								colorId={'player1Color'}
@@ -219,7 +303,7 @@ const LocalGameSetup = () => {
 								textInputValue={player1Name}
 								colorInputValue={player1Color}
 							/>
-							<Input
+							<MatchConfiguration
 								name={'Player 2'}
 								playerId={'player2Name'}
 								colorId={'player2Color'}
@@ -228,7 +312,7 @@ const LocalGameSetup = () => {
 								textInputValue={player2Name}
 								colorInputValue={player2Color}
 							/>
-							<Input
+							<MatchConfiguration
 								name={'Ball'}
 								colorId={'ballColor'}
 								setColor={setBallColor}
@@ -263,255 +347,92 @@ const LocalGameSetup = () => {
 						</div>
 					</form>
 				</div>
-
-				<div className='flex-1 rounded-lg pl-4 border-1.5 border-blue-500'>
-					<h3 className='title-size font-heavy text-2xl mt-5 mb-10'>
-						Personalize Your Game
-					</h3>
-				</div>
 			</div>
 		</section>
-
-		// <div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary flex items-center justify-center'>
-		// 	<div className='flex flex-col lg:flex-row bg-backdrop-80 p-6 rounded-lg shadow-lg w-full max-w-7xl'>
-		// 		<div className='w-full lg:w-1/2 lg:pr-6 mb-6 lg:mb-0'>
-		// 			<h3 className='text-xl font-bold mb-4'>Game Customization</h3>
-
-		// 			<div className='mb-4'>
-		// 				<label className='block text-sm font-bold mb-2' htmlFor='paddleHeight'>
-		// 					Paddle Height: {paddleHeight}px
-		// 				</label>
-		// 				<input
-		// 					id='paddleHeight'
-		// 					type='range'
-		// 					min={minPaddleHeight}
-		// 					max={maxPaddleHeight}
-		// 					value={paddleHeight}
-		// 					onChange={(e) => setPaddleHeight(parseInt(e.target.value))}
-		// 					className='w-full'
-		// 				/>
-		// 			</div>
-
-		// 			<div className='mb-4'>
-		// 				<label className='block text-sm font-bold mb-2' htmlFor='ballRadius'>
-		// 					Ball Radius: {ballRadius}px
-		// 				</label>
-		// 				<input
-		// 					id='ballRadius'
-		// 					type='range'
-		// 					min={minBallRadius}
-		// 					max={maxBallRadius}
-		// 					value={ballRadius}
-		// 					onChange={(e) => setBallRadius(parseInt(e.target.value))}
-		// 					className='w-full'
-		// 				/>
-		// 			</div>
-
-		// 			<div className='mb-4'>
-		// 				<label className='flex items-center'>
-		// 					<input
-		// 						type='checkbox'
-		// 						checked={removeBackground}
-		// 						onChange={(e) => setRemoveBackground(e.target.checked)}
-		// 						className='mr-2'
-		// 					/>
-		// 					Remove Background
-		// 				</label>
-		// 			</div>
-
-		// 			<div className='mb-4'>
-		// 				<label className='block text-sm font-bold mb-2' htmlFor='powerUps'>
-		// 					Power-ups: {powerUps}
-		// 				</label>
-		// 				<input
-		// 					id='powerUps'
-		// 					type='range'
-		// 					min={0}
-		// 					max={maxPowerUps}
-		// 					value={powerUps}
-		// 					onChange={(e) => setPowerUps(parseInt(e.target.value))}
-		// 					className='w-full'
-		// 				/>
-		// 			</div>
-
-		// 			<div className='mb-4'>
-		// 				<label className='block text-sm font-bold mb-2' htmlFor='attacks'>
-		// 					Attacks: {attacks}
-		// 				</label>
-		// 				<input
-		// 					id='attacks'
-		// 					type='range'
-		// 					min={0}
-		// 					max={maxAttacks}
-		// 					value={attacks}
-		// 					onChange={(e) => setAttacks(parseInt(e.target.value))}
-		// 					className='w-full'
-		// 				/>
-		// 			</div>
-
-		// 			<div className='mb-4'>
-		// 				<label className='block text-sm font-bold mb-2'>Preview</label>
-		// 				<GamePreview
-		// 					player1Color={player1Color}
-		// 					player2Color={player2Color}
-		// 					ballColor={ballColor}
-		// 					paddleHeight={paddleHeight}
-		// 					ballRadius={ballRadius}
-		// 					backgroundId={backgroundId}
-		// 					removeBackground={removeBackground}
-		// 				/>
-		// 			</div>
-		// 		</div>
-
-		// 		<div className='w-full lg:w-1/2 lg:pl-6 lg:border-l lg:border-gray-600'>
-		// 			<form onSubmit={handleSubmit} className='w-full md:w-2/3 pl-6'>
-		// 				<h2 className='text-2xl font-bold mb-4'>Local Game Setup</h2>
-
-		// 				<div className='mb-4'>
-		// 					<label
-		// 						className='block text-sm font-bold mb-2'
-		// 						htmlFor='player1Name'
-		// 					>
-		// 						Player 1 Name
-		// 					</label>
-		// 					<input
-		// 						id='player1Name'
-		// 						type='text'
-		// 						value={player1Name}
-		// 						onChange={(e) => setPlayer1Name(e.target.value)}
-		// 						placeholder='Enter Player 1 name'
-		// 						className='w-full p-2 bg-white text-black rounded placeholder-gray-400'
-		// 						required
-		// 					/>
-		// 				</div>
-
-		// 				<div className='mb-4'>
-		// 					<label
-		// 						className='block text-sm font-bold mb-2'
-		// 						htmlFor='player1Color'
-		// 					>
-		// 						Player 1 Paddle Color
-		// 					</label>
-		// 					<div className='flex items-center'>
-		// 						<input
-		// 							id='player1Color'
-		// 							type='color'
-		// 							value={player1Color}
-		// 							onChange={(e) => setPlayer1Color(e.target.value)}
-		// 							className='w-8 h-8 mr-2'
-		// 						/>
-		// 						<span className='mr-2'>{player1Color}</span>
-		// 					</div>
-		// 				</div>
-
-		// 				<div className='mb-4'>
-		// 					<label
-		// 						className='block text-sm font-bold mb-2'
-		// 						htmlFor='player2Name'
-		// 					>
-		// 						Player 2 Name
-		// 					</label>
-		// 					<input
-		// 						id='player2Name'
-		// 						type='text'
-		// 						value={player2Name}
-		// 						onChange={(e) => setPlayer2Name(e.target.value)}
-		// 						placeholder='Enter Player 2 name'
-		// 						className='w-full p-2 bg-white text-black rounded placeholder-gray-400'
-		// 						required
-		// 					/>
-		// 				</div>
-
-		// 				<div className='mb-4'>
-		// 					<label
-		// 						className='block text-sm font-bold mb-2'
-		// 						htmlFor='player2Color'
-		// 					>
-		// 						Player 2 Paddle Color
-		// 					</label>
-		// 					<div className='flex items-center'>
-		// 						<input
-		// 							id='player2Color'
-		// 							type='color'
-		// 							value={player2Color}
-		// 							onChange={(e) => setPlayer2Color(e.target.value)}
-		// 							className='w-8 h-8 mr-2'
-		// 						/>
-		// 						<span className='mr-2'>{player2Color}</span>
-		// 					</div>
-		// 				</div>
-
-		// 				<div className='mb-4'>
-		// 					<label
-		// 						className='block text-sm font-bold mb-2'
-		// 						htmlFor='gameDuration'
-		// 					>
-		// 						Game Duration (seconds)
-		// 					</label>
-		// 					<input
-		// 						id='gameDuration'
-		// 						type='number'
-		// 						value={gameDuration}
-		// 						onChange={(e) => setGameDuration(parseInt(e.target.value))}
-		// 						placeholder='Game duration (seconds)'
-		// 						className='w-full p-2 bg-white text-black rounded placeholder-gray-400'
-		// 						required
-		// 						min='10'
-		// 						max='300'
-		// 					/>
-		// 				</div>
-		// 				<div className='mb-4'>
-		// 					<label className='block text-sm font-bold mb-2' htmlFor='ballColor'>
-		// 						Ball color
-		// 					</label>
-		// 					<div className='flex items-center'>
-		// 						<input
-		// 							id='ballColor'
-		// 							type='color'
-		// 							value={ballColor}
-		// 							onChange={(e) => setBallColor(e.target.value)}
-		// 							className='w-8 h-8 mr-2'
-		// 						/>
-		// 						<span className='mr-2'>{ballColor}</span>
-		// 					</div>
-		// 				</div>
-
-		// 				<button
-		// 					type='button'
-		// 					onClick={handleRandomColors}
-		// 					className='w-full p-2 mb-4 bg-secondary text-primary rounded hover:bg-secondary-dark transition'
-		// 				>
-		// 					Generate Random Colors
-		// 				</button>
-		// 				<button
-		// 					type='button'
-		// 					onClick={resetToDefault}
-		// 					className='w-full p-2 mb-4 bg-secondary text-primary rounded hover:bg-secondary-dark transition'
-		// 				>
-		// 					Reset to Default
-		// 				</button>
-
-		// 				<button
-		// 					type='submit'
-		// 					className='w-full p-2 bg-primary text-backdrop-80 rounded hover:bg-primary-dark transition'
-		// 				>
-		// 					Start Game
-		// 				</button>
-		// 			</form>
-		// 		</div>
-		// 	</div>
-		// </div>
 	)
 }
 
-const Input = ({
-	playerId,
-	colorId,
+const PersonalizeGame = ({ id, size, minSize, maxSize, setSize }) => {
+	return (
+		<div className='flex flex-col gap-6'>
+			<label className='font-regular text-light labels' htmlFor={id}>
+				Paddle Size: {size}%
+			</label>
+			<Slider
+				id={id}
+				aria-label='Default'
+				value={size}
+				min={minSize}
+				max={maxSize}
+				valueLabelDisplay='auto'
+				onChange={(e) => setSize(parseInt(e.target.value))}
+				sx={{
+					// Thumb
+					'& .MuiSlider-thumb': {
+						width: 18,
+						height: 18,
+						backgroundColor: '#FBFBEE',
+						border: '2px solid #FBFBEE',
+
+						// Remove ripple effect shadows
+						'&::before': {
+							boxShadow: 'none',
+						},
+						'&::after': {
+							boxShadow: 'none',
+						},
+
+						// Hover state
+						'&:hover': {
+							boxShadow: '0 0 0 8px rgba(251, 251, 238, 0.16)',
+						},
+
+						// Active state (while dragging)
+						'&.Mui-active': {
+							boxShadow: '0 0 0 14px rgba(251, 251, 238, 0.3)',
+						},
+					},
+
+					// Track
+					'& .MuiSlider-track': {
+						height: 8,
+						backgroundColor: '#FBFBEE',
+						border: 'none',
+					},
+
+					// Rail
+					'& .MuiSlider-rail': {
+						height: 6,
+						backgroundColor: '#48433E',
+						opacity: 1,
+					},
+
+					// Value Label
+					'& .MuiSlider-valueLabel': {
+						color: '#1B1611',
+						backgroundColor: '#FBFBEE',
+						fontSize: 'clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem)',
+
+						paddingTop: 0,
+						paddingBottom: '1px',
+						paddingLeft: '6px',
+						paddingRight: '6px',
+						borderRadius: '2px',
+					},
+				}}
+			/>
+		</div>
+	)
+}
+
+const MatchConfiguration = ({
 	name,
+	colorId,
+	playerId,
+	setColor,
+	setValue,
 	textInputValue,
 	colorInputValue,
-	setValue,
-	setColor,
 }) => {
 	return (
 		<div className='flex flex-col gap-2'>
@@ -541,7 +462,7 @@ const Input = ({
 						format='hex'
 						value={colorInputValue}
 						onChange={(color) => setColor(color)}
-						className='custom-color-input'
+						className='labels' //
 						sx={{
 							// Border
 							border: 1,
@@ -556,7 +477,7 @@ const Input = ({
 								fontSize: 'clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem)',
 								paddingTop: 'clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem)',
 								paddingBottom: 'clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem)',
-								paddingRight: '0px'
+								paddingRight: '0px',
 							},
 
 							'& .MuiOutlinedInput-root': {
@@ -592,225 +513,3 @@ const Input = ({
 }
 
 export default LocalGameSetup
-
-{
-	/* <div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary flex items-center justify-center'>
-<div className='flex flex-col lg:flex-row bg-backdrop-80 p-6 rounded-lg shadow-lg w-full max-w-7xl'>
-	<div className='w-full lg:w-1/2 lg:pr-6 mb-6 lg:mb-0'>
-		<h3 className='text-xl font-bold mb-4'>Game Customization</h3>
-
-		<div className='mb-4'>
-			<label className='block text-sm font-bold mb-2' htmlFor='paddleHeight'>
-				Paddle Height: {paddleHeight}px
-			</label>
-			<input
-				id='paddleHeight'
-				type='range'
-				min={minPaddleHeight}
-				max={maxPaddleHeight}
-				value={paddleHeight}
-				onChange={(e) => setPaddleHeight(parseInt(e.target.value))}
-				className='w-full'
-			/>
-		</div>
-
-		<div className='mb-4'>
-			<label className='block text-sm font-bold mb-2' htmlFor='ballRadius'>
-				Ball Radius: {ballRadius}px
-			</label>
-			<input
-				id='ballRadius'
-				type='range'
-				min={minBallRadius}
-				max={maxBallRadius}
-				value={ballRadius}
-				onChange={(e) => setBallRadius(parseInt(e.target.value))}
-				className='w-full'
-			/>
-		</div>
-
-		<div className='mb-4'>
-			<label className='flex items-center'>
-				<input
-					type='checkbox'
-					checked={removeBackground}
-					onChange={(e) => setRemoveBackground(e.target.checked)}
-					className='mr-2'
-				/>
-				Remove Background
-			</label>
-		</div>
-
-		<div className='mb-4'>
-			<label className='block text-sm font-bold mb-2' htmlFor='powerUps'>
-				Power-ups: {powerUps}
-			</label>
-			<input
-				id='powerUps'
-				type='range'
-				min={0}
-				max={maxPowerUps}
-				value={powerUps}
-				onChange={(e) => setPowerUps(parseInt(e.target.value))}
-				className='w-full'
-			/>
-		</div>
-
-		<div className='mb-4'>
-			<label className='block text-sm font-bold mb-2' htmlFor='attacks'>
-				Attacks: {attacks}
-			</label>
-			<input
-				id='attacks'
-				type='range'
-				min={0}
-				max={maxAttacks}
-				value={attacks}
-				onChange={(e) => setAttacks(parseInt(e.target.value))}
-				className='w-full'
-			/>
-		</div>
-
-		<div className='mb-4'>
-			<label className='block text-sm font-bold mb-2'>Preview</label>
-			<GamePreview
-				player1Color={player1Color}
-				player2Color={player2Color}
-				ballColor={ballColor}
-				paddleHeight={paddleHeight}
-				ballRadius={ballRadius}
-				backgroundId={backgroundId}
-				removeBackground={removeBackground}
-			/>
-		</div>
-	</div>
-
-
-
-
-
-
-	<div className='w-full lg:w-1/2 lg:pl-6 lg:border-l lg:border-gray-600'>
-		<form onSubmit={handleSubmit} className='w-full md:w-2/3 pl-6'>
-			<h2 className='text-2xl font-bold mb-4'>Local Game Setup</h2>
-
-			<div className='mb-4'>
-				<label className='block text-sm font-bold mb-2' htmlFor='player1Name'>
-					Player 1 Name
-				</label>
-				<input
-					id='player1Name'
-					type='text'
-					value={player1Name}
-					onChange={(e) => setPlayer1Name(e.target.value)}
-					placeholder='Enter Player 1 name'
-					className='w-full p-2 bg-white text-black rounded placeholder-gray-400'
-					required
-				/>
-			</div>
-
-			<div className='mb-4'>
-				<label className='block text-sm font-bold mb-2' htmlFor='player1Color'>
-					Player 1 Paddle Color
-				</label>
-				<div className='flex items-center'>
-					<input
-						id='player1Color'
-						type='color'
-						value={player1Color}
-						onChange={(e) => setPlayer1Color(e.target.value)}
-						className='w-8 h-8 mr-2'
-					/>
-					<span className='mr-2'>{player1Color}</span>
-				</div>
-			</div>
-
-			<div className='mb-4'>
-				<label className='block text-sm font-bold mb-2' htmlFor='player2Name'>
-					Player 2 Name
-				</label>
-				<input
-					id='player2Name'
-					type='text'
-					value={player2Name}
-					onChange={(e) => setPlayer2Name(e.target.value)}
-					placeholder='Enter Player 2 name'
-					className='w-full p-2 bg-white text-black rounded placeholder-gray-400'
-					required
-				/>
-			</div>
-
-			<div className='mb-4'>
-				<label className='block text-sm font-bold mb-2' htmlFor='player2Color'>
-					Player 2 Paddle Color
-				</label>
-				<div className='flex items-center'>
-					<input
-						id='player2Color'
-						type='color'
-						value={player2Color}
-						onChange={(e) => setPlayer2Color(e.target.value)}
-						className='w-8 h-8 mr-2'
-					/>
-					<span className='mr-2'>{player2Color}</span>
-				</div>
-			</div>
-
-			<div className='mb-4'>
-				<label className='block text-sm font-bold mb-2' htmlFor='gameDuration'>
-					Game Duration (seconds)
-				</label>
-				<input
-					id='gameDuration'
-					type='number'
-					value={gameDuration}
-					onChange={(e) => setGameDuration(parseInt(e.target.value))}
-					placeholder='Game duration (seconds)'
-					className='w-full p-2 bg-white text-black rounded placeholder-gray-400'
-					required
-					min='10'
-					max='300'
-				/>
-			</div>
-			<div className='mb-4'>
-				<label className='block text-sm font-bold mb-2' htmlFor='ballColor'>
-					Ball color
-				</label>
-				<div className='flex items-center'>
-					<input
-						id='ballColor'
-						type='color'
-						value={ballColor}
-						onChange={(e) => setBallColor(e.target.value)}
-						className='w-8 h-8 mr-2'
-					/>
-					<span className='mr-2'>{ballColor}</span>
-				</div>
-			</div>
-
-			<button
-				type='button'
-				onClick={handleRandomColors}
-				className='w-full p-2 mb-4 bg-secondary text-primary rounded hover:bg-secondary-dark transition'
-			>
-				Generate Random Colors
-			</button>
-			<button
-				type='button'
-				onClick={resetToDefault}
-				className='w-full p-2 mb-4 bg-secondary text-primary rounded hover:bg-secondary-dark transition'
-			>
-				Reset to Default
-			</button>
-
-			<button
-				type='submit'
-				className='w-full p-2 bg-primary text-backdrop-80 rounded hover:bg-primary-dark transition'
-			>
-				Start Game
-			</button>
-		</form>
-	</div>
-</div>
-</div> */
-}
