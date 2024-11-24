@@ -1,6 +1,8 @@
 import './Game.css'
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+
+import { MuiColorInput } from 'mui-color-input'
 
 const LocalGameSetup = () => {
 	const [player1Name, setPlayer1Name] = useState('')
@@ -198,35 +200,74 @@ const LocalGameSetup = () => {
 	return (
 		<section className='flex justify-center mt-40'>
 			<div
-				className='flex max-w-[96%] max-lp:flex-col p-4
+				className='flex max-w-[96%] max-lp:flex-col max-lp:gap-3 p-4
 				border-1.5 border-primary rounded-lg game-customization-card aspect-video'
 			>
-				<div className='flex-1 rounded-lg'>
-					<h3 className='font-heavy text-2xl mt-5 mb-10'>Prepare for Battle</h3>
-					<form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-						<Input
-							id={'player1Name'}
-							name={'Player 1'}
-							player1Name={player1Name}
-							setPlayer1Name={setPlayer1Name}
-						/>
-						<Input
-							id={'player2Name'}
-							name={'Player 2'}
-							player2Name={player2Name}
-							setPlayer2Name={setPlayer2Name}
-						/>
-						<Input
-							id={'gameDuration'}
-							name={'Ball'}
-							gameDuration={gameDuration}
-							setGameDuration={setGameDuration}
-						/>
+				<div className='flex-1 flex flex-col rounded-lg lp:pr-4'>
+					<h3 className='title-size font-heavy text-2xl mt-5 mb-8'>Prepare for Battle</h3>
+					<form
+						onSubmit={handleSubmit}
+						className='flex-1 flex flex-col lp:gap-7 gap-12 justify-between'
+					>
+						<div className='flex flex-col gap-4'>
+							<Input
+								name={'Player 1'}
+								playerId={'player1Name'}
+								colorId={'player1Color'}
+								setValue={setPlayer1Name}
+								setColor={setPlayer1Color}
+								textInputValue={player1Name}
+								colorInputValue={player1Color}
+							/>
+							<Input
+								name={'Player 2'}
+								playerId={'player2Name'}
+								colorId={'player2Color'}
+								setValue={setPlayer2Name}
+								setColor={setPlayer2Color}
+								textInputValue={player2Name}
+								colorInputValue={player2Color}
+							/>
+							<Input
+								name={'Ball'}
+								colorId={'ballColor'}
+								setColor={setBallColor}
+								playerId={'gameDuration'}
+								setValue={setGameDuration}
+								colorInputValue={ballColor}
+								textInputValue={gameDuration}
+							/>
+						</div>
+						<div className='font-medium flex flex-col gap-2'>
+							<button
+								type='button'
+								onClick={handleRandomColors}
+								className='labels w-full p-2 border border-border bg-[rgb(183,170,156,8%)] text-primary rounded'
+							>
+								Generate Random Values
+							</button>
+							<button
+								type='button'
+								onClick={resetToDefault}
+								className='labels w-full p-2 border border-border bg-[rgb(183,170,156,8%)] text-primary rounded'
+							>
+								Reset to Default
+							</button>
+
+							<button
+								type='submit'
+								className='labels w-full p-2 bg-primary text-backdrop-80 rounded hover:'
+							>
+								Start Game
+							</button>
+						</div>
 					</form>
 				</div>
 
-				<div className='flex-1 rounded-lg border-1.5 border-blue-500'>
-					<h3 className='font-heavy text-2xl'>Personalize Your Game</h3>
+				<div className='flex-1 rounded-lg pl-4 border-1.5 border-blue-500'>
+					<h3 className='title-size font-heavy text-2xl mt-5 mb-10'>
+						Personalize Your Game
+					</h3>
 				</div>
 			</div>
 		</section>
@@ -463,24 +504,88 @@ const LocalGameSetup = () => {
 	)
 }
 
-const Input = ({ id, name, playerName, setPlayerName }) => {
+const Input = ({
+	playerId,
+	colorId,
+	name,
+	textInputValue,
+	colorInputValue,
+	setValue,
+	setColor,
+}) => {
 	return (
-		<div className='flex flex-col gap-3'>
+		<div className='flex flex-col gap-2'>
 			<h2 className='font-heavy labels text-primary'>{name}</h2>
-			<div className='flex flex-col'>
-				<label className='font-regular text-light labels' htmlFor={id}>
-					Player Name
-				</label>
-				<input
-					id={id}
-					type='text'
-					value={playerName}
-					onChange={(e) => setPlayerName(e.target.value)}
-					placeholder='Player Name'
-					className='inputs border border-border rounded-lg bg-[rgb(183,170,156,8%)] placeholder:text-border
-						text-primary placeholder:font-regular placeholders outline-none w-[80%]'
-					required
-				/>
+			<div className='flex justify-between max-ml:flex-col max-ml:gap-2'>
+				<div className='flex flex-col flex-1 ml-2'>
+					<label className='font-regular text-light labels' htmlFor={playerId}>
+						{name === 'Ball' ? 'Game duration (seconds)' : 'Player Name'}
+					</label>
+					<input
+						type='text'
+						id={playerId}
+						value={textInputValue}
+						onChange={(e) => setValue(e.target.value)}
+						placeholder={`${name === 'Ball' ? 'Game duration (seconds)' : 'Player Name'}`}
+						className='inputs border border-border rounded-lg bg-[rgb(183,170,156,8%)] placeholder:text-border
+						text-primary placeholder:font-regular placeholders outline-none w-[90%]'
+						required
+					/>
+				</div>
+				<div className='flex flex-col ml:w-[30%] w-[50%] max-ml:ml-2'>
+					<label className='font-regular text-light labels' htmlFor={colorId}>
+						{name === 'Ball' ? 'Ball Color' : 'Paddle Color'}
+					</label>
+					<MuiColorInput
+						id={colorId}
+						format='hex'
+						value={colorInputValue}
+						onChange={(color) => setColor(color)}
+						className='custom-color-input'
+						sx={{
+							// Border
+							border: 1,
+							borderRadius: 2,
+							borderColor: '#646464',
+
+							// Colors
+							backgroundColor: 'rgb(183,170,156,8%)',
+
+							'& .MuiOutlinedInput-input': {
+								color: '#FBFBEE',
+								fontSize: 'clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem)',
+								paddingTop: 'clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem)',
+								paddingBottom: 'clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem)',
+								paddingRight: '0px'
+							},
+
+							'& .MuiOutlinedInput-root': {
+								paddingLeft: 'clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem)',
+								paddingRight: 'clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem)',
+
+								// Normal state
+								'& .MuiOutlinedInput-notchedOutline': {
+									borderColor: 'transparent',
+								},
+								// Hover state
+								'&:hover .MuiOutlinedInput-notchedOutline': {
+									borderColor: 'transparent',
+								},
+								// Focus state
+								'&:focus .MuiOutlinedInput-notchedOutline': {
+									borderColor: 'transparent',
+								},
+							},
+
+							'& .MuiColorInput-Button': {
+								padding: '0px',
+								borderRadius: '20%',
+								width: 'clamp(1.125rem, 0.265vw + 1.075rem, 1.5rem)',
+								height: 'clamp(1.125rem, 0.265vw + 1.075rem, 1.5rem)',
+							},
+						}}
+					/>
+				</div>
 			</div>
 		</div>
 	)

@@ -48,7 +48,6 @@
 }
 
 .inputs {
-	/* width: clamp(12.5rem, 5.31vw + 11.504rem, 20rem); */
 	padding: clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem) clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem);
 }
 
@@ -60,7 +59,10 @@
 	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
 }
 
-/* .separator {
-	height: clamp(31.25rem, 16.741vw + 23.214rem, 50rem);
-	background: linear-gradient(rgb(251, 251, 238, 0), rgb(251, 251, 238, 0.2), rgb(251, 251, 238, 0));
-} */
+.title-size {
+	font-size: clamp(1.125rem, 0.265vw + 1.075rem, 1.5rem);
+}
+
+.custom-color-input {
+	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
+}
