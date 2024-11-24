@@ -6,7 +6,6 @@ import { useAlert } from '../AlertContext'
 import useAuth from '../../context/AuthContext'
 
 function Layout() {
-<<<<<<< HEAD
 	const [showAlert, setShowAlert] = useState(true)
 	const [alertType, setAlertType] = useState('info')
 	const [alertMessage, setAlertMessage] = useState(
@@ -19,10 +18,8 @@ function Layout() {
 		}, 10000)
 	}
 
-=======
 	const { first_name, preview, last_name, username, profile_picture } = useAuth()
 	const user_data = { first_name, last_name, username, profile_picture }
->>>>>>> origin/master
 	return (
 		<div className='relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'>
 			<AlertWrapper />

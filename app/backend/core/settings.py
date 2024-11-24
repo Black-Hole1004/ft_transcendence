@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'UserManagement',
     'social_django',
     'core',
-    'channels_redis'
+    'channels_redis',
     'rest_framework.authtoken',
     'game',
     'Chat'
@@ -265,7 +265,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # Redis host and port
+            "hosts": [('127.0.0.1', 6379)],
         },
     },
 }
