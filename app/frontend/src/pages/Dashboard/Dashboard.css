@@ -7,19 +7,11 @@
 }
 
 .message-padding {
-	padding-top: clamp(3.125rem, 0.909vw + 2.955rem, 4.375rem);
 	padding-left: clamp(0.625rem, 2.727vw + 0.114rem, 4.375rem);
-	padding-right: clamp(1.25rem, 1.591vw + 0.952rem, 3.438rem);
-	padding-bottom: clamp(3.125rem, 10.536vw - 6.357rem, 10.5rem);
 }
 
 .card-height {
 	height: clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem);
-}
-
-.cards-padding {
-	padding-left: clamp(0.5rem, 5.536vw - 4.482rem, 4.375rem);
-	padding-right: clamp(0.5rem, 2.5vw - 1.75rem, 2.25rem);
 }
 
 .card-title {
@@ -30,7 +22,6 @@
 
 .search-input {
 	font-size: clamp(0.75rem, 0.377vw + 0.41rem, 1rem);
-	width: clamp(15rem, 5.66vw + 9.906rem, 18.75rem);
 }
 
 .search-icon {
@@ -40,7 +31,6 @@
 .users {
 	margin-bottom: 10px;
 	margin-top: clamp(1.25rem, 1.818vw - 0.341rem, 2.5rem);
-	/* padding-left: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem); */
 	padding-right: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem);
 }
 

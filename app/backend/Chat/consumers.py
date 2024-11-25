@@ -24,7 +24,7 @@ def extract_access_token(headers):
 
             for cookie in cookie_list:
                 if cookie.startswith('access_token='):
-                    return cookie.split('=')[1]
+                    return cookie.split('=')[1] 
     return None
 
 def decode_jwt_info(token):

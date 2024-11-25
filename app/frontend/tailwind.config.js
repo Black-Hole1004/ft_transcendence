@@ -60,6 +60,7 @@ export default {
 			},
 			height: {
 				// Custom clamp values
+				'card': 'clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem)',
 				'chart-lp': 'clamp(8.75rem, 12.37vw + 0.833rem, 20.625rem)',
 				'chart-ms': 'clamp(9.375rem, 20.747vw + 5.485rem, 18.75rem)',
 				'profile-cards': 'clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem)',
@@ -84,11 +85,13 @@ export default {
 			},
 			padding: {
 				// Chat User informations
+				'section-lg': 'clamp(0.625rem, 2.727vw + 0.114rem, 4.375rem)',
+				'cards-lg': 'clamp(0.5rem, 2.5vw - 1.75rem, 2.25rem)',
 				'user-info-x-lg': 'clamp(1.563rem, 1.339vw + 0.357rem, 2.5rem)',
 				'user-info-x-ms': 'clamp(0.313rem, 6.256vw - 0.861rem, 4.375rem)',
 				'user-info-y-ms': 'clamp(0.938rem, 2.887vw + 0.396rem, 2.813rem)',
 				'user-info-t': 'clamp(3.125rem, 2.679vw + 0.714rem, 5rem)',
-
+				
 				// Chat Users
 				'user-div-px-tb': 'clamp(0.625rem, 1.116vw + 0.089rem, 1.875rem)',
 			},

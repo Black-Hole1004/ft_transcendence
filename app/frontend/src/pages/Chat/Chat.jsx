@@ -159,9 +159,10 @@ const Chat = () => {
 			}
 		}
 	}
-
+	console.log(conversationKey)
 	return (
-		<section className='section-margin flex lg:flex-row flex-col lg:justify-between gap-4'>
+		<section className={`section-margin flex lg:flex-row flex-col gap-4
+			${conversationKey ? 'lg:justify-between' : 'lg:justify-center'}`}>
 			<div
 				className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'

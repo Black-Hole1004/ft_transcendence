@@ -3,18 +3,18 @@ import UserFriendsList from './UserFriendsList'
 function FriendsList() {
 	return (
 		<div
-			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px] card-height
+			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px]
 			rounded-xl border-1.5 border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]'
 		>
 			<h1 className='font-dreamscape-sans card-title text-primary'>FRIENDS LIST</h1>
 
-			<div className='flex items-center border border-border rounded-2xl pl-2.5'>
+			<div className='flex items-center border border-border rounded-2xl pl-2.5 w-[90%]'>
 				<img src='/assets/images/icons/search-icon.png' className='search-icon select-none' alt='' />
 				<input
 					type='text'
 					name='search for friends'
 					placeholder='Search for friends...'
-					className='font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border'
+					className='font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border overflow-hidden'
 				/>
 			</div>
 			<div className='w-[96%] overflow-y-auto users'>
