@@ -37,7 +37,7 @@ const GameCustomizationPanel = ({ gameConfig, players, backgroundId, onGameConfi
 							control={
 								<Checkbox
 									onChange={(e) =>
-										onGameConfigUpdate('isBackgroundVisible', e.target.checked)
+										onGameConfigUpdate('isBackgroundVisible', !e.target.checked)
 									}
 									sx={{
 										'& .MuiSvgIcon-root': {
