@@ -7,13 +7,13 @@ from channels.security.websocket import AllowedHostsOriginValidator
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
-from Chat.routing import websocket_urlpatterns
+import UserManagement.routing 
 
 application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
         "websocket": AllowedHostsOriginValidator(
-            AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
+            AuthMiddlewareStack(URLRouter(UserManagement.routing.websocket_urlpatterns))
         ),
     }
 )

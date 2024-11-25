@@ -13,18 +13,30 @@ from .profile_utils import (
     generate_new_tokens
 )
 
+from .models import FriendShip
+
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
     new_password = serializers.CharField(write_only=True, required=False, min_length=8)
     confirm_password = serializers.CharField(write_only=True, required=False, min_length=8)
     profile_picture = serializers.ImageField(required=False)
+    is_friend = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth',
+        fields = ['id', 'first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth', 'is_friend', 'status',
                 'username', 'display_name','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture'
             ]
         read_only_fields = ['id', 'email']
+    
+    def get_is_friend(self, obj):
+        request = self.context.get('request', None)
+        if request and request.user.is_authenticated:
+        # Check both directions of the friendship
+            is_friend_from = FriendShip.objects.filter(user_from=request.user, user_to=obj).exists()
+            is_friend_to = FriendShip.objects.filter(user_from=obj, user_to=request.user).exists()
+            return is_friend_from or is_friend_to
+        return False
     
 class UserSessionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,3 +44,11 @@ class UserSessionSerializer(serializers.ModelSerializer):
         fields = ['user', 'login_time', 'logout_time', 'duration']
 
 # ----------------------------------------------------------------------------------
+
+class FriendRequestSerializer(serializers.Serializer):
+    user_to = serializers.IntegerField()
+
+    def validate_user_to(self, value):
+        if value == self.context['request'].user.id:
+            raise serializers.ValidationError("You cannot send a friend request to yourself.")
+        return value

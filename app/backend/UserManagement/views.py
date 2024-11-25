@@ -37,8 +37,8 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 #pass=Ahaloui@@13+
 #gmail=aymene@gmail.com
 
+from rest_framework import generics
 
-from .models import UserSession
 from django.utils import timezone
 
 from django.contrib.auth import get_user_model
@@ -49,6 +49,12 @@ from .profile_utils import (
     handle_password_change,
     generate_new_tokens
 )
+
+from .models import UserSession
+from .models import FriendShipRequest
+from .models import FriendShip
+from .models import Notification
+from .serializers import FriendRequestSerializer
 
 
 User = get_user_model()
@@ -91,7 +97,6 @@ def decode_jwt_info(token):
         return {"error": "Token has expired"}
     except jwt.InvalidTokenError:
         return {"error": "Invalid token"}
-
 
 
 @csrf_exempt  # Disable CSRF for this view for testing purposes
@@ -306,3 +311,104 @@ def get_user_time_spent(request):
 
     # Return the sessions with time spent in seconds or minutes
     return JsonResponse({'data': list(sessions)})
+
+class UserListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.exclude(id=user.id)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+class SendFriendRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        user_from = request.user
+        user_to_id = request.data.get('user_to')
+        if not user_to_id:
+            return Response({'message': 'user_to field is required'}, status=400)
+        try:
+            user_to = User.objects.get(id=user_to_id)
+        except User.DoesNotExist:
+            return Response({'message': 'User not found'}, status=404)
+        if FriendShip.objects.filter(user_from=user_from, user_to=user_to).exists() or FriendShip.objects.filter(user_from=user_to, user_to=user_from).exists():
+            return Response({"message": "You are already friends"}, status=400)
+        # if FriendShipRequest.objects.filter(user_from=user_from, user_to=user_to, status='pending').exists():
+        #     return Response({"message": "Friend request already sent"}, status=400)
+        serializer = FriendRequestSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            friend_request = FriendShipRequest(user_from=user_from, user_to=user_to)
+            friend_request.save()
+            return Response(
+                {   'message': 'friend request sent', 
+                    'id': friend_request.id, 
+                    'from_user': user_from.username
+            }, status=201)
+
+class AcceptFriendRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, friend_request_id):
+        try:
+            # Retrieve the friendship request by ID
+            friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+
+            # Check if the request is already accepted or rejected
+            if friend_request.status == 'accepted':
+                return Response({"message": "Friend request already accepted"}, status=400)
+
+            if friend_request.status == 'rejected':
+                return Response({"message": "Friend request was rejected"}, status=400)
+
+            # Update the status to 'accepted'
+            friend_request.status = 'accepted'
+            friend_request.save()
+
+            # Now create a Friendship record to represent the accepted friendship
+            try:
+                # Create a friendship between the two users
+                FriendShip.objects.create(user_from=friend_request.user_from, user_to=friend_request.user_to)
+            except IntegrityError:
+                return Response({"message": "Friendship already exists"}, status=400)
+
+            return Response({"message": "Friend request accepted and friendship created"}, status=201)
+
+        except FriendShipRequest.DoesNotExist:
+            return Response({"message": "Friend request not found"}, status=404)
+
+class CancelFriendRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, friend_request_id):
+        try:
+            friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+
+            if friend_request.status == 'rejected':
+                return Response({"message": "Friend request already rejected"}, status=400)
+
+            if friend_request.status == 'accepted':
+                return Response({"message": "Friend request already accepted"}, status=400)
+
+            # Update the status to 'rejected'
+            friend_request.status = 'rejected'
+            friend_request.save()
+
+            return Response({"message": "Friend request rejected"}, status=201)
+
+        except FriendShipRequest.DoesNotExist:
+            return Response({"message": "Friend request not found"}, status=404)
+
+class UserStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_ids = request.query_params.getlist('user_ids', [])
+        status = {user_id: cache.get(f"user_online_{user_id}", False) for user_id in user_ids}
+        return Response(status)

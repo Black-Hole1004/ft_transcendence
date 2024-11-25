@@ -8,6 +8,7 @@ import useAuth from '../../context/AuthContext'
 import { useEffect, useState } from 'react'
 
 const Dashboard = () => {
+
 	const { authTokens, logout, getAuthHeaders } = useAuth();
 
 	const xp = 6445
@@ -18,8 +19,11 @@ const Dashboard = () => {
 	}, [level])
 
 
+
+
+
 	/************************************************************************ */
-	
+
 
 	return (
 		<section className='flex lg:flex-row flex-col'>
