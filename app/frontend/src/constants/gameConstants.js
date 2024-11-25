@@ -10,7 +10,7 @@ export const GAME_CONSTRAINTS = {
 		DEFAULT_SIZE: 8,
 	},
 	COLORS: {
-		DEFAULT: '#FBFBEE',
+		DEFAULT: '#fbfbee',
 	},
 	DURATION: {
 		DEFAULT: 30,

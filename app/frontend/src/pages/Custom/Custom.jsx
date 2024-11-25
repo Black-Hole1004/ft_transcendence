@@ -10,7 +10,7 @@ const ModeCard = ({ mode, handleGameModeSelect }) => {
 			overflow-hidden hover:text-transparent aspect-video bg-primary bg-opacity-90 transition ease-in duration-300'
 		>
 			<img
-				src='assets/images/remote.png'
+				src='assets/images/remote.webp'
 				className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 brightness-[60%] select-none'
 				alt=''
 			/>

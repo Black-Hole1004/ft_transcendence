@@ -69,3 +69,21 @@
 	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
 }
 
+.MuiPopover-paper {
+	background-color: rgb(27, 22, 17, 90%) !important;
+	border: 1px solid #646464;
+	padding: 6px;
+	width: 230px;
+}
+
+.MuiFormControl-root {
+	background-color: rgb(183,170,156,8%) !important;
+}
+
+.MuiColorInput-PopoverBody {
+	width: 70%;
+}
+
+.MuiSlider-thumbColorPrimary {
+	background-color: #fbfbee !important;
+}
