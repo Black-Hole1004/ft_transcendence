@@ -44,7 +44,9 @@
 }
 
 .game-customization-card {
-	width: clamp(62.5rem, 26.042vw + 45.833rem, 87.5rem);
+	width: clamp(62.5rem, 32.552vw + 41.667rem, 93.75rem);
+	margin-top: clamp(2.5rem, 4.425vw + 1.67rem, 8.75rem);
+	padding: clamp(1rem, 1.563vw + 0rem, 2.5rem);
 }
 
 .inputs {
@@ -66,3 +68,4 @@
 .custom-color-input {
 	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
 }
+
