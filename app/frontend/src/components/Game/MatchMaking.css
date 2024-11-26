@@ -1,91 +1,54 @@
-/* src/components/Matchmaking/Matchmaking.css */
-.matchmaking-container {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-}
-
-.matchmaking-content {
-    background: #1a1a1a;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-}
-
 .loading-indicator {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2rem auto;
-    width: 200px;
-    height: 60px;
     position: relative;
+    width: 500px;  /* Increased from 200px */
+    height: 100px;
+    margin: 100px auto;
 }
 
 .paddle {
-    width: 10px;
-    height: 40px;
-    background: white;
-    border-radius: 5px;
+    position: absolute;
+    width: 18px;
+    height: 100px;
+    background-color: #E6DDC6;
+    border-radius: 10px;
 }
 
 .paddle.left {
-    animation: paddleMove 1s infinite alternate;
+    left: 0;
+    animation: paddle-move 1s infinite;
 }
 
 .paddle.right {
-    animation: paddleMove 1s infinite alternate-reverse;
+    right: 0;
+    animation: paddle-move 1s infinite reverse;
 }
 
 .ball {
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-radius: 50%;
     position: absolute;
+    width: 25px;
+    height: 20px;
+    background-color: #E6DDC6;
+    border-radius: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    animation: ballMove 2s infinite linear;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: ball-move 1s infinite;
 }
 
-@keyframes paddleMove {
-    from { transform: translateY(-10px); }
-    to { transform: translateY(10px); }
+@keyframes paddle-move {
+    0%, 100% {
+        transform: translateY(-20px);
+    }
+    50% {
+        transform: translateY(20px);
+    }
 }
 
-@keyframes ballMove {
-    0% { transform: translate(-50px, -10px); }
-    25% { transform: translate(0px, 10px); }
-    50% { transform: translate(50px, -10px); }
-    75% { transform: translate(0px, 10px); }
-    100% { transform: translate(-50px, -10px); }
-}
-
-.cancel-button {
-    background: #BE794A;
-    color: white;
-    border: none;
-    padding: 0.75rem 2rem;
-    border-radius: 2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 1rem;
-}
-
-.cancel-button:hover {
-    background: #61463A;
-    transform: scale(1.05);
-}
-
-.status-message {
-    color: #E6DDC6;
-    margin: 1rem 0;
-    font-size: 1.2rem;
+@keyframes ball-move {
+    0%, 100% {
+        left: 20%;
+    }
+    50% {
+        left: 80%;
+    }
 }

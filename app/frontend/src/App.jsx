@@ -26,20 +26,6 @@ function App() {
           <Suspense fallback={<div>Loading...</div>}>
             <OauthHandler />
             <ComponentPath />
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/Chat' element={<Chat />} />
-              <Route path='/Profile' element={<Profile />} />
-              <Route path='/Settings' element={<Settings />} />
-              <Route path='/Dashboard' element={<Dashboard />} />
-              <Route path='/local-game' element={<LocalGame />} />
-              <Route path='/remote-game' element={<RemoteGame />} />
-              <Route path='/Custom' element={<Custom />} />
-              <Route path='/local-game-setup' element={<LocalGameSetup />} />
-              <Route path='/remote-game-setup' element={<RemoteGameSetup />} />
-              <Route path='/Tournament' element={<Tournament />} />
-              <Route path='/matchmaking' element={<MatchMaking />} />
-            </Routes>
           </Suspense>
         </AuthProvider>
       </AlertProvider>

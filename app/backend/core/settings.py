@@ -171,11 +171,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "profile_pictures/"
+# for  profile pictures
+STATIC_URL = "profile_pictures/" # URL prefix for your profile pictures
 
 STATICFILES_DIRS = [
-    BASE_DIR / "profile_pictures",
+    BASE_DIR / "profile_pictures", # Path to your profile pictures directory
 ]
+
+# for badges
+BADGES_URL = "/badges/"  # Custom URL prefix for badges
+BADGES_DIR = BASE_DIR / "badges" # Path to your badges directory
 
 
 TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
@@ -283,29 +288,29 @@ CACHES = {
 
 # for debugging purposes
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,  # This will disable existing loggers
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'game': {  # Your custom logger
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': True,  # This will disable existing loggers
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'game': {  # Your custom logger
+#             'handlers': ['console'],
+#             'level': 'INFO',
+#             'propagate': False,
+#         },
+#     },
+# }
 
 # Disable Django's logging
-import logging
-logging.getLogger('django').setLevel(logging.WARNING)
-logging.getLogger('django.server').setLevel(logging.WARNING)
-logging.getLogger('django.channels').setLevel(logging.WARNING)
-logging.getLogger('django.channels.server').setLevel(logging.WARNING)
+# import logging
+# logging.getLogger('django').setLevel(logging.WARNING)
+# logging.getLogger('django.server').setLevel(logging.WARNING)
+# logging.getLogger('django.channels').setLevel(logging.WARNING)
+# logging.getLogger('django.channels.server').setLevel(logging.WARNING)
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'email', 

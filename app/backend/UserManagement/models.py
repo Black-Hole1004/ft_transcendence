@@ -31,6 +31,22 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+class Achievement:
+    LEVELS = [
+        {'name': 'NOVICE ASTRONAUT', 'xp': 0, 'image': '/badges/novice.png'},
+        {'name': 'COSMIC EXPLORER', 'xp': 2000, 'image': '/badges/cosmic.png'},
+        {'name': 'STELLAR VOYAGER', 'xp': 4000, 'image': '/badges/stellar.png'},
+        {'name': 'GALACTIC TRAILBLAZER', 'xp': 6000, 'image': '/badges/galactic.png'},
+        {'name': 'CELESTIAL MASTER', 'xp': 8000, 'image': '/badges/celestial.png'}
+    ]
+
+    @staticmethod
+    def get_badge(xp):
+        for level in reversed(Achievement.LEVELS):
+            if xp >= level['xp']:
+                return level
+        return Achievement.LEVELS[0]
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     status_choices = [

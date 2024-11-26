@@ -4,6 +4,10 @@ from UserManagement import views
 
 from UserManagement.views import UserProfileView
 from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
 # from UserManagement.views import UserUpdateView
 
 from rest_framework_simplejwt.views import (
@@ -36,3 +40,7 @@ urlpatterns = [
     path('api/chat/', include('Chat.urls')),
     path('chat/', include('Chat.urls'))
 ]
+
+# Add this to serve badges specifically
+if settings.DEBUG:  # Serve only in development mode
+    urlpatterns += static(settings.BADGES_URL, document_root=settings.BADGES_DIR)

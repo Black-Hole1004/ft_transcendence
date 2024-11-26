@@ -7,7 +7,6 @@ class MatchmakingService {
     }
 
     connect() {
-        const token = localStorage.getItem('access_token');
         this.socket = new WebSocket(
             `ws://localhost:8000/ws/matchmaking/`
         );

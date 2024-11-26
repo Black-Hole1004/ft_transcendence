@@ -12,6 +12,7 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from channels.security.websocket import AllowedHostsOriginValidator
+from .middleware import JwtCookieMiddleware
 
 # Import WebSocket routing from different apps
 from game import routing as game_routing
@@ -27,7 +28,9 @@ application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
         "websocket": AllowedHostsOriginValidator(
-            AuthMiddlewareStack(
+            # Add middleware to authenticate users using JWT cookie when connecting to the WebSocket
+            # that will be used by the consumers to access the user object
+            JwtCookieMiddleware(
                 URLRouter(websocket_urlpatterns)
             )
         ),

@@ -16,4 +16,15 @@ urlpatterns = [
     
     # Game queries
     path('history/', views.get_game_history, name='game_history'),
+    
+    # Game actions for debugging purposes
+    path('debug/game/<int:game_id>/', views.check_game_session, name='check_game'),
+    path('debug/active-games/', views.list_active_games, name='list_active_games'),
 ]
+
+
+# list all active games
+#http://localhost:8000/admin/game/gamesessions/
+
+# check a specific game
+#http://localhost:8000/api/game/debug/game/1/

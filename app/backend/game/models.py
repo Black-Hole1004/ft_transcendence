@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 class GameSessions(models.Model):
     class GameStatus(models.TextChoices):
@@ -45,7 +46,7 @@ class GameSessions(models.Model):
     end_time = models.DateTimeField(null=True, blank=True)
     
     # Game configuration
-    background_id = models.IntegerField(default=1)  # Just store the background ID directly
+    background_id = models.IntegerField(default=1)
     
     # Game state
     is_paused = models.BooleanField(default=False)
@@ -61,22 +62,33 @@ class GameSessions(models.Model):
 
     class Meta:
         db_table = 'game_session'
+        ordering = ['-start_time']  # Latest games first
 
     def __str__(self):
         return f"Game {self.game_id} - {self.get_status_display()}"
 
-    def assign_player(self, user, player_number):
-        """Assign a user to a player slot"""
-        if player_number == 1 and not self.player1:
-            self.player1 = user
-            self.save()
-            return True
-        elif player_number == 2 and not self.player2:
-            self.player2 = user
-            self.save()
-            return True
-        return False
-
     def is_full(self):
         """Check if both player slots are filled"""
         return bool(self.player1 and self.player2)
+        
+    def start_game(self):
+        """Start the game if both players are ready"""
+        if self.is_full() and self.player1_ready and self.player2_ready:
+            self.status = self.GameStatus.IN_PROGRESS
+            self.save()
+            return True
+        return False
+        
+    def end_game(self, winner_id):
+        """End the game and set winner/loser"""
+        self.status = self.GameStatus.FINISHED
+        self.end_time = timezone.now()
+        
+        if winner_id == self.player1.id:
+            self.winner = self.player1
+            self.loser = self.player2
+        else:
+            self.winner = self.player2
+            self.loser = self.player1
+                
+        self.save()

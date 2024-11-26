@@ -13,11 +13,13 @@ const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
 const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
 const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
 const Layout = React.lazy(() => import('../components/Layout/Layout'))
-// const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
-// const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
-// const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
-// const RemoteGameSetup = React.lazy(() => import('../pages/Game/RemoteGameSetup'))
 
+const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
+const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
+const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
+const RemoteGameSetup = React.lazy(() => import('../pages/Game/RemoteGameSetup'))
+
+const MatchMaking = React.lazy(() => import('../components/Game/MatchMaking'))
 
 
 const ComponentPath = () => {
@@ -33,18 +35,19 @@ const ComponentPath = () => {
 					<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
 					<Route path="/Game" element={<PrivateRoute><Game /></PrivateRoute>} />
 					<Route path="/Chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
-					<Route path="/Custom" element={<PrivateRoute><Custom /></PrivateRoute>} />
 					<Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
 					<Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
 					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
 					<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />
-					{/* <Route path='/local-game' element={<LocalGame />} />
-					<Route path='/remote-game' element={<RemoteGame />} />
-					<Route path='/Custom' element={<Custom />} />
-					<Route path='/local-game-setup' element={<LocalGameSetup />} />
-					<Route path='/remote-game-setup' element={<RemoteGameSetup />} /> */}
-				</Route>
+					
+					<Route path="/Custom" element={<PrivateRoute><Custom /></PrivateRoute>} />
+					<Route path='/local-game' element={<PrivateRoute><LocalGame /></PrivateRoute>} />
+					<Route path='/remote-game' element={<PrivateRoute><RemoteGame /></PrivateRoute>} />
+\					<Route path='/local-game-setup' element={<PrivateRoute><LocalGameSetup /></PrivateRoute>} />
+					<Route path='/remote-game-setup' element={<PrivateRoute><RemoteGameSetup /></PrivateRoute>} />
+					<Route path='/matchmaking' element={<PrivateRoute><MatchMaking /></PrivateRoute>} />
 
+				</Route>
 				{/* Catch-all route */}
 				<Route path="*" element={<NotFound />} />
 			</Routes>

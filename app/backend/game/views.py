@@ -13,6 +13,7 @@ from django.db.models import Q
 import jwt
 from django.conf import settings
 from django.db import models
+from django.shortcuts import get_object_or_404
 
 # views for the game
 
@@ -288,3 +289,61 @@ def cancel_matchmaking(request):
             {'error': 'Failed to cancel matchmaking', 'detail': str(e)},
             status=status.HTTP_400_BAD_REQUEST
         )
+        
+@api_view(['GET'])
+def check_game_session(request, game_id):
+    """Debug view to check game session details"""
+    game = get_object_or_404(GameSessions, game_id=game_id)
+    
+    game_info = {
+        'game_id': game.game_id,
+        'status': game.status,
+        'background_id': game.background_id,
+        
+        'players': {
+            'player1': {
+                'id': game.player1.id if game.player1 else None,
+                'username': game.player1.username if game.player1 else None,
+                'ready': game.player1_ready,
+                'score': game.score_player1
+            },
+            'player2': {
+                'id': game.player2.id if game.player2 else None,
+                'username': game.player2.username if game.player2 else None,
+                'ready': game.player2_ready,
+                'score': game.score_player2
+            }
+        },
+        
+        'game_state': {
+            'is_paused': game.is_paused,
+            'start_time': game.start_time,
+            'end_time': game.end_time,
+            'is_full': game.is_full()
+        },
+        
+        'results': {
+            'winner': game.winner.username if game.winner else None,
+            'loser': game.loser.username if game.loser else None
+        }
+    }
+    
+    return Response(game_info)
+
+@api_view(['GET'])
+def list_active_games(request):
+    """List all active game sessions"""
+    active_games = GameSessions.objects.exclude(status=GameSessions.GameStatus.FINISHED)
+    
+    games_info = [{
+        'game_id': game.game_id,
+        'status': game.status,
+        'player1': game.player1.username if game.player1 else None,
+        'player2': game.player2.username if game.player2 else None,
+        'start_time': game.start_time
+    } for game in active_games]
+    
+    return Response({
+        'active_games_count': len(games_info),
+        'games': games_info
+    })

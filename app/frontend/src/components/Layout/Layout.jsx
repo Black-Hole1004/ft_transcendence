@@ -1,6 +1,6 @@
 import Alert from '../Alert'
 import Header from './Header'
-import { useEffect } from 'react'
+import { useEffect , useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import { useAlert } from '../AlertContext'
 import useAuth from '../../context/AuthContext'
