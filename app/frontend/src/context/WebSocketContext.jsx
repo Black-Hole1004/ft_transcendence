@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useRef } from 'react';
+import  useAuth  from './AuthContext';
 
 // Create a context for WebSocket notifications
 const WebSocketContext = createContext();
@@ -9,40 +10,50 @@ export const useWebSocket = () => {
 
 export const WebSocketProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
-    
-    useEffect(() => {
-        const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/');
+    const { user } = useAuth();
 
-        socket.onopen = () => console.log('WebSocket connection established');
-        
-        socket.onmessage = (event) => {
+    const socketRef = useRef(null);
+
+    useEffect(() => {
+        socketRef.current = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/');
+        console.log('WebSocket connection:', socketRef.current);
+
+        socketRef.current.onopen = () => console.log('WebSocket connection established');
+
+        socketRef.current.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            console.log('Received WebSocket data:', data);
-            
-            if (data.id) {
-                setNotifications(prevNotifications => [
+            console.log('Notification received:', data);
+            if (data.sender_id !== user.id) {
+                setNotifications((prevNotifications) => [
                     ...prevNotifications,
                     {
                         id: data.id,
                         message: data.message,
                         type: 'friend_request',
-                        fromUser: data.fromUser,
+                        from_user: data.from_user,
                         timestamp: new Date().toLocaleTimeString(),
+                        profile_picture: data.profile_picture,
                     },
                 ]);
             } else {
-                console.error('Friend request ID is missing in WebSocket data:', data);
+                console.log("Notification ignored from current user");
             }
         };
 
-        socket.onclose = () => console.warn('WebSocket connection closed');
-        socket.onerror = (error) => console.error('WebSocket error:', error);
+        socketRef.current.onclose = () => console.warn('WebSocket connection closed');
+        socketRef.current.onerror = (error) => console.error('WebSocket error:', error);
 
-        return () => socket.close();
+        return () => socketRef.current.close();
     }, []);
 
+    const sendMessage = (data) => {
+        if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+            socketRef.current.send(JSON.stringify(data));
+        }
+    };
+
     return (
-        <WebSocketContext.Provider value={{ notifications, setNotifications }}>
+        <WebSocketContext.Provider value={{ notifications, setNotifications, sendMessage }}>
             {children}
         </WebSocketContext.Provider>
     );

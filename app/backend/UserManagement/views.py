@@ -55,6 +55,10 @@ from .models import FriendShipRequest
 from .models import FriendShip
 from .models import Notification
 from .serializers import FriendRequestSerializer
+from django.db import IntegrityError
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 
 User = get_user_model()
@@ -346,11 +350,29 @@ class SendFriendRequestView(APIView):
         if serializer.is_valid():
             friend_request = FriendShipRequest(user_from=user_from, user_to=user_to)
             friend_request.save()
+            print('user_from.id ==>', user_from.id)
+            # Notify the recipient via WebSocket
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                f"friend_request_{user_to.id}",
+                {
+                    "type": "friend_request_message",
+                    "message": f"{user_from.username} sent you a friend request",
+                    "id": friend_request.id,
+                    "from_user": user_from.username,
+                    "profile_picture": user_from.profile_picture.url if user_from.profile_picture else None,
+                    "sender_id": user_from.id,
+                }
+            )
             return Response(
-                {   'message': 'friend request sent', 
-                    'id': friend_request.id, 
-                    'from_user': user_from.username
-            }, status=201)
+                {
+                    "sender_id": user_from.id,
+                    "message": "Friend request sent",
+                    "id": friend_request.id,
+                    "from_user": user_from.username,
+                },
+                status=201,
+            )
 
 class AcceptFriendRequestView(APIView):
     permission_classes = [IsAuthenticated]

@@ -77,7 +77,7 @@ function NotificationDropdown() {
                     <div key={index} className='flex items-center justify-between'>
                         <div className='flex items-center gap-2'>
                             <img
-                                src='/assets/images/tabi3a.jpeg'
+                                src={notification.profile_picture}
                                 className='mtb:border border-0.7 border-primary rounded-full'
                                 alt='User Avatar'
                             />

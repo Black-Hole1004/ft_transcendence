@@ -31,10 +31,13 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         message = data.get('message')
         friend_request_id = data.get('id')
         from_user = data.get('from_user')
+        profile_picture = data.get('profile_picture')
+        sender_id = data.get('sender_id')
 
         print('message =>', message)
         print('friend_request_id =>', friend_request_id)
         print('from_user =>', from_user)
+        print('profile_picture =>', profile_picture)
 
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -42,27 +45,37 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                 'type': 'friend_request_message',
                 'message': message,
                 'id': friend_request_id,
-                'from_user': from_user
+                'from_user': from_user,
+                'profile_picture': profile_picture,
+                'sender_id': sender_id
             }
         )
     
     async def friend_request_message(self, event):
         print('----- friend_request_message -----')
+        print('event =>', event)
         message = event['message']
         friend_request_id = event['id']
         from_user = event['from_user']
+        profile_picture = event['profile_picture']
+        sender_id = event['sender_id']
 
         print('message =>', message)
         print('friend_request_id =>', friend_request_id)
         print('from_user =>', from_user)
+        print('profile_picture =>', profile_picture)
+        print('sender_id =>', sender_id)
 
-        await self.send(
-            text_data=json.dumps({
-                'message': message,
-                'id': friend_request_id,
-                'from_user': from_user
-            })
-        )
+        if self.user.id != sender_id:
+            await self.send(
+                text_data=json.dumps({
+                    'message': event['message'],
+                    'id': event['id'],
+                    'from_user': event['from_user'],
+                    'profile_picture': event['profile_picture'],
+                    'sender_id': sender_id,
+                })
+            )
 
 
 

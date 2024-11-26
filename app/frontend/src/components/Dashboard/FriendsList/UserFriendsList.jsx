@@ -14,31 +14,38 @@ function UserFriendsList({ user }) {
 
 	const handle_add_friend = async (id) => {
 		try {
-			const reponse = await fetch(SEND_FRIEND_REQUEST, {
+			const response = await fetch(SEND_FRIEND_REQUEST, {
 				method: 'POST',
-				body: JSON.stringify({user_to: id}),
+				body: JSON.stringify({ user_to: id }),
 				headers: getAuthHeaders(),
-			})
-			const data = await reponse.json()
-			if (reponse.status === 201) {
-				const friend_request_id = data.id
-				const from_user = data.from_user
-				const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/')
+			});
+			const data = await response.json();
+			if (response.status === 201) {
+				console.log('Friend request sent:', data);
+				const friend_request_id = data.id;
+				const from_user = data.from_user;
+				const sender_id = data.sender_id;
+	
+				// Create the WebSocket connection
+				const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/');
 				socket.onopen = () => {
+					// Send the friend request notification via WebSocket
 					socket.send(JSON.stringify({
-						message: `User ${from_user} sent you friend request`,
+						sender_id: sender_id,
+						message: `User ${from_user} sent you a friend request`,
 						id: friend_request_id,
-						from_user: from_user
-					}))
-					handleSubmit('success', 'Friend request sent successfully')
-				}
+						from_user: from_user,
+						profile_picture: user.profile_picture,
+					}));
+					handleSubmit('success', 'Friend request sent successfully');
+				};
 			} else {
-				handleSubmit('error', data.message)
+				handleSubmit('error', data.message);
 			}
-		} catch(error) {
+		} catch (error) {
 			console.error('Error:', error);
 		}
-	}
+	};
 
 	return (
 		<div className='user-container flex items-center justify-between font-dreamscape-sans
