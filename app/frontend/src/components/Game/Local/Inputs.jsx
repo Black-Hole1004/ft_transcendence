@@ -29,8 +29,8 @@ const Inputs = ({ id, value, setValue }) => {
 						id={id + 'Color'}
 						value={value.color}
 						isAlphaHidden={true}
-						fallbackValue="#fbfbee"
-						onChange={(color) => setValue('color', color)}
+						fallbackValue='#fbfbee'
+						onChange={(color) => setValue(color)}
 						sx={{
 							// Border
 							border: 1,
@@ -72,8 +72,6 @@ const Inputs = ({ id, value, setValue }) => {
 								width: 'clamp(1.125rem, 0.265vw + 1.075rem, 1.5rem)',
 								height: 'clamp(1.125rem, 0.265vw + 1.075rem, 1.5rem)',
 							},
-
-
 						}}
 					/>
 				</div>

@@ -9,7 +9,6 @@ const GamePreparationPanel = ({
 	onPlayerUpdate,
 	onGameConfigUpdate,
 }) => {
-
 	return (
 		<div className='flex-1 flex flex-col lp:pl-4'>
 			<h3 className='title-size font-heavy text-2xl mt-5 mb-8'>Prepare for Battle</h3>
@@ -22,32 +21,34 @@ const GamePreparationPanel = ({
 						id={'Player 1'}
 						value={players.player1}
 						setValue={(field, value) => onPlayerUpdate('player1', field, value)}
-						/>
+					/>
 					<Inputs
 						id={'Player 2'}
 						value={players.player2}
 						setValue={(field, value) => onPlayerUpdate('player2', field, value)}
-						/>
+					/>
 					<Inputs
 						id={'Ball'}
 						value={gameConfig.ball}
-						setValue={(value) => onGameConfigUpdate('ball', { ...gameConfig.ball, value })}
+						setValue={(value) =>
+							onGameConfigUpdate('ball', { ...gameConfig.ball, color: value })
+						}
 					/>
 				</div>
 				<div className='flex flex-col gap-2'>
 					<button
 						type='button'
 						onClick={onRandomize}
-						className='font-medium labels w-full p-2 border border-border bg-[rgb(183,170,156,8%)] text-primary rounded
-					transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]'
+						className='font-medium labels w-full p-2 border border-border text-primary rounded
+							bg-[rgb(183,170,156,8%)] transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]'
 					>
 						Generate Random Values
 					</button>
 					<button
 						type='button'
 						onClick={onReset}
-						className='font-medium labels w-full p-2 border border-border bg-[rgb(183,170,156,8%)] text-primary rounded
-					transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]'
+						className='font-medium labels w-full p-2 border border-border text-primary rounded
+							bg-[rgb(183,170,156,8%)] transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]'
 					>
 						Reset to Default
 					</button>

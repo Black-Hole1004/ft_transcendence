@@ -20,8 +20,8 @@ const LocalGameSetup = () => {
 			size: GAME_CONSTRAINTS.BALL.DEFAULT_SIZE,
 			color: GAME_CONSTRAINTS.COLORS.DEFAULT,
 		},
-		duration: GAME_CONSTRAINTS.DURATION.DEFAULT,
 		isBackgroundVisible: true,
+		duration: GAME_CONSTRAINTS.DURATION.DEFAULT,
 	})
 
 	// Player configuration state
@@ -116,7 +116,7 @@ const LocalGameSetup = () => {
 	}
 
 	return (
-		<section className='flex justify-center bg-backdrop-40'>
+		<section className='flex justify-center'>
 			<div
 				className='flex max-w-[96%] max-lp:flex-col max-lp:gap-3 p-4
 				border-1.5 border-primary rounded-lg game-customization-card aspect-video'
