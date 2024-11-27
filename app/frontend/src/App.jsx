@@ -14,10 +14,10 @@ function App() {
 			<AlertProvider>
 				<AuthProvider>
 					<WebSocketProvider>
-								<React.Suspense fallback={<div>Loading...</div>}>
-									<OauthHandler />
-									<ComponentPath />
-								</React.Suspense>
+							<React.Suspense fallback={<div>Loading...</div>}>
+								<OauthHandler />
+								<ComponentPath />
+							</React.Suspense>
 					</WebSocketProvider>
 				</AuthProvider>
 			</AlertProvider>

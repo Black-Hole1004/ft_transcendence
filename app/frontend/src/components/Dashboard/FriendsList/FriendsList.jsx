@@ -4,7 +4,7 @@ import useAuth from '../../../context/AuthContext'
 
 function FriendsList() {
 	const [users, setUsers] = useState([])
-	const { getAuthHeaders } = useAuth()
+	const { getAuthHeaders, profile_picture } = useAuth()
 	
 	const get_all_users = async () => {
 		try {
@@ -44,7 +44,7 @@ function FriendsList() {
 			</div>
 			<div className='w-[96%] overflow-y-auto users'>
 				{users.map((user) => {
-					return <UserFriendsList key={user.id} user={user} />
+					return <UserFriendsList key={user.id} user={user} profile_picture={profile_picture} />
 				}
 				)}
 			</div>

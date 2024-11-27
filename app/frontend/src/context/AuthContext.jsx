@@ -213,7 +213,6 @@ export const AuthProvider = ({ children }) => {
     };
 
     const get_expiration_time = (token) => {
-      
         if (!token) {
             return null
         }
