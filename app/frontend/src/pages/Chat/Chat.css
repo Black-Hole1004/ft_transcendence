@@ -80,8 +80,9 @@
 	font-size: clamp(0.813rem, 0.531vw + 0.713rem, 1.563rem);
 }
 
-.chat-header img {
-	margin-left: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem);
+.chat-header {
+	padding-left: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem);
+	padding-right: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem);
 }
 
 .chat-input-container {
@@ -135,7 +136,9 @@
 
 
 
-
+.block-button {
+	padding: clamp(0.188rem, 0.177vw + 0.154rem, 0.438rem) clamp(0.313rem, 0.442vw + 0.23rem, 0.938rem);
+}
 
 
 

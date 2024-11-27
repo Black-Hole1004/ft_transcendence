@@ -11,7 +11,7 @@ const GamePreparationPanel = ({
 }) => {
 	return (
 		<div className='flex-1 flex flex-col lp:pl-4'>
-			<h3 className='title-size font-heavy text-2xl mt-5 mb-8'>Prepare for Battle</h3>
+			<h3 className='title-size font-heavy text-2xl mt-5 mb-6'>Prepare for Battle</h3>
 			<form
 				onSubmit={onSubmit}
 				className='flex-1 flex flex-col max-lp:gap-12 justify-between'

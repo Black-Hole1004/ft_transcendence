@@ -374,33 +374,6 @@ const Settings = () => {
 										value={mobile_number}
 									/>
 								</div>
-								<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
-									<Input
-										id={'password'}
-										type={'password'}
-										label={'Current Password'}
-										placeholder={'•••••••••••••'}
-										onChange={handleInputChange}
-										value={password}
-									/>
-
-									<Input
-										id={'new_password'}
-										type={'password'}
-										label={'New Password'}
-										placeholder={'••••••••••'}
-										onChange={handleInputChange}
-										value={new_password}
-									/>
-									<Input
-										id={'confirm_password'}
-										type={'password'}
-										label={'Confirm New Password'}
-										placeholder={'••••••••••'}
-										onChange={handleInputChange}
-										value={confirm_password}
-									/>
-								</div>
 							</form>
 						</div>
 					</div>
@@ -470,23 +443,52 @@ const Settings = () => {
 								security.
 							</p>
 						</div>
-						<div className='flex gap-4'>
-							<Button
-								className={
-									'rounded-md border-border font-regular buttons-text remove-button'
-								}
-								type='submit'
-								onClick={enableDesable2FA}
-								disabled={twoFactorAuthEnabled}
-							>
-								Enable Two-factor Authentication
-							</Button>
-							<button
-								className='rounded-md border-border font-regular buttons-text remove-button border 
-							transition duration-300 select-none bg-red-700 hover:bg-red-800'
-							>
-								Delete Account
-							</button>
+						<div className='flex flex-col lp:gap-6 gap-4'>
+							<div className='flex flex-wrap xl:gap-12 lg:gap-4 gap-2'>
+								<Input
+									id={'password'}
+									type={'password'}
+									label={'Current Password'}
+									placeholder={'•••••••••••••'}
+									onChange={handleInputChange}
+									value={password}
+								/>
+
+								<Input
+									id={'new_password'}
+									type={'password'}
+									label={'New Password'}
+									placeholder={'••••••••••'}
+									onChange={handleInputChange}
+									value={new_password}
+								/>
+								<Input
+									id={'confirm_password'}
+									type={'password'}
+									label={'Confirm New Password'}
+									placeholder={'••••••••••'}
+									onChange={handleInputChange}
+									value={confirm_password}
+								/>
+							</div>
+							<div className='flex gap-4'>
+								<Button
+									className={
+										'rounded-md border-border font-regular buttons-text remove-button'
+									}
+									type='submit'
+									onClick={enableDesable2FA}
+									disabled={twoFactorAuthEnabled}
+								>
+									Enable Two-factor Authentication
+								</Button>
+								<button
+									className='rounded-md border-red-600 font-regular buttons-text remove-button border 
+								transition duration-300 select-none bg-red-600 bg-opacity-10 hover:bg-red-600'
+								>
+									Delete Account
+								</button>
+							</div>
 						</div>
 					</div>
 					<div className='flex justify-end save-button my-3 tb:gap-2 gap-1'>

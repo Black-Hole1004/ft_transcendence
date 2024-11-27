@@ -110,6 +110,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             print('heeeeere')
             return
 
+
         # print('userid: ', self.userid)
         # print('conversation_key: ', self.conversation_key)
         self.other_user = int(self.participants[0]) if int(self.participants[0]) != self.userid else int(self.participants[1])
@@ -133,7 +134,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         elif message_type == 'message':
             print('++++++++++++++++++++++++++++')
-            if self.room_group_name:
+            if self.room_group_name and data['sender'] == self.userid:
                 sender = data['sender']
                 message = data['message']
                 conversation_key = data['conversation_key']

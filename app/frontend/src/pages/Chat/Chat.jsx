@@ -2,11 +2,13 @@ import './Chat.css'
 import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+
 import Footer from '../../components/Chat/Footer.jsx'
 import Messages from '../../components/Chat/Messages.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
+import ConversationHeader from '../../components/Chat/ConversationHeader.jsx'
 
 // import { useAlert } from '../../components/AlertContext'
 import useAuth from '../../context/AuthContext.jsx'
@@ -21,9 +23,10 @@ const Chat = () => {
 	const webSocketRef = useRef(null)
 	const currentMessage = useRef(null)
 
+	const [isBlocked, setIsBlocked] = useState(false)
+	const [chatMessages, setChatMessages] = useState([])
 	const [currentUserId, setCurrentUserId] = useState(0)
 	const [recipientInfo, setRecipientInfo] = useState(null)
-	const [chatMessages, setChatMessages] = useState([])
 	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [conversationKey, setConversationKey] = useState(null)
 	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
@@ -159,10 +162,12 @@ const Chat = () => {
 			}
 		}
 	}
-	console.log(conversationKey)
+
 	return (
-		<section className={`section-margin flex lg:flex-row flex-col gap-4
-			${conversationKey ? 'lg:justify-between' : 'lg:justify-center'}`}>
+		<section
+			className={`section-margin flex lg:flex-row flex-col gap-4
+			${conversationKey ? 'lg:justify-between' : 'lg:justify-center'}`}
+		>
 			<div
 				className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
@@ -186,60 +191,31 @@ const Chat = () => {
 				>
 					{recipientInfo ? (
 						<>
-							{/* Chat Header */}
-							<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
-								<img
-									src={`${recipientProfileImage}`}
-									className='chat-history-image object-cover rounded-full ring-1 ring-primary select-none'
-									alt='user image'
-								/>
-								<div>
-									<p className='font-heavy friend-name text-primary'>
-										{`${recipientInfo.first_name} ${recipientInfo.last_name}`}
-									</p>
-									<div className='flex items-center gap-0.5'>
-										<div
-											className={`w-1.5 h-1.5 rounded-full ${
-												recipientInfo.status === 'online'
-													? 'bg-online'
-													: recipientInfo.status === 'offline'
-														? 'bg-offline'
-														: 'bg-defeat'
-											}`}
-										></div>
-										<p
-											className={`last-message font-heavy ${
-												recipientInfo.status === 'online'
-													? 'text-online'
-													: recipientInfo.status === 'offline'
-														? 'text-offline'
-														: 'text-defeat'
-											}`}
-										>
-											{recipientInfo.status === 'online'
-												? 'Online'
-												: recipientInfo.status === 'offline'
-													? 'Offline'
-													: 'In-Game'}
-										</p>
-									</div>
-								</div>
-							</div>
+							<ConversationHeader
+								isBlocked={isBlocked}
+								setIsBlocked={setIsBlocked}
+								recipientInfo={recipientInfo}
+								recipientProfileImage={recipientProfileImage}
+							/>
 
+							{/* Chat ConversationHeader */}
 							{/* Chat Messages */}
 							<Messages
+								isBlocked={isBlocked}
 								currentUserId={currentUserId}
 								chatMessages={chatMessages}
 								recipientProfileImage={recipientProfileImage}
 							/>
 
 							{/* Chat Footer */}
-							<Footer
-								sendChatMessage={sendChatMessage}
-								currentMessage={currentMessage}
-								handleKeyPress={handleKeyPress}
-								conversationKey={conversationKey}
-							/>
+							{!isBlocked && (
+								<Footer
+									currentMessage={currentMessage}
+									handleKeyPress={handleKeyPress}
+									sendChatMessage={sendChatMessage}
+									conversationKey={conversationKey}
+								/>
+							)}
 						</>
 					) : (
 						<StartConversation />

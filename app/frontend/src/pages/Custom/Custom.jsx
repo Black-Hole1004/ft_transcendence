@@ -11,7 +11,7 @@ const ModeCard = ({ mode, handleGameModeSelect }) => {
 		>
 			<img
 				src='assets/images/remote.webp'
-				className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 brightness-[60%] select-none'
+				className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 brightness-[60%] select-none pointer-events-none'
 				alt=''
 			/>
 			<p
@@ -78,14 +78,14 @@ const Custom = () => {
 							}}
 						>
 							<div className='w-full h-full flex justify-center items-center bg-backdrop-40'>
-								<div className='absolute top-8 left-3 paddles bg-primary rounded-full'></div>
+								<div className='absolute left-3 paddles bg-primary rounded-full left-paddle'></div>
+								<div className='absolute right-3 paddles bg-primary rounded-full right-paddle'></div>
 								<button
 									onClick={() => setStep(2)}
 									className='font-dreamscape start-button'
 								>
 									Start
 								</button>
-								<div className='absolute bottom-4 right-3 paddles bg-primary rounded-full '></div>
 							</div>
 						</div>
 					</div>

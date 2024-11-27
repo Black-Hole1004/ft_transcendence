@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import Message from './Message.jsx'
 
-const Messages = ({ currentUserId, chatMessages, recipientProfileImage }) => {
+const Messages = ({ isBlocked, currentUserId, chatMessages, recipientProfileImage }) => {
 	const messagesEndRef = useRef(null)
 
 	const getDate = (timestamp) => {
@@ -49,7 +49,7 @@ const Messages = ({ currentUserId, chatMessages, recipientProfileImage }) => {
 	return (
 		<div
 			id='container'
-			className='flex-1 w-[98%] ml-2 mr-4 py-0.5 overflow-y-auto flex flex-col gap-1.5'
+			className={`flex-1 w-[98%] ml-2 mr-4 py-0.5 overflow-y-auto flex flex-col gap-1.5 ${isBlocked ? 'mb-8' : ''}`}
 		>
 			{Object.entries(groupedMessages).map(([date, chatMessages]) => (
 				<div key={date} className='flex flex-col gap-3'>

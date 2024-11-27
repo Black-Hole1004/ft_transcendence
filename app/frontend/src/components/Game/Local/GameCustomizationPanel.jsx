@@ -9,7 +9,7 @@ const GameCustomizationPanel = ({ gameConfig, players, backgroundId, onGameConfi
 
 	return (
 		<div className='flex-1 flex flex-col lp:pr-4'>
-			<h3 className='title-size font-heavy text-2xl mt-5 mb-8'>Personalize Your Game</h3>
+			<h3 className='title-size font-heavy text-2xl mt-5 mb-6'>Personalize Your Game</h3>
 			<div className='flex-1 flex flex-col justify-between max-lp:gap-7'>
 				<div className='flex flex-col'>
 					<Sliders

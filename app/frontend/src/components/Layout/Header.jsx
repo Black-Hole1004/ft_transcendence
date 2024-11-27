@@ -1,11 +1,15 @@
 import './Header.css'
-import { Link } from 'react-router-dom'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
+
+import { Link, useLocation } from 'react-router-dom'
 import React, { useState, useRef, useEffect } from 'react'
+
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 function Header({ user_data }) {
+	const location = useLocation().pathname.split('/').slice(1, 2)
+
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
@@ -68,12 +72,12 @@ function Header({ user_data }) {
 				</h1>
 			</Link>
 			<nav className='relative flex justify-between ml:gap-x-2.5 ms:gap-x-1.5'>
-				<Link to={'/chat'}>
-					<div className='relative'>
+				<div className={`relative ${location[0] === 'chat' ? 'pointer-events-none' : ''}`}>
+					<Link to={'/chat'}>
 						<img
 							src='/assets/images/icons/chat.svg'
 							alt='chat icon'
-							className='nav-icons select-none hover:brightness-150'
+							className={`nav-icons select-none ${location[0] === 'chat' ? '' : 'hover:brightness-200 transition duration-300'}`}
 						/>
 						<div
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
@@ -81,8 +85,8 @@ function Header({ user_data }) {
 						>
 							<p className='font-heavy text-[10px] p-0.5'>+99</p>
 						</div>
-					</div>
-				</Link>
+					</Link>
+				</div>
 				<button
 					ref={notificationButtonRef}
 					onClick={toggleNotification}
@@ -91,7 +95,7 @@ function Header({ user_data }) {
 					<img
 						src='/assets/images/icons/notification.svg'
 						alt='notification icon'
-						className='nav-icons select-none hover:brightness-150'
+						className='nav-icons select-none hover:brightness-200 transition duration-300'
 					/>
 					{!isNotificationOpen && (
 						<div
@@ -138,7 +142,10 @@ function Header({ user_data }) {
 						ref={dropdownRef}
 						className='dropdown absolute right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
 					>
-						<UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} user_data={user_data} />
+						<UserAvatarDropdown
+							setIsDropdownOpen={setIsDropdownOpen}
+							user_data={user_data}
+						/>
 					</div>
 				)}
 			</nav>
