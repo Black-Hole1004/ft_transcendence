@@ -79,20 +79,6 @@ function UserFriendsList({ user, profile_picture }) {
 				</div>
 			</div>
 			<div className='mx-1'>
-				{/* {user.is_friend? (
-					<p
-						className={` ${status == 'online' ? 'text-online' : status == 'offline' ? 'text-offline' : 'text-defeat'} status`}
-					>
-						{status}
-					</p>
-				) : (
-					<Button 
-						className={'font-heavy add-friend-button lg:rounded-lg rounded'}
-						onClick={() => handle_add_friend(user.id)}
-					>
-						Add Friend
-					</Button>
-				)} */}
 
 				{user.is_friend && (
                 <p className={`

@@ -98,47 +98,46 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
     
 class UserStatusConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        user = self.scope['user']
-        if user.is_authenticated:
-            # Mark the user as online
-            await self.set_user_online(user.id)
-            # Add the user to the status broadcast group
-            await self.channel_layer.group_add("user_status", self.channel_name)
-            await self.accept()
-        else:
+        print('----- connect -----')
+        query_string = self.scope['query_string'].decode()
+        # print('query_string ===================>', query_string)
+        query_params = parse_qs(query_string)
+        access_token = query_params.get('access_token', [None])[0]
+        if access_token:
+            access_token = access_token.strip('"')
+        # print('access_token ===================>', access_token)
+        if not access_token:
             await self.close()
-
+            return
+        try:
+            decoded_data = jwt_decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+            self.user = await database_sync_to_async(User.objects.get)(id=decoded_data['user_id'])
+            # print('self.user ==================>', self.user)
+        except Exception as e:
+            await self.close()
+            return
+        
+        if self.user.is_authenticated:
+            await self.update_user_status(self.user, 'online')
+        await self.accept()
+    
     async def disconnect(self, close_code):
-        user = self.scope['user']
-        if user.is_authenticated:
-            # Mark the user as offline
-            await self.set_user_offline(user.id)
-            # Remove the user from the status broadcast group
-            await self.channel_layer.group_discard("user_status", self.channel_name)
+        # print('----- disconnect -----')
+        if hasattr(self, 'user'):
+            await self.update_user_status(self.user, 'offline')
+    
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
 
-    async def set_user_online(self, user_id):
-        cache.set(f"user_online_{user_id}", True, timeout=3600)  # Online status for 1 hour
-        # Broadcast user status to the group
-        await self.broadcast_user_status(user_id, "online")
-
-    async def set_user_offline(self, user_id):
-        cache.delete(f"user_online_{user_id}")
-        # Broadcast user status to the group
-        await self.broadcast_user_status(user_id, "offline")
-
-    async def broadcast_user_status(self, user_id, status):
-        await self.channel_layer.group_send(
-            "user_status",
-            {
-                "type": "user.status",
-                "user_id": user_id,
-                "status": status,
-            },
-        )
-
-    # Method to handle incoming messages in the group
-    async def user_status(self, event):
+        if message == 'ingame':
+            await self.update_user_status(self.user, 'ingame')
+        
         await self.send(text_data=json.dumps({
-            "user_id": event["user_id"],
-            "status": event["status"],
+            'message': message
         }))
+
+    @database_sync_to_async
+    def update_user_status(self, user, status):
+        user.status = status
+        user.save()
