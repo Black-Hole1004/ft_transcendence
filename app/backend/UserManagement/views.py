@@ -424,3 +424,12 @@ class UserStatusView(APIView):
         user_ids = request.query_params.getlist('user_ids', [])
         status = {user_id: cache.get(f"user_online_{user_id}", False) for user_id in user_ids}
         return Response(status)
+
+class FriendShipRequestListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        friend_requests = FriendShipRequest.objects.filter(receiver=user, status='pending')
+        serializer = FriendRequestSerializer(friend_requests, many=True)
+        return Response(serializer.data, status=200)

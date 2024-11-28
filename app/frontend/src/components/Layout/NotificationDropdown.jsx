@@ -1,5 +1,6 @@
 import Button from '../Home/Buttons/Button'
 import { useEffect, useState } from 'react'
+import React from 'react'
 import  useAuth  from '../../context/AuthContext'
 import { useWebSocket } from '../../context/WebSocketContext'
 import { useAlert } from '../AlertContext'
@@ -70,39 +71,49 @@ function NotificationDropdown() {
 	
     console.log('Notifications:', notifications);
 
-	return (
+    return (
         <>
             <h1 className='font-heavy notification-header'>Notifications</h1>
             <div className='flex flex-col tb:gap-3 gap-2 overflow-auto lp:mx-3 mx-2 mb-2 font-medium'>
-                {notifications.map((notification, index) => (
-                    <div key={index} className='flex items-center justify-between'>
-                        <div className='flex items-center gap-2'>
-                            <img
-                                src={notification.profile_picture}
-                                className='mtb:border border-0.7 border-primary rounded-full'
-                                alt='User Avatar'
-                            />
-                            <p>{notification.fromUser} sent you a Friend Request!</p>
-                        </div>
-                        <div className='flex gap-1 mr-1'>
-                            <Button
-                                className={'notification-buttons rounded-md '}
-                                onClick={() => handleAcceptFriendRequest(notification.id)}
-                            >
-                                Accept
-                            </Button>
-                            <Button
-                                className={'notification-buttons rounded-md '}
-                                onClick={() => handleCancelFriendRequest(notification.id)}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
-                ))}
+                {notifications.length > 0 ? (
+                    notifications.map((notification, index) => (
+                        <React.Fragment key={index}>
+                            <div className='flex items-center justify-between'>
+                                <div className='flex items-center gap-2'>
+                                    <img
+                                        src={notification.profile_picture}
+                                        className='mtb:border border-0.7 border-primary rounded-full'
+                                        alt='User Avatar'
+                                    />
+                                    <p>{notification.from_user} sent you a Friend Request!</p>
+                                </div>
+                                <div className='flex gap-1 mr-1'>
+                                    <Button
+                                        className={'notification-buttons rounded-md '}
+                                        onClick={() => handleAcceptFriendRequest(notification.id)}
+                                    >
+                                        Accept
+                                    </Button>
+                                    <Button
+                                        className={'notification-buttons rounded-md '}
+                                        onClick={() => handleCancelFriendRequest(notification.id)}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </div>
+                            </div>
+                            {/* Add divider except after the last notification */}
+                            {index < notifications.length - 1 && (
+                                <div className='h-px w-[80%] bg-border self-center'></div>
+                            )}
+                        </React.Fragment>
+                    ))
+                ) : (
+                    <p>No notifications</p>
+                )}
             </div>
         </>
     );
-};
+}
 
 export default NotificationDropdown

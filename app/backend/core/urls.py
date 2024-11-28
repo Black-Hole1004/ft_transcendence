@@ -8,6 +8,7 @@ from UserManagement.views import SendFriendRequestView
 from UserManagement.views import AcceptFriendRequestView
 from UserManagement.views import CancelFriendRequestView
 from UserManagement.views import UserStatusView
+from UserManagement.views import FriendShipRequestListView
 
 
 from rest_framework_simplejwt.views import (
@@ -40,4 +41,5 @@ urlpatterns = [
     path('api/friend_request/accept/<int:friend_request_id>/', AcceptFriendRequestView.as_view(), name='accept-friend-request'),
     path('api/friend_request/cancel/<int:friend_request_id>/', CancelFriendRequestView.as_view(), name='cancel-friend-request'),
     path('api/user_status/', UserStatusView.as_view(), name='user_status'),
+    path('api/friend_ship_request/', FriendShipRequestListView.as_view(), name='friend_ship_request'),
 ]

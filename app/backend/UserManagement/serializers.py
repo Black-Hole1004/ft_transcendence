@@ -14,6 +14,7 @@ from .profile_utils import (
 )
 
 from .models import FriendShip
+from .models import FriendShipRequest
 
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
@@ -46,7 +47,12 @@ class UserSessionSerializer(serializers.ModelSerializer):
 # ----------------------------------------------------------------------------------
 
 class FriendRequestSerializer(serializers.Serializer):
-    user_to = serializers.IntegerField()
+    # user_to = serializers.IntegerField()
+    # user_from = serializers.IntegerField()
+    
+    class Meta:
+        model = FriendShipRequest
+        fields = ['id', 'user_from', 'user_to', 'status', 'created_at']
 
     def validate_user_to(self, value):
         if value == self.context['request'].user.id:

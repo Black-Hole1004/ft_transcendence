@@ -11,9 +11,29 @@ export const useWebSocket = () => {
 
 export const WebSocketProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
-    const { user } = useAuth();
+    const { user, getAuthHeaders } = useAuth();
     
     useEffect(() => {
+
+        const fetchNotifications = async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/api/friend_ship_request/`, {
+                    headers: getAuthHeaders(),
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Notifications data =>', data);
+                    setNotifications(data);
+                } else {
+                    console.error('Failed to fetch notifications');
+                }
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+
+        fetchNotifications();
+
         const access_token = Cookies.get('access_token');
         console.log('Access token:', access_token);
 		const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/?access_token=' + access_token);
@@ -22,6 +42,7 @@ export const WebSocketProvider = ({ children }) => {
         socket.onopen = () => console.log('WebSocket connection established');
         
         socket.onmessage = (event) => {
+            console.log('WebSocket message received:', event.data);
             const data = JSON.parse(event.data);
             if (data.receiver_id === user.user_id) {
                 setNotifications((prevNotifications) => [
