@@ -22,8 +22,8 @@ export const WebSocketProvider = ({ children }) => {
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Notifications data =>', data);
-                    setNotifications(data);
+                    const new_notifications = data.map((notification) => ({...notification, flag: 'true'}));
+                    setNotifications(new_notifications);
                 } else {
                     console.error('Failed to fetch notifications');
                 }

@@ -344,8 +344,8 @@ class SendFriendRequestView(APIView):
             return Response({'message': 'User not found'}, status=404)
         if FriendShip.objects.filter(user_from=user_from, user_to=user_to).exists() or FriendShip.objects.filter(user_from=user_to, user_to=user_from).exists():
             return Response({"message": "You are already friends"}, status=400)
-        # if FriendShipRequest.objects.filter(user_from=user_from, user_to=user_to, status='pending').exists():
-        #     return Response({"message": "Friend request already sent"}, status=400)
+        if FriendShipRequest.objects.filter(user_from=user_from, user_to=user_to, status='pending').exists():
+            return Response({"message": "Friend request already sent"}, status=400)
         serializer = FriendRequestSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             friend_request = FriendShipRequest(user_from=user_from, user_to=user_to)
@@ -428,8 +428,9 @@ class UserStatusView(APIView):
 class FriendShipRequestListView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         user = request.user
-        friend_requests = FriendShipRequest.objects.filter(receiver=user, status='pending')
-        serializer = FriendRequestSerializer(friend_requests, many=True)
+        friend_requests = FriendShipRequest.objects.filter(user_to=user, status='pending')
+        serializer = FriendRequestSerializer(friend_requests, many=True, context={'request': request})
+        print(f"Friend requests ========> {serializer.data}")
         return Response(serializer.data, status=200)

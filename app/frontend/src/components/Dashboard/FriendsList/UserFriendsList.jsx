@@ -15,6 +15,10 @@ function UserFriendsList({ user, profile_picture }) {
 	}
 
 	const handle_add_friend = async (id) => {
+		if (!id) {
+			console.error('No user ID provided')
+			return
+		}
 		try {
 			const response = await fetch(SEND_FRIEND_REQUEST, {
 				method: 'POST',

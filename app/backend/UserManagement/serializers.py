@@ -46,15 +46,24 @@ class UserSessionSerializer(serializers.ModelSerializer):
 
 # ----------------------------------------------------------------------------------
 
-class FriendRequestSerializer(serializers.Serializer):
-    # user_to = serializers.IntegerField()
-    # user_from = serializers.IntegerField()
-    
+class FriendRequestSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user_from.username', read_only=True)
+    profile_picture = serializers.SerializerMethodField()
+    # user_to_profile_picture = serializers.SerializerMethodField()
+
     class Meta:
         model = FriendShipRequest
-        fields = ['id', 'user_from', 'user_to', 'status', 'created_at']
+        fields = ['id', 'user_from', 'user_to', 'status', 'created_at', 'profile_picture', 'username']
+        read_only_fields = ['id', 'user_from', 'created_at']
 
-    def validate_user_to(self, value):
-        if value == self.context['request'].user.id:
-            raise serializers.ValidationError("You cannot send a friend request to yourself.")
-        return value
+    def get_profile_picture(self, obj):
+        request = self.context.get('request')
+        if obj.user_from.profile_picture:
+            return request.build_absolute_uri(obj.user_from.profile_picture.url) if request else obj.user_from.profile_picture.url
+        return None
+
+    # def get_user_to_profile_picture(self, obj):
+    #     request = self.context.get('request')
+    #     if obj.user_to.profile_picture:
+    #         return request.build_absolute_uri(obj.user_to.profile_picture.url) if request else obj.user_to.profile_picture.url
+    #     return None

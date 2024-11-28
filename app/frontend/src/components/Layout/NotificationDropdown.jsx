@@ -85,7 +85,9 @@ function NotificationDropdown() {
                                         className='mtb:border border-0.7 border-primary rounded-full'
                                         alt='User Avatar'
                                     />
-                                    <p>{notification.from_user} sent you a Friend Request!</p>
+                                    {
+                                        notification.flag ? ( <p>{notification.username} sent you a Friend Request!</p> ) : ( <p>{notification.from_user} sent you a Friend Request!</p> )
+                                    }
                                 </div>
                                 <div className='flex gap-1 mr-1'>
                                     <Button
