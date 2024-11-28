@@ -162,6 +162,7 @@ const Chat = () => {
 			}
 		}
 	}
+	console.log('chat')
 
 	return (
 		<section
@@ -191,6 +192,7 @@ const Chat = () => {
 				>
 					{recipientInfo ? (
 						<>
+							{/* Chat Header */}
 							<ConversationHeader
 								isBlocked={isBlocked}
 								setIsBlocked={setIsBlocked}
@@ -198,7 +200,6 @@ const Chat = () => {
 								recipientProfileImage={recipientProfileImage}
 							/>
 
-							{/* Chat ConversationHeader */}
 							{/* Chat Messages */}
 							<Messages
 								isBlocked={isBlocked}
@@ -208,7 +209,12 @@ const Chat = () => {
 							/>
 
 							{/* Chat Footer */}
-							{!isBlocked && (
+							{isBlocked ? (
+								<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
+									You have blocked this user. Unblock them to resume the
+									conversation.
+								</p>
+							) : (
 								<Footer
 									currentMessage={currentMessage}
 									handleKeyPress={handleKeyPress}

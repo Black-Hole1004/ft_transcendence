@@ -39,6 +39,7 @@ const LocalGameSetup = () => {
 	const { backgroundId = defaultBackgroundId } = location.state || {}
 
 	const updatePlayerConfig = (playerId, field, value) => {
+		// console.log('value: ', value)
 		setPlayers((prev) => ({
 			...prev,
 			[playerId]: {

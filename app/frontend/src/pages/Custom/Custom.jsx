@@ -59,7 +59,7 @@ const Custom = () => {
 		if (mode === 'local') {
 			navigate('/local-game-setup', { state: { backgroundId } })
 		} else {
-			navigate('/remote-game-setup', { state: { backgroundId } })
+			navigate('/searching', { state: { backgroundId } })
 		}
 	}
 

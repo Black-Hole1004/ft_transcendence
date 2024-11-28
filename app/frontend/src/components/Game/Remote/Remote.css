@@ -1,0 +1,20 @@
+.searching-animation {
+	font-size: clamp(2.813rem, 4.646vw + 1.941rem, 9.375rem);
+}
+
+.animation-container {
+	/* width: clamp(18.125rem, 32.301vw + 12.069rem, 63.75rem); */
+	height: clamp(3.125rem, 5.31vw + 2.129rem, 10.625rem);
+}
+
+.marquee-lg {
+	width: clamp(1.938rem, 3.142vw + 1.348rem, 6.375rem);
+}
+
+.marquee-sm {
+	width: clamp(0.688rem, 1.062vw + 0.488rem, 2.188rem);
+}
+
+.char {
+	text-shadow: #fbfbee 1px 0 6px;
+}

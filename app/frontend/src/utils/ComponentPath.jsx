@@ -18,6 +18,8 @@ const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
 // const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
 const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
 // const RemoteGameSetup = React.lazy(() => import('../pages/Game/RemoteGameSetup'))
+const SearchingAnimation = React.lazy(() => import('../components/Game/Remote/SearchingAnimation'))
+
 
 
 
@@ -42,6 +44,7 @@ const ComponentPath = () => {
 					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
 					<Route path="/chat/:conversation_key" element={<PrivateRoute><Chat /></PrivateRoute>} />
 					<Route path="/local-game-setup" element={<PrivateRoute><LocalGameSetup /></PrivateRoute>} />
+					<Route path="/searching" element={<PrivateRoute><SearchingAnimation /></PrivateRoute>} />
 					{/* <Route path='/remote-game' element={<RemoteGame />} /> */}
 					{/* <Route path='/remote-game-setup' element={<RemoteGameSetup />} /> */}
 				</Route>

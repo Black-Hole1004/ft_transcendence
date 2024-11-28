@@ -484,7 +484,7 @@ const Settings = () => {
 								</Button>
 								<button
 									className='rounded-md border-red-600 font-regular buttons-text remove-button border 
-								transition duration-300 select-none bg-red-600 bg-opacity-10 hover:bg-red-600'
+								transition duration-300 select-none bg-red-600 bg-opacity-10 hover:bg-red-600 active:bg-red-700'
 								>
 									Delete Account
 								</button>

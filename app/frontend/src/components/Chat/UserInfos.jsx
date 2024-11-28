@@ -7,13 +7,13 @@ function UserInfos({ recipientInfo }) {
 		>
 			{recipientInfo ? (
 				<>
-					<div className="flex lg:flex-col gap-2 max-ml:flex-col">
+					<div className="flex lg:flex-col gap-2 max-ml:flex-col text-start">
 						<img
 							src={`${recipientInfo.profile_picture}`}
 							className='rounded-full object-cover lg:border-2 ring-1 ring-primary user-info-image select-none self-center'
 							alt='User image'
 						/>
-						<div className='flex flex-col justify-center font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>
+						<div className='flex-1 flex flex-col font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>
 							<div>
 								<p className='text-primary full-name leading-[1]'>
 									{`${recipientInfo.first_name} ${recipientInfo.last_name}`}
