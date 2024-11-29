@@ -58,6 +58,7 @@ const LocalGameSetup = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
+		console.log('ballColor: ', gameConfig.ball.color)
 		if (players.player1.name && players.player2.name) {
 			navigate('/local-game', {
 				state: {

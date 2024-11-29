@@ -1,6 +1,7 @@
 import { MuiColorInput } from 'mui-color-input'
 
-const Inputs = ({ id, value, setValue }) => {
+const Inputs = ({ id, value, duration, setDuration, setValue }) => {
+	const onChange = id === 'Ball' ? (e) => setDuration(e.target.value) : (e) => setValue('name', e.target.value)
 	return (
 		<div className='flex flex-col gap-2'>
 			<h2 className='font-heavy labels text-primary'>{id}</h2>
@@ -12,8 +13,8 @@ const Inputs = ({ id, value, setValue }) => {
 					<input
 						id={id}
 						type='text'
-						value={value.name}
-						onChange={(e) => setValue('name', e.target.value)}
+						onChange={onChange}
+						value={`${id === 'Ball' ? duration : value.name}`}
 						placeholder={`${id === 'Ball' ? 'Game duration (seconds)' : 'Player Name'}`}
 						className='inputs border border-border rounded-lg bg-[rgb(183,170,156,8%)] placeholder:text-border
 						text-primary placeholder:font-regular placeholders outline-none w-[90%]'

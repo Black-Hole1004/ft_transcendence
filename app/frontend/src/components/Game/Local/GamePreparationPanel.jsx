@@ -30,6 +30,8 @@ const GamePreparationPanel = ({
 					<Inputs
 						id={'Ball'}
 						value={gameConfig.ball}
+						duration={gameConfig.duration}
+						setDuration={(duration) => onGameConfigUpdate('duration', duration)}
 						setValue={(value) =>
 							onGameConfigUpdate('ball', { ...gameConfig.ball, color: value })
 						}
