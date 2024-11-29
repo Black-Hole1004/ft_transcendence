@@ -28,13 +28,13 @@ function FriendsList() {
         const socket = new WebSocket('ws://127.0.0.1:8000/ws/user_status/?access_token=' + access_token);
 
         // When the WebSocket connection is established, set the user as online
-        socket.onopen = function(e) {
+        socket.onopen = () => {
             console.log('Connection established');
             socket.send(JSON.stringify({ 'message': 'online' }));
         };
 
         // When a message is received from the WebSocket
-        socket.onmessage = function(e) {
+        socket.onmessage = (e) => {
             const data = JSON.parse(e.data);
             console.log('Message received =>', data.message);
 			get_all_users()
@@ -45,7 +45,7 @@ function FriendsList() {
         };
 
         // When the WebSocket is closed, set the user as offline
-        socket.onclose = function(e) {
+        socket.onclose = () => {
             console.log('Connection closed');
             socket.send(JSON.stringify({ 'message': 'offline' }));
         };
@@ -60,7 +60,7 @@ function FriendsList() {
 		get_all_users()
 	}, [])
 
-	// console.log('users ===>', users[0].status)
+	console.log('users ===>', users)
 	return (
 		<div
 			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px] card-height

@@ -101,7 +101,7 @@ function Header({ user_data }) {
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
 						h-[30%] absolute rounded-full right-0 top-0'
 						>
-							<p className='font-heavy text-[10px] p-0.5'>{notifications.length > 99 ? '+99' : notifications.length}</p>
+							{notifications.length > 0 ? (<p className='font-heavy text-[10px] p-0.5'>{notifications.length > 99 ? '+99' : notifications.length}</p>) : null}
 						</div>
 					)}
 				</button>
