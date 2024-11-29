@@ -1,7 +1,6 @@
 import { MuiColorInput } from 'mui-color-input'
 
 const Inputs = ({ id, value, setValue }) => {
-	console.log('value: ', value)
 	return (
 		<div className='flex flex-col gap-2'>
 			<h2 className='font-heavy labels text-primary'>{id}</h2>

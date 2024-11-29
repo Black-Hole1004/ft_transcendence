@@ -19,18 +19,18 @@ const GamePreview = ({ players, gameConfig, backgroundId }) => {
 					}}
 				></div>
 				<div
+					className='absolute top-1/2 right-2 z-10 transform -translate-y-1/2 w-2.5 ring-1 ring-primary rounded-lg'
+					style={{
+						height: `${gameConfig.paddle.size}%`,
+						background: `${players.player2.color}`,
+					}}
+				></div>
+				<div
 					className='absolute top-1/2 left-1/2 z-10 transform -translate-x-1/2 -translate-y-1/2
 			aspect-square ring-1 ring-primary rounded-full'
 					style={{
 						height: `${gameConfig.ball.size}%`,
 						background: `${gameConfig.ball.color}`,
-					}}
-				></div>
-				<div
-					className='absolute top-1/2 right-2 z-10 transform -translate-y-1/2 w-2.5 ring-1 ring-primary rounded-lg'
-					style={{
-						height: `${gameConfig.paddle.size}%`,
-						background: `${players.player2.color}`,
 					}}
 				></div>
 			</div>

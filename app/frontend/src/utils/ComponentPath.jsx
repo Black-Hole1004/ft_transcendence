@@ -40,7 +40,7 @@ const ComponentPath = () => {
 					<Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
 					<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
 					<Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-					<Route path="/local-game" element={<PrivateRoute><LocalGame /></PrivateRoute>} />
+					<Route path='/local-game' element={<PrivateRoute><LocalGame /></PrivateRoute>} />
 					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
 					<Route path="/chat/:conversation_key" element={<PrivateRoute><Chat /></PrivateRoute>} />
 					<Route path="/local-game-setup" element={<PrivateRoute><LocalGameSetup /></PrivateRoute>} />

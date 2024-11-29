@@ -1,47 +1,39 @@
 import './Remote.css'
+import { useState } from 'react'
 
 const SearchingAnimation = () => {
+	const [opponentFound, setOpponentFound] = useState(false)
+
+	const delay = setTimeout(() => {
+		setOpponentFound(true)
+	}, 5000)
+
 	return (
 		<div
 			className='animation-container absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2
-			flex text-primary font-dreamscape text-[150px] searching-animation select-none overflow-hidden'
+			flex text-primary font-dreamscape searching-animation select-none overflow-hidden'
 		>
-			<marquee className='char marquee-lg' direction='down' scrollamount='19'>
-				<div>S</div>
-			</marquee>
-			<marquee className='char marquee-lg' direction='down' scrollamount='10'>
-				<div>E</div>
-			</marquee>
-			<marquee className='char marquee-lg' direction='down' scrollamount='12'>
-				<div>A</div>
-			</marquee>
-			<marquee className='char marquee-lg' direction='down' scrollamount='15'>
-				<div>R</div>
-			</marquee>
-			<marquee className='char marquee-lg' direction='down' scrollamount='14'>
-				<div>C</div>
-			</marquee>
-			<marquee className='char marquee-lg' direction='down' scrollamount='18'>
-				<div>H</div>
-			</marquee>
-			<marquee className='char marquee-sm' direction='down' scrollamount='11'>
-				<div>I</div>
-			</marquee>
-			<marquee className='char marquee-lg' direction='down' scrollamount='17'>
-				<div>N</div>
-			</marquee>
-			<marquee className='char marquee-lg' direction='down' scrollamount='16'>
-				<div>G</div>
-			</marquee>
-			<marquee className='char marquee-sm' direction='down' scrollamount='13'>
-				<div>.</div>
-			</marquee>
-			<marquee className='char marquee-sm' direction='down' scrollamount='19'>
-				<div>.</div>
-			</marquee>
-			<marquee className='char marquee-sm' direction='down' scrollamount='9'>
-				<div>.</div>
-			</marquee>
+			{['S', 'E', 'A', 'R', 'C', 'H', 'I', 'N', 'G', '.', '.', '.'].map((char, index) => (
+				<marquee
+					key={index}
+					direction='down'
+					scrollamount={20 + Math.ceil((Math.random() * 10) % 5)}
+					style={{
+						transitionDelay: `${index * 50}ms`,
+					}}
+					className={`char ${char === 'I' || char === '.' ? 'marquee-sm' : 'marquee-lg'}
+									transition-opacity duration-300 ${opponentFound ? 'opacity-0' : 'opacity-100'}`}
+				>
+					<div>{char}</div>
+				</marquee>
+			))}
+
+			<div
+				className={`animation-container absolute char 
+					transition-opacity duration-1000 ${opponentFound ? 'opacity-100' : 'opacity-0'}`}
+			>
+				SEARCHING...
+			</div>
 		</div>
 	)
 }
