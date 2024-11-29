@@ -6,6 +6,7 @@ from django.core.cache import cache
 from django.conf import settings
 from jwt import decode as jwt_decode
 from urllib.parse import parse_qs
+from asgiref.sync import sync_to_async
 
 
 
@@ -13,7 +14,7 @@ User = get_user_model()
 class FriendRequestConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        # print('----- connect -----')
+        print('----- connect from FriendRequestConsumer -----')
         query_string = self.scope['query_string'].decode()
         # print('query_string ===================>', query_string)
         query_params = parse_qs(query_string)
@@ -41,7 +42,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             await self.accept()
     
     async def disconnect(self, close_code):
-        print('----- disconnect -----')
+        print('----- disconnect from FriendRequestConsumer -----')
         if hasattr(self, 'sender_room_group_name'):
             await self.channel_layer.group_discard(
                 self.sender_room_group_name,
@@ -96,9 +97,13 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                 'receiver_id': receiver_id,
             }))
     
-class UserStatusConsumer(AsyncWebsocketConsumer):
+    async def friend_request_accepted(self, event):
+        pass
+    
+
+class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        print('----- connect -----')
+        # print('----- connect -----')
         query_string = self.scope['query_string'].decode()
         # print('query_string ===================>', query_string)
         query_params = parse_qs(query_string)
@@ -118,26 +123,86 @@ class UserStatusConsumer(AsyncWebsocketConsumer):
             return
         
         if self.user.is_authenticated:
-            await self.update_user_status(self.user, 'online')
-        await self.accept()
+            self.group_name = f'user_{self.user.id}'
+            await self.channel_layer.group_add(
+                self.group_name,
+                self.channel_name
+            )
+
+            await self.accept()
     
     async def disconnect(self, close_code):
-        # print('----- disconnect -----')
-        if hasattr(self, 'user'):
-            await self.update_user_status(self.user, 'offline')
+        print('----- disconnect from AcceptFriendRequestConsumer -----')
+        await self.channel_layer.group_discard(
+            self.group_name,
+            self.channel_name
+        )
     
-    async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-
-        if message == 'ingame':
-            await self.update_user_status(self.user, 'ingame')
-        
+    async def friend_request_accepted(self, event):
+        # Send data to the WebSocket
+        print('event =>', event)
         await self.send(text_data=json.dumps({
-            'message': message
+            "type": "friend_request_accepted",
+            "message": event["message"],
         }))
+    
+    # Add the missing notification_message handler
+    async def notification_message(self, event):
+        print('----- notification received in AcceptFriendRequestConsumer -----')
+        print('Notification received:', event)
+        # await self.send(text_data=json.dumps({
+        #     'message': event['message']
+        # }))
+        pass
 
-    @database_sync_to_async
-    def update_user_status(self, user, status):
-        user.status = status
-        user.save()
+#------------------------------------------------------------------------------------
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        query_string = self.scope['query_string'].decode()
+        query_params = parse_qs(query_string)
+        access_token = query_params.get('access_token', [None])[0]
+        
+        if not access_token:
+            await self.close()
+            return
+        
+        access_token = access_token.strip('"')
+        try:
+            decoded_data = jwt_decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+            self.user = await database_sync_to_async(User.objects.get)(id=decoded_data['user_id'])
+        except Exception as e:
+            print(f"Authentication error: {e}")
+            await self.close()
+            return
+        
+        if self.user.is_authenticated:
+            # Use a consistent group name format
+            self.group_name = f'user_{self.user.id}'
+            await self.channel_layer.group_add(
+                self.group_name,
+                self.channel_name
+            )
+            await self.accept()
+    
+    async def disconnect(self, close_code):
+        print('----- disconnect from NotificationConsumer -----')
+        if hasattr(self, 'group_name'):
+            await self.channel_layer.group_discard(
+                self.group_name,
+                self.channel_name
+            )
+
+
+    async def notification_message(self, event):
+        print('----- notification received -----')
+        print('Notification received:', event) 
+        try:
+            message = event.get("message", "No message")
+            await self.send(text_data=json.dumps({
+                'message': message
+            }))
+        except Exception as e:
+            print(f"Error sending notification: {e}")
+
+    async def friend_request_accepted(self, event):
+        pass

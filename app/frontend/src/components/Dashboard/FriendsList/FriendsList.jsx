@@ -18,49 +18,54 @@ function FriendsList() {
 		}
 		catch (error) {
 			console.error('Error:', error)
-			console.log('-----------')
 		}
 	}
-
-	useEffect(() => {
-		const access_token = Cookies.get('access_token');
-		console.log('Access token:', access_token);
-        const socket = new WebSocket('ws://127.0.0.1:8000/ws/user_status/?access_token=' + access_token);
-
-        // When the WebSocket connection is established, set the user as online
-        socket.onopen = () => {
-            console.log('Connection established');
-            socket.send(JSON.stringify({ 'message': 'online' }));
-        };
-
-        // When a message is received from the WebSocket
-        socket.onmessage = (e) => {
-            const data = JSON.parse(e.data);
-            console.log('Message received =>', data.message);
-			get_all_users()
-
-            if (data.message === 'ingame') {
-                console.log('User is in-game');
-            }
-        };
-
-        // When the WebSocket is closed, set the user as offline
-        socket.onclose = () => {
-            console.log('Connection closed');
-            socket.send(JSON.stringify({ 'message': 'offline' }));
-        };
-
-        // Cleanup when the component unmounts
-        return () => {
-            socket.close();
-        };
-    }, []);
-
 	useEffect(() => {
 		get_all_users()
 	}, [])
 
-	console.log('users ===>', users)
+	// this useEffect listens for login and logout events
+	useEffect(() => {
+		const access_token = Cookies.get('access_token');
+		const socket = new WebSocket(`ws://127.0.0.1:8000/ws/notification/?access_token=${access_token}`);
+
+		socket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			console.log('data =========>', data);
+			if (data.message === 'offline' || data.message === 'online') {
+				console.log('notification received ==>');
+				get_all_users();
+				console.log('users ======>', users);
+			}
+		}
+
+		socket.onerror = (error) => {
+			console.error('WebSocket error:', error);
+		}
+		return () => socket.close();
+	}, []);
+
+
+	// this useEffect listens for friend request acceptances
+	useEffect(() => {
+		const access_token = Cookies.get('access_token');
+		const socket = new WebSocket(`ws://127.0.0.1:8000/ws/update_user_status/?access_token=${access_token}`);
+
+		socket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			if (data.type === 'friend_request_accepted') {
+				get_all_users();
+			}
+		};
+
+		socket.onerror = (error) => {
+			console.error('WebSocket error:', error);
+		};
+		return () => socket.close(); 
+	}, []);
+
+	console.log('users ======>', users);
+
 	return (
 		<div
 			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-[300px] card-height

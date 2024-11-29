@@ -6,11 +6,9 @@ import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
 import useAuth from '../../context/AuthContext'
 import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
 
 const Dashboard = () => {
-
-	const { authTokens, logout, getAuthHeaders } = useAuth();
-
 	const xp = 6445
 	const [level, setLevel] = useState(null)
 
@@ -18,10 +16,6 @@ const Dashboard = () => {
 		setLevel((xp * 100) / 10000)
 	}, [level])
 
-
-
-
-	/************************************************************************ */
 
 
 	return (

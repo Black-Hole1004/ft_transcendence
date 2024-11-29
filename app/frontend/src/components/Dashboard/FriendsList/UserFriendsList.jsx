@@ -2,6 +2,7 @@ import Button from '../../Home/Buttons/Button'
 import useAuth from '../../../context/AuthContext'
 import { useAlert } from '../../AlertContext'
 import Cookies from 'js-cookie'
+import { useState, useEffect } from 'react'
 
 
 const SEND_FRIEND_REQUEST = 'http://127.0.0.1:8000/api/send_friend_request/'
@@ -9,6 +10,9 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 function UserFriendsList({ user, profile_picture }) {
 	const { getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
+
+
+
 
 	const handleSubmit = (type, message) => {
 		triggerAlert(type, message)
@@ -56,6 +60,8 @@ function UserFriendsList({ user, profile_picture }) {
 			console.error('Error:', error);
 		}
 	};
+
+
 
 	return (
 		<div className='user-container flex items-center justify-between font-dreamscape-sans
