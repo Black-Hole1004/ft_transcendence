@@ -1,5 +1,7 @@
 import UserFriendsList from './UserFriendsList'
 
+
+
 function FriendsList() {
 	return (
 		<div
