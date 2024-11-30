@@ -24,7 +24,7 @@ export function AlertWrapper() {
 		if (showAlert) {
 			const timer = setTimeout(() => {
 				dismissAlert()
-			}, 10000)
+			}, 1000)
 			return () => clearTimeout(timer)
 		}
 	}, [showAlert, dismissAlert])

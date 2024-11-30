@@ -1,8 +1,73 @@
+import { useEffect, useState } from 'react'
 import UserFriendsList from './UserFriendsList'
+import useAuth from '../../../context/AuthContext'
+import Cookies from 'js-cookie'
 
 
 
 function FriendsList() {
+	const [users, setUsers] = useState([])
+	const { getAuthHeaders, profile_picture } = useAuth()
+	
+	const get_all_users = async () => {
+		try {
+			const response = await fetch('http://127.0.0.1:8000/api/users/', {
+				method: 'GET',
+				headers: getAuthHeaders(),
+			})
+			const data = await response.json()
+			setUsers(data)
+		}
+		catch (error) {
+			console.error('Error:', error)
+		}
+	}
+	useEffect(() => {
+		get_all_users()
+	}, [])
+
+	// this useEffect listens for login and logout events
+	useEffect(() => {
+		const access_token = Cookies.get('access_token');
+		const socket = new WebSocket(`ws://127.0.0.1:8000/ws/notification/?access_token=${access_token}`);
+
+		socket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			console.log('data =========>', data);
+			if (data.message === 'offline' || data.message === 'online') {
+				console.log('notification received ==>');
+				get_all_users();
+				console.log('users ======>', users);
+			}
+		}
+
+		socket.onerror = (error) => {
+			console.error('WebSocket error:', error);
+		}
+		return () => socket.close();
+	}, []);
+
+
+	// this useEffect listens for friend request acceptances
+	useEffect(() => {
+		const access_token = Cookies.get('access_token');
+		const socket = new WebSocket(`ws://127.0.0.1:8000/ws/update_user_status/?access_token=${access_token}`);
+
+		socket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			if (data.type === 'friend_request_accepted') {
+				get_all_users();
+			}
+		};
+
+		socket.onerror = (error) => {
+			console.error('WebSocket error:', error);
+		};
+		return () => socket.close(); 
+	}, []);
+
+	console.log('users ======>', users);
+
 	return (
 		<div
 			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border-1.5
@@ -21,26 +86,10 @@ function FriendsList() {
 				/>
 			</div>
 			<div className='w-[96%] overflow-y-auto users'>
-				<UserFriendsList nickname={'mouad5555vv5555555555555555'} achievement={'celestial master'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'celestial master'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'stellar voyager'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'celestial master'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'galactic trailblazer'} status={'online'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'novice astronaut'} status={'in-game'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'stellar voyager'} status={'in-game'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'celestial master'} status={'in-game'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'galactic trailblazer'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'stellar voyager'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'galactic trailblazer'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'celestial master'} status={'offline'} isFriend={true}/>
-				<UserFriendsList nickname={'Aymahmou55555555555555555'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
-				<UserFriendsList nickname={'Aymahmou'} achievement={'cosmic explorer'} status={'offline'} isFriend={false}/>
+				{users.map((user) => {
+					return <UserFriendsList key={user.id} user={user} profile_picture={profile_picture} />
+				}
+				)}
 			</div>
 		</div>
 	)

@@ -37,8 +37,8 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 #pass=Ahaloui@@13+
 #gmail=aymene@gmail.com
 
+from rest_framework import generics
 
-from .models import UserSession
 from django.utils import timezone
 
 from django.contrib.auth import get_user_model
@@ -49,6 +49,16 @@ from .profile_utils import (
     handle_password_change,
     generate_new_tokens
 )
+
+from .models import UserSession
+from .models import FriendShipRequest
+from .models import FriendShip
+
+from .serializers import FriendRequestSerializer
+from django.db import IntegrityError
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 
 User = get_user_model()
@@ -94,74 +104,24 @@ def decode_jwt_info(token):
 
 
 
-@csrf_exempt  # Disable CSRF for this view for testing purposes
-def login(request):
-    print(f" -------- Request method: {request.method} ---------")
-    if request.method == 'POST':
-        try:
-            # Parse JSON data from request body
-            data = json.loads(request.body.decode('utf-8'))
-            # data = request.POST
-            email = data.get('email')
-            password = data.get('password')
 
-            # Authenticate the user
-            user = authenticate(request, email=email, password=password)
-            print(f"Authenticated user: {email}, {password}, {user}")
 
-            if user is not None:
-                auth_login(request, user)
-
-                # Generate JWT tokens
-                refresh = RefreshToken.for_user(user)
-                access_token = str(refresh.access_token)
-                refresh_token = str(refresh)
-
-                # Set the access token in the cookie
-                response = JsonResponse({
-                    'access_token': access_token,
-                    'refresh_token': refresh_token,
-                    'message': 'User authenticated successfully'
-                })
-
-                response.set_cookie(
-                    key='access_token',
-                    value=access_token,
-                    httponly=True,
-                    secure=True,  # Ensure cookies are only sent over HTTPS
-                    samesite='Lax'  # Adjust this according to your CSRF needs
-                )
-
-                return response
-            else:
-                return JsonResponse({'error': 'Invalid credentials'}, status=401)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
-    else:
-        return render(request, 'login.html')
-        # return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def generate_random_username():
-
-
     prefix = 'moha_'
     suffix = str(uuid.uuid4())[:8]
     return prefix + suffix
 
-@csrf_exempt  # Disable CSRF for this view for testing purposes
-def register(request):
-    if request.method == 'POST':
+
+class RegisterView(APIView):
+
+    def post(self, request):
         try:
-            # Parse the JSON data from the request body
             data = json.loads(request.body)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
-        # Initialize the form with the JSON data
-        # insert dummy username into the data json using uuid
         dummy = generate_random_username()
         data.update({'username': dummy})
-        print(f"Data: {data}")
         form = UserCreationForm(data)
         if form.is_valid():
             user = form.save(commit=False)
@@ -169,23 +129,8 @@ def register(request):
             user.save()
             return JsonResponse({'message': 'User created successfully'}, status=201)
         else:
-            # Return form errors as JSON
             return JsonResponse(form.errors, status=400)
-    else:
-        return render(request, 'register.html')
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def logout(request):
-    user = request.user
-    session = None
-    if user.is_authenticated:
-        session = UserSession.objects.filter(user=user, logout_time__isnull=True).first()
-    if session:
-        session.logout_time = timezone.now()
-        session.save()
-    django_logout(request)
-    return Response({'message': 'User logged out successfully'})
 
 
 def generate_random_username():
@@ -217,12 +162,95 @@ def display_text(request):
 @permission_classes([IsAuthenticated])
 def check_user_password(request):
     print(f"Request data: {request.data}")
-    user = request.user  # Get the authenticated user
+    user = request.user
     password = request.data.get('password')
     if user.check_password(password):
         return Response({'message': 'Password is correct.'})
     else:
         return Response({'error': 'Incorrect password.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class LoginView(APIView):
+    def post(self, request):
+        if request.method == 'POST':
+            try:
+                data = json.loads(request.body.decode('utf-8'))
+                email = data.get('email')
+                password = data.get('password')
+                user = authenticate(request, email=email, password=password)
+
+                if user is not None:
+                    user.status = 'online'
+                    user.save()
+                    auth_login(request, user)
+
+
+                    # Notify friends about login
+                    channel_layer = get_channel_layer()
+                    friends = FriendShip.objects.filter(user_from=user) | FriendShip.objects.filter(user_to=user)
+                    print(f"Friends =====> {friends}")
+                    for friend in friends:
+                        friend_user = friend.user_to if friend.user_from == user else friend.user_from
+                        print(f"Friend User =====> {friend_user}")
+                        async_to_sync(channel_layer.group_send)(
+                            f"user_{friend_user.id}",
+                                {
+                                    "type": "notification_message",
+                                    "message": 'online',
+                                }
+                            )
+
+                    refresh = RefreshToken.for_user(user)
+                    access_token = str(refresh.access_token)
+                    refresh_token = str(refresh)
+                    response = JsonResponse({
+                        'access_token': access_token,
+                        'refresh_token': refresh_token,
+                        'message': 'User authenticated successfully'
+                    })
+                    response.set_cookie(
+                        key='access_token',
+                        value=access_token,
+                        httponly=True,
+                        secure=True,
+                        samesite='Lax'
+                    )
+                    return response
+                else:
+                    return JsonResponse({'error': 'Invalid credentials'}, status=401)
+            except json.JSONDecodeError:
+                return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        else:
+            return render(request, 'login.html')
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        session = UserSession.objects.filter(user=user, logout_time__isnull=True).first()
+        if session:
+            session.logout_time = timezone.now()
+            session.save()
+        channel_layer = get_channel_layer()
+        friends = FriendShip.objects.filter(user_from=user) | FriendShip.objects.filter(user_to=user)
+        for friend in friends:
+            friend_user = friend.user_to if friend.user_from == user else friend.user_from
+            async_to_sync(channel_layer.group_send)(
+                f"user_{friend_user.id}",
+                {
+                    "type": "notification_message",
+                    "message": 'offline',
+                }
+            )
+        user.status = 'offline'
+        user.save()
+        django_logout(request)
+        return Response({'message': 'User logged out successfully'})
+
 
 @permission_classes([IsAuthenticated])
 class UserProfileView(APIView):
@@ -306,3 +334,129 @@ def get_user_time_spent(request):
 
     # Return the sessions with time spent in seconds or minutes
     return JsonResponse({'data': list(sessions)})
+
+class UserListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.exclude(id=user.id)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
+class SendFriendRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        user_from = request.user
+        user_to_id = request.data.get('user_to')
+        if not user_to_id:
+            return Response({'message': 'user_to field is required'}, status=400)
+        try:
+            user_to = User.objects.get(id=user_to_id)
+        except User.DoesNotExist:
+            return Response({'message': 'User not found'}, status=404)
+        if FriendShip.objects.filter(user_from=user_from, user_to=user_to).exists() or FriendShip.objects.filter(user_from=user_to, user_to=user_from).exists():
+            return Response({"message": "You are already friends"}, status=400)
+        if FriendShipRequest.objects.filter(user_from=user_from, user_to=user_to, status='pending').exists():
+            return Response({"message": "Friend request already sent"}, status=400)
+        serializer = FriendRequestSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            friend_request = FriendShipRequest(user_from=user_from, user_to=user_to)
+            friend_request.save()
+            return Response(
+                {
+                    "sender_id": user_from.id,
+                    "message": "Friend request sent",
+                    "id": friend_request.id,
+                    "from_user": user_from.username,
+                    "receiver_id": user_to.id,
+                },
+                status=201,
+            )
+        return Response(serializer.errors, status=400)
+
+class AcceptFriendRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, friend_request_id):
+        try:
+            friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+            if friend_request.status == 'accepted':
+                return Response({"message": "Friend request already accepted"}, status=400)
+
+            if friend_request.status == 'rejected':
+                return Response({"message": "Friend request was rejected"}, status=400)
+            friend_request.status = 'accepted'
+            friend_request.save()
+
+            try:
+                FriendShip.objects.create(user_from=friend_request.user_from, user_to=friend_request.user_to)
+            except IntegrityError:
+                return Response({"message": "Friendship already exists"}, status=400)
+
+            channel_layer = get_channel_layer()
+            # Notify the user who sent the friend request
+            async_to_sync(channel_layer.group_send)(
+                f"user_{friend_request.user_from.id}",
+                {
+                    "type": "friend_request_accepted",
+                    "message": f"{friend_request.user_to.username} accepted your friend request.",
+                }
+            )
+            # Notify the user who accepted the friend request
+            async_to_sync(channel_layer.group_send)(
+                f"user_{friend_request.user_to.id}",
+                {
+                    "type": "friend_request_accepted",
+                    "message": f"You are now friends with {friend_request.user_from.username}.",
+                }
+            )
+            return Response({"message": "Friend request accepted and friendship created"}, status=201)
+
+        except FriendShipRequest.DoesNotExist:
+            return Response({"message": "Friend request not found"}, status=404)
+
+class CancelFriendRequestView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, friend_request_id):
+        try:
+            friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+
+            if friend_request.status == 'rejected':
+                return Response({"message": "Friend request already rejected"}, status=400)
+
+            if friend_request.status == 'accepted':
+                return Response({"message": "Friend request already accepted"}, status=400)
+
+            # Update the status to 'rejected'
+            friend_request.status = 'rejected'
+            friend_request.save()
+
+            return Response({"message": "Friend request rejected"}, status=201)
+
+        except FriendShipRequest.DoesNotExist:
+            return Response({"message": "Friend request not found"}, status=404)
+
+class UserStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_ids = request.query_params.getlist('user_ids', [])
+        status = {user_id: cache.get(f"user_online_{user_id}", False) for user_id in user_ids}
+        return Response(status)
+
+class FriendShipRequestListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        friend_requests = FriendShipRequest.objects.filter(user_to=user, status='pending')
+        serializer = FriendRequestSerializer(friend_requests, many=True, context={'request': request})
+        return Response(serializer.data, status=200)
