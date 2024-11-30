@@ -104,3 +104,38 @@ class UserSession(models.Model):
 
     # Attach the custom manager to the model
     objects = UserSessionManager()
+
+
+class FriendShip(models.Model):
+    user_from = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='user_from')
+    user_to = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='user_to')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ['user_from', 'user_to']
+    
+    def __str__(self):
+        return f"Friendship between {self.user_from.username} and {self.user_to.username}"
+
+class FriendShipRequest(models.Model):
+    user_from = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='sent_request')
+    user_to = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='received_request')
+    status = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    ]
+    status = models.CharField(max_length=8, choices=status, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"Friendship request from {self.user_from.username} to {self.user_to.username} with status {self.status}"
+
+class Notification(models.Model):
+    sender = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='receiver')
+    message = models.TextField()
+    is_read =  models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Notification from {self.sender.username} to {self.receiver.username}: {self.message}"

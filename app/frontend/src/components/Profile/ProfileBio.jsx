@@ -6,7 +6,7 @@ function ProfileBio({src, bio}) {
 			<div>
 				<img
 					src= {src}
-					className='profile-image rounded-full lg:border-2 border border-primary select-none'
+					className='profile-image rounded-full lg:border-2 border border-primary select-none object-cover'
 					alt='profile image'
 				/>
 			</div>

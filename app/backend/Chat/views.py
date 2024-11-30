@@ -26,7 +26,7 @@ def ConversationsList(request):
 
     serializer = ConversationSerializer(conversations, context={'request': request}, many=True)
     return Response({'id': request.user.id,
-                     'conversations':serializer.data
+                     'conversations': serializer.data
                     })
 
 
@@ -36,14 +36,20 @@ def ConversationsList(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @csrf_exempt
-def getUserinfos(request, conversation_key, user_id):
+def getUserInfos(request, conversation_key):
 
     ids = conversation_key.split('_')
-    if request.user.id not in map(int, ids):
+
+    if len(ids) != 2 or not all(id.isdigit() for id in ids) or request.user.id not in map(int, ids):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
-    
+    print('ids: ', ids)
+    if int(ids[0]) > int(ids[1]):
+        return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
+    user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
+    print('user_id: ', user_id)
+    print('request.user.id: ', request.user.id)
+
     user_infos = User.objects.filter(id=user_id)
-    print(conversation_key)
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
     if conversation:
         messages = Message.objects.filter(conversation_id=conversation.id)
@@ -56,7 +62,6 @@ def getUserinfos(request, conversation_key, user_id):
     }
     if conversation:
         response['messages'] = message_serializer.data
-    print(response)
     return Response(response)
 
 
@@ -69,7 +74,6 @@ def getUserinfos(request, conversation_key, user_id):
 @csrf_exempt
 def getSearchedUsers(request, user):
     users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)
-    print(users)
 
     search_serializer = SearchResultSerializer(users, context={'request': request}, many=True)
 

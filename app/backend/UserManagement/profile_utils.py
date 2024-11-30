@@ -46,7 +46,7 @@ def handle_password_change(user, user_data):
             if not all ([password, new_password, confirm_password]):
                 return Response(
                     {'error': 'All password fields (password, new_password, confirm_password) are required'},
-                     status=status.HTTP_400_BAD_REQUEST
+                    status=status.HTTP_400_BAD_REQUEST
                 )
             if not user.check_password(password):
                 return Response(

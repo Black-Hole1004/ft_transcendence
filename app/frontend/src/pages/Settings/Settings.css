@@ -25,10 +25,15 @@
 
 .profile-pic {
 	width: clamp(2.5rem, 2.655vw + 2.002rem, 6.25rem);
+	height: clamp(2.5rem, 2.655vw + 2.002rem, 6.25rem);
 }
 
 .sections-title {
 	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
+}
+
+.parts {
+	width: clamp(14.938rem, 10.531vw + 12.963rem, 29.813rem);
 }
 
 .buttons-text {
@@ -59,11 +64,17 @@
 
 .bio-input {
 	width: clamp(17.5rem, 18.584vw + 14.015rem, 43.75rem);
-	height: clamp(3.438rem, 3.097vw + 2.857rem, 7.813rem);
-	max-height: 130px;
+	height: clamp(5.25rem, 2.212vw + 4.835rem, 8.375rem);
+	max-height: 135px;
 	padding: clamp(0.375rem, 0.265vw + 0.325rem, 0.75rem) clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem);
 }
 
 .save-button {
 	margin-right: clamp(0.75rem, 2.124vw + 0.352rem, 3.75rem);
 }
+
+
+
+
+
+

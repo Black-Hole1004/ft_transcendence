@@ -52,6 +52,7 @@
 
 .profile-image {
 	width: clamp(3.75rem, 6.195vw + 2.588rem, 12.5rem);
+	height: clamp(3.75rem, 6.195vw + 2.588rem, 12.5rem);
 	margin-left: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
 	margin-right: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
 }
