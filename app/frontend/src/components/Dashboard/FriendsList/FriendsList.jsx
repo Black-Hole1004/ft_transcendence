@@ -3,8 +3,9 @@ import UserFriendsList from './UserFriendsList'
 function FriendsList() {
 	return (
 		<div
-			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px]
-			rounded-xl border-1.5 border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]'
+			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border-1.5
+			transition duration-300 border-[rgba(255,206,157,.2)] hover:border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]
+			hover:drop-shadow-[0_0_20px_rgba(255,206,157,0.2)]'
 		>
 			<h1 className='font-dreamscape-sans card-title text-primary'>FRIENDS LIST</h1>
 
@@ -14,7 +15,7 @@ function FriendsList() {
 					type='text'
 					name='search for friends'
 					placeholder='Search for friends...'
-					className='font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border overflow-hidden'
+					className='flex-1 font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border overflow-hidden'
 				/>
 			</div>
 			<div className='w-[96%] overflow-y-auto users'>

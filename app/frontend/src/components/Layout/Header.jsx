@@ -106,15 +106,14 @@ function Header({ user_data }) {
 						</div>
 					)}
 				</button>
-				{isNotificationOpen && (
-					<div
-						ref={notificationRef}
-						className='notification max-ms:w-full absolute z-10 ml:right-1/3 right-0
-							top-full flex flex-col border border-primary rounded-xl bg-secondary'
-					>
-						<NotificationDropdown />
-					</div>
-				)}
+				<div
+					ref={notificationRef}
+					className={`notification max-ms:w-full absolute z-10 ml:right-1/3 right-0
+							top-full flex flex-col border border-primary rounded-xl bg-secondary
+							transition-opacity duration-300 ${!isNotificationOpen ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+				>
+					<NotificationDropdown />
+				</div>
 				<button
 					ref={avatarButtonRef}
 					onClick={toggleDropdown}
@@ -137,17 +136,16 @@ function Header({ user_data }) {
 						/>
 					</div>
 				</button>
-				{isDropdownOpen && (
-					<div
-						ref={dropdownRef}
-						className='dropdown absolute right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
-					>
-						<UserAvatarDropdown
-							setIsDropdownOpen={setIsDropdownOpen}
-							user_data={user_data}
-						/>
-					</div>
-				)}
+				<div
+					ref={dropdownRef}
+					className={`dropdown absolute right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary
+						transition-opacity duration-300 ${!isDropdownOpen ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+				>
+					<UserAvatarDropdown
+						setIsDropdownOpen={setIsDropdownOpen}
+						user_data={user_data}
+					/>
+				</div>
 			</nav>
 		</header>
 	)
