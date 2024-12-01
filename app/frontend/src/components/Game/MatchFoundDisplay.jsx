@@ -73,14 +73,14 @@ const MatchFoundDisplay = ({ matchData, countdown }) => {
                 </div>
 
                 {/* VS and Countdown Section */}
-                <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center scale-75 sm:scale-90 md:scale-100'>
+                {/* <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center scale-75 sm:scale-90 md:scale-100'>
                     <span className='text-8xl font-bold text-white mb-8'>VS</span>
                     {countdown && (
                         <div className='text-9xl font-bold text-gray-500 animate-pulse'>
                             {countdown}
                         </div>
                     )}
-                </div>
+                </div> */}
 
                 {/* Player 2 */}
                 <div className='flex flex-col items-center scale-75 sm:scale-90 md:scale-100'>

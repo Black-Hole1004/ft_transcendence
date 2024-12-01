@@ -14,7 +14,7 @@ const Matchmaking = () => {
     const [opponent, setOpponent] = useState(null);
     
     const [matchData, setMatchData] = useState(null);
-    const [countdown, setCountdown] = useState(null);
+    // const [countdown, setCountdown] = useState(null);
     const [matchmakingService] = useState(new MatchmakingService());
 
     useEffect(() => {
@@ -41,10 +41,10 @@ const Matchmaking = () => {
             setMatchData(data);
 
             // Start countdown
-            for (let i = 3; i > 0; i--) {
-                setCountdown(i);
-                await new Promise((r) => setTimeout(r, 1000));
-            }
+            // for (let i = 3; i > 0; i--) {
+            //     setCountdown(i);
+            //     await new Promise((r) => setTimeout(r, 1000));
+            // }
 
             if (!data.game_id) {
                 console.error('Server did not provide game_id');
@@ -91,7 +91,7 @@ const Matchmaking = () => {
     return (
         <div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary flex items-center justify-center'>
             {status === 'match_found' ? (
-                <MatchFoundDisplay matchData={matchData} countdown={countdown} />
+                <MatchFoundDisplay matchData={matchData} /> /* countdown={countdown} */
             ) : (
                 <div className='w-1/3 min-w-[400px]'>
                     <div className='w-full flex flex-col items-center gap-8 bg-backdrop-80 p-12 rounded-lg shadow-xl'>

@@ -1,24 +1,59 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import GameScore from '../../components/Game/GameScore'
 import RemotePlayer from '../../components/Game/RemotePlayer'
 import Timer from '../../components/Game/Timer'
 import RemotePongTable from '../../components/Game/RemotePongTable'
+import GameWebSocket from '../../services/GameWebSocket'
 import './Game.css'
 
 const RemoteGame = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
-
+	const socketRef = useRef(null)
+	
 	// Get data passed from matchmaking
-	const { gameId, playerNumber, opponent, currentUser, settings } = location.state || {}
+	const { gameId, playerNumber, opponent, currentUser, settings, state } = location.state || {}
 
 	// Game state
+    const [gameState, setGameState] = useState({
+        paddles: {
+            '1': { y: 150 },
+            '2': { y: 150 }
+        }
+    });
+
 	const [isPaused, setIsPaused] = useState(false)
 	const [isGameOver, setIsGameOver] = useState(false)
 	const [player1Score, setPlayer1Score] = useState(0)
 	const [player2Score, setPlayer2Score] = useState(0)
 	const [timeRemaining, setTimeRemaining] = useState(settings?.duration || 60)
+
+    // Initialize WebSocket when component mounts
+    useEffect(() => {
+        socketRef.current = new GameWebSocket();
+        
+        // Set up WebSocket event handlers
+        socketRef.current.on('state_update', (newState) => {
+            setGameState(newState);
+            // Update scores
+            setPlayer1Score(newState.scores['1']);
+            setPlayer2Score(newState.scores['2']);
+        });
+
+        // socketRef.current.on('game_ended', handleGameOver);
+        
+        // Connect to game
+        socketRef.current.connect(gameId);
+
+        return () => socketRef.current.disconnect();
+    }, [gameId]);
+
+	// Handle paddle movement
+	const handlePaddleMove = (newY) => {
+		socketRef.current.sendPaddleMove(newY);
+	};
+
 
 	// Handle pause
 	const handlePause = () => {
@@ -68,7 +103,11 @@ const RemoteGame = () => {
 						</div>
 						<div className='justify-center items-center w-1/2'>
 							<RemotePongTable
+								gameState={gameState}
+								onPaddleMove={handlePaddleMove}
+								playerNumber={playerNumber}
 								isPaused={isPaused}
+
 								handlePause={handlePause}
 								backgroundId={settings?.backgroundId}
 								isGameOver={isGameOver}

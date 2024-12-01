@@ -94,7 +94,7 @@ class GameWebSocket {
             const handlers = {
                 game_info: this.handleGameInfo.bind(this),
                 state_update: this.handleStateUpdate.bind(this),
-                paddle_update: this.handlePaddleUpdate.bind(this),
+                paddles_update: this.handlePaddlesUpdate.bind(this),
                 game_ended: this.handleGameEnded.bind(this),
                 game_restarted: this.handleGameRestarted.bind(this),
                 player_disconnected: this.handlePlayerDisconnected.bind(this),
@@ -126,9 +126,9 @@ class GameWebSocket {
         this.callbacks.state_update?.(data.state);
     }
 
-    handlePaddleUpdate(data) {
+    handlePaddlesUpdate(data) {
         console.log('Handling paddle update:', data);
-        this.callbacks.paddle_update?.(data);
+        this.callbacks.paddles_update?.(data);
     }
 
     handleGameEnded(data) {
