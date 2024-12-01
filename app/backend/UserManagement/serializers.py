@@ -5,9 +5,6 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from .models import UserSession
 from rest_framework.response import Response
-from rest_framework import status
-from .models import Friendship
-from .models import FriendShipRequest
 
 from .profile_utils import (
     handle_password_change,
@@ -15,6 +12,9 @@ from .profile_utils import (
     update_profile_picture,
     generate_new_tokens
 )
+
+from .models import FriendShip
+from .models import FriendShipRequest
 
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
@@ -25,15 +25,18 @@ class UserSerializer(serializers.ModelSerializer):
     is_friend = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth', 'status', 'is_friend',
+        fields = ['id', 'first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth', 'is_friend', 'status',
                 'username', 'display_name','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture'
             ]
         read_only_fields = ['id', 'email']
-
+    
     def get_is_friend(self, obj):
         request = self.context.get('request', None)
         if request and request.user.is_authenticated:
-            return Friendship.objects.filter(user_from=request.user, user_to=obj).exists()
+        # Check both directions of the friendship
+            is_friend_from = FriendShip.objects.filter(user_from=request.user, user_to=obj).exists()
+            is_friend_to = FriendShip.objects.filter(user_from=obj, user_to=request.user).exists()
+            return is_friend_from or is_friend_to
         return False
     
 class UserSessionSerializer(serializers.ModelSerializer):
@@ -41,29 +44,26 @@ class UserSessionSerializer(serializers.ModelSerializer):
         model = UserSession
         fields = ['user', 'login_time', 'logout_time', 'duration']
 
+# ----------------------------------------------------------------------------------
 
-class FriendRequestSerializer(serializers.Serializer):
-    user_to = serializers.IntegerField()  # Or use a ForeignKey to the User model if required
+class FriendRequestSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user_from.username', read_only=True)
+    profile_picture = serializers.SerializerMethodField()
+    # user_to_profile_picture = serializers.SerializerMethodField()
 
-    def validate_user_to(self, value):
-        # Ensure that the user_to is not the same as the requesting user
-        if value == self.context['request'].user.id:
-            raise serializers.ValidationError("You cannot send a friend request to yourself.")
-        return value
-
-
-class FriendshipRequestSerializer(serializers.ModelSerializer):
-    user_from = serializers.StringRelatedField(read_only=True)
-    user_to = serializers.StringRelatedField(read_only=True)
     class Meta:
         model = FriendShipRequest
-        fields = ['user_from', 'user_to', 'status', 'created_at']
-    
-    def create(self, validated_data):
-        user_from = validated_data.get('user_from')
-        user_to = validated_data.get('user_to')
-        if Friendship.objects.filter(user_from=user_from, user_to=user_to, status='pending').exists():
-            raise ValidationError('Friendship request already pending')
-        
-        return FriendShipRequest.objects.create(**validated_data)
-# ----------------------------------------------------------------------------------
+        fields = ['id', 'user_from', 'user_to', 'status', 'created_at', 'profile_picture', 'username']
+        read_only_fields = ['id', 'user_from', 'created_at']
+
+    def get_profile_picture(self, obj):
+        request = self.context.get('request')
+        if obj.user_from.profile_picture:
+            return request.build_absolute_uri(obj.user_from.profile_picture.url) if request else obj.user_from.profile_picture.url
+        return None
+
+    # def get_user_to_profile_picture(self, obj):
+    #     request = self.context.get('request')
+    #     if obj.user_to.profile_picture:
+    #         return request.build_absolute_uri(obj.user_to.profile_picture.url) if request else obj.user_to.profile_picture.url
+    #     return None

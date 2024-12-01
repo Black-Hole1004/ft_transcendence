@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import User
 from .models import UserSession
 from .models import Notification
-from .models import Friendship
+from .models import FriendShip
 from .models import FriendShipRequest
 
 @admin.register(User)
@@ -17,7 +17,7 @@ class UserSessionAdmin(admin.ModelAdmin):
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'message', 'sender', 'receiver', 'is_read')
 
-@admin.register(Friendship)
+@admin.register(FriendShip)
 class FriendshipAdmin(admin.ModelAdmin):
     list_display = ('id', 'user_from', 'user_to', 'created_at')
 

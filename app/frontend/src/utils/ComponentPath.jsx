@@ -13,6 +13,14 @@ const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
 const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
 const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
 const Layout = React.lazy(() => import('../components/Layout/Layout'))
+const TwoFactorAuth = React.lazy(() => import('../pages/TwoFactorAuth/TwoFactorAuth'))
+const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
+// const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
+const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
+// const RemoteGameSetup = React.lazy(() => import('../pages/Game/RemoteGameSetup'))
+const SearchingAnimation = React.lazy(() => import('../components/Game/Remote/SearchingAnimation'))
+
+
 
 
 const ComponentPath = () => {
@@ -22,17 +30,23 @@ const ComponentPath = () => {
 			<Routes>
 				{/* Redirect to /Dashboard if authenticated on the home path */}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
+				<Route path="/2fa" element={<TwoFactorAuth />} />
 
 				{/* Layout wrapping all private routes */}
 				<Route element={<Layout />}>
-					<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
 					<Route path="/Game" element={<PrivateRoute><Game /></PrivateRoute>} />
 					<Route path="/Chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
 					<Route path="/Custom" element={<PrivateRoute><Custom /></PrivateRoute>} />
 					<Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+					<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
 					<Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+					<Route path='/local-game' element={<PrivateRoute><LocalGame /></PrivateRoute>} />
 					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
-					<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />
+					<Route path="/chat/:conversation_key" element={<PrivateRoute><Chat /></PrivateRoute>} />
+					<Route path="/local-game-setup" element={<PrivateRoute><LocalGameSetup /></PrivateRoute>} />
+					<Route path="/searching" element={<PrivateRoute><SearchingAnimation /></PrivateRoute>} />
+					{/* <Route path='/remote-game' element={<RemoteGame />} /> */}
+					{/* <Route path='/remote-game-setup' element={<RemoteGameSetup />} /> */}
 				</Route>
 
 				{/* Catch-all route */}

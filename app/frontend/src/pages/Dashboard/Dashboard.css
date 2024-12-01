@@ -7,19 +7,11 @@
 }
 
 .message-padding {
-	padding-top: clamp(3.125rem, 0.909vw + 2.955rem, 4.375rem);
 	padding-left: clamp(0.625rem, 2.727vw + 0.114rem, 4.375rem);
-	padding-right: clamp(1.25rem, 1.591vw + 0.952rem, 3.438rem);
-	padding-bottom: clamp(3.125rem, 10.536vw - 6.357rem, 10.5rem);
 }
 
 .card-height {
 	height: clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem);
-}
-
-.cards-padding {
-	padding-left: clamp(0.5rem, 5.536vw - 4.482rem, 4.375rem);
-	padding-right: clamp(0.5rem, 2.5vw - 1.75rem, 2.25rem);
 }
 
 .card-title {
@@ -30,7 +22,6 @@
 
 .search-input {
 	font-size: clamp(0.75rem, 0.377vw + 0.41rem, 1rem);
-	width: clamp(15rem, 5.66vw + 9.906rem, 18.75rem);
 }
 
 .search-icon {
@@ -40,7 +31,6 @@
 .users {
 	margin-bottom: 10px;
 	margin-top: clamp(1.25rem, 1.818vw - 0.341rem, 2.5rem);
-	/* padding-left: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem); */
 	padding-right: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem);
 }
 
@@ -51,8 +41,6 @@
 .achievement-icon-ldr {
 	width: clamp(2.188rem, 0.909vw + 1.392rem, 2.813rem);
 }
-
-
 
 .achievement-name {
 	font-size: clamp(0.438rem, 0.182vw + 0.278rem, 0.563rem);
@@ -69,27 +57,19 @@
 .add-friend-button {
 	font-size: clamp(0.563rem, 0.364vw + 0.244rem, 0.813rem);
 	padding: clamp(0.188rem, 0.133vw + 0.163rem, 0.375rem);
-	width: clamp(3.438rem, 1.283vw + 3.197rem, 5.25rem);
+	width: clamp(3.563rem, 1.195vw + 3.338rem, 5.25rem);
 }
 
 /* Right side */
-
-.modes-font {
-	line-height: 1.2;
-	font-size: clamp(1.125rem, 2.743vw + 0.611rem, 5rem);
-}
 
 .rightside-my {
 	margin-top: clamp(1.25rem, 4.091vw + 0.483rem, 6.875rem);
 	margin-bottom: 40px;
 }
 
-/* .rightside-mx {
-	margin-left: clamp(0rem, 7.143vw - 8.929rem, 2.5rem);
-	margin-right: clamp(0.313rem, 6.132vw - 5.206rem, 4.375rem);
-} */
-
 .modes {
+	line-height: 1.2;
+	font-size: clamp(1.125rem, 2.743vw + 0.611rem, 5rem);
 	margin-bottom: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
 }
 
@@ -111,7 +91,7 @@
 	font-size: clamp(0.25rem, 0.354vw + 0.184rem, 0.75rem);
 }
 
-/*  */
+/* Friends list */
 
 .user-container {
 	height: clamp(2.5rem, 0.885vw + 2.334rem, 3.75rem);

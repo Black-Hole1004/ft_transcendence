@@ -29,12 +29,7 @@ export const AuthProvider = ({ children }) => {
             };
         } catch (error) {
             console.error('error', error)
-            navigate('/')
-            console.log('Logout successful', data)
-            Cookies.remove('access_token')
-            Cookies.remove('refresh_token')
-            setAuthTokens(null)
-            setUser(null)
+            logout()
         }
     });
 
@@ -119,6 +114,27 @@ export const AuthProvider = ({ children }) => {
 		triggerAlert(type, message)
 	}
 
+    // hta narja3 liha
+    // useEffect(() => {
+	// 	const access_token = Cookies.get('access_token');
+    //     const socket = new WebSocket('ws://127.0.0.1:8000/ws/user_status/?access_token=' + access_token);
+    //     socket.onopen = () => {
+    //         socket.send(JSON.stringify({ 'message': 'online' }));
+    //     };
+    //     socket.onmessage = (e) => {
+    //         const data = JSON.parse(e.data);
+
+    //         if (data.message === 'ingame') {
+    //             console.log('User is in-game');
+    //         }
+    //     };
+    //     socket.onclose = () => {
+    //         socket.send(JSON.stringify({ 'message': 'offline' }));
+    //     };
+    //     return () => {
+    //         socket.close();
+    //     };
+    // }, [authTokens, user]);
 
     const login = async () => {
         try {
@@ -218,7 +234,6 @@ export const AuthProvider = ({ children }) => {
     };
 
     const get_expiration_time = (token) => {
-      
         if (!token) {
             return null
         }

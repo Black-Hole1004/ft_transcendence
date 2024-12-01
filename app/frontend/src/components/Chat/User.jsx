@@ -2,19 +2,18 @@ import { useNavigate } from 'react-router-dom'
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
-function User({
-	myId,
-	search,
-	setMessages,
-	conversation,
-	selectedUserId,
-	setSearchResult,
-	setSelectedUserId,
-	setConversationKey,
-}) {
+function User({ currentUserId, search, conversation, conversationKey, setConversationKey }) {
 	const navigate = useNavigate()
 
+	// console.log(currentUserId)
+	// console.log(conversationKey)
 	let user_id = search ? conversation.id : conversation.other_user.id
+	const ids = conversationKey?.split('_').map((id) => parseInt(id))
+	// console.log('ids: ', ids)
+	let selectedUserId = null
+	if (ids) selectedUserId = ids[0] === currentUserId ? ids[1] : ids[0]
+	// console.log(selectedUserId)
+
 	let username = search ? conversation.username : conversation.other_user.username
 	let profile_picture = search
 		? conversation.profile_picture
@@ -42,30 +41,21 @@ function User({
 	}
 
 	const handleConversationSelect = () => {
-		setSelectedUserId((prev) => {
-			if (prev === user_id) {
-				return prev
-			}
-			setMessages([])
-			return user_id
-		})
-
-		let conversation_key = `${Math.min(myId, user_id)}_${Math.max(myId, user_id)}`
-		console.log(conversation_key)
+		let conversation_key = `${Math.min(currentUserId, user_id)}_${Math.max(currentUserId, user_id)}`
 
 		setConversationKey((prev) => {
 			if (prev === conversation_key) return prev
 			return conversation_key
 		})
-		navigate(`/chat/${conversation_key}/${user_id}`)
+		navigate(`/chat/${conversation_key}`)
 	}
 
 	return (
 		<div
 			id={user_id}
 			onClick={handleConversationSelect}
-			className={`flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
-				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg user tb:p-user-div-px-tb
+			className={`flex max-tb:flex-col max-tb:justify-around items-center gap-2
+			tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg tb:px-user-div-px-tb
 				${search ? '' : selectedUserId === user_id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
 		>
 			<img
@@ -74,7 +64,7 @@ function User({
 						? profile_picture
 						: BASE_URL + profile_picture
 				}
-				className='rounded-full ring-1 ring-primary select-none'
+				className='chat-history-image rounded-full object-cover ring-1 ring-primary select-none'
 				alt='user image'
 			/>
 			<div className='font-medium tb:w-[80%]'>
@@ -94,12 +84,10 @@ function User({
 				)}
 			</div>
 			{search && (
-				<div className='search-badge max-tb:hidden'>
-					<img
-						src='/assets/images/Achievements/celestial-master.png'
-						className='select-none'
-					/>
-				</div>
+				<img
+					src='/assets/images/Achievements/celestial-master.png'
+					className='select-none search-badge max-tb:hidden'
+				/>
 			)}
 		</div>
 	)

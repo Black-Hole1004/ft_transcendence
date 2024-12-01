@@ -1,86 +1,77 @@
 import './Chat.css'
 import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+
 import Footer from '../../components/Chat/Footer.jsx'
 import Messages from '../../components/Chat/Messages.jsx'
 import UserInfos from '../../components/Chat/UserInfos.jsx'
 import ChatHistory from '../../components/Chat/ChatHistory.jsx'
-import { useHeaders } from '../../components/HeadersContext.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
+import ConversationHeader from '../../components/Chat/ConversationHeader.jsx'
 
-import { useAlert } from '../../components/AlertContext'
+// import { useAlert } from '../../components/AlertContext'
 import useAuth from '../../context/AuthContext.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
-	const { getAuthHeaders } = useAuth()
-	// const headers = useHeaders()
 	const location = useLocation()
+	const navigate = useNavigate()
+	const { getAuthHeaders } = useAuth()
 
-	const chatSocket = useRef(null)
-	const MessageInputRef = useRef(null)
+	const webSocketRef = useRef(null)
+	const currentMessage = useRef(null)
 
-	const [myId, setMyId] = useState(0)
-	const [user, setUser] = useState(null)
-	const [messages, setMessages] = useState([])
-	const [selectedUserId, setSelectedUserId] = useState(0)
-	const [isUrlProcessed, setIsUrlProcessed] = useState(false)
+	const [isBlocked, setIsBlocked] = useState(false)
+	const [chatMessages, setChatMessages] = useState([])
+	const [currentUserId, setCurrentUserId] = useState(0)
+	const [recipientInfo, setRecipientInfo] = useState(null)
+	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [conversationKey, setConversationKey] = useState(null)
-	const [selectedUserImage, setSelectedUserImage] = useState(null)
+	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
 
-	const { triggerAlert } = useAlert()
+	// const { triggerAlert } = useAlert()
 
-	const handleSubmit = () => {
-		triggerAlert('success', 'Message sent successfuly!')
-	}
+	// const handleSubmit = () => {
+	// 	triggerAlert('success', 'Message sent successfuly!')
+	// }
 
 	useEffect(() => {
-		console.log(location.pathname)
-		const uri = window.location.pathname.split('/').slice(2, 4)
-
-		if (uri.length > 0) {
-			console.log('url processed')
-			console.log('uri[0]: ', uri[0])
-			setMessages([])
+		// Extract conversation key from URL
+		const uri = window.location.pathname.split('/').slice(2, 3)
+		if (uri.length === 1) {
+			setChatMessages([])
 			setConversationKey(uri[0])
-			setSelectedUserId(parseInt(uri[1]))
-			setIsUrlProcessed(true)
-			console.log('conversation key:', conversationKey)
+			setIsConversationLoaded(true)
 		} else {
-			setIsUrlProcessed(false)
+			setIsConversationLoaded(false)
 		}
 	}, [location.pathname])
 
 	useEffect(() => {
-		const handleOpen = () => {
+		const onWebSocketOpen = () => {
 			console.log('WebSocket connected')
-			if (isUrlProcessed) {
-				console.log('join')
-				console.log('===> ', conversationKey)
-				chatSocket.current?.send(
+			if (isConversationLoaded) {
+				webSocketRef.current?.send(
 					JSON.stringify({
 						message_type: 'join',
 						conversation_key: conversationKey,
-						selected_user_id: selectedUserId,
 					})
 				)
 			}
 		}
 
-		const handleClose = () => {
+		const onWebSocketClose = () => {
 			console.log('WebSocket disconnected')
-			chatSocket.current = null
-			setTimeout(setupConnection, 3000)
+			webSocketRef.current = null
+			setTimeout(initializeWebSocket, 3000)
 		}
 
-		const handleMessage = (e) => {
-			console.log('handle message')
+		const onWebSocketMessage = (e) => {
+			console.log('WebSocket message received')
 			const data = JSON.parse(e.data)
-			console.log(data)
-			console.log('messages: ', messages)
-			setMessages((prevMessages) => [
+			setChatMessages((prevMessages) => [
 				...prevMessages,
 				{
 					sender_id: data.sender,
@@ -90,160 +81,156 @@ const Chat = () => {
 			])
 		}
 
-		const setupConnection = () => {
-			if (!chatSocket.current) {
+		const initializeWebSocket = () => {
+			if (!webSocketRef.current) {
+				// console.log(window.location.protocol)
 				const ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
-				chatSocket.current = ws
-			}
+				webSocketRef.current = ws
 
-			chatSocket.current.addEventListener('open', handleOpen)
-			chatSocket.current.addEventListener('close', handleClose)
-			chatSocket.current.addEventListener('message', handleMessage)
+				webSocketRef.current.addEventListener('open', onWebSocketOpen)
+				webSocketRef.current.addEventListener('close', onWebSocketClose)
+				webSocketRef.current.addEventListener('message', onWebSocketMessage)
+			}
 		}
 
-		setupConnection()
+		initializeWebSocket()
 
 		return () => {
-			if (chatSocket.current) {
+			if (webSocketRef.current) {
 				console.log('cleanup running')
-				const ws = chatSocket.current
+				const ws = webSocketRef.current
 
-				ws.removeEventListener('open', handleOpen)
-				ws.removeEventListener('close', handleClose)
-				ws.removeEventListener('message', handleMessage)
+				ws.removeEventListener('open', onWebSocketOpen)
+				ws.removeEventListener('close', onWebSocketClose)
+				ws.removeEventListener('message', onWebSocketMessage)
 
-				chatSocket.current = null
+				ws.close()
+				webSocketRef.current = null
 			}
 		}
-	}, [isUrlProcessed, conversationKey])
+	}, [isConversationLoaded, conversationKey])
 
 	useEffect(() => {
-		const getUserInfos = async () => {
+		const fetchConversationDetails = async () => {
 			try {
-				if (selectedUserId > 0) {
-					const response = await axios.get(
-						`${API_CHAT}${conversationKey}/${selectedUserId}/`,
-						{
-							headers: {
-								'Content-Type': 'application/json',
-								'Authorization': getAuthHeaders().Authorization
-							}
-						})
-					console.log(response.data)
-					setUser(response.data.user_infos[0])
+				if (conversationKey) {
+					const response = await axios.get(`${API_CHAT}${conversationKey}/`, {
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: getAuthHeaders().Authorization,
+						},
+					})
+					setRecipientInfo(response.data.user_infos[0])
 					const messages = response.data.messages ? response.data.messages : []
-					setMessages(messages)
-					setSelectedUserImage(response.data.user_infos[0].profile_picture)
+					setChatMessages(messages)
+					setrecipientProfileImage(response.data.user_infos[0].profile_picture)
 				}
 			} catch (error) {
 				console.error('Error fetching user infos:', error)
+				navigate('/404')
 			}
 		}
 
-		if (selectedUserId > 0) {
-			getUserInfos()
+		if (conversationKey) {
+			fetchConversationDetails()
 		}
-	}, [selectedUserId])
+	}, [conversationKey, getAuthHeaders])
 
 	const handleKeyPress = (e) => {
 		if (e.key === 'Enter') {
-			sendMessage()
+			sendChatMessage()
 		}
 	}
 
-	const sendMessage = () => {
-		let ws = chatSocket.current
+	const sendChatMessage = () => {
+		let ws = webSocketRef.current
 
 		if (ws && ws.readyState === WebSocket.OPEN) {
-			const value = MessageInputRef.current.value.trim()
+			const value = currentMessage.current.value.trim()
 
 			if (value !== '') {
 				ws.send(
 					JSON.stringify({
-						sender: myId,
+						sender: currentUserId,
 						message: value,
 						message_type: 'message',
 						conversation_key: conversationKey,
 					})
 				)
-				MessageInputRef.current.value = ''
-				handleSubmit()
+				currentMessage.current.value = ''
+				// handleSubmit()
 			}
 		}
 	}
+	console.log('chat')
 
 	return (
-		<section className='section-margin'>
-			<div className='flex lg:flex-row flex-col lg:justify-between gap-4'>
-				<div
-					className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
+		<section
+			className={`section-margin flex lg:flex-row flex-col gap-4
+			${conversationKey ? 'lg:justify-between' : 'lg:justify-center'}`}
+		>
+			<div
+				className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
 						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
-				>
-					<ChatHistory
-						myId={myId}
-						setMyId={setMyId}
-						// headers={getAuthHeaders}
-						messages={messages}
-						setMessages={setMessages}
-						selectedUserId={selectedUserId}
-						setSelectedUserId={setSelectedUserId}
-						setConversationKey={setConversationKey}
-					/>
-					<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
+			>
+				{/* Chat History Component */}
+				<ChatHistory
+					currentUserId={currentUserId}
+					setCurrentUserId={setCurrentUserId}
+					chatMessages={chatMessages}
+					conversationKey={conversationKey}
+					setConversationKey={setConversationKey}
+				/>
 
-					<div
-						className='tb:flex-1 flex flex-col items-center max-tb:border border-primary
+				{/* Separator */}
+				<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
+
+				{/* Chat Area */}
+				<div
+					className='tb:flex-1 flex flex-col items-center max-tb:border border-primary
 									lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
-					>
-						{user ? (
-							<>
-								<div className='chat-header flex items-center tb:h-[20%] h-[15%] w-full lp:gap-4 gap-3 max-tb:my-3 z-20'>
-									<img
-										src={`${selectedUserImage}`}
-										className='w-20 rounded-full ring-1 ring-primary select-none'
-										alt='user image'
-									/>
-									<div>
-										<p className='font-heavy friend-name text-primary'>
-											{`${user.first_name} ${user.last_name}`}
-										</p>
-										<div className='flex items-center gap-0.5'>
-											<div
-												className={`w-1.5 h-1.5 rounded-full
-												${user.status === 'online' ? 'bg-online' : user.status === 'offline' ? 'bg-offline' : 'bg-defeat'}`}
-											></div>
-											<p
-												className={`last-message font-heavy
-												${user.status === 'online' ? 'text-online' : user.status === 'offline' ? 'text-offline' : 'text-defeat'}`}
-											>
-												{user.status === 'online'
-													? 'Online'
-													: user.status === 'offline'
-														? 'Offline'
-														: 'In-Game'}
-											</p>
-										</div>
-									</div>
-								</div>
-								<Messages
-									messages={messages}
-									selectedUserId={selectedUserId}
-									selectedUserImage={selectedUserImage}
-								/>
+				>
+					{recipientInfo ? (
+						<>
+							{/* Chat Header */}
+							<ConversationHeader
+								isBlocked={isBlocked}
+								setIsBlocked={setIsBlocked}
+								recipientInfo={recipientInfo}
+								recipientProfileImage={recipientProfileImage}
+							/>
+
+							{/* Chat Messages */}
+							<Messages
+								isBlocked={isBlocked}
+								currentUserId={currentUserId}
+								chatMessages={chatMessages}
+								recipientProfileImage={recipientProfileImage}
+							/>
+
+							{/* Chat Footer */}
+							{isBlocked ? (
+								<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
+									You have blocked this user. Unblock them to resume the
+									conversation.
+								</p>
+							) : (
 								<Footer
-									sendMessage={sendMessage}
+									currentMessage={currentMessage}
 									handleKeyPress={handleKeyPress}
-									selectedUserId={selectedUserId}
-									MessageInputRef={MessageInputRef}
+									sendChatMessage={sendChatMessage}
+									conversationKey={conversationKey}
 								/>
-							</>
-						) : (
-							<StartConversation />
-						)}
-					</div>
+							)}
+						</>
+					) : (
+						<StartConversation />
+					)}
 				</div>
-				{selectedUserId > 0 && <UserInfos user={user} />}
 			</div>
+
+			{/* User Information Sidebar */}
+			{conversationKey && <UserInfos recipientInfo={recipientInfo} />}
 		</section>
 	)
 }

@@ -6,13 +6,10 @@ import useAuth from '../../context/AuthContext'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({
-	myId,
-	setMyId,
-	// headers,
-	messages,
-	setMessages,
-	selectedUserId,
-	setSelectedUserId,
+	currentUserId,
+	setCurrentUserId,
+	chatMessages,
+	conversationKey,
 	setConversationKey,
 }) {
 	const searchRef = useRef(null)
@@ -30,22 +27,20 @@ function ChatHistory({
 			setSearchText('')
 			searchRef.current.value = ''
 		}
-	}, [selectedUserId])
+	}, [conversationKey])
 
 	const { getAuthHeaders } = useAuth()
 	useEffect(() => {
-		// if (!headers) return
-
 		const getConversations = async () => {
 			try {
 				const response = await axios.get(API_CHAT, {
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': getAuthHeaders().Authorization
-					}
+						Authorization: getAuthHeaders().Authorization,
+					},
 				})
 				if (response.data) {
-					setMyId(response.data.id)
+					setCurrentUserId(response.data.id)
 					setConversations(response.data.conversations)
 				}
 			} catch (error) {
@@ -54,20 +49,18 @@ function ChatHistory({
 		}
 
 		getConversations()
-	}, [messages])
+	}, [chatMessages])
 
 	useEffect(() => {
 		const getUsers = async () => {
 			try {
 				if (searchText.length > 0) {
-					// console.log('headers:', headers);
-					const response = await axios.get(`${API_CHAT}${searchText}/`, {
+					const response = await axios.get(`${API_CHAT}search/${searchText}/`, {
 						headers: {
 							'Content-Type': 'application/json',
-							'Authorization': getAuthHeaders().Authorization
-						}
+							Authorization: getAuthHeaders().Authorization,
+						},
 					})
-					console.log(response.data)
 					if (response.data.search_result.length > 0) {
 						setSearchResult(response.data.search_result)
 					} else {
@@ -76,7 +69,7 @@ function ChatHistory({
 				} else {
 					setSearchResult(null)
 				}
-			} catch (error){
+			} catch (error) {
 				console.error('Error fetching users:', error)
 			}
 		}
@@ -110,20 +103,17 @@ function ChatHistory({
 				</div>
 			</div>
 			<div
-				className={`flex tb:flex-col max-tb:justify-center flex-row gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
-							tb:overflow-y-auto ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
+				className={`max-tb:flex max-tb:justify-center gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
+							 ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				{(searchResult ? searchResult : conversations).map((conversation) => (
 					<User
-						myId={myId}
+						currentUserId={currentUserId}
 						key={conversation.id}
-						setMessages={setMessages}
-						conversation={conversation}
-						selectedUserId={selectedUserId}
-						setSearchResult={setSearchResult}
-						setSelectedUserId={setSelectedUserId}
-						setConversationKey={setConversationKey}
 						search={!!searchResult}
+						conversation={conversation}
+						conversationKey={conversationKey}
+						setConversationKey={setConversationKey}
 					/>
 				))}
 			</div>

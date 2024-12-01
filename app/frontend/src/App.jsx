@@ -11,16 +11,16 @@ import './context/WebSocketContext';
 function App() {
 	return (
 		<Router>
-			<WebSocketProvider>
-				<AlertProvider>
-					<AuthProvider>
-						<React.Suspense fallback={<div>Loading...</div>}>
-							<OauthHandler />
-							<ComponentPath />
-						</React.Suspense>
-					</AuthProvider>
-				</AlertProvider>
-			</WebSocketProvider>
+			<AlertProvider>
+				<AuthProvider>
+					<WebSocketProvider>
+							<React.Suspense fallback={<div>Loading...</div>}>
+								<OauthHandler />
+								<ComponentPath />
+							</React.Suspense>
+					</WebSocketProvider>
+				</AuthProvider>
+			</AlertProvider>
 		</Router>
 	);
 }
