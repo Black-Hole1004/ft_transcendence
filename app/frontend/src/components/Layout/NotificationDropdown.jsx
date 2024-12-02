@@ -1,5 +1,4 @@
 import Button from '../Home/Buttons/Button'
-import { useEffect, useState } from 'react'
 import React from 'react'
 import useAuth from '../../context/AuthContext'
 import { useWebSocket } from '../../context/WebSocketContext'
