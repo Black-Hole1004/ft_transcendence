@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
+import { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import './Game.css'
-import GameScore from '../../components/Game/GameScore'
-import Player from '../../components/Game/Player'
-import PongTable from '../../components/Game/PongTable'
 import Timer from '../../components/Game/Timer'
+import Player from '../../components/Game/Player'
+import GameScore from '../../components/Game/GameScore'
+import PongTable from '../../components/Game/PongTable'
 import Confetti from 'react-confetti'
 
 //--smoky-black: #0E0B0Aff;
@@ -71,9 +71,6 @@ const LocalGame = () => {
 	const [player2Score, setPlayer2Score] = useState(0)
 	const [showConfetti, setShowConfetti] = useState(false)
 	const [winner, setWinner] = useState(null)
-
-	const [powerups, setPowerups] = useState([])
-	const [attacks, setAttacks] = useState([])
 
 	const location = useLocation()
 	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize } =
@@ -141,11 +138,10 @@ const LocalGame = () => {
 		setShowConfetti(true)
 		setTimeout(() => setShowConfetti(false), 5000) // Stop confetti after 5 seconds
 	}
-	;``
+	;
 	return (
 		<>
-			<section className='flex'>
-				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
+			<section className={`flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}>
 					<GameScore
 						player1Score={player1Score}
 						player2Score={player2Score}
@@ -176,8 +172,6 @@ const LocalGame = () => {
 								ballColor={ballColor}
 								paddleSize={paddleSize}
 								ballSize={ballSize}
-								powerups={powerups}
-								attacks={attacks}
 							/>
 						</div>
 						<div className='justify-center items-center w-1/4'>
@@ -191,7 +185,6 @@ const LocalGame = () => {
 							/>
 						</div>
 					</div>
-				</div>
 			</section>
 			{showRestartPopup && (
 				<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />

@@ -16,8 +16,6 @@ const PongTable = forwardRef(
 			ballColor,
 			paddleSize,
 			ballSize,
-			powerups,
-			attacks,
 		},
 		ref
 	) => {
@@ -28,11 +26,6 @@ const PongTable = forwardRef(
 		const containerRef = useRef(null)
 		const requestRef = useRef(null)
 		const lastTimeRef = useRef(null)
-
-		const playerPowerups = powerups
-		const playerAttacks = attacks
-		const aiPowerups = powerups
-		const aiAttacks = attacks
 
 		const paddleWidth = 20
 		const paddleX = 5
@@ -56,8 +49,6 @@ const PongTable = forwardRef(
 			color: player1Color || 'white',
 			score: 0,
 			won: false,
-			powerups: playerPowerups,
-			attacks: playerAttacks,
 			isPowerupActive: false,
 			isAttackActive: false,
 		})
@@ -71,8 +62,6 @@ const PongTable = forwardRef(
 			color: player2Color || 'white',
 			score: 0,
 			won: false,
-			powerups: aiPowerups,
-			attacks: aiAttacks,
 			isPowerupActive: false,
 			isAttackActive: false,
 		})
@@ -91,6 +80,7 @@ const PongTable = forwardRef(
 
 		const [isLeftPlayerMovingUp, setIsLeftPlayerMovingUp] = useState(false)
 		const [isLeftPlayerMovingDown, setIsLeftPlayerMovingDown] = useState(false)
+
 		const [isRightPlayerMovingUp, setIsRightPlayerMovingUp] = useState(false)
 		const [isRightPlayerMovingDown, setIsRightPlayerMovingDown] = useState(false)
 
@@ -115,9 +105,6 @@ const PongTable = forwardRef(
 			const ctx = canvas.getContext('2d')
 			const canvasWidth = canvas.width
 			const canvasHeight = canvas.height
-
-			// const background = new Image();
-			// background.src = `/assets/images/tables/table${backgroundId}.png`;
 
 			const drawPaddle = (paddle) => {
 				ctx.fillStyle = paddle.color
@@ -146,9 +133,6 @@ const PongTable = forwardRef(
 
 			const draw = () => {
 				ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-				// if (backgroundId) {
-				// 	ctx.drawImage(background, 0, 0, canvasWidth, canvasHeight)
-				// }
 				drawPaddle(player)
 				drawPaddle(ai)
 				ballsRef.current.forEach(drawBall)
@@ -271,7 +255,6 @@ const PongTable = forwardRef(
 			isLeftPlayerMovingDown,
 			isRightPlayerMovingUp,
 			isRightPlayerMovingDown,
-			backgroundId,
 		])
 
 		useEffect(() => {
@@ -406,7 +389,7 @@ const PongTable = forwardRef(
 					ref={canvasRef}
 					width={canvasSize.width}
 					height={canvasSize.height}
-					className={`game-table border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+					className={`game-table aspect-video border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 					style={{
 						width: '100%',
 						height: 'auto',
@@ -414,14 +397,13 @@ const PongTable = forwardRef(
 						maxWidth: `${MAX_CANVAS_WIDTH}px`,
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
-						// filter: 'brightness(50%)',
 						backgroundImage: `url('/assets/images/tables/table${backgroundId}.png')`,
 					}}
 				/>
 				{!isGameOver && (
 					<button
 						onClick={handlePause}
-						className='pause flex items-center gap-3 brightness-[1] leading-[0.95]'
+						className='pause flex items-center gap-3 brightness-[1]'
 					>
 						<img
 							src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`}
