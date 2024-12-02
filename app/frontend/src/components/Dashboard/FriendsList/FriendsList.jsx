@@ -35,10 +35,14 @@ function FriendsList() {
 			const data = JSON.parse(event.data);
 			console.log('data =========>', data);
 			if (data.message === 'offline' || data.message === 'online') {
-				console.log('notification received ==>');
+				console.log('notification received ==>', data.message);
 				get_all_users();
 				console.log('users ======>', users);
 			}
+		}
+
+		socket.onclose = (event) => {
+			console.log('WebSocket closed:', event);
 		}
 
 		socket.onerror = (error) => {
