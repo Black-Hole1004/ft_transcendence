@@ -39,7 +39,6 @@ function UserFriendsList({ user, profile_picture }) {
 	
 				// Create the WebSocket connection
 				const access_token = Cookies.get('access_token');
-				console.log('Access token:', access_token);
 				const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/?access_token=' + access_token);
 				socket.onopen = () => {
 					// Send the friend request notification via WebSocket

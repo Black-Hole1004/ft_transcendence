@@ -7,7 +7,12 @@ import requests
 from django.core.files.base import ContentFile
 import random
 import string
+from UserManagement.profile_utils import notify_friends
 from UserManagement.models import User
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from UserManagement.models import FriendShip
+from channels.db import database_sync_to_async
 
 
 class CustomGoogleOAuth2(GoogleOAuth2):
@@ -62,7 +67,10 @@ class CustomGoogleOAuth2(GoogleOAuth2):
             user.email = user_details['email']
             user.username = user_details['username']
             user.is_logged_with_oauth = True
+            user.status = 'online'
             user.save()
+            friends = async_to_sync(self.get_user_friends)(user)
+            notify_friends(user, friends)
 
             auth_login(self.strategy.request, user)
             self.strategy.request.session.flush()
@@ -78,3 +86,11 @@ class CustomGoogleOAuth2(GoogleOAuth2):
 
         else:
             return JsonResponse({'error': 'User authentication failed'}, status=401)
+
+    @database_sync_to_async
+    def get_user_friends(self, user):
+        friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
+        friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
+        friends = list(set(friends_from + friends_to))
+        print('fetched friends =>', friends)
+        return friends

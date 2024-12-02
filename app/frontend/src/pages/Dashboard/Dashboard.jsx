@@ -6,17 +6,15 @@ import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
 
 import { useEffect, useState } from 'react'
-import useAuth from '../../context/AuthContext'
-import Cookies from 'js-cookie'
-
 const Dashboard = () => {
-	const xp = 6445
+	const xp = 3500;
 	const [level, setLevel] = useState(null)
 
 	useEffect(() => {
 		setLevel((xp * 100) / 10000)
 	}, [level])
 
+	
 
 	return (
 		<section className='flex lg:flex-row flex-col lg:pl-section-lg

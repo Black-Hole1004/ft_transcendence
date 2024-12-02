@@ -19,6 +19,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import parser_classes
 
 from django.http import HttpResponseRedirect
+from itertools import chain
 
 from django.core.files.uploadedfile import UploadedFile
 from rest_framework.views import APIView
@@ -42,6 +43,7 @@ from rest_framework import generics
 from django.utils import timezone
 
 from django.contrib.auth import get_user_model
+from UserManagement.profile_utils import notify_friends
 
 from .profile_utils import (
     remove_profile_picture,
@@ -58,6 +60,9 @@ from .serializers import FriendRequestSerializer
 from django.db import IntegrityError
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from channels.db import database_sync_to_async
+
+
 
 
 
@@ -170,9 +175,6 @@ def check_user_password(request):
         return Response({'error': 'Incorrect password.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
 class LoginView(APIView):
     def post(self, request):
         if request.method == 'POST':
@@ -187,21 +189,8 @@ class LoginView(APIView):
                     user.save()
                     auth_login(request, user)
 
-
-                    # Notify friends about login
-                    channel_layer = get_channel_layer()
-                    friends = FriendShip.objects.filter(user_from=user) | FriendShip.objects.filter(user_to=user)
-                    print(f"Friends =====> {friends}")
-                    for friend in friends:
-                        friend_user = friend.user_to if friend.user_from == user else friend.user_from
-                        print(f"Friend User =====> {friend_user}")
-                        async_to_sync(channel_layer.group_send)(
-                            f"user_{friend_user.id}",
-                                {
-                                    "type": "notification_message",
-                                    "message": 'online',
-                                }
-                            )
+                    friends = async_to_sync(self.get_user_friends)(user)
+                    notify_friends(user, friends)
 
                     refresh = RefreshToken.for_user(user)
                     access_token = str(refresh.access_token)
@@ -226,6 +215,14 @@ class LoginView(APIView):
         else:
             return render(request, 'login.html')
 
+    @database_sync_to_async
+    def get_user_friends(self, user):
+        friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
+        friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
+        friends = list(set(friends_from + friends_to))
+        print('fetched friends =>', friends)
+        return friends
+
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -235,21 +232,47 @@ class LogoutView(APIView):
         if session:
             session.logout_time = timezone.now()
             session.save()
-        channel_layer = get_channel_layer()
-        friends = FriendShip.objects.filter(user_from=user) | FriendShip.objects.filter(user_to=user)
-        for friend in friends:
-            friend_user = friend.user_to if friend.user_from == user else friend.user_from
-            async_to_sync(channel_layer.group_send)(
-                f"user_{friend_user.id}",
-                {
-                    "type": "notification_message",
-                    "message": 'offline',
-                }
-            )
+        
         user.status = 'offline'
         user.save()
+
+        # Notify friends about login
+        friends = async_to_sync(self.get_user_friends)(user)
+        notify_friends(user, friends)
         django_logout(request)
         return Response({'message': 'User logged out successfully'})
+
+
+
+    @database_sync_to_async
+    def get_user_friends(self, user):
+        friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
+        friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
+        friends = list(set(friends_from + friends_to))
+        print('fetched friends =>', friends)
+        return friends
+
+class UserStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        return Response({'status': request.user.status})
+
+    def post(self, request):
+        print(f"Request data: {request.data}")
+        user = request.user
+        status = request.data.get('status', 'online')
+        
+        valid_statuses = ['online', 'offline', 'ingame']
+        if status not in valid_statuses:
+            return Response({'error': 'Invalid status'}, status=400)
+        
+        user.status = status
+        user.save()
+        return Response({'status': 'success'})
+
+
+
 
 
 @permission_classes([IsAuthenticated])
@@ -444,13 +467,6 @@ class CancelFriendRequestView(APIView):
         except FriendShipRequest.DoesNotExist:
             return Response({"message": "Friend request not found"}, status=404)
 
-class UserStatusView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        user_ids = request.query_params.getlist('user_ids', [])
-        status = {user_id: cache.get(f"user_online_{user_id}", False) for user_id in user_ids}
-        return Response(status)
 
 class FriendShipRequestListView(APIView):
     permission_classes = [IsAuthenticated]

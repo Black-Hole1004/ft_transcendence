@@ -8,6 +8,12 @@ import requests
 from django.utils.crypto import get_random_string
 from django.core.files.base import ContentFile
 from django.contrib.auth import login
+from UserManagement.profile_utils import notify_friends
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from UserManagement.models import FriendShip
+from channels.db import database_sync_to_async
+
 
 class Intra42OAuth2(BaseOAuth2):
     """Intra42 OAuth2 authentication backend"""
@@ -23,6 +29,7 @@ class Intra42OAuth2(BaseOAuth2):
         ('displayname', 'name'),
         ('image_url', 'profile_image_url'),
     ]
+
     # def start(self):
 
     #     response = HttpResponse()
@@ -123,10 +130,6 @@ class Intra42OAuth2(BaseOAuth2):
             'email': user_details['email'],
             'username': user_details['username'],
             'first_name': user_details['first_name'],
-            # 'password': User.objects.make_random_password() i get an error here so i used the below line
-            # add by me ahaloui
-            # 'password': get_random_string(length=12), # Set a random password,
-            # 'mobile_number': user_details.get('mobile_number', ''),
             }
         )
         print('---------- user:============= 1' + str(user))
@@ -142,12 +145,13 @@ class Intra42OAuth2(BaseOAuth2):
             if image_response and image_response.status_code == 200:
                 user.profile_picture.save(f"{user.username}_profile.jpg", ContentFile(image_response.content), save=True)
             
-            # ----------------- had save li ltaht hta narja3 hna -----------------
-            # user.save()
 
             # add by me ahaloui
             user.is_logged_with_oauth = True
+            user.status = 'online'
             user.save()
+            friends = async_to_sync(self.get_user_friends)(user)
+            notify_friends(user, friends)
             print('user.is_logged_with_oauth: ' + str(user.is_logged_with_oauth))
             # auth_login(request, user, backend='Intra42OAuth2')
             login(request, user, backend='Intra42OAuth2')
@@ -158,6 +162,7 @@ class Intra42OAuth2(BaseOAuth2):
             refresh_token = str(refresh)
 
             # Redirect to front-end URL and include tokens in the query parameters
+            print(f"[user =>>> ] ============> {user.status}")
             redirect_url = f"http://localhost:5173/dashboard?access_token={access_token}&refresh_token={refresh_token}"
             return HttpResponseRedirect(redirect_url)
 
@@ -169,3 +174,11 @@ class Intra42OAuth2(BaseOAuth2):
     def get_redirect_uri(self, state=None):
         """Returns the redirect URI to be passed in the token exchange request"""
         return self.setting('REDIRECT_URI')  # Ensure this is set in your settings
+
+    @database_sync_to_async
+    def get_user_friends(self, user):
+        friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
+        friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
+        friends = list(set(friends_from + friends_to))
+        print('fetched friends =>', friends)
+        return friends

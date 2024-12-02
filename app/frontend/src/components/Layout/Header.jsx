@@ -5,7 +5,7 @@ import NotificationDropdown from './NotificationDropdown'
 import { Link, useLocation } from 'react-router-dom'
 import React, { useState, useRef, useEffect } from 'react'
 
-import { useWebSocket } from '../../context/WebSocketContext'
+import { useWebSocket } from '../../context/WebSocketFriendRContext'
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 function Header({ user_data }) {

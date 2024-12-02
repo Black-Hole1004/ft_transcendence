@@ -2,6 +2,8 @@ import os
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 def remove_profile_picture(user):
     """Remove the profile picture of the user."""
@@ -75,3 +77,21 @@ def generate_new_tokens(user):
         'refresh': str(refresh),
         'access': str(refresh.access_token)
     }
+
+def notify_friends(user, friends):
+    """
+    Notify all friends of the user about the user's status.
+
+    Args:
+        user: The user whose status has changed.
+        friends: A list of friend IDs to notify.
+    """
+    channel_layer = get_channel_layer()
+    for friend_id in friends:
+        async_to_sync(channel_layer.group_send)(
+            f"user_{friend_id}",
+            {
+                "type": "notification_message",
+                "message": user.status,  # Replace with the actual status field or logic
+            }
+        )

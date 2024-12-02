@@ -41,9 +41,9 @@ urlpatterns = [
     path('api/chat/', include('Chat.urls')),
     path('chat/', include('Chat.urls')),
     path('api/users/', UserListView.as_view(), name='user-list'),
+    path('api/user/status/', UserStatusView.as_view(), name='user_status'),
     path('api/send_friend_request/', SendFriendRequestView.as_view(), name='send_friend_request'),
     path('api/friend_request/accept/<int:friend_request_id>/', AcceptFriendRequestView.as_view(), name='accept-friend-request'),
     path('api/friend_request/cancel/<int:friend_request_id>/', CancelFriendRequestView.as_view(), name='cancel-friend-request'),
-    path('api/user_status/', UserStatusView.as_view(), name='user_status'),
     path('api/friend_ship_request/', FriendShipRequestListView.as_view(), name='friend_ship_request'),
 ]

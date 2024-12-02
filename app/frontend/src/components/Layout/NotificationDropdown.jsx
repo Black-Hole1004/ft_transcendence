@@ -2,7 +2,7 @@ import Button from '../Home/Buttons/Button'
 import { useEffect, useState } from 'react'
 import React from 'react'
 import  useAuth  from '../../context/AuthContext'
-import { useWebSocket } from '../../context/WebSocketContext'
+import { useWebSocket } from '../../context/WebSocketFriendRContext'
 import { useAlert } from '../AlertContext'
 function NotificationDropdown() {
 
