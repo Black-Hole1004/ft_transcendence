@@ -76,19 +76,27 @@ class GamePhysics:
         """Reset ball with random angle"""
         ball['x'] = self.canvas_width / 2
         ball['y'] = self.canvas_height / 2
-        ball['speed'] = 10  # Reset to initial speed
+        ball['speed'] = 8  # Reset to initial speed
         
-        angle = random.uniform(-45, 45) * math.pi / 180
+        angle = random.uniform(-45, 45) * math.pi / 180 # Random angle between -45 and 45 degrees
         speed = ball['speed']
         
-        ball['velocityX'] = math.cos(angle) * speed * direction
-        ball['velocityY'] = math.sin(angle) * speed
+        ball['velocityX'] = math.cos(angle) * speed * direction # Randomize direction
+        ball['velocityY'] = math.sin(angle) * speed # Randomize Y velocity
 
 class GameState:
     def __init__(self, game_id, canvas_width=800, canvas_height=400):
         self.game_id = game_id
         self.canvas_width = canvas_width
         self.canvas_height = canvas_height
+        
+        # pause/resume  management system
+        self.pause_limit = 3 # number of pauses allowed for player
+        self.player1_pauses_remaining = self.pause_limit
+        self.player2_pauses_remaining = self.pause_limit
+        self.current_pause_player = None # player who paused the game
+        self.pause_time = None # time when game was paused
+        self.pause_timeout = 30 # time in seconds before game is resumed automatically
         
         # Game status
         self.connected_players = 0
@@ -100,11 +108,11 @@ class GameState:
             'x': canvas_width / 2,
             'y': canvas_height / 2,
             'radius': 20,
-            'speed': 10,
-            'velocityX': 10,
-            'velocityY': 10,
-            'speedIncrement': 4,
-            'maxSpeed': 15
+            'speed': 8,
+            'velocityX': 8,
+            'velocityY': 8,
+            'speedIncrement': 1.5,
+            'maxSpeed': 25
         }
         
         # Paddle properties
@@ -316,8 +324,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def game_loop(self):
         """Main game loop with optimized timings"""
-        physics_interval = 1/120  # Doubled physics rate (was 1/60)
-        broadcast_interval = 1/60  # Increased broadcast rate (was 1/20)
+        physics_interval = 1/60  # Doubled physics rate (was 1/60)
+        broadcast_interval = 1/20  # Increased broadcast rate (was 1/20)
         last_physics_time = time.time()
         last_broadcast_time = time.time()
         last_timer_update = time.time()
@@ -331,6 +339,22 @@ class GameConsumer(AsyncWebsocketConsumer):
                     timer_delta = current_time - last_timer_update
                     last_timer_update = current_time
                     
+                    self.game_state.time_remaining -= timer_delta
+                    
+                    # Check for time-based game over
+                    if self.game_state.time_remaining <= 0:
+                        self.game_state.time_remaining = 0
+                        self.game_state.game_over = True
+                        # determine winner based on score
+                        if self.game_state.player1_paddle['score'] > self.game_state.player2_paddle['score']:
+                            self.game_state.winner = 1
+                        elif self.game_state.player1_paddle['score'] < self.game_state.player2_paddle['score']:
+                            self.game_state.winner = 2
+                        else:
+                            self.game_state.winner = 0 # draw
+                        await self.handle_game_over()
+                        break
+                    
                     # Physics update with more precise delta time
                     if current_time - last_physics_time >= physics_interval:
                         delta_time = min(current_time - last_physics_time, 0.017)  # Cap delta time
@@ -338,10 +362,6 @@ class GameConsumer(AsyncWebsocketConsumer):
                         
                         # Update ball position
                         self.physics.update_ball_position(self.game_state.ball, delta_time)
-                        
-                        # Check wall collisions
-                        if self.physics.check_wall_collision(self.game_state.ball):
-                            await self.broadcast_collision('wall')
                         
                         # Check paddle collisions
                         for i, paddle in enumerate([self.game_state.player1_paddle, self.game_state.player2_paddle], 1):
@@ -355,17 +375,13 @@ class GameConsumer(AsyncWebsocketConsumer):
                             await self.handle_scoring(scorer)
                             continue
                     
-                    # Broadcast state
-                    if current_time - last_broadcast_time >= broadcast_interval:
-                        last_broadcast_time = current_time
-                        await self.broadcast_game_state()
+                        # Broadcast state
+                        if current_time - last_broadcast_time >= broadcast_interval:
+                            last_broadcast_time = current_time
+                            await self.broadcast_game_state()
                     
-                    # Update timer and check for game over
-                    if self.game_state.time_remaining > 0:
-                        self.game_state.time_remaining -= timer_delta
-                        if self.game_state.time_remaining <= 0:
-                            await self.handle_game_over()
-                
+                # Always update timer reference if game is running
+                last_timer_update = current_time
                 await asyncio.sleep(0.008) #slightly faster than 1/120
                 
         except Exception as e:
@@ -373,39 +389,12 @@ class GameConsumer(AsyncWebsocketConsumer):
             import traceback
             print(traceback.format_exc())
 
-    # async def handle_paddle_move(self, data):
-    #     """Handle paddle movement with interpolation"""
-    #     try:
-    #         new_y = float(data.get('y', 0))
-    #         new_y = max(0, min(new_y, self.game_state.canvas_height - self.game_state.paddle_height))
-            
-    #         # Update paddle position with interpolation
-    #         if self.player_number == 1:
-    #             current_y = self.game_state.player1_paddle['y']
-    #             self.game_state.player1_paddle['y'] = new_y
-    #         else:
-    #             current_y = self.game_state.player2_paddle['y']
-    #             self.game_state.player2_paddle['y'] = new_y
-            
-    #         # Send update immediately for responsiveness
-    #         await self.channel_layer.group_send(
-    #             self.room_group_name,
-    #             {
-    #                 'type': 'paddles_update',
-    #                 'paddles': {
-    #                     '1': {'x': self.game_state.player1_paddle['x'], 'y': self.game_state.player1_paddle['y']},
-    #                     '2': {'x': self.game_state.player2_paddle['x'], 'y': self.game_state.player2_paddle['y']}
-    #                 }
-    #             }
-    #         )
-    #     except Exception as e:
-    #         print(f"Error in handle_paddle_move: {str(e)}")
     
     async def handle_paddle_move(self, data):
         """Handle paddle movement with improved smoothness"""
         try:
             new_y = float(data.get('y', 0))
-            paddle_speed = 10 # pixels per frame, sppeed of paddle movement
+            paddle_speed = 15 # pixels per frame, sppeed of paddle movement
             
             if self.player_number == 1:
                 current_y = self.game_state.player1_paddle['y']
@@ -506,29 +495,109 @@ class GameConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             print(f"Error in handle_start_game: {str(e)}")
 
+    async def check_pause_timeout(self):
+        """Check if pause has exceeded timeout"""
+        try:
+            start_pause_time = self.game_state.pause_time
+            
+            # Start counting down
+            for remaining in range(self.game_state.pause_timeout, 0, -1):
+                await asyncio.sleep(1)  # Check every second
+                
+                # If game was resumed, stop timeout check
+                if not self.game_state.is_paused or self.game_state.pause_time != start_pause_time:
+                    print("Pause timeout cancelled - game resumed")
+                    return
+                    
+                # Notify remaining time
+                if remaining % 5 == 0:  # Send update every 5 seconds
+                    await self.channel_layer.group_send(
+                        self.room_group_name,
+                        {
+                            'type': 'pause_timeout_warning',
+                            'seconds_remaining': remaining
+                        }
+                    )
+            
+            # If we reach here, timeout has occurred
+            if self.game_state.is_paused and self.game_state.pause_time == start_pause_time:
+                print(f"Pause timeout reached for player {self.game_state.current_pause_player}")
+                
+                # Set game state before sending messages
+                self.game_state.is_paused = False
+                self.game_state.game_over = True
+                self.game_state.winner = 2 if self.game_state.current_pause_player == 1 else 1
+                
+                # Send timeout notification before game over
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'pause_timeout',
+                        'player': self.game_state.current_pause_player,
+                        'winner': self.game_state.winner
+                    }
+                )
+                
+                # Short delay to ensure timeout message is received
+                await asyncio.sleep(0.1)
+                
+                await self.handle_game_over()
+                
+        except Exception as e:
+            print(f"Error in check_pause_timeout: {str(e)}")
+            traceback.print_exc()
+        
+        
     async def handle_pause_game(self, data):
         """Handle game pause request"""
         if not self.game_state.game_over:
-            self.game_state.is_paused = True
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'game_paused',
-                    'player': self.player_number
-                }
-            )
+            # Check if player has pauses remaining
+            pauses_remaining = (self.game_state.player1_pauses_remaining 
+                            if self.player_number == 1 
+                            else self.game_state.player2_pauses_remaining)
+            
+            if pauses_remaining > 0:
+                self.game_state.is_paused = True
+                self.game_state.current_pause_player = self.player_number
+                self.game_state.pause_time = time.time()
+                
+                # Decrement remaining pauses
+                if self.player_number == 1:
+                    self.game_state.player1_pauses_remaining -= 1
+                else:
+                    self.game_state.player2_pauses_remaining -= 1
+                
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'game_paused',
+                        'player': self.player_number,
+                        'pauses_remaining': {
+                            '1': self.game_state.player1_pauses_remaining,
+                            '2': self.game_state.player2_pauses_remaining
+                        }
+                    }
+                )
+                
+                # Start pause timeout checker
+                asyncio.create_task(self.check_pause_timeout())
 
     async def handle_resume_game(self, data):
         """Handle game resume request"""
-        if not self.game_state.game_over:
-            self.game_state.is_paused = False
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'game_resumed',
-                    'player': self.player_number
-                }
-            )
+        if not self.game_state.game_over and self.game_state.is_paused:
+            # Only allow the player who paused to resume
+            if self.player_number == self.game_state.current_pause_player:
+                self.game_state.is_paused = False
+                self.game_state.current_pause_player = None
+                self.game_state.pause_time = None
+                
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'game_resumed',
+                        'player': self.player_number
+                    }
+                )
 
     async def handle_restart_request(self, data):
         """Handle game restart request"""
@@ -554,12 +623,8 @@ class GameConsumer(AsyncWebsocketConsumer):
         else:
             self.game_state.player2_paddle['score'] += 1
 
-        # print(f"\nA GOAAAAAAL! Player {scorer} scored!")
-        # print(f"Player 1 score: {self.game_state.player1_paddle['score']}")
-        # print(f"Player 2 score: {self.game_state.player2_paddle['score']}")
-
         # Reset ball
-        self.game_state.ball['speed'] = 5
+        self.game_state.ball['speed'] = 8
         self.physics.reset_ball(self.game_state.ball, direction=-1 if scorer == 1 else 1)
         
         # Broadcast score
@@ -576,8 +641,8 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
         
         # Check for game over
-        if (self.game_state.player1_paddle['score'] >= 11 or 
-            self.game_state.player2_paddle['score'] >= 11):
+        if (self.game_state.player1_paddle['score'] >= 10 or 
+            self.game_state.player2_paddle['score'] >= 10):
             self.game_state.game_over = True
             self.game_state.winner = 1 if self.game_state.player1_paddle['score'] > self.game_state.player2_paddle['score'] else 2
             await self.handle_game_over()
@@ -588,7 +653,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             'ball': {
                 'x': round(self.game_state.ball['x'], 2),
                 'y': round(self.game_state.ball['y'], 2)
-            }
+            },
+            'time_remaining': round(self.game_state.time_remaining), # Round to nearest second
         }
         
         await self.channel_layer.group_send(
@@ -609,20 +675,23 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def handle_game_over(self):
         """Handle game over state"""
-        # print("\n=== Game Over ===")
-        # print(f"Winner: Player {self.game_state.winner}")
-        # print(f"Final Score - P1: {self.game_state.player1_paddle['score']}, P2: {self.game_state.player2_paddle['score']}")
+        print("\n=== Game Over ===")
+        print(f"Time Remaining: {round(self.game_state.time_remaining)}s")
+        print(f"Final Score - P1: {self.game_state.player1_paddle['score']}, P2: {self.game_state.player2_paddle['score']}")
+        
+        reason = 'time_up' if self.game_state.time_remaining <= 0 else 'score_limit'
         
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'game_ended',
-                'reason': 'score_limit',
+                'reason': reason,
                 'winner': self.game_state.winner,
                 'final_scores': {
                     '1': self.game_state.player1_paddle['score'],
                     '2': self.game_state.player2_paddle['score']
-                }
+                },
+                'time_remaining': round(self.game_state.time_remaining)
             }
         )
 
@@ -663,6 +732,13 @@ class GameConsumer(AsyncWebsocketConsumer):
             'player': event['player']
         }))
 
+    async def pause_timeout(self, event):
+        """Handle pause timeout event"""
+        await self.send(text_data=json.dumps({
+            'type': 'pause_timeout',
+            'player': event['player']
+        }))
+    
     async def game_started(self, event):
         """Handle game started event"""
         await self.send(text_data=json.dumps({
