@@ -5,7 +5,7 @@ function Timer(props) {
 
 	return (
 		<div
-			className={`timer border-2 border-primary p-2.5 text-3xl font-bold text-center font-dreamscape tracking-wide shadow-lg ${
+			className={`timer p-2.5 text-3xl font-bold text-center font-dreamscape-sans ${
 				props.isPaused ? 'brightness-[20%]' : 'brightness-[1]'
 			}`}
 		>

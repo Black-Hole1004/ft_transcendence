@@ -138,53 +138,52 @@ const LocalGame = () => {
 		setShowConfetti(true)
 		setTimeout(() => setShowConfetti(false), 5000) // Stop confetti after 5 seconds
 	}
-	;
 	return (
 		<>
-			<section className={`flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}>
+			<section
+				className={`flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}
+			>
+				<div className='flex flex-col'>
 					<GameScore
 						player1Score={player1Score}
 						player2Score={player2Score}
 						isPaused={isPaused}
 					/>
 					<Timer isPaused={isPaused} timeRemaining={timeRemaining} />
-					<div className='flex-1 w-full flex max-lg:flex-wrap max-lg:justify-around justify-between font-dreamscape-sans'>
-						<div className='justify-center items-center w-1/4'>
-							<Player
-								isPaused={isPaused}
-								PlayerName={player1.name}
-								BadgeName={player1.badge}
-								playerImage={player1.image}
-								badgeImage={player1.badgeImage}
-								GameMode={mode}
-							/>
-						</div>
-						<div className='justify-center items-center w-1/2'>
-							<PongTable
-								isPaused={isPaused}
-								handlePause={handlePause}
-								backgroundId={backgroundId}
-								updateScore={updateScore}
-								isGameOver={isGameOver}
-								resetParameters={resetParameters}
-								player1Color={player1.color}
-								player2Color={player2.color}
-								ballColor={ballColor}
-								paddleSize={paddleSize}
-								ballSize={ballSize}
-							/>
-						</div>
-						<div className='justify-center items-center w-1/4'>
-							<Player
-								isPaused={isPaused}
-								PlayerName={player2.name}
-								BadgeName={player2.badge}
-								playerImage={player2.image}
-								badgeImage={player2.badgeImage}
-								GameMode={mode}
-							/>
-						</div>
-					</div>
+				</div>
+				<div className='relative w-full flex justify-center font-dreamscape-sans'>
+					<Player
+						id={1}
+						isPaused={isPaused}
+						PlayerName={player1.name}
+						BadgeName={player1.badge}
+						playerImage={player1.image}
+						badgeImage={player1.badgeImage}
+						GameMode={mode}
+						/>
+					<Player
+						id={2}
+						isPaused={isPaused}
+						PlayerName={player2.name}
+						BadgeName={player2.badge}
+						playerImage={player2.image}
+						badgeImage={player2.badgeImage}
+						GameMode={mode}
+					/>
+					<PongTable
+						isPaused={isPaused}
+						handlePause={handlePause}
+						backgroundId={backgroundId}
+						updateScore={updateScore}
+						isGameOver={isGameOver}
+						resetParameters={resetParameters}
+						player1Color={player1.color}
+						player2Color={player2.color}
+						ballColor={ballColor}
+						paddleSize={paddleSize}
+						ballSize={ballSize}
+					/>
+				</div>
 			</section>
 			{showRestartPopup && (
 				<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />

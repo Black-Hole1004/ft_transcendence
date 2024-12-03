@@ -3,7 +3,6 @@
 }
 
 .score {
-	width: clamp(12.5rem, 15.487vw + 9.596rem, 34.375rem);
 	height: clamp(4.375rem, 4.867vw + 3.462rem, 11.25rem);
 	font-size: clamp(4.688rem, 5.531vw + 3.65rem, 12.5rem);
 }
@@ -26,7 +25,7 @@
 	font-size: clamp(0.563rem, 0.487vw + 0.471rem, 1.25rem) ;
 }
 
-.pause {
+.pause, .timer {
 	font-size: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
 }
 
@@ -68,6 +67,10 @@
 
 .custom-color-input {
 	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
+}
+
+.game-paused {
+	font-size: clamp(0.938rem, 3.761vw + 0.232rem, 6.25rem);
 }
 
 .MuiPopover-paper {

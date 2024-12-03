@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { forwardRef } from 'react'
-import { useFetcher } from 'react-router-dom'
 
 const PongTable = forwardRef(
 	(
@@ -383,7 +382,7 @@ const PongTable = forwardRef(
 		return (
 			<div
 				ref={containerRef}
-				className='flex flex-col items-center gap-7 max-lg:order-first max-lg:w-full'
+				className='relative flex flex-col items-center lp:gap-7 gap-3 max-lg:w-full'
 			>
 				<canvas
 					ref={canvasRef}
@@ -400,10 +399,20 @@ const PongTable = forwardRef(
 						backgroundImage: `url('/assets/images/tables/table${backgroundId}.png')`,
 					}}
 				/>
+				{isPaused && (
+					<div>
+						<p
+							className='text-[100px] font-dreamscape text-center leading-[1.01] game-paused
+						absolute transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+						>
+							GAME PAUSED
+						</p>
+					</div>
+				)}
 				{!isGameOver && (
 					<button
 						onClick={handlePause}
-						className='pause flex items-center gap-3 brightness-[1]'
+						className='pause flex items-center gap-3 brightness-[1] select-none'
 					>
 						<img
 							src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`}
