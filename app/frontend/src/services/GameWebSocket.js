@@ -85,7 +85,7 @@ class GameWebSocket {
     handleMessage(event) {
         try {
             const data = JSON.parse(event.data);
-            console.log('Received game message:', data);
+            console.log('Raw WebSocket message received:', data); 
 
             if (data.type === 'game_info') {
                 this.playerNumber = data.player_number;
@@ -95,6 +95,7 @@ class GameWebSocket {
                 game_info: this.handleGameInfo.bind(this),
                 state_update: this.handleStateUpdate.bind(this),
                 paddles_update: this.handlePaddlesUpdate.bind(this),
+                ball_update: this.handleBallUpdate.bind(this),
                 game_ended: this.handleGameEnded.bind(this),
                 game_restarted: this.handleGameRestarted.bind(this),
                 player_disconnected: this.handlePlayerDisconnected.bind(this),
@@ -123,12 +124,17 @@ class GameWebSocket {
 
     handleStateUpdate(data) {
         console.log('Handling state update:', data);
-        this.callbacks.state_update?.(data.state);
+        this.callbacks.state_update?.(data);
     }
 
     handlePaddlesUpdate(data) {
         console.log('Handling paddle update:', data);
         this.callbacks.paddles_update?.(data);
+    }
+    
+    handleBallUpdate(data) {
+        console.log('Handling ball update:', data);
+        this.callbacks.ball_update?.(data);
     }
 
     handleGameEnded(data) {

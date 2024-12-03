@@ -11,7 +11,7 @@ const RemoteGame = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	const socketRef = useRef(null)
-	
+
 	// Get data passed from matchmaking
 	const { gameId, playerNumber, opponent, currentUser, settings, state } = location.state || {}
 
@@ -32,7 +32,7 @@ const RemoteGame = () => {
     // Initialize WebSocket when component mounts
     useEffect(() => {
         socketRef.current = new GameWebSocket();
-        
+
         // Set up WebSocket event handlers
         socketRef.current.on('state_update', (newState) => {
             setGameState(newState);
@@ -42,7 +42,7 @@ const RemoteGame = () => {
         });
 
         // socketRef.current.on('game_ended', handleGameOver);
-        
+
         // Connect to game
         socketRef.current.connect(gameId);
 
@@ -53,7 +53,6 @@ const RemoteGame = () => {
 	const handlePaddleMove = (newY) => {
 		socketRef.current.sendPaddleMove(newY);
 	};
-
 
 	// Handle pause
 	const handlePause = () => {

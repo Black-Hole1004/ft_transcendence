@@ -64,16 +64,26 @@ const Matchmaking = () => {
                 duration: 30,
             };
 
-            navigate('/remote-game', {
+            // navigate('/remote-game', {
+            //     state: {
+            //         playerNumber: data.player_number,
+            //         matchData: data,
+            //         gameId: data.game_id,
+            //         opponent: data.opponent,
+            //         currentUser: data.current_user,
+            //         settings: settings,
+            //     },
+            // });
+            navigate('/game-test', {
                 state: {
-                    playerNumber: data.player_number,
-                    matchData: data,
                     gameId: data.game_id,
+                    playerNumber: data.player_number,
                     opponent: data.opponent,
                     currentUser: data.current_user,
                     settings: settings,
                 },
             });
+            
         });
 
         return () => {

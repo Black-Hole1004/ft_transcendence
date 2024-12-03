@@ -1,6 +1,7 @@
 import React from "react"
 import { Routes, Route, Navigate } from 'react-router-dom';
 import useAuth from "../context/AuthContext"
+//app/frontend/src/pages/Game/GameTester.jsx
 import PrivateRoute from './PrivateRoute';
 
 const Home = React.lazy(() => import('../pages/Home/Home'))
@@ -21,6 +22,10 @@ const RemoteGameSetup = React.lazy(() => import('../pages/Game/RemoteGameSetup')
 
 const MatchMaking = React.lazy(() => import('../components/Game/MatchMaking'))
 
+// remote game test
+const GameTest = React.lazy(() => import('../pages/Game/GameTester'))
+import GameTesterWrapper from '../components/Game/GameTesterWrapper'
+
 
 const ComponentPath = () => {
 	const { authTokens } = useAuth();
@@ -40,6 +45,7 @@ const ComponentPath = () => {
 					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
 					<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />
 					
+					<Route path="/game-test" element={<GameTesterWrapper />} />
 					<Route path="/Custom" element={<PrivateRoute><Custom /></PrivateRoute>} />
 					<Route path='/local-game' element={<PrivateRoute><LocalGame /></PrivateRoute>} />
 					<Route path='/remote-game' element={<PrivateRoute><RemoteGame /></PrivateRoute>} />

@@ -1,21 +1,10 @@
 import asyncio
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer
-import time
-from django.core.cache import cache
-
-# game related imports
-import math
-import random
-
-
-import asyncio
-import json
 import math
 import random
 import time
+import traceback
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.core.cache import cache
 
 class GamePhysics:
     def __init__(self, canvas_width=800, canvas_height=400):
@@ -25,48 +14,46 @@ class GamePhysics:
 
     def update_ball_position(self, ball, delta_time):
         """Update ball position with proper time-based movement"""
-        ball['x'] += ball['velocityX'] * ball['speed'] * delta_time
-        ball['y'] += ball['velocityY'] * ball['speed'] * delta_time
+        # Scale the movement to be faster
+        movement_scale = 2.0  # Adjust this value to change overall speed
+        next_x = ball['x'] + (ball['velocityX'] * ball['speed'] * delta_time * movement_scale)
+        next_y = ball['y'] + (ball['velocityY'] * ball['speed'] * delta_time * movement_scale)
         
-        # Validate ball position
-        ball['x'] = max(ball['radius'], min(ball['x'], self.canvas_width - ball['radius']))
-        ball['y'] = max(ball['radius'], min(ball['y'], self.canvas_height - ball['radius']))
+        # Wall collisions (top and bottom)
+        if next_y + ball['radius'] > self.canvas_height or next_y - ball['radius'] < 0:
+            ball['velocityY'] = -ball['velocityY']
+            if next_y + ball['radius'] > self.canvas_height:
+                next_y = self.canvas_height - ball['radius']
+            if next_y - ball['radius'] <= 0:
+                next_y = ball['radius']
+        
+        ball['x'] = next_x
+        ball['y'] = next_y
 
-    def handle_paddle_collision(self, ball, paddle, paddle_movement=0):
-        """Advanced paddle collision with angle calculation and spin"""
-        # Calculate relative intersection point
-        hit_position = (paddle['y'] + paddle['height']/2 - ball['y']) / (paddle['height']/2)
-        hit_position = max(-1, min(1, hit_position))  # Clamp between -1 and 1
-        
-        # Calculate bounce angle (in radians)
-        bounce_angle = hit_position * (self.max_ball_angle * math.pi / 180)
-        bounce_angle += paddle_movement * 0.2  # Add spin effect
-        
-        # Calculate new velocities
-        speed = math.sqrt(ball['velocityX']**2 + ball['velocityY']**2)
-        ball['velocityX'] = math.cos(bounce_angle) * speed * (-1 if paddle['x'] < self.canvas_width/2 else 1)
-        ball['velocityY'] = -math.sin(bounce_angle) * speed
-        
-        # Position correction to prevent sticking
-        if paddle['x'] < self.canvas_width/2:
+    def handle_paddle_collision(self, ball, paddle):
+        """Match local game paddle collision behavior"""
+        # Simple direction change like in local game
+        ball['velocityX'] = -ball['velocityX']
+
+        # Position correction
+        if paddle['x'] < self.canvas_width / 2:  # Left paddle
             ball['x'] = paddle['x'] + paddle['width'] + ball['radius']
-        else:
+        else:  # Right paddle
             ball['x'] = paddle['x'] - ball['radius']
         
-        # Speed increase after paddle hit
+        # Speed increase like in local game
         ball['speed'] = min(ball['speed'] + ball['speedIncrement'], ball['maxSpeed'])
-    
+
     def check_paddle_collision(self, ball, paddle):
         """Check if ball collides with paddle"""
-        if (ball['x'] - ball['radius'] <= paddle['x'] + paddle['width'] and
-            ball['y'] >= paddle['y'] and ball['y'] <= paddle['y'] + paddle['height']):
-            return True
-        return False
+        return (ball['x'] - ball['radius'] <= paddle['x'] + paddle['width'] and
+                ball['x'] + ball['radius'] >= paddle['x'] and
+                ball['y'] + ball['radius'] >= paddle['y'] and
+                ball['y'] - ball['radius'] <= paddle['y'] + paddle['height'])
 
     def check_wall_collision(self, ball):
-        """Handle wall collisions"""
+        """Check and handle wall collisions"""
         collision = False
-        
         if ball['y'] - ball['radius'] <= 0:
             ball['y'] = ball['radius']
             ball['velocityY'] = abs(ball['velocityY'])
@@ -75,7 +62,6 @@ class GamePhysics:
             ball['y'] = self.canvas_height - ball['radius']
             ball['velocityY'] = -abs(ball['velocityY'])
             collision = True
-            
         return collision
 
     def check_scoring(self, ball):
@@ -84,12 +70,13 @@ class GamePhysics:
             return 2  # Player 2 scores
         elif ball['x'] + ball['radius'] >= self.canvas_width:
             return 1  # Player 1 scores
-        return 0  # No score
+        return 0
 
     def reset_ball(self, ball, direction=1):
         """Reset ball with random angle"""
         ball['x'] = self.canvas_width / 2
         ball['y'] = self.canvas_height / 2
+        ball['speed'] = 10  # Reset to initial speed
         
         angle = random.uniform(-45, 45) * math.pi / 180
         speed = ball['speed']
@@ -106,31 +93,23 @@ class GameState:
         # Game status
         self.connected_players = 0
         self.players_ready = set()
-        self.last_update = {}
-        self.disconnect_time = None
-        self.reconnect_timeout = 3
-        self.time_remaining = 300
-        
-        # Session management
-        self.disconnected_time = None
-        self.session_timeout = 3
+        self.time_remaining = 65  # 1 minute and 5 seconds
         
         # Ball properties
         self.ball = {
             'x': canvas_width / 2,
             'y': canvas_height / 2,
-            'radius': 15,
-            'speed': 5,
-            'velocityX': 5,
-            'velocityY': 5,
-            'speedIncrement': 0.2,
+            'radius': 20,
+            'speed': 10,
+            'velocityX': 10,
+            'velocityY': 10,
+            'speedIncrement': 4,
             'maxSpeed': 15
         }
         
         # Paddle properties
         self.paddle_width = 20
         self.paddle_height = 110
-        self.paddle_speed = 10
         
         # Player paddles
         self.player1_paddle = {
@@ -151,54 +130,137 @@ class GameState:
             'connected': False
         }
         
-        self.is_paused = False
+        self.is_paused = True
         self.game_over = False
         self.winner = None
 
-    def mark_disconnection(self):
-        self.connected_players = max(0, self.connected_players - 1)
-        if self.connected_players == 0:
-            self.disconnected_time = time.time()
-
-    def is_session_expired(self):
-        if self.disconnected_time is None:
-            return False
-            
-        elapsed_time = time.time() - self.disconnected_time
-        return elapsed_time >= self.session_timeout
-
-    def reset_session(self):
-        self.disconnected_time = None
-        self.connected_players = 0
-        self.player1_paddle['connected'] = False
-        self.player2_paddle['connected'] = False
-        self.players_ready.clear()
-        self.is_paused = False
-
 class GameConsumer(AsyncWebsocketConsumer):
+    # Class variable to store game states
+    game_states = {}
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.game_state = None
         self.player_number = None
         self.game_loop_task = None
         self.physics = GamePhysics()
-        self.last_move_time = 0
-        self.last_broadcast_time = 0
+        self._game_id = None
 
-    def validate_game_state(self):
-        """Validate game state to prevent cheating"""
-        ball = self.game_state.ball
-        
-        # Validate ball position
-        ball['x'] = max(ball['radius'], min(ball['x'], self.game_state.canvas_width - ball['radius']))
-        ball['y'] = max(ball['radius'], min(ball['y'], self.game_state.canvas_height - ball['radius']))
-        
-        # Validate ball speed
-        ball['speed'] = min(ball['speed'], ball['maxSpeed'])
-        
-        # Validate scores
-        self.game_state.player1_paddle['score'] = max(0, min(11, self.game_state.player1_paddle['score']))
-        self.game_state.player2_paddle['score'] = max(0, min(11, self.game_state.player2_paddle['score']))
+    @property
+    def game_state(self):
+        return self.game_states.get(self.game_id)
+
+    @game_state.setter
+    def game_state(self, value):
+        self.game_states[self.game_id] = value
+
+    @property
+    def game_id(self):
+        return self._game_id
+
+    @game_id.setter
+    def game_id(self, value):
+        self._game_id = str(value)
+
+    async def connect(self):
+        """Handle WebSocket connection"""
+        try:
+            self.game_id = self.scope['url_route']['kwargs']['game_id']
+            self.room_group_name = f'game_{self.game_id}'
+            
+            # print("\n=== New Connection Attempt ===")
+            # print(f"Game ID: {self.game_id}")
+            
+            # Initialize game state if it doesn't exist
+            if not self.game_state:
+                print("Creating new game state")
+                self.game_state = GameState(self.game_id)
+            
+            # print(f"Current players: {self.game_state.connected_players}")
+            # print(f"P1 connected: {self.game_state.player1_paddle['connected']}")
+            # print(f"P2 connected: {self.game_state.player2_paddle['connected']}")
+            
+            await self.accept()
+            
+            # Join room group
+            await self.channel_layer.group_add(
+                self.room_group_name,
+                self.channel_name
+            )
+            
+            # Assign player number
+            if self.game_state.connected_players >= 2:
+                # print("Game is full")
+                await self.close()
+                return
+                
+            if not self.game_state.player1_paddle['connected']:
+                self.player_number = 1
+                self.game_state.player1_paddle['connected'] = True
+            else:
+                self.player_number = 2
+                self.game_state.player2_paddle['connected'] = True
+            
+            self.game_state.connected_players += 1
+            
+            # print(f"Assigned as Player {self.player_number}")
+            
+            # Send initial state
+            await self.send(json.dumps({
+                'type': 'game_info',
+                'player_number': self.player_number,
+                'state': self.get_game_state_dict(),
+                'settings': {
+                    'paddle_width': self.game_state.paddle_width,
+                    'paddle_height': self.game_state.paddle_height,
+                    'canvas_width': self.game_state.canvas_width,
+                    'canvas_height': self.game_state.canvas_height,
+                    'duration': self.game_state.time_remaining
+                }
+            }))
+            
+        except Exception as e:
+            # print(f"Error in connect: {str(e)}")
+            traceback.print_exc()
+            await self.close()
+
+    async def disconnect(self, close_code):
+        """Handle WebSocket disconnection"""
+        try:
+            if self.game_state:
+                # Update player connection status
+                if self.player_number == 1:
+                    self.game_state.player1_paddle['connected'] = False
+                else:
+                    self.game_state.player2_paddle['connected'] = False
+                
+                self.game_state.connected_players -= 1
+                self.game_state.is_paused = True
+                
+                # Notify remaining player
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'player_disconnected',
+                        'player': self.player_number,
+                        'remaining_players': self.game_state.connected_players
+                    }
+                )
+            
+            # Leave room group
+            if hasattr(self, 'room_group_name'):
+                await self.channel_layer.group_discard(
+                    self.room_group_name,
+                    self.channel_name
+                )
+
+            # Handle game over if one player disconnects
+            if self.game_state and self.game_state.connected_players <= 1:
+                self.game_state.game_over = True
+                self.game_state.winner = 1 if self.player_number == 2 else 2
+                await self.handle_game_over()
+            
+        except Exception as e:
+            print(f"Error in disconnect: {str(e)}")
 
     def get_game_state_dict(self):
         """Get current game state"""
@@ -219,145 +281,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             'is_paused': self.game_state.is_paused,
             'game_over': self.game_state.game_over,
             'winner': self.game_state.winner,
-            'connected_players': self.game_state.connected_players,
             'time_remaining': self.game_state.time_remaining
         }
-
-    async def connect(self):
-        """Handle WebSocket connection"""
-        try:
-            self.game_id = str(self.scope['url_route']['kwargs']['game_id'])
-            self.room_group_name = f'game_{self.game_id}'
-            
-            # Get or create game state
-            try:
-                game_state = cache.get(f'game_state_{self.game_id}')
-                if game_state is None or not hasattr(game_state, 'is_session_expired') or game_state.is_session_expired():
-                    game_state = GameState(self.game_id)
-            except Exception as e:
-                print(f"Error retrieving game state: {e}")
-                game_state = GameState(self.game_id)
-
-            await self.accept()
-            
-            # Join room group
-            await self.channel_layer.group_add(
-                self.room_group_name,
-                self.channel_name
-            )
-            
-            # Assign player number
-            if not game_state.player1_paddle['connected']:
-                self.player_number = 1
-                game_state.player1_paddle['connected'] = True
-            elif not game_state.player2_paddle['connected']:
-                self.player_number = 2
-                game_state.player2_paddle['connected'] = True
-            else:
-                await self.close()
-                return
-
-            game_state.connected_players += 1
-            self.game_state = game_state
-            
-            # Update cache
-            try:
-                with cache.lock(f'game_state_{self.game_id}_lock'):
-                    cache.set(f'game_state_{self.game_id}', self.game_state)
-            except Exception as e:
-                print(f"Error updating cache: {e}")
-            
-            # Send initial state
-            await self.send(json.dumps({
-                'type': 'game_info',
-                'player_number': self.player_number,
-                # 'state': self.get_game_state_dict(),
-                'settings': {
-                    'paddle_width': self.game_state.paddle_width,
-                    'paddle_height': self.game_state.paddle_height,
-                    'canvas_width': self.game_state.canvas_width,
-                    'canvas_height': self.game_state.canvas_height,
-                    'duration': self.game_state.time_remaining
-                }
-            }))
-            
-        except Exception as e:
-            print(f"Error in connect: {str(e)}")
-            if hasattr(self, 'room_group_name'):
-                await self.channel_layer.group_discard(
-                    self.room_group_name,
-                    self.channel_name
-                )
-            await self.close()
-
-    async def disconnect(self, close_code):
-        """Handle WebSocket disconnection"""
-        try:
-            if hasattr(self, 'game_state') and self.game_state:
-                # Update player connection status
-                if self.player_number == 1:
-                    self.game_state.player1_paddle['connected'] = False
-                else:
-                    self.game_state.player2_paddle['connected'] = False
-                
-                self.game_state.connected_players -= 1
-                self.game_state.is_paused = True
-                self.game_state.mark_disconnection()
-                
-                # Update cache
-                with cache.lock(f'game_state_{self.game_id}_lock'):
-                    cache.set(f'game_state_{self.game_id}', self.game_state)
-                
-                # Notify remaining player
-                if hasattr(self, 'room_group_name'):
-                    await self.channel_layer.group_send(
-                        self.room_group_name,
-                        {
-                            'type': 'player_disconnected',
-                            'player': self.player_number,
-                            'remaining_players': self.game_state.connected_players
-                        }
-                    )
-                # Start reconnection timeout handler
-                # asyncio.create_task(self.handle_reconnection_timeout())
-            
-            # Leave room group
-            if hasattr(self, 'room_group_name'):
-                await self.channel_layer.group_discard(
-                    self.room_group_name,
-                    self.channel_name
-                )
-            # declare game over and declare the player who is still connected as the winner
-            if self.game_state.connected_players == 1:
-                self.game_state.game_over = True
-                self.game_state.winner = 1 if self.player_number == 2 else 2
-                await self.handle_game_over()
-            
-        except Exception as e:
-            print(f"Error in disconnect: {str(e)}")
-
-    async def handle_reconnection_timeout(self):
-        """Handle player reconnection timeout"""
-        await asyncio.sleep(self.game_state.reconnect_timeout)
-        
-        if self.game_state.connected_players == 0 and self.game_state.is_session_expired():
-            self.game_state = GameState(self.game_id)
-            self.game_state.player1_paddle['connected'] = True
-            self.game_state.player2_paddle['connected'] = True
-            self.game_state.connected_players = 2
-            self.game_state.players_ready.clear()
-            self.game_state.is_paused = False
-            
-            with cache.lock(f'game_state_{self.game_id}_lock'):
-                cache.set(f'game_state_{self.game_id}', self.game_state)
-            
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'game_restarted',
-                    'state': self.get_game_state_dict()
-                }
-            )
 
     async def receive(self, text_data):
         """Handle incoming WebSocket messages"""
@@ -376,15 +301,6 @@ class GameConsumer(AsyncWebsocketConsumer):
             
             handler = handlers.get(message_type)
             if handler:
-                # Rate limit message handling
-                current_time = time.time()
-                if not hasattr(self, 'last_message_time'):
-                    self.last_message_time = 0
-                
-                if current_time - self.last_message_time < 1/60:  # 60 messages per second max
-                    return
-                    
-                self.last_message_time = current_time
                 await handler(data)
             else:
                 await self.send(json.dumps({
@@ -392,151 +308,236 @@ class GameConsumer(AsyncWebsocketConsumer):
                     'message': 'Unknown message type'
                 }))
                 
-        except json.JSONDecodeError:
-            await self.send(json.dumps({
-                'type': 'error',
-                'message': 'Invalid JSON format'
-            }))
         except Exception as e:
             await self.send(json.dumps({
                 'type': 'error',
-                'message': 'mal9ina walo'
+                'message': str(e)
             }))
 
     async def game_loop(self):
-        """Main game loop"""
-        physics_interval = 1/60  # 60 FPS for physics
-        broadcast_interval = 1/20  # 20 FPS for state updates
+        """Main game loop with optimized timings"""
+        physics_interval = 1/120  # Doubled physics rate (was 1/60)
+        broadcast_interval = 1/60  # Increased broadcast rate (was 1/20)
         last_physics_time = time.time()
         last_broadcast_time = time.time()
-        
-        print("i'm inside the game loop")
-        while not self.game_state.game_over and self.game_state.connected_players == 2:
-            current_time = time.time()
-            
-            if not self.game_state.is_paused:
-                # Physics update
-                if current_time - last_physics_time >= physics_interval:
-                    delta_time = current_time - last_physics_time
-                    last_physics_time = current_time
+        last_timer_update = time.time()
+        # print("===> Game loop <===")
+        try:
+            while not self.game_state.game_over and self.game_state.connected_players == 2:
+                current_time = time.time()
+                # print(f"Game loop running: {current_time}")
+                if not self.game_state.is_paused:
+                    # Timer update
+                    timer_delta = current_time - last_timer_update
+                    last_timer_update = current_time
                     
-                    try:
+                    # Physics update with more precise delta time
+                    if current_time - last_physics_time >= physics_interval:
+                        delta_time = min(current_time - last_physics_time, 0.017)  # Cap delta time
+                        last_physics_time = current_time
+                        
                         # Update ball position
                         self.physics.update_ball_position(self.game_state.ball, delta_time)
                         
-                        # Check collisions
+                        # Check wall collisions
                         if self.physics.check_wall_collision(self.game_state.ball):
                             await self.broadcast_collision('wall')
                         
                         # Check paddle collisions
                         for i, paddle in enumerate([self.game_state.player1_paddle, self.game_state.player2_paddle], 1):
                             if self.physics.check_paddle_collision(self.game_state.ball, paddle):
-                                await self.broadcast_collision('paddle', i)
                                 self.physics.handle_paddle_collision(self.game_state.ball, paddle)
+                                # await self.broadcast_collision('paddle', i)
                         
                         # Check scoring
                         scorer = self.physics.check_scoring(self.game_state.ball)
                         if scorer > 0:
                             await self.handle_scoring(scorer)
-                            
-                    except Exception as e:
-                        print(f"Error in physics update: {e}")
-                        continue
+                            continue
+                    
+                    # Broadcast state
+                    if current_time - last_broadcast_time >= broadcast_interval:
+                        last_broadcast_time = current_time
+                        await self.broadcast_game_state()
+                    
+                    # Update timer and check for game over
+                    if self.game_state.time_remaining > 0:
+                        self.game_state.time_remaining -= timer_delta
+                        if self.game_state.time_remaining <= 0:
+                            await self.handle_game_over()
                 
-                # State broadcast
-                if current_time - last_broadcast_time >= broadcast_interval:
-                    last_broadcast_time = current_time
-                    await self.broadcast_game_state()
-            
-            await asyncio.sleep(physics_interval)
+                await asyncio.sleep(0.008) #slightly faster than 1/120
+                
+        except Exception as e:
+            print(f"Error in game loop: {str(e)}")
+            import traceback
+            print(traceback.format_exc())
 
+    # async def handle_paddle_move(self, data):
+    #     """Handle paddle movement with interpolation"""
+    #     try:
+    #         new_y = float(data.get('y', 0))
+    #         new_y = max(0, min(new_y, self.game_state.canvas_height - self.game_state.paddle_height))
+            
+    #         # Update paddle position with interpolation
+    #         if self.player_number == 1:
+    #             current_y = self.game_state.player1_paddle['y']
+    #             self.game_state.player1_paddle['y'] = new_y
+    #         else:
+    #             current_y = self.game_state.player2_paddle['y']
+    #             self.game_state.player2_paddle['y'] = new_y
+            
+    #         # Send update immediately for responsiveness
+    #         await self.channel_layer.group_send(
+    #             self.room_group_name,
+    #             {
+    #                 'type': 'paddles_update',
+    #                 'paddles': {
+    #                     '1': {'x': self.game_state.player1_paddle['x'], 'y': self.game_state.player1_paddle['y']},
+    #                     '2': {'x': self.game_state.player2_paddle['x'], 'y': self.game_state.player2_paddle['y']}
+    #                 }
+    #             }
+    #         )
+    #     except Exception as e:
+    #         print(f"Error in handle_paddle_move: {str(e)}")
+    
     async def handle_paddle_move(self, data):
-        """Handle paddle movement"""
-        if not self.game_state:
-            return
-                
+        """Handle paddle movement with improved smoothness"""
         try:
             new_y = float(data.get('y', 0))
-            new_y = max(0, min(new_y, self.game_state.canvas_height - self.game_state.paddle_height))
+            paddle_speed = 10 # pixels per frame, sppeed of paddle movement
             
-            # Update paddle position
             if self.player_number == 1:
-                self.game_state.player1_paddle['y'] = new_y
+                current_y = self.game_state.player1_paddle['y']
+                target_y = max(0, min(new_y, self.game_state.canvas_height - self.game_state.paddle_height))
+                
+                # Smooth movement: limit the movement to the paddle_speed
+                if abs(target_y - current_y) > paddle_speed:
+                    self.game_state.player1_paddle['y'] += (
+                        paddle_speed if target_y > current_y else -paddle_speed
+                    )
+                else:
+                    self.game_state.player1_paddle['y'] = target_y  # Directly set if within range
+
             else:
-                self.game_state.player2_paddle['y'] = new_y
-            
-            # For paddle moves, we can just send paddle positions
-            print(f"Sending paddle move player1 {self.game_state.player1_paddle['y']}")
-            print(f"Sending paddle move player2 {self.game_state.player2_paddle['y']}")
+                current_y = self.game_state.player2_paddle['y']
+                target_y = max(0, min(new_y, self.game_state.canvas_height - self.game_state.paddle_height))
+                
+                # Smooth movement: limit the movement to the paddle_speed
+                if abs(target_y - current_y) > paddle_speed:
+                    self.game_state.player2_paddle['y'] += (
+                        paddle_speed if target_y > current_y else -paddle_speed
+                    )
+                else:
+                    self.game_state.player2_paddle['y'] = target_y  # Directly set if within range
+
+            # Send paddle updates immediately
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     'type': 'paddles_update',
                     'paddles': {
-                        '1': {'x': self.game_state.player1_paddle['x'], 'y': round(self.game_state.player1_paddle['y'], 2)},
-                        '2': {'x': self.game_state.player2_paddle['x'], 'y': round(self.game_state.player2_paddle['y'], 2)}
+                        '1': {
+                            'x': self.game_state.player1_paddle['x'], 
+                            'y': round(self.game_state.player1_paddle['y'], 2)
+                        },
+                        '2': {
+                            'x': self.game_state.player2_paddle['x'], 
+                            'y': round(self.game_state.player2_paddle['y'], 2)
+                        }
                     }
                 }
             )
-            
         except Exception as e:
             print(f"Error in handle_paddle_move: {str(e)}")
 
-    #added start
+
     async def handle_player_ready(self, data):
         """Handle player ready status"""
-        if self.player_number not in self.game_state.players_ready:
-            self.game_state.players_ready.add(self.player_number)
-            
-            if len(self.game_state.players_ready) == 2:
-                self.game_state.is_paused = False
-                await self.start_game()
-            
-            with cache.lock(f'game_state_{self.game_id}_lock'):
-                self.game_state = cache.get(f'game_state_{self.game_id}')
-                # Update game state and set cache
-                cache.set(f'game_state_{self.game_id}', self.game_state)
-    
-    async def handle_pause_game(self, data):
-        """Handle game pause request"""
         try:
-            if not self.game_state.game_over:
-                self.game_state.is_paused = True
+            self.game_state.players_ready.add(self.player_number)
+            # print(f"Player {self.player_number} ready. Ready players: {self.game_state.players_ready}")
+            
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'player_ready',
+                    'player': self.player_number
+                }
+            )
+
+            # Start game if both players are ready
+            # if len(self.game_state.players_ready) == 2:
+            #     await self.handle_start_game(None)
+
+        except Exception as e:
+            print(f"Error in handle_player_ready: {str(e)}")
+
+    async def handle_start_game(self, data):
+        """Handle game start request"""
+        try:
+            # print("\n=== Starting Game ===")
+            
+            if (self.game_state.connected_players == 2 and 
+                len(self.game_state.players_ready) == 2 and 
+                not self.game_state.game_over):
                 
-                # Update cache
-                with cache.lock(f'game_state_{self.game_id}_lock'):
-                    cache.set(f'game_state_{self.game_id}', self.game_state)
+                self.game_state.is_paused = False
                 
-                # Notify all players
+                # Start game loop if not already running
+                if not self.game_loop_task:
+                    # print("Starting game loop")
+                    self.game_loop_task = asyncio.create_task(self.game_loop())
+                
+                # print("Game started successfully")
+                
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
-                        'type': 'game_paused', # send 'game_paused' event to all players
-                        'is_paused': True,
-                        'time_remaining': self.game_state.time_remaining,
-                        'player': self.player_number # send player number to identify who paused the game
+                        'type': 'game_started',
+                        'message': 'Game has started!'
                     }
                 )
+            else:
+                print(f"Can't start game: players={self.game_state.connected_players}, " 
+                    f"ready={self.game_state.players_ready}, "
+                    f"game_over={self.game_state.game_over}")
+                
         except Exception as e:
-            print(f"Error in handle_pause_game: {str(e)}")
-            await self.send(json.dumps({
-                'type': 'error',
-                'message': str(e)
-            }))
+            print(f"Error in handle_start_game: {str(e)}")
+
+    async def handle_pause_game(self, data):
+        """Handle game pause request"""
+        if not self.game_state.game_over:
+            self.game_state.is_paused = True
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'game_paused',
+                    'player': self.player_number
+                }
+            )
+
+    async def handle_resume_game(self, data):
+        """Handle game resume request"""
+        if not self.game_state.game_over:
+            self.game_state.is_paused = False
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'game_resumed',
+                    'player': self.player_number
+                }
+            )
 
     async def handle_restart_request(self, data):
         """Handle game restart request"""
         if self.game_state.game_over:
-            await asyncio.sleep(2) # Wait for 2 seconds for players to see the final state before restarting 
             self.game_state = GameState(self.game_id)
             self.game_state.player1_paddle['connected'] = True
             self.game_state.player2_paddle['connected'] = True
             self.game_state.connected_players = 2
             self.game_state.players_ready.clear()
-            with cache.lock(f'game_state_{self.game_id}_lock'):
-                self.game_state = cache.get(f'game_state_{self.game_id}')
-                # Update game state and set cache
-                cache.set(f'game_state_{self.game_id}', self.game_state)
             
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -545,138 +546,17 @@ class GameConsumer(AsyncWebsocketConsumer):
                     'state': self.get_game_state_dict()
                 }
             )
-    
-    async def handle_player_disconnect(self, data):
-        """Handle player disconnect request"""
-        try:
-            if self.player_number == 1:
-                self.game_state.player1_paddle['connected'] = False
-            else:
-                self.game_state.player2_paddle['connected'] = False
-            
-            self.game_state.connected_players -= 1
-            self.game_state.is_paused = True
-            self.game_state.disconnect_time = time.time()
-            
-            # Update game state in cache
-            with cache.lock(f'game_state_{self.game_id}_lock'):
-                cache.set(f'game_state_{self.game_id}', self.game_state)
-            
-            # Notify other player about disconnection
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'player_disconnected',
-                    'player': self.player_number,
-                    'message': f'Player {self.player_number} disconnected'
-                }
-            )
-            
-            # Start reconnection timeout handler
-            # asyncio.create_task(self.handle_reconnection_timeout())
-            
-            # declare game over and declare the player who is still connected as the winner
-            if self.game_state.connected_players == 1:
-                self.game_state.game_over = True
-                self.game_state.winner = 1 if self.player_number == 2 else 2
-                await self.handle_game_over()
-            
-        except Exception as e:
-            print(f"Error in handle_player_disconnect: {str(e)}")
-    
-    async def handle_resume_game(self, data):
-        """Handle game resume request"""
-        try:
-            if not self.game_state.game_over:
-                self.game_state.is_paused = False
-                
-                # Update cache
-                with cache.lock(f'game_state_{self.game_id}_lock'):
-                    cache.set(f'game_state_{self.game_id}', self.game_state)
-                
-                # Notify all players
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        'type': 'game_resumed',
-                        'is_paused': False,
-                        'time_remaining': self.game_state.time_remaining,
-                        'player': self.player_number
-                    }
-                )
-        except Exception as e:
-            print(f"Error in handle_resume_game: {str(e)}")
-            await self.send(json.dumps({
-                'type': 'error',
-                'message': str(e)
-            }))
-    
-    async def handle_start_game(self, data):
-        """Handle game start request"""
-        try:
-            print("received start game request")
-            if self.game_state.connected_players == 2 and not self.game_state.game_over:
-                self.game_state.is_paused = False
-                
-                # Update cache
-                with cache.lock(f'game_state_{self.game_id}_lock'):
-                    cache.set(f'game_state_{self.game_id}', self.game_state)
-                
-                # Start game loop if not already running
-                if not self.game_loop_task:
-                    self.game_loop_task = asyncio.create_task(self.game_loop())
-                
-                # Notify all players
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        'type': 'game_status_update',
-                        'is_paused': False,
-                        'player': self.player_number
-                    }
-                )
-        except Exception as e:
-            print(f"Error in handle_start_game: {str(e)}")
-            await self.send(json.dumps({
-                'type': 'error',
-                'message': str(e)
-            }))
 
-    async def start_game(self):
-        """Start the game loop with a countdown"""
-        # await self.channel_layer.group_send(
-        #     self.room_group_name,
-        #     {'type': 'game_countdown', 'seconds': 3}
-        # )
-        # await asyncio.sleep(3)  # Countdown before starting the game
-        if not self.game_loop_task:
-            self.game_loop_task = asyncio.create_task(self.game_loop())
-    
-    async def broadcast_collision(self, collision_type, player=None):
-        """Broadcast collision events"""
-        if collision_type == 'wall':
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'wall_collision'
-                }
-            )
-        elif collision_type == 'paddle':
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'paddle_collision',
-                    'player': player
-                }
-            )
-            
-    # added end
     async def handle_scoring(self, scorer):
         """Handle scoring events"""
         if scorer == 1:
             self.game_state.player1_paddle['score'] += 1
         else:
             self.game_state.player2_paddle['score'] += 1
+
+        # print(f"\nA GOAAAAAAL! Player {scorer} scored!")
+        # print(f"Player 1 score: {self.game_state.player1_paddle['score']}")
+        # print(f"Player 2 score: {self.game_state.player2_paddle['score']}")
 
         # Reset ball
         self.game_state.ball['speed'] = 5
@@ -687,7 +567,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'score_update',
-                'scorer': scorer, # 2 for player 2, 1 for player 1
+                'scorer': scorer,
                 'scores': {
                     '1': self.game_state.player1_paddle['score'],
                     '2': self.game_state.player2_paddle['score']
@@ -703,81 +583,36 @@ class GameConsumer(AsyncWebsocketConsumer):
             await self.handle_game_over()
 
     async def broadcast_game_state(self):
-        """Broadcast game state to all players with only rendering-necessary data"""
+        """Broadcast game state to all players"""
         current_state = {
             'ball': {
                 'x': round(self.game_state.ball['x'], 2),
-                'y': round(self.game_state.ball['y'], 2),
-            },
-            'player1_paddle': {
-                'x': self.game_state.player1_paddle['x'],
-                'y': round(self.game_state.player1_paddle['y'], 2)
-            },
-            'player2_paddle': {
-                'x': self.game_state.player2_paddle['x'],
-                'y': round(self.game_state.player2_paddle['y'], 2),
-            },
+                'y': round(self.game_state.ball['y'], 2)
+            }
         }
-        #print the ball's coordinates
-        print(f"ball x: {current_state['ball']['x']}")
-        print(f"ball y: {current_state['ball']['y']}")
-        # Send state update to all players
+        
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': 'state_update',
+                'type': 'ball_update',
                 'state': current_state
             }
         )
 
-    # Event handlers for different message types
-    async def state_update(self, event):
-        """Forward state updates to the client"""
-        print(f"Sending state update to client: {event}")  # Debug log
-        await self.send(text_data=json.dumps({
-            'type': 'state_update',
-            'state': event['state']
-        }))
-
-    async def paddles_update(self, event):
-        await self.send(text_data=json.dumps({
-            'type': 'paddles_update',
-            'paddles': event['paddles']
-        }))
-
-    async def score_update(self, event):
-        await self.send(text_data=json.dumps({
-            'type': 'score_update',
-            'scorer': event['scorer'],
-            'scores': event['scores']
-        }))
-
-    async def game_paused(self, event):
-        await self.send(text_data=json.dumps({
-            'type': 'game_paused',
-            'player': event['player']
-        }))
-
-    async def game_resumed(self, event):
-        await self.send(text_data=json.dumps({
-            'type': 'game_resumed',
-            'player': event['player']
-        }))
-
-    async def player_disconnected(self, event):
-        await self.send(text_data=json.dumps({
-            'type': 'player_disconnected',
-            'player': event['player']
-        }))
-
-    async def game_countdown(self, event):
-        await self.send(text_data=json.dumps({
-            'type': 'game_countdown',
-            'seconds': event['seconds']
-        }))
+    async def broadcast_collision(self, collision_type, player=None):
+        """Broadcast collision events"""
+        message = {'type': f'{collision_type}_collision'}
+        if player:
+            message['player'] = player
+        
+        await self.channel_layer.group_send(self.room_group_name, message)
 
     async def handle_game_over(self):
         """Handle game over state"""
+        # print("\n=== Game Over ===")
+        # print(f"Winner: Player {self.game_state.winner}")
+        # print(f"Final Score - P1: {self.game_state.player1_paddle['score']}, P2: {self.game_state.player2_paddle['score']}")
+        
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -790,3 +625,91 @@ class GameConsumer(AsyncWebsocketConsumer):
                 }
             }
         )
+
+    # WebSocket event handler methods
+    async def ball_update(self, event):
+        """Handle ball update event"""
+        await self.send(text_data=json.dumps({
+            'type': 'ball_update',
+            'state': event['state']
+        }))
+
+    async def paddles_update(self, event):
+        """Handle paddles update event"""
+        await self.send(text_data=json.dumps({
+            'type': 'paddles_update',
+            'paddles': event['paddles']
+        }))
+
+    async def score_update(self, event):
+        """Handle score update event"""
+        await self.send(text_data=json.dumps({
+            'type': 'score_update',
+            'scorer': event['scorer'],
+            'scores': event['scores']
+        }))
+
+    async def game_paused(self, event):
+        """Handle game paused event"""
+        await self.send(text_data=json.dumps({
+            'type': 'game_paused',
+            'player': event['player']
+        }))
+
+    async def game_resumed(self, event):
+        """Handle game resumed event"""
+        await self.send(text_data=json.dumps({
+            'type': 'game_resumed',
+            'player': event['player']
+        }))
+
+    async def game_started(self, event):
+        """Handle game started event"""
+        await self.send(text_data=json.dumps({
+            'type': 'game_started',
+            'message': event['message']
+        }))
+
+    async def game_ended(self, event):
+        """Handle game ended event"""
+        await self.send(text_data=json.dumps({
+            'type': 'game_ended',
+            'reason': event['reason'],
+            'winner': event['winner'],
+            'final_scores': event['final_scores']
+        }))
+
+    async def game_restarted(self, event):
+        """Handle game restarted event"""
+        await self.send(text_data=json.dumps({
+            'type': 'game_restarted',
+            'state': event['state']
+        }))
+
+    async def player_ready(self, event):
+        """Handle player ready event"""
+        await self.send(text_data=json.dumps({
+            'type': 'player_ready',
+            'player': event['player']
+        }))
+
+    async def player_disconnected(self, event):
+        """Handle player disconnected event"""
+        await self.send(text_data=json.dumps({
+            'type': 'player_disconnected',
+            'player': event['player'],
+            'remaining_players': event['remaining_players']
+        }))
+
+    async def wall_collision(self, event):
+        """Handle wall collision event"""
+        await self.send(text_data=json.dumps({
+            'type': 'wall_collision'
+        }))
+
+    async def paddle_collision(self, event):
+        """Handle paddle collision event"""
+        await self.send(text_data=json.dumps({
+            'type': 'paddle_collision',
+            'player': event.get('player')
+        }))
