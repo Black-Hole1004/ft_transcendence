@@ -419,6 +419,8 @@ class AcceptFriendRequestView(APIView):
             friend_request.save()
 
             try:
+                if FriendShip.objects.filter(user_from=friend_request.user_to, user_to=friend_request.user_from).exists() or FriendShip.objects.filter(user_from=friend_request.user_from, user_to=friend_request.user_to).exists():
+                    return Response({"message": "Friendship already exists"}, status=400)
                 FriendShip.objects.create(user_from=friend_request.user_from, user_to=friend_request.user_to)
             except IntegrityError:
                 return Response({"message": "Friendship already exists"}, status=400)

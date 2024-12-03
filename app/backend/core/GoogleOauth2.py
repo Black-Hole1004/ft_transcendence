@@ -92,5 +92,5 @@ class CustomGoogleOAuth2(GoogleOAuth2):
         friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
         friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
         friends = list(set(friends_from + friends_to))
-        print('fetched friends =>', friends)
+        # print('fetched friends =>', friends)
         return friends

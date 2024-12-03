@@ -15,6 +15,36 @@ export const WebSocketProvider = ({ children }) => {
     
     useEffect(() => {
 
+        const access_token = Cookies.get('access_token');
+		const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/?access_token=' + access_token);
+
+        socket.onopen = () => console.log('WebSocket connection established');
+        
+        socket.onmessage = (event) => {
+            console.log('WebSocket message received:', event.data);
+            const data = JSON.parse(event.data);
+            // if (data.receiver_id === user.user_id) {
+                console.log('Notification for current user:', data);
+                setNotifications((prevNotifications) => [
+                    ...prevNotifications,
+                    {
+                        id: data.id,
+                        message: data.message,
+                        type: 'friend_request',
+                        from_user: data.from_user,
+                        profile_picture: `${BASE_URL}${data.profile_picture.profile_picture}`,
+                    },
+                ]);
+            // }
+        };
+
+        socket.onclose = () => console.warn('WebSocket connection closed');
+        socket.onerror = (error) => console.error('WebSocket error:', error);
+
+        return () => socket.close();
+    }, []);
+
+    useEffect(() => {
         const fetchNotifications = async () => {
             try {
                 const response = await fetch(`${BASE_URL}/api/friend_ship_request/`, {
@@ -37,30 +67,13 @@ export const WebSocketProvider = ({ children }) => {
         const access_token = Cookies.get('access_token');
 		const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/?access_token=' + access_token);
 
-        socket.onopen = () => console.log('WebSocket connection established');
-        
-        socket.onmessage = (event) => {
-            console.log('WebSocket message received:', event.data);
-            const data = JSON.parse(event.data);
-            if (data.receiver_id === user.user_id) {
-                setNotifications((prevNotifications) => [
-                    ...prevNotifications,
-                    {
-                        id: data.id,
-                        message: data.message,
-                        type: 'friend_request',
-                        from_user: data.from_user,
-                        profile_picture: `${BASE_URL}${data.profile_picture.profile_picture}`,
-                    },
-                ]);
-            }
-        };
+        socket.onopen = () => {
+            console.log('WebSocket connection established');
+        }
 
         socket.onclose = () => console.warn('WebSocket connection closed');
         socket.onerror = (error) => console.error('WebSocket error:', error);
-
-        return () => socket.close();
-    }, []);
+    }, [user]);
 
 
     return (

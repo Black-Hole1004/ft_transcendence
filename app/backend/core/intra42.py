@@ -132,12 +132,8 @@ class Intra42OAuth2(BaseOAuth2):
             'first_name': user_details['first_name'],
             }
         )
-        print('---------- user:============= 1' + str(user))
 
         if user:
-            # add by me ahaloui
-            print('---------- user:============= 2 ' + str(user))
-            print('user: ' + str(user))
             image_response = None
             profile_image_url = user_details.get('profile_image_url')
             if profile_image_url and (created or user.profile_picture.name == 'profile_pictures/avatar.jpg'):
@@ -161,15 +157,11 @@ class Intra42OAuth2(BaseOAuth2):
             access_token = str(refresh.access_token)
             refresh_token = str(refresh)
 
-            # Redirect to front-end URL and include tokens in the query parameters
-            print(f"[user =>>> ] ============> {user.status}")
             redirect_url = f"http://localhost:5173/dashboard?access_token={access_token}&refresh_token={refresh_token}"
             return HttpResponseRedirect(redirect_url)
 
         else:
             return JsonResponse({'error': 'User authentication failed'}, status=401)
-        # return self.do_auth(access_token, token_data=token_data, *args, **kwargs)
-        #todo: fix cookies setting ...
 
     def get_redirect_uri(self, state=None):
         """Returns the redirect URI to be passed in the token exchange request"""

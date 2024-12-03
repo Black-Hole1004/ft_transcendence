@@ -10,32 +10,26 @@ export const WebSocketStatusProvider = ({ children }) => {
         const access_token = Cookies.get('access_token');
         if (!access_token) return;
 
-        // Create WebSocket connection
         const newSocket = new WebSocket(`ws://127.0.0.1:8000/ws/notification/?access_token=${access_token}`);
 
-        // Setup socket event handlers
         newSocket.onopen = () => {
-        console.log('WebSocket Connected');
-        // Optionally send online status
-        // newSocket.send(JSON.stringify({ type: 'notification_message', message: 'online' }));
-    };
-    newSocket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log('WebSocket data:', data);
-    };
+            console.log('---- WebSocket Connected ----');
+        };
+        newSocket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('WebSocket data:', data);
+        };
 
-    newSocket.onclose = (event) => {
-        console.log('WebSocket Closed xaxaxa:', event);
-    };
+        newSocket.onclose = (event) => {
+            console.log('WebSocket Closed:', event);
+        };
 
-    newSocket.onerror = (error) => {
-        console.error('WebSocket Error hahaha:', error);
-    };
+        newSocket.onerror = (error) => {
+            console.error('WebSocket Error:', error);
+        };
 
     setSocket(newSocket);
     
-
-      // Cleanup function
     return () => {
         newSocket.close();
     };
