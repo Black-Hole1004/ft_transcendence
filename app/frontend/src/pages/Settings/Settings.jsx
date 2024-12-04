@@ -113,12 +113,12 @@ const Settings = () => {
 				return data
 			} else {
 				console.log('Failed to fetch user data')
-				// logout();
+				logout();
 				return null
 			}
 		} catch (error) {
 			console.log(error)
-			// logout();
+			logout();
 			return null
 		}
 	}
