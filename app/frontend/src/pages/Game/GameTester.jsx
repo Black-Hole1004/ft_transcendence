@@ -121,10 +121,13 @@ const GameTester = ({ gameId }) => {
 
 		// Add pause/resume handlers
         ws.on('game_paused', (data) => {
+			console.log('Received pause data:', data);  // Debug log
             console.log('Game paused by player:', data.player);
             setIsPaused(true);
 			setPausingPlayer(data.player);
+			console.log('Pauses remaining received from backend:', data.pauses_remaining);
 			setPausesRemaining(data.pauses_remaining);
+			console.log('Pauses remaining assigned: pausesRemaining', pausesRemaining);
         });
 		
 		ws.on('pause_timeout', (data) => {

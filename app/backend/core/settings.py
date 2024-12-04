@@ -258,7 +258,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 #todo: Creds should be changed in production
 
 SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-cdcc23cff090940f13730afd65feb14fe10adba125685f2f6b47055c98256fd7'
-SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_SECRET = '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'
 SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'http://localhost:8000/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed

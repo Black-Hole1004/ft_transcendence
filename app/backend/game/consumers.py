@@ -96,7 +96,7 @@ class GameState:
         self.player2_pauses_remaining = self.pause_limit
         self.current_pause_player = None # player who paused the game
         self.pause_time = None # time when game was paused
-        self.pause_timeout = 30 # time in seconds before game is resumed automatically
+        self.pause_timeout = 20 # time in seconds before game is resumed automatically
         
         # Game status
         self.connected_players = 0
@@ -174,18 +174,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         try:
             self.game_id = self.scope['url_route']['kwargs']['game_id']
             self.room_group_name = f'game_{self.game_id}'
-            
-            # print("\n=== New Connection Attempt ===")
-            # print(f"Game ID: {self.game_id}")
-            
+                        
             # Initialize game state if it doesn't exist
             if not self.game_state:
                 print("Creating new game state")
                 self.game_state = GameState(self.game_id)
-            
-            # print(f"Current players: {self.game_state.connected_players}")
-            # print(f"P1 connected: {self.game_state.player1_paddle['connected']}")
-            # print(f"P2 connected: {self.game_state.player2_paddle['connected']}")
             
             await self.accept()
             
@@ -500,17 +493,16 @@ class GameConsumer(AsyncWebsocketConsumer):
         try:
             start_pause_time = self.game_state.pause_time
             
-            # Start counting down
             for remaining in range(self.game_state.pause_timeout, 0, -1):
-                await asyncio.sleep(1)  # Check every second
+                await asyncio.sleep(1)
                 
-                # If game was resumed, stop timeout check
+                # Stop if already resumed
                 if not self.game_state.is_paused or self.game_state.pause_time != start_pause_time:
                     print("Pause timeout cancelled - game resumed")
                     return
                     
-                # Notify remaining time
-                if remaining % 5 == 0:  # Send update every 5 seconds
+                # Send warning every 5 seconds
+                if remaining % 5 == 0:
                     await self.channel_layer.group_send(
                         self.room_group_name,
                         {
@@ -519,29 +511,20 @@ class GameConsumer(AsyncWebsocketConsumer):
                         }
                     )
             
-            # If we reach here, timeout has occurred
+            # Auto-resume on timeout
             if self.game_state.is_paused and self.game_state.pause_time == start_pause_time:
-                print(f"Pause timeout reached for player {self.game_state.current_pause_player}")
-                
-                # Set game state before sending messages
+                print(f"Pause timeout reached - auto-resuming game")
                 self.game_state.is_paused = False
-                self.game_state.game_over = True
-                self.game_state.winner = 2 if self.game_state.current_pause_player == 1 else 1
+                self.game_state.current_pause_player = None
+                self.game_state.pause_time = None
                 
-                # Send timeout notification before game over
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
-                        'type': 'pause_timeout',
-                        'player': self.game_state.current_pause_player,
-                        'winner': self.game_state.winner
+                        'type': 'game_resumed',  
+                        'player': self.game_state.current_pause_player
                     }
                 )
-                
-                # Short delay to ensure timeout message is received
-                await asyncio.sleep(0.1)
-                
-                await self.handle_game_over()
                 
         except Exception as e:
             print(f"Error in check_pause_timeout: {str(e)}")
@@ -550,6 +533,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         
     async def handle_pause_game(self, data):
         """Handle game pause request"""
+        print("Handling pause request    ..... hahahhahahha")
         if not self.game_state.game_over:
             # Check if player has pauses remaining
             pauses_remaining = (self.game_state.player1_pauses_remaining 
@@ -567,6 +551,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 else:
                     self.game_state.player2_pauses_remaining -= 1
                 
+                print(f"Sending pause update. P1 remaining: {self.game_state.player1_pauses_remaining}, P2 remaining: {self.game_state.player2_pauses_remaining}")
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
@@ -578,6 +563,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                         }
                     }
                 )
+                print("Pause update sent successfully xoxoxoxox")
                 
                 # Start pause timeout checker
                 asyncio.create_task(self.check_pause_timeout())
@@ -722,7 +708,8 @@ class GameConsumer(AsyncWebsocketConsumer):
         """Handle game paused event"""
         await self.send(text_data=json.dumps({
             'type': 'game_paused',
-            'player': event['player']
+            'player': event['player'],
+            'pauses_remaining': event['pauses_remaining']
         }))
 
     async def game_resumed(self, event):
@@ -732,11 +719,20 @@ class GameConsumer(AsyncWebsocketConsumer):
             'player': event['player']
         }))
 
+    
+    async def pause_timeout_warning(self, event):
+        """Handle pause timeout warning event"""
+        await self.send(text_data=json.dumps({
+            'type': 'pause_timeout_warning',
+            'seconds_remaining': event['seconds_remaining']
+        }))
+
     async def pause_timeout(self, event):
         """Handle pause timeout event"""
         await self.send(text_data=json.dumps({
             'type': 'pause_timeout',
-            'player': event['player']
+            'player': event['player'],
+            # 'winner': event['winner']
         }))
     
     async def game_started(self, event):
