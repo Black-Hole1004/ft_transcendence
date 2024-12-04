@@ -10,6 +10,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
 import { useAlert } from '../../components/AlertContext'
 import ConfirmationModal from '../../components/Settings/ConfirmationModal'
+import { useWebSocket } from '../../context/WebSocketStatusContext'
 
 function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
@@ -183,6 +184,7 @@ const Settings = () => {
 			})
 			.then((response) => {
 				if (response.status === 200) {
+					console.log('response ----->', response.data)
 					setUser(response.data)
 					setSelectedFile(null)
 					setPreview(null)
@@ -267,6 +269,17 @@ const Settings = () => {
 		setSelectedFile(null)
 		setProfile_picture(DEFAULT_PROFILE_PICTURE)
 		setRemoveImage(true)
+	}
+
+	const socket = useWebSocket();
+	if (socket) {
+		socket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			console.log('data =====>', data)
+			if (data.message === 'online' || data.message === 'offline') {
+				get_all_users();
+			}
+		}
 	}
 
 	return (

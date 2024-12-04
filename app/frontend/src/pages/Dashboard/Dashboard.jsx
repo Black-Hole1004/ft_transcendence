@@ -13,10 +13,6 @@ const Dashboard = () => {
 	useEffect(() => {
 		setLevel((xp * 100) / 10000)
 	}, [level])
-
-	// useEffect(() => {
-	// 	window.location.reload()
-	// }, [])
 	
 
 	return (

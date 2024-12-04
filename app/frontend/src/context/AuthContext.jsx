@@ -10,7 +10,7 @@ const API_REGISTER = import.meta.env.VITE_API_REGISTER
 const VITE_API_REFRESH = import.meta.env.VITE_API_REFRESH
 const VITE_API_LOGOUT = import.meta.env.VITE_API_LOGOUT
 const USER_API = import.meta.env.VITE_USER_API;
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL;
 export const AuthProvider = ({ children }) => {
 
     
@@ -114,15 +114,6 @@ export const AuthProvider = ({ children }) => {
 		triggerAlert(type, message)
 	}
 
-    const refreshDashboardData = async () => {
-        // Simulate a data refresh operation (like an API call)
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                console.log('Dashboard data refreshed!');
-                resolve();
-            }, 1000); // Simulate a 1-second refresh time
-        });
-    };
 
     const login = async () => {
         try {
@@ -143,7 +134,7 @@ export const AuthProvider = ({ children }) => {
                 setUser(jwtDecode(data.access_token))
                 Cookies.set('access_token', JSON.stringify(data.access_token))
                 Cookies.set('refresh_token', JSON.stringify(data.refresh_token))
-                // window.location.reload();
+                window.location.href = FRONTEND_URL + 'dashboard'
             }
             else {
                 console.log('Login failed', data)
