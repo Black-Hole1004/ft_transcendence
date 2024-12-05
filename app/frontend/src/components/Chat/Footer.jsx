@@ -2,7 +2,7 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { useEffect, useState, useRef } from 'react'
 
-const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationKey }) => {
+const Footer = ({ sendConversationMessage, messageInputRef, handleMessageKeyPress, conversationKey }) => {
 	const [width, setWidth] = useState(0)
 	const [showEmoji, setShowEmoji] = useState(false)
 	const emojiPickerRef = useRef(null)
@@ -38,11 +38,11 @@ const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationK
 			arr.push('0x' + element)
 		})
 		let emoji = String.fromCodePoint(...arr)
-		currentMessage.current.value += emoji
+		messageInputRef.current.value += emoji
 	}
 
 	useEffect(() => {
-		currentMessage.current.focus()
+		messageInputRef.current.focus()
 	}, [conversationKey])
 
 	const toggleEmojiPicker = () => {
@@ -68,8 +68,8 @@ const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationK
 						maxLength={1000}
 						name='chat-input'
 						autoComplete='off'
-						ref={currentMessage}
-						onKeyDown={handleKeyPress}
+						ref={messageInputRef}
+						onKeyDown={handleMessageKeyPress}
 						placeholder='Type your message here...'
 						className='myDiv w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
 					/>
@@ -83,9 +83,6 @@ const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationK
 						{showEmoji && (
 							<div ref={emojiPickerRef} className='absolute bottom-full right-0'>
 								<Picker
-									style={{
-										backgroundColor: '#fff',
-									}}
 									data={data}
 									theme={'dark'}
 									icons={'outline'}
@@ -97,7 +94,7 @@ const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationK
 							</div>
 						)}
 					</button>
-					<button type='submit' onClick={sendChatMessage}>
+					<button type='submit' onClick={sendConversationMessage}>
 						<img
 							src='/assets/images/icons/send-icon.svg'
 							className='select-none hover:brightness-125 hover:scale-110 hover:rotate-45 duration-200 '

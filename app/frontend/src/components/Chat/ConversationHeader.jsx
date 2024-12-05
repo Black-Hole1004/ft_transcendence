@@ -12,7 +12,7 @@ const Button = ({ onClick, children }) => {
 	)
 }
 
-const ConversationHeader = ({ isBlocked, setIsBlocked, recipientInfo, recipientProfileImage }) => {
+const ConversationHeader = ({ isUserBlocked, setIsUserBlocked, recipientInfo, recipientProfileImage }) => {
 	return (
 		<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-20'>
 			<div className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3'>
@@ -54,8 +54,8 @@ const ConversationHeader = ({ isBlocked, setIsBlocked, recipientInfo, recipientP
 				</div>
 			</div>
 			<div className='flex lp:gap-2 gap-1'>
-				<Button onClick={() => setIsBlocked(!isBlocked)}>
-					{isBlocked ? 'Unblock' : 'Block user'}
+				<Button onClick={() => setIsUserBlocked(!isUserBlocked)}>
+					{isUserBlocked ? 'Unblock' : 'Block user'}
 				</Button>
 				<Button>Invite to Play</Button>
 			</div>

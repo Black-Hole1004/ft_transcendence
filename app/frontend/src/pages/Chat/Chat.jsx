@@ -16,19 +16,19 @@ import useAuth from '../../context/AuthContext.jsx'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
-	const location = useLocation()
+	const currentLocation = useLocation()
 	const navigate = useNavigate()
 	const { getAuthHeaders } = useAuth()
 
 	const webSocketRef = useRef(null)
-	const currentMessage = useRef(null)
+	const messageInputRef = useRef(null)
 
-	const [isBlocked, setIsBlocked] = useState(false)
-	const [chatMessages, setChatMessages] = useState([])
-	const [currentUserId, setCurrentUserId] = useState(0)
 	const [recipientInfo, setRecipientInfo] = useState(null)
-	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
+	const [isUserBlocked, setIsUserBlocked] = useState(false)
 	const [conversationKey, setConversationKey] = useState(null)
+	const [conversationMessages, setConversationMessages] = useState([])
+	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0)
+	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
 
 	// const { triggerAlert } = useAlert()
@@ -41,13 +41,13 @@ const Chat = () => {
 		// Extract conversation key from URL
 		const uri = window.location.pathname.split('/').slice(2, 3)
 		if (uri.length === 1) {
-			setChatMessages([])
+			setConversationMessages([])
 			setConversationKey(uri[0])
 			setIsConversationLoaded(true)
 		} else {
 			setIsConversationLoaded(false)
 		}
-	}, [location.pathname])
+	}, [currentLocation.pathname])
 
 	useEffect(() => {
 		const onWebSocketOpen = () => {
@@ -71,7 +71,7 @@ const Chat = () => {
 		const onWebSocketMessage = (e) => {
 			console.log('WebSocket message received')
 			const data = JSON.parse(e.data)
-			setChatMessages((prevMessages) => [
+			setConversationMessages((prevMessages) => [
 				...prevMessages,
 				{
 					sender_id: data.sender,
@@ -122,7 +122,7 @@ const Chat = () => {
 					})
 					setRecipientInfo(response.data.user_infos[0])
 					const messages = response.data.messages ? response.data.messages : []
-					setChatMessages(messages)
+					setConversationMessages(messages)
 					setrecipientProfileImage(response.data.user_infos[0].profile_picture)
 				}
 			} catch (error) {
@@ -136,28 +136,28 @@ const Chat = () => {
 		}
 	}, [conversationKey, getAuthHeaders])
 
-	const handleKeyPress = (e) => {
+	const handleMessageKeyPress = (e) => {
 		if (e.key === 'Enter') {
-			sendChatMessage()
+			sendConversationMessage()
 		}
 	}
 
-	const sendChatMessage = () => {
+	const sendConversationMessage = () => {
 		let ws = webSocketRef.current
 
 		if (ws && ws.readyState === WebSocket.OPEN) {
-			const value = currentMessage.current.value.trim()
+			const value = messageInputRef.current.value.trim()
 
 			if (value !== '') {
 				ws.send(
 					JSON.stringify({
-						sender: currentUserId,
+						sender: currentLoggedInUserId,
 						message: value,
 						message_type: 'message',
 						conversation_key: conversationKey,
 					})
 				)
-				currentMessage.current.value = ''
+				messageInputRef.current.value = ''
 				// handleSubmit()
 			}
 		}
@@ -175,11 +175,11 @@ const Chat = () => {
 			>
 				{/* Chat History Component */}
 				<ChatHistory
-					currentUserId={currentUserId}
-					setCurrentUserId={setCurrentUserId}
-					chatMessages={chatMessages}
 					conversationKey={conversationKey}
 					setConversationKey={setConversationKey}
+					conversationMessages={conversationMessages}
+					currentLoggedInUserId={currentLoggedInUserId}
+					setCurrentLoggedInUserId={setCurrentLoggedInUserId}
 				/>
 
 				{/* Separator */}
@@ -187,39 +187,39 @@ const Chat = () => {
 
 				{/* Chat Area */}
 				<div
-					className='tb:flex-1 flex flex-col items-center max-tb:border border-primary
-									lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
+					className='tb:w-[66%] flex flex-col items-center max-tb:border border-primary
+								lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
 				>
 					{recipientInfo ? (
 						<>
 							{/* Chat Header */}
 							<ConversationHeader
-								isBlocked={isBlocked}
-								setIsBlocked={setIsBlocked}
 								recipientInfo={recipientInfo}
+								isUserBlocked={isUserBlocked}
+								setIsUserBlocked={setIsUserBlocked}
 								recipientProfileImage={recipientProfileImage}
 							/>
 
 							{/* Chat Messages */}
 							<Messages
-								isBlocked={isBlocked}
-								currentUserId={currentUserId}
-								chatMessages={chatMessages}
+								isUserBlocked={isUserBlocked}
+								conversationMessages={conversationMessages}
 								recipientProfileImage={recipientProfileImage}
+								currentLoggedInUserId={currentLoggedInUserId}
 							/>
 
 							{/* Chat Footer */}
-							{isBlocked ? (
+							{isUserBlocked ? (
 								<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
 									You have blocked this user. Unblock them to resume the
 									conversation.
 								</p>
 							) : (
 								<Footer
-									currentMessage={currentMessage}
-									handleKeyPress={handleKeyPress}
-									sendChatMessage={sendChatMessage}
+									messageInputRef={messageInputRef}
 									conversationKey={conversationKey}
+									handleMessageKeyPress={handleMessageKeyPress}
+									sendConversationMessage={sendConversationMessage}
 								/>
 							)}
 						</>
