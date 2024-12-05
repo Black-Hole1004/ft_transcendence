@@ -54,7 +54,7 @@ const Messages = ({
 	return (
 		<div
 			id='container'
-			className={`w-[98%] overflow-y-auto flex flex-col gap-1.5 ${isUserBlocked ? 'mb-8' : ''}`}
+			className={`flex-1 w-[98%] overflow-y-auto flex flex-col gap-1.5 ${isUserBlocked ? 'mb-8' : ''}`}
 		>
 			{Object.entries(groupedMessages).map(([date, conversationMessages]) => (
 				<div key={date} className='flex flex-col gap-3 w-full'>

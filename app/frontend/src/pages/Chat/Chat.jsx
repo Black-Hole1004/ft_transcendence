@@ -186,47 +186,44 @@ const Chat = () => {
 				<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
 
 				{/* Chat Area */}
-				<div
-					className='tb:w-[66%] flex flex-col items-center max-tb:border border-primary
+				{recipientInfo ? (
+					<div
+						className='tb:w-[65%] flex flex-col items-center max-tb:border border-primary
 								lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
-				>
-					{recipientInfo ? (
-						<>
-							{/* Chat Header */}
-							<ConversationHeader
-								recipientInfo={recipientInfo}
-								isUserBlocked={isUserBlocked}
-								setIsUserBlocked={setIsUserBlocked}
-								recipientProfileImage={recipientProfileImage}
-							/>
+					>
+						{/* Chat Header */}
+						<ConversationHeader
+							recipientInfo={recipientInfo}
+							isUserBlocked={isUserBlocked}
+							setIsUserBlocked={setIsUserBlocked}
+							recipientProfileImage={recipientProfileImage}
+						/>
 
-							{/* Chat Messages */}
-							<Messages
-								isUserBlocked={isUserBlocked}
-								conversationMessages={conversationMessages}
-								recipientProfileImage={recipientProfileImage}
-								currentLoggedInUserId={currentLoggedInUserId}
-							/>
+						{/* Chat Messages */}
+						<Messages
+							isUserBlocked={isUserBlocked}
+							conversationMessages={conversationMessages}
+							recipientProfileImage={recipientProfileImage}
+							currentLoggedInUserId={currentLoggedInUserId}
+						/>
 
-							{/* Chat Footer */}
-							{isUserBlocked ? (
-								<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
-									You have blocked this user. Unblock them to resume the
-									conversation.
-								</p>
-							) : (
-								<Footer
-									messageInputRef={messageInputRef}
-									conversationKey={conversationKey}
-									handleMessageKeyPress={handleMessageKeyPress}
-									sendConversationMessage={sendConversationMessage}
-								/>
-							)}
-						</>
-					) : (
-						<StartConversation />
-					)}
-				</div>
+						{/* Chat Footer */}
+						{isUserBlocked ? (
+							<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
+								You have blocked this user. Unblock them to resume the conversation.
+							</p>
+						) : (
+							<Footer
+								messageInputRef={messageInputRef}
+								conversationKey={conversationKey}
+								handleMessageKeyPress={handleMessageKeyPress}
+								sendConversationMessage={sendConversationMessage}
+							/>
+						)}
+					</div>
+				) : (
+					<StartConversation />
+				)}
 			</div>
 
 			{/* User Information Sidebar */}
