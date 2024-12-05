@@ -174,7 +174,9 @@ const Settings = () => {
 		return userProfileData
 	}
 	const update_user = async () => {
+		console.log('--- update_user ---')
 		const userProfileData = create_form_data(user, selectedFile)
+		console.log('userProfileData ----->', userProfileData)
 		axios
 			.put(USER_API, userProfileData, {
 				headers: {
@@ -271,16 +273,7 @@ const Settings = () => {
 		setRemoveImage(true)
 	}
 
-	const socket = useWebSocket();
-	if (socket) {
-		socket.onmessage = (event) => {
-			const data = JSON.parse(event.data);
-			console.log('data =====>', data)
-			if (data.message === 'online' || data.message === 'offline') {
-				get_all_users();
-			}
-		}
-	}
+	console.log('user ----->', user)
 
 	return (
 		<>

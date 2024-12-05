@@ -69,7 +69,7 @@ function NotificationDropdown() {
         }
     };
 	
-    console.log('Notifications:', notifications);
+    // console.log('Notifications:', notifications);
 
     return (
         <>

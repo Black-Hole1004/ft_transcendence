@@ -59,11 +59,11 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         if hasattr(self, 'user') and self.user:
             try:
                 # Call the function to set the user offline
-                await self.set_user_offline()
+                # await self.set_user_offline()
 
                 # Notify friends that the user is offline
-                await self.logout_notify_friends()
-
+                # await self.logout_notify_friends()
+                print('User is offline')
             except Exception as e:
                 print(f"Error setting user offline: {e}")
         else:
@@ -76,14 +76,9 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             )
 
     async def logout_notify_friends(self):
-        print('User attribute exists:', hasattr(self, 'user'))
         if hasattr(self, 'user'):
-            print('Current user:', self.user)
-            print('Current user ID:', self.user.id)
             friends = await self.get_user_friends(self.user)
-            print('friends =>', friends)
             for friend_id in friends:
-                print('friend_id =>', friend_id)
                 await self.channel_layer.group_send(
                     f'user_{friend_id}',
                     {
@@ -93,14 +88,9 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                 )
 
     async def login_notify_friends(self):
-        print('User attribute exists:', hasattr(self, 'user'))
         if hasattr(self, 'user'):
-            print('Current user:', self.user)
-            print('Current user ID:', self.user.id)
             friends = await self.get_user_friends(self.user)
-            print('friends =>', friends)
             for friend_id in friends:
-                print('friend_id =>', friend_id)
                 await self.channel_layer.group_send(
                     f'user_{friend_id}',
                     {
@@ -110,7 +100,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                 )
     
     async def set_user_online(self):
-        print('----- set_user_online -----')
+        # print('----- set_user_online -----')
         """
         Set the user's status to 'online' in the database
         """
@@ -119,7 +109,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             await database_sync_to_async(self.user.save)()
             await database_sync_to_async(setattr)(self.user, 'status', 'online')
             await database_sync_to_async(self.user.save)()
-            print(f"User {self.user.username} set to {self.user.status}")
+            # print(f"User {self.user.username} set to {self.user.status}")
         except Exception as e:
             print(f"Error setting user online: {e}")
 
@@ -132,7 +122,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             await database_sync_to_async(self.user.save)()
             await database_sync_to_async(setattr)(self.user, 'status', 'offline')
             await database_sync_to_async(self.user.save)()
-            print(f"User {self.user.username} set to {self.user.status}")
+            # print(f"User {self.user.username} set to {self.user.status}")
         except Exception as e:
             print(f"Error setting user offline: {e}")
     
@@ -189,7 +179,6 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
         friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
         friends = list(set(friends_from + friends_to))
-        print('fetched friends =>', friends)
         return friends
     
     async def friend_request_accepted(self, event):
@@ -235,10 +224,10 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
         print('----- disconnect from AcceptFriendRequestConsumer -----')
 
         # there is an error here with oauth intranet
-        await self.set_user_offline()
+        # await self.set_user_offline()
 
         # Notify friends that the user is offline
-        await self.logout_notify_friends()
+        # await self.logout_notify_friends()
 
         # await sync_to_async(user_logged_out.send)(
         #         sender=user.__class__,
@@ -268,7 +257,7 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
         pass
 
     async def set_user_online(self):
-        print('----- set_user_online -----')
+        # print('----- set_user_online -----')
         """
         Set the user's status to 'online' in the database
         """
@@ -277,7 +266,7 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
             await database_sync_to_async(self.user.save)()
             await database_sync_to_async(setattr)(self.user, 'status', 'online')
             await database_sync_to_async(self.user.save)()
-            print(f"User {self.user.username} set to {self.user.status}")
+            # print(f"User {self.user.username} set to {self.user.status}")
         except Exception as e:
             print(f"Error setting user online: {e}")
 
@@ -291,19 +280,14 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
             await database_sync_to_async(self.user.save)()
             await database_sync_to_async(setattr)(self.user, 'status', 'offline')
             await database_sync_to_async(self.user.save)()
-            print(f"User {self.user.username} set to {self.user.status}")
+            # print(f"User {self.user.username} set to {self.user.status}")
         except Exception as e:
             print(f"Error setting user offline: {e}")
 
     async def logout_notify_friends(self):
-        print('User attribute exists:', hasattr(self, 'user'))
         if hasattr(self, 'user'):
-            print('Current user:', self.user)
-            print('Current user ID:', self.user.id)
             friends = await self.get_user_friends(self.user)
-            print('friends =>', friends)
             for friend_id in friends:
-                print('friend_id =>', friend_id)
                 await self.channel_layer.group_send(
                     f'user_{friend_id}',
                     {
@@ -313,14 +297,9 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
                 )
     
     async def login_notify_friends(self):
-        print('User attribute exists:', hasattr(self, 'user'))
         if hasattr(self, 'user'):
-            print('Current user:', self.user)
-            print('Current user ID:', self.user.id)
             friends = await self.get_user_friends(self.user)
-            print('friends =>', friends)
             for friend_id in friends:
-                print('friend_id =>', friend_id)
                 await self.channel_layer.group_send(
                     f'user_{friend_id}',
                     {
@@ -334,7 +313,6 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
         friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
         friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
         friends = list(set(friends_from + friends_to))
-        print('fetched friends =>', friends)
         return friends
 
 #------------------------------------------------------------------------------------
@@ -377,7 +355,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
 
     async def set_user_online(self):
-        print('----- set_user_online -----')
         """
         Set the user's status to 'online' in the database
         """
@@ -386,12 +363,11 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             await database_sync_to_async(self.user.save)()
             await database_sync_to_async(setattr)(self.user, 'status', 'online')
             await database_sync_to_async(self.user.save)()
-            print(f"User {self.user.username} set to {self.user.status}")
+            # print(f"User {self.user.username} set to {self.user.status}")
         except Exception as e:
             print(f"Error setting user online: {e}")
 
     async def set_user_offline(self):
-        print('----- set_user_offline -----')
         """
         Set the user's status to 'offline' in the database
         """
@@ -400,7 +376,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             await database_sync_to_async(self.user.save)()
             await database_sync_to_async(setattr)(self.user, 'status', 'offline')
             await database_sync_to_async(self.user.save)()
-            print(f"User {self.user.username} set to {self.user.status}")
+            # print(f"User {self.user.username} set to {self.user.status}")
         except Exception as e:
             print(f"Error setting user offline: {e}")
     
@@ -434,14 +410,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             )
     
     async def logout_notify_friends(self):
-        print('User attribute exists:', hasattr(self, 'user'))
         if hasattr(self, 'user'):
-            print('Current user:', self.user)
-            print('Current user ID:', self.user.id)
             friends = await self.get_user_friends(self.user)
-            print('friends =>', friends)
             for friend_id in friends:
-                print('friend_id =>', friend_id)
                 await self.channel_layer.group_send(
                     f'user_{friend_id}',
                     {
@@ -451,14 +422,9 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 )
     
     async def login_notify_friends(self):
-        print('User attribute exists:', hasattr(self, 'user'))
         if hasattr(self, 'user'):
-            print('Current user:', self.user)
-            print('Current user ID:', self.user.id)
             friends = await self.get_user_friends(self.user)
-            print('friends =>', friends)
             for friend_id in friends:
-                print('friend_id =>', friend_id)
                 await self.channel_layer.group_send(
                     f'user_{friend_id}',
                     {
@@ -486,7 +452,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
         friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
         friends = list(set(friends_from + friends_to))
-        print('fetched friends =>', friends)
         return friends
 
 
