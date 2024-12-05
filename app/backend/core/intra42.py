@@ -13,6 +13,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
+import os
 
 
 class Intra42OAuth2(BaseOAuth2):
@@ -30,25 +31,6 @@ class Intra42OAuth2(BaseOAuth2):
         ('image_url', 'profile_image_url'),
     ]
 
-    # def start(self):
-
-    #     response = HttpResponse()
-
-    #     response['Access-Control-Allow-Origin'] = '*'
-
-    #     response['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-
-    #     response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-
-
-    #     # Redirect the user to the authorization page
-
-    #     response['Location'] = self.AUTHORIZATION_URL
-
-    #     response.status_code = 302
-
-
-    #     return response
     def get_user_details(self, response):
         """Return user details from Intra42 account"""
         return {
@@ -57,8 +39,6 @@ class Intra42OAuth2(BaseOAuth2):
             'first_name': response.get('first_name'),
             'last_name': response.get('last_name'),
             'profile_image_url': response.get('image').get('link'),
-            # add by me ahaloui
-            # 'mobile_number': response.get('phone', ''),
         }
 
     def user_data(self, access_token, *args, **kwargs):
@@ -66,14 +46,10 @@ class Intra42OAuth2(BaseOAuth2):
         headers = {
             'Authorization': f'Bearer {access_token}'
         }
-
         response = requests.get(self.USER_DATA_URL, headers=headers)
-
-        # Check if the response was successful
         if response.status_code == 200:
-            return response.json()  # Parse JSON response and return user data
+            return response.json()
         else:
-            # Handle errors by logging and raising exceptions as needed
             response.raise_for_status()
 
     def request_access_token(self, code):
@@ -83,14 +59,12 @@ class Intra42OAuth2(BaseOAuth2):
         """
         data = {
             'grant_type': 'authorization_code',
-            'client_id': self.setting('SOCIAL_AUTH_INTRA42_KEY'),  # Replace with your client ID from settings
-            'client_secret': self.setting('SOCIAL_AUTH_INTRA42_SECRET'),  # Replace with your client secret from settings
+            'client_id': self.setting('SOCIAL_AUTH_INTRA42_KEY'),
+            'client_secret': self.setting('SOCIAL_AUTH_INTRA42_SECRET'),
             'code': code,
             'redirect_uri': self.get_redirect_uri(),
         }
         response = requests.post(self.ACCESS_TOKEN_URL, data=data)
-
-        # Handle the response and return the token data
         if response.status_code == 200:
             return response.json()
         else:
@@ -105,25 +79,15 @@ class Intra42OAuth2(BaseOAuth2):
         request = kwargs.get('request')
         if not request:
             raise Exception("Request object not found.")
-
-        # Get the authorization code from the request
         code = self.data.get('code')
         if not code:
             raise Exception("Authorization code not found.")
 
-        # Exchange the code for an access token
         token_data = self.request_access_token(code)
-        print('token_data--->: ' + token_data['access_token'])
-
-        # Now fetch the user's profile data
         access_token = token_data['access_token']
         user_data = self.user_data(access_token)
 
-        # Extract necessary user details from user_data
         user_details = self.get_user_details(user_data)
-
-        # Get or create the user in the database
-        # print(user_details)
         user, created = User.objects.get_or_create(
         email=user_details['email'],
         defaults={
@@ -134,25 +98,30 @@ class Intra42OAuth2(BaseOAuth2):
         )
 
         if user:
-            image_response = None
             profile_image_url = user_details.get('profile_image_url')
-            if profile_image_url and (created or user.profile_picture.name == 'profile_pictures/avatar.jpg'):
-                image_response = requests.get(profile_image_url)
-            if image_response and image_response.status_code == 200:
-                user.profile_picture.save(f"{user.username}_profile.jpg", ContentFile(image_response.content), save=True)
-            
+            if profile_image_url and not user.has_custom_profile_picture:
+                try:
+                    image_response = requests.get(profile_image_url)
+                    if image_response.status_code == 200:
+                        if user.profile_picture and 'avatar.jpg' not in user.profile_picture.name:
+                            if os.path.isfile(user.profile_picture.path):
+                                os.remove(user.profile_picture.path)
+                        
+                        # Save new profile picture
+                        user.profile_picture.save(
+                            f"{user.username}_profile.jpg",
+                            ContentFile(image_response.content),
+                            save=True
+                        )
+                except Exception as e:
+                    print(f'Error updating profile picture: {e}')
 
-            # add by me ahaloui
             user.is_logged_with_oauth = True
             user.status = 'online'
             user.save()
             friends = async_to_sync(self.get_user_friends)(user)
             notify_friends(user, friends)
-            print('user.is_logged_with_oauth: ' + str(user.is_logged_with_oauth))
-            # auth_login(request, user, backend='Intra42OAuth2')
             login(request, user, backend='Intra42OAuth2')
-
-            # Generate JWT tokens
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
             refresh_token = str(refresh)
@@ -165,12 +134,12 @@ class Intra42OAuth2(BaseOAuth2):
 
     def get_redirect_uri(self, state=None):
         """Returns the redirect URI to be passed in the token exchange request"""
-        return self.setting('REDIRECT_URI')  # Ensure this is set in your settings
+        return self.setting('REDIRECT_URI') 
 
     @database_sync_to_async
     def get_user_friends(self, user):
         friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
         friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
         friends = list(set(friends_from + friends_to))
-        print('fetched friends =>', friends)
         return friends
+    

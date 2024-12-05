@@ -51,6 +51,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(default='', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/avatar.jpg')
     is_logged_with_oauth = models.BooleanField(default=False)
+
+    has_custom_username = models.BooleanField(default=False)
+    has_custom_profile_picture = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']

@@ -295,7 +295,10 @@ class UserProfileView(APIView):
             user_data = request.data.copy()
             profile_picture = request.FILES.get('profile_picture', None)
 
-            print(f"before User data: {user_data}")
+            if 'username' in user_data:
+                user.has_custom_username = True
+            if 'profile_picture' in request.FILES:
+                user.has_custom_profile_picture = True
             # Handle profile picture removal if requested
             if request.data.get('remove_profile_picture') == 'true':
                 remove_profile_picture(user)
