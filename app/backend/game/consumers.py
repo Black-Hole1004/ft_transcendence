@@ -131,7 +131,7 @@ class GameState:
         
         self.player2_paddle = {
             'x': canvas_width - 30,
-            'y': canvas_height / 2 - self.paddle_height / 2,
+            'y': 0,
             'height': self.paddle_height,
             'width': self.paddle_width,
             'score': 0,
@@ -533,7 +533,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         
     async def handle_pause_game(self, data):
         """Handle game pause request"""
-        print("Handling pause request    ..... hahahhahahha")
+        # print("Handling pause request    ..... hahahhahahha")
         if not self.game_state.game_over:
             # Check if player has pauses remaining
             pauses_remaining = (self.game_state.player1_pauses_remaining 
@@ -661,9 +661,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def handle_game_over(self):
         """Handle game over state"""
-        print("\n=== Game Over ===")
-        print(f"Time Remaining: {round(self.game_state.time_remaining)}s")
-        print(f"Final Score - P1: {self.game_state.player1_paddle['score']}, P2: {self.game_state.player2_paddle['score']}")
+        # print("\n=== Game Over ===")
+        # print(f"Time Remaining: {round(self.game_state.time_remaining)}s")
+        # print(f"Final Score - P1: {self.game_state.player1_paddle['score']}, P2: {self.game_state.player2_paddle['score']}")
         
         reason = 'time_up' if self.game_state.time_remaining <= 0 else 'score_limit'
         

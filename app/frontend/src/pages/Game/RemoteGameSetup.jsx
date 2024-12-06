@@ -1,12 +1,11 @@
 // frontend/src/pages/Game/RemoteGameSetup.jsx
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
 const RemoteGameSetup = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { backgroundId } = location.state || { backgroundId: 1 };
-    const [isLoading, setIsLoading] = useState(false);
     
     const [settings, setSettings] = useState({
         paddleHeight: 110,

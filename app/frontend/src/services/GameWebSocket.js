@@ -96,6 +96,7 @@ class GameWebSocket {
                 state_update: this.handleStateUpdate.bind(this),
                 paddles_update: this.handlePaddlesUpdate.bind(this),
                 ball_update: this.handleBallUpdate.bind(this),
+                score_update: this.handleScoreUpdate.bind(this),
                 game_ended: this.handleGameEnded.bind(this),
                 game_started: this.handleGameStarted.bind(this),
                 game_paused: this.handleGamePaused.bind(this),
@@ -138,6 +139,11 @@ class GameWebSocket {
     handleBallUpdate(data) {
         console.log('Handling ball update:', data);
         this.callbacks.ball_update?.(data);
+    }
+
+    handleScoreUpdate(data) {
+        console.log('Handling score update:', data);
+        this.callbacks.score_update?.(data);
     }
 
     handleGameEnded(data) {
