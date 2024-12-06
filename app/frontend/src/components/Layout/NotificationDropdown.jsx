@@ -2,12 +2,13 @@ import Button from '../Home/Buttons/Button'
 import { useEffect, useState } from 'react'
 import React from 'react'
 import  useAuth  from '../../context/AuthContext'
-import { useWebSocket } from '../../context/WebSocketFriendRContext'
 import { useAlert } from '../AlertContext'
-function NotificationDropdown() {
 
 
-	const { notifications, setNotifications } = useWebSocket();
+const BASE_URL = import.meta.env.VITE_BASE_URL
+function NotificationDropdown({ notifications , setNotifications }) {
+
+
 	const { getAuthHeaders } = useAuth();
 	const { triggerAlert } = useAlert();
 
@@ -68,14 +69,34 @@ function NotificationDropdown() {
 			triggerAlert('error', 'Error canceling friend request')
         }
     };
-	
-    // console.log('Notifications:', notifications);
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/api/friend_ship_request/`, {
+                    headers: getAuthHeaders(),
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    const new_notifications = data.map((notification) => ({...notification, flag: 'true'}));
+                    setNotifications(new_notifications);
+                } else {
+                    console.error('Failed to fetch notifications');
+                }
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+
+        fetchNotifications();
+    }, []);
+
 
     return (
         <>
             <h1 className='font-heavy notification-header'>Notifications</h1>
             <div className='flex flex-col tb:gap-3 gap-2 overflow-auto lp:mx-3 mx-2 mb-2 font-medium'>
-                {notifications.length > 0 ? (
+                {notifications?.length > 0 ? (
                     notifications.map((notification, index) => (
                         <React.Fragment key={index}>
                             <div className='flex items-center justify-between'>

@@ -40,10 +40,11 @@ def handle_password_change(user, user_data):
             user.save()
         else:
             return Response(
-                {'error': 'Please provide the new password and confirm password. The new password and confirm password must match and be different from the current password.'},
+                {'error': 'The new password and confirm password must match and be different from the current password.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
     elif any([password, new_password, confirm_password]):
+        print('User is not logged with OAuth')
         if not user.is_logged_with_oauth:
             if not all ([password, new_password, confirm_password]):
                 return Response(
@@ -92,6 +93,6 @@ def notify_friends(user, friends):
             f"user_{friend_id}",
             {
                 "type": "notification_message",
-                "message": user.status,  # Replace with the actual status field or logic
+                "message": user.status,
             }
         )

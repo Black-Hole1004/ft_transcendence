@@ -30,8 +30,7 @@ const ComponentPath = () => {
 			<Routes>
 				{/* Redirect to /Dashboard if authenticated on the home path */}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
-				<Route path="/2fa" element={<TwoFactorAuth />} />
-
+				
 				{/* Layout wrapping all private routes */}
 				<Route element={<Layout />}>
 					<Route path="/Game" element={<PrivateRoute><Game /></PrivateRoute>} />
@@ -47,10 +46,10 @@ const ComponentPath = () => {
 					<Route path="/searching" element={<PrivateRoute><SearchingAnimation /></PrivateRoute>} />
 					{/* <Route path='/remote-game' element={<RemoteGame />} /> */}
 					{/* <Route path='/remote-game-setup' element={<RemoteGameSetup />} /> */}
+					<Route path="/2fa" element={<PrivateRoute><TwoFactorAuth /></PrivateRoute>} />
+					<Route path="*" element={<PrivateRoute><NotFound /></PrivateRoute>} />
 				</Route>
-
-				{/* Catch-all route */}
-				<Route path="*" element={<NotFound />} />
+				
 			</Routes>
 
 	);

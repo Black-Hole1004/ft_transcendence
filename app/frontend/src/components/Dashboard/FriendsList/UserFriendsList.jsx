@@ -2,7 +2,7 @@ import Button from '../../Home/Buttons/Button'
 import useAuth from '../../../context/AuthContext'
 import { useAlert } from '../../AlertContext'
 import Cookies from 'js-cookie'
-import { useState, useEffect } from 'react'
+import { useSocket } from '../../Layout/Layout'
 
 
 const SEND_FRIEND_REQUEST = 'http://127.0.0.1:8000/api/send_friend_request/'
@@ -10,9 +10,10 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 function UserFriendsList({ user, profile_picture }) {
 	const { getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
+	const { socket_notification } = useSocket()
 
 
-
+	
 
 	const handleSubmit = (type, message) => {
 		triggerAlert(type, message)
@@ -37,19 +38,15 @@ function UserFriendsList({ user, profile_picture }) {
 				const friend_request_id = data.id;
 				const receiver_id = data.receiver_id;
 	
-				// Create the WebSocket connection
-				const access_token = Cookies.get('access_token');
-				const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/?access_token=' + access_token);
-				socket.onopen = () => {
-					// Send the friend request notification via WebSocket
-					socket.send(JSON.stringify({
-						sender_id: sender_id,
-						receiver_id: receiver_id,
-						message: `User ${from_user} sent you a friend request`,
-						id: friend_request_id,
-						from_user: from_user,
-						profile_picture: { profile_picture },
-					}));
+				if (socket_notification?.readyState === WebSocket.OPEN) {
+                    socket_notification.send(JSON.stringify({
+                        sender_id: sender_id,
+                        receiver_id: receiver_id,
+                        message: `User ${from_user} sent you a friend request`,
+                        id: friend_request_id,
+                        from_user: from_user,
+                        profile_picture: { profile_picture },
+                    }));
 					handleSubmit('success', 'Friend request sent successfully');
 				};
 			} else {

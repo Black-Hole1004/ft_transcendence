@@ -10,7 +10,6 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
 import { useAlert } from '../../components/AlertContext'
 import ConfirmationModal from '../../components/Settings/ConfirmationModal'
-import { useWebSocket } from '../../context/WebSocketStatusContext'
 
 function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
@@ -197,9 +196,9 @@ const Settings = () => {
 			})
 			.catch((error) => {
 				if (error.response) {
-					// Server responded with a status other than 2xx
+					console.log('Error:', error.response.data)
 					const errorMessage =
-						error.response.data?.message || 'Failed to update user data'
+						error.response.data?.error || 'Failed to update user data'
 					triggerAlert('error', errorMessage)
 					console.error('Error:', errorMessage)
 				} else if (error.request) {

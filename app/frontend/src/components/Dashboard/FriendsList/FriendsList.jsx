@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 import UserFriendsList from './UserFriendsList'
 import useAuth from '../../../context/AuthContext'
-import Cookies from 'js-cookie'
-import { useWebSocket } from '../../../context/WebSocketStatusContext'
+import { useSocket } from '../../Layout/Layout'
+import { use } from 'react'
 
 
 function FriendsList() {
 	const [users, setUsers] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
 	const { getAuthHeaders, profile_picture } = useAuth()
-	
+
+	const { socket_notify, socket_friends } = useSocket();
+
 	const get_all_users = async () => {
 		try {
 			const response = await fetch('http://127.0.0.1:8000/api/users/', {
@@ -29,39 +31,44 @@ function FriendsList() {
 
 	const filterUsers = users.filter((user) => {
 		return user.username.toLowerCase().startsWith(searchQuery.toLowerCase())
-	}
-	)
+	})
 
 	// this useEffect listens for friend request acceptances
 	useEffect(() => {
-		const access_token = Cookies.get('access_token');
-		const socket = new WebSocket(`ws://127.0.0.1:8000/ws/update_user_status/?access_token=${access_token}`);
-
-		socket.onmessage = (event) => {
+		if (!socket_friends)
+			return;
+		const original_onmessage = socket_friends.onmessage;
+		socket_friends.onmessage = (event) => {
 			const data = JSON.parse(event.data);
-			if (data.type === 'friend_request_accepted' ) { 
+			if (data.type === 'friend_request_accepted' ) {
 				get_all_users();
 			}
-		};
+			if (original_onmessage) {
+				original_onmessage(event);
+			}
+		}
+		return () => {
+			socket_friends.onmessage = original_onmessage;
+		}
+	}, [socket_friends]);
 
-		socket.onerror = (error) => {
-			console.error('WebSocket error:', error);
-		};
-		return () => socket.close(); 
-	}, []);
-
-	const socket = useWebSocket();
-	if (socket) {
-		socket.onmessage = (event) => {
+	useEffect(() => {
+		if (!socket_notify)
+			return;
+		const original_onmessage = socket_notify.onmessage;
+		socket_notify.onmessage = (event) => {
 			const data = JSON.parse(event.data);
-			console.log('data =====>', data)
 			if (data.message === 'online' || data.message === 'offline') {
 				get_all_users();
 			}
+			if (original_onmessage) {
+				original_onmessage(event);
+			}
 		}
-	}
-
-	console.log('users =====>', users)
+		return () => {
+			socket_notify.onmessage = original_onmessage;
+		}
+	}, [socket_notify])
 
 	return (
 		<div

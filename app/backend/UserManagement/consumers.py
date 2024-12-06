@@ -21,31 +21,21 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         print('----- connect from FriendRequestConsumer -----')
         query_string = self.scope['query_string'].decode()
-        # print('query_string ===================>', query_string)
         query_params = parse_qs(query_string)
         access_token = query_params.get('access_token', [None])[0]
         if access_token:
             access_token = access_token.strip('"')
-        # print('access_token ===================>', access_token)
         if not access_token:
             await self.close()
             return
         try:
             decoded_data = jwt_decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
             self.user = await database_sync_to_async(User.objects.get)(id=decoded_data['user_id'])
-            # print('self.user ==================>', self.user)
         except Exception as e:
             await self.close()
             return
         
         if self.user.is_authenticated:
-
-            # Set the user's online status
-            await self.set_user_online()
-
-            # Notify friends that the user is online
-            await self.login_notify_friends()
-
             self.sender_room_group_name = f'friend_request_{self.user.id}'
             await self.channel_layer.group_add(
                 self.sender_room_group_name,
@@ -56,75 +46,12 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         print('----- disconnect from FriendRequestConsumer -----')
 
-        if hasattr(self, 'user') and self.user:
-            try:
-                # Call the function to set the user offline
-                # await self.set_user_offline()
-
-                # Notify friends that the user is offline
-                # await self.logout_notify_friends()
-                print('User is offline')
-            except Exception as e:
-                print(f"Error setting user offline: {e}")
-        else:
-            print("No user found during disconnect")
-
         if hasattr(self, 'sender_room_group_name'):
             await self.channel_layer.group_discard(
                 self.sender_room_group_name,
                 self.channel_name
             )
 
-    async def logout_notify_friends(self):
-        if hasattr(self, 'user'):
-            friends = await self.get_user_friends(self.user)
-            for friend_id in friends:
-                await self.channel_layer.group_send(
-                    f'user_{friend_id}',
-                    {
-                        "type": "notification_message",
-                        "message": 'offline',
-                    }
-                )
-
-    async def login_notify_friends(self):
-        if hasattr(self, 'user'):
-            friends = await self.get_user_friends(self.user)
-            for friend_id in friends:
-                await self.channel_layer.group_send(
-                    f'user_{friend_id}',
-                    {
-                        "type": "notification_message",
-                        "message": 'online',
-                    }
-                )
-    
-    async def set_user_online(self):
-        # print('----- set_user_online -----')
-        """
-        Set the user's status to 'online' in the database
-        """
-        try:
-            # Use database_sync_to_async to perform database operations
-            await database_sync_to_async(self.user.save)()
-            await database_sync_to_async(setattr)(self.user, 'status', 'online')
-            await database_sync_to_async(self.user.save)()
-            # print(f"User {self.user.username} set to {self.user.status}")
-        except Exception as e:
-            print(f"Error setting user online: {e}")
-
-    async def set_user_offline(self):
-        """
-        Set the user's status to 'offline' in the database
-        """
-        try:
-            # Use database_sync_to_async to perform database operations
-            await database_sync_to_async(self.user.save)()
-            await database_sync_to_async(setattr)(self.user, 'status', 'offline')
-            await database_sync_to_async(self.user.save)()
-            # print(f"User {self.user.username} set to {self.user.status}")
-        except Exception as e:
-            print(f"Error setting user offline: {e}")
     
     async def receive(self, text_data):
         print('----- receive -----')
@@ -161,7 +88,6 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         profile_picture = event['profile_picture']
         sender_id = event['sender_id']
         receiver_id = event['receiver_id']
-
 
         # Send notification to the receiver's WebSocket connection
         if self.user.id == receiver_id:
@@ -207,10 +133,6 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
             return
         
         if self.user.is_authenticated:
-            # Set the user's online status
-            await self.set_user_online()
-            # Notify friends that the user is online
-            await self.login_notify_friends()
 
             self.group_name = f'user_{self.user.id}'
             await self.channel_layer.group_add(
@@ -223,17 +145,6 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         print('----- disconnect from AcceptFriendRequestConsumer -----')
 
-        # there is an error here with oauth intranet
-        # await self.set_user_offline()
-
-        # Notify friends that the user is offline
-        # await self.logout_notify_friends()
-
-        # await sync_to_async(user_logged_out.send)(
-        #         sender=user.__class__,
-        #         request=None,  # Pass a mock request if needed
-        #         user=user
-        #     )
         if hasattr(self, 'group_name'):
             await self.channel_layer.group_discard(
                 self.group_name,
@@ -256,57 +167,6 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
         }))
         pass
 
-    async def set_user_online(self):
-        # print('----- set_user_online -----')
-        """
-        Set the user's status to 'online' in the database
-        """
-        try:
-            # Use database_sync_to_async to perform database operations
-            await database_sync_to_async(self.user.save)()
-            await database_sync_to_async(setattr)(self.user, 'status', 'online')
-            await database_sync_to_async(self.user.save)()
-            # print(f"User {self.user.username} set to {self.user.status}")
-        except Exception as e:
-            print(f"Error setting user online: {e}")
-
-    async def set_user_offline(self):
-        print('----- set_user_offline -----')
-        """
-        Set the user's status to 'offline' in the database
-        """
-        try:
-            # Use database_sync_to_async to perform database operations
-            await database_sync_to_async(self.user.save)()
-            await database_sync_to_async(setattr)(self.user, 'status', 'offline')
-            await database_sync_to_async(self.user.save)()
-            # print(f"User {self.user.username} set to {self.user.status}")
-        except Exception as e:
-            print(f"Error setting user offline: {e}")
-
-    async def logout_notify_friends(self):
-        if hasattr(self, 'user'):
-            friends = await self.get_user_friends(self.user)
-            for friend_id in friends:
-                await self.channel_layer.group_send(
-                    f'user_{friend_id}',
-                    {
-                        "type": "notification_message",
-                        "message": 'offline',
-                    }
-                )
-    
-    async def login_notify_friends(self):
-        if hasattr(self, 'user'):
-            friends = await self.get_user_friends(self.user)
-            for friend_id in friends:
-                await self.channel_layer.group_send(
-                    f'user_{friend_id}',
-                    {
-                        "type": "notification_message",
-                        "message": 'online',
-                    }
-                )
     
     @database_sync_to_async
     def get_user_friends(self, user):
@@ -337,79 +197,36 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         
         if self.user.is_authenticated:
 
-            # Set the user's online status
-            await self.set_user_online()
-
-            # Notify friends that the user is online
-            await self.login_notify_friends()
+            await self.set_user_status('online')
+            await self.notify_friends('online')
             
-            # Use a consistent group name format
             self.group_name = f'user_{self.user.id}'
-
-            # Set user status to online
             await self.channel_layer.group_add(
                 self.group_name,
                 self.channel_name
             )
             await self.accept()
 
-
-    async def set_user_online(self):
-        """
-        Set the user's status to 'online' in the database
-        """
-        try:
-            # Use database_sync_to_async to perform database operations
-            await database_sync_to_async(self.user.save)()
-            await database_sync_to_async(setattr)(self.user, 'status', 'online')
-            await database_sync_to_async(self.user.save)()
-            # print(f"User {self.user.username} set to {self.user.status}")
-        except Exception as e:
-            print(f"Error setting user online: {e}")
-
-    async def set_user_offline(self):
-        """
-        Set the user's status to 'offline' in the database
-        """
-        try:
-            # Use database_sync_to_async to perform database operations
-            await database_sync_to_async(self.user.save)()
-            await database_sync_to_async(setattr)(self.user, 'status', 'offline')
-            await database_sync_to_async(self.user.save)()
-            # print(f"User {self.user.username} set to {self.user.status}")
-        except Exception as e:
-            print(f"Error setting user offline: {e}")
-    
     async def disconnect(self, close_code):
         print('----- disconnect from NotificationConsumer -----')
 
         if hasattr(self, 'user') and self.user:
             try:
-                # Call the function to set the user offline
-                await self.set_user_offline()
-
-                # Notify friends that the user is offline
-                await self.logout_notify_friends()
-
+                await self.set_user_status('offline')
+                await self.notify_friends('offline')
             except Exception as e:
                 print(f"Error setting user offline: {e}")
         else:
             print("No user found during disconnect")
 
-        # await sync_to_async(user_logged_out.send)(
-        #         sender=user.__class__,
-        #         request=None,
-        #         user=user
-        #     )
-
-        # Remove the user from the group
         if hasattr(self, 'group_name'):
             await self.channel_layer.group_discard(
                 self.group_name,
                 self.channel_name
             )
     
-    async def logout_notify_friends(self):
+    async def notify_friends(self, status):
+        """Notify friends about user's status change (online/offline)"""
         if hasattr(self, 'user'):
             friends = await self.get_user_friends(self.user)
             for friend_id in friends:
@@ -417,19 +234,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                     f'user_{friend_id}',
                     {
                         "type": "notification_message",
-                        "message": 'offline',
-                    }
-                )
-    
-    async def login_notify_friends(self):
-        if hasattr(self, 'user'):
-            friends = await self.get_user_friends(self.user)
-            for friend_id in friends:
-                await self.channel_layer.group_send(
-                    f'user_{friend_id}',
-                    {
-                        "type": "notification_message",
-                        "message": 'online',
+                        "message": status,
                     }
                 )
             
@@ -447,6 +252,15 @@ class NotificationConsumer(AsyncWebsocketConsumer):
     async def friend_request_accepted(self, event):
         pass
     
+    async def set_user_status(self, status):
+        try:
+            # Refresh user instance first
+            self.user = await database_sync_to_async(User.objects.get)(id=self.user.id)
+            await database_sync_to_async(setattr)(self.user, 'status', status)
+            await database_sync_to_async(self.user.save)()
+        except Exception as e:
+            print(f"Error setting user {status}: {e}")
+
     @database_sync_to_async
     def get_user_friends(self, user):
         friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))

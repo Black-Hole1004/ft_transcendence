@@ -134,7 +134,8 @@ export const AuthProvider = ({ children }) => {
                 setUser(jwtDecode(data.access_token))
                 Cookies.set('access_token', JSON.stringify(data.access_token))
                 Cookies.set('refresh_token', JSON.stringify(data.refresh_token))
-                window.location.href = FRONTEND_URL + 'dashboard'
+                // window.location.href = FRONTEND_URL + 'dashboard'
+                navigate('/dashboard')
             }
             else {
                 console.log('Login failed', data)

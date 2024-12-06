@@ -32,7 +32,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
         'last_name': None,
         'display_name': None,
         'bio': None,
-        'mobile_number': None
+        'mobile_number': None,
     }
 
     def auth_complete(self, *args, **kwargs):
@@ -80,7 +80,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
                 refresh_token = str(refresh)
-                
+                print(f'user.is_logged_with_oauth --------> {user.is_logged_with_oauth}')
                 redirect_url = (
                     f"http://localhost:5173/dashboard?"
                     f"access_token={access_token}&"
@@ -111,7 +111,8 @@ class CustomGoogleOAuth2(GoogleOAuth2):
             'given_name': 'first_name',
             'family_name': 'last_name',
             'picture': 'profile_picture',
-            'email': 'email'
+            'email': 'email',
+            'is_logged_with_oauth': 'is_logged_with_oauth',
         }
         
         for google_field, model_field in google_field_mapping.items():
@@ -133,6 +134,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 current_value = getattr(user, model_field, None)
                 if current_value:  # Don't update if user has set a value
                     continue
+            
             
             # Update the field if we haven't skipped it
             if model_field == 'profile_picture' and not user.has_custom_profile_picture:
