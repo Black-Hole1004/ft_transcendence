@@ -7,11 +7,12 @@ import { useSocket } from '../../Layout/Layout'
 
 const SEND_FRIEND_REQUEST = 'http://127.0.0.1:8000/api/send_friend_request/'
 const BASE_URL = import.meta.env.VITE_BASE_URL
-function UserFriendsList({ user, profile_picture }) {
+
+function UserFriendsList({ user_friend, user_profile_picture }) {
+	
 	const { getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
 	const { socket_notification } = useSocket()
-
 
 	
 
@@ -33,11 +34,12 @@ function UserFriendsList({ user, profile_picture }) {
 			const data = await response.json();
 			console.log('Response =>', data);
 			if (response.status === 201) {
+				console.log('response ->', data);
 				const from_user = data.from_user;
 				const sender_id = data.sender_id;
 				const friend_request_id = data.id;
 				const receiver_id = data.receiver_id;
-	
+
 				if (socket_notification?.readyState === WebSocket.OPEN) {
                     socket_notification.send(JSON.stringify({
                         sender_id: sender_id,
@@ -45,7 +47,7 @@ function UserFriendsList({ user, profile_picture }) {
                         message: `User ${from_user} sent you a friend request`,
                         id: friend_request_id,
                         from_user: from_user,
-                        profile_picture: { profile_picture },
+                        profile_picture: BASE_URL + user_profile_picture,
                     }));
 					handleSubmit('success', 'Friend request sent successfully');
 				};
@@ -70,33 +72,33 @@ function UserFriendsList({ user, profile_picture }) {
 					loading='eager'
 				/>
 				<img
-					src={user.profile_picture}
+					src={user_friend.profile_picture}
 					className='h-[80%] rounded-full ring-1 ring-primary select-none'
 					alt='user-image'
 					loading='eager'
 				/>
 				<div className='flex flex-wrap items-center overflow-hidden'>
-					<p className='text-primary nickname-size leading-[1] truncate mr-1'>{user.username}</p>
+					<p className='text-primary nickname-size leading-[1] truncate mr-1'>{user_friend.username}</p>
 					<p className='text-achievement achievement-name '> achievement test</p>
 				</div>
 			</div>
 			<div className='mx-1'>
 
-				{user.is_friend && (
+				{user_friend.is_friend && (
                 <p className={`
-                    ${user.status === 'online' ? 'text-online' : 
-                    user.status === 'offline' ? 'text-offline' : 
+                    ${user_friend.status === 'online' ? 'text-online' : 
+                    user_friend.status === 'offline' ? 'text-offline' : 
                     'text-defeat'} status`}
                 >
-                    {user.status}
+                    {user_friend.status}
                 </p>
             )}
             
             {/* Add friend button for non-friends */}
-            {!user.is_friend && (
+            {!user_friend.is_friend && (
                 <Button 
 					className={'font-heavy add-friend-button lg:rounded-lg rounded'}
-                    onClick={() => handle_add_friend(user.id)}
+                    onClick={() => handle_add_friend(user_friend.id)}
                 >
                     Add Friend
                 </Button>

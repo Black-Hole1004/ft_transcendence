@@ -13,7 +13,7 @@ const USER_API = import.meta.env.VITE_USER_API;
 const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL;
 export const AuthProvider = ({ children }) => {
 
-    
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -23,13 +23,16 @@ export const AuthProvider = ({ children }) => {
 
     const [authTokens, setAuthTokens] = useState(() => {
         try {
-            return {
-                access_token: accessToken ? JSON.parse(accessToken) : null,
-                refresh_token: refreshToken ? JSON.parse(refreshToken) : null,
-            };
+            if (accessToken && refreshToken) {
+                return {
+                    access_token: JSON.parse(accessToken),
+                    refresh_token: JSON.parse(refreshToken),
+                };
+            }
+            return null;
         } catch (error) {
-            console.error('error', error)
-            logout()
+            console.error("Failed to parse access_token:", error);
+            return null;
         }
     });
 
@@ -38,82 +41,12 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(initialUser)
 
 
-    // -----------------------------------------------------------------
-	const [user_fetched, setUser_fetched] = useState({
-		first_name: '',
-		last_name: '',
-		email: '',
-		mobile_number: '',
-		username: '',
-		display_name: '',
-		bio: '',
-		password: '',
-		new_password: '',
-		confirm_password: '',
-		profile_picture: '',
-	})
-
-	const [first_name, setFirst_name] = useState('')
-	const [last_name, setLast_name] = useState('')
-	const [email_, setEmail_] = useState('')
-	const [mobile_number, setMobile_number] = useState('')
-	const [username, setUsername] = useState('')
-	const [display_name, setDisplay_name] = useState('')
-	const [bio, setBio] = useState('')
-	const [profile_picture, setProfile_picture] = useState('')
-
-	
-	const fetchUser = async () => {
-		try {
-			const response = await fetch(USER_API, {
-				method: 'GET',
-				headers: getAuthHeaders()
-			})
-			const data = await response.json();
-			if (response.ok) {
-				console.log('Successfully fetched user data');
-				return (data)
-			} else {
-				console.log('Failed to fetch user data');
-				return (null)
-			}
-		}
-		catch (error) {
-			console.log(error);
-			return (null);
-		}
-	};
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const fetchedData = await fetchUser();
-			if (fetchedData)
-				setUser_fetched(fetchedData);
-			else
-				console.log('-- Failed to fetch user data --');
-		};
-		fetchData();
-	}, [authTokens]);
-
-	useEffect(() => {
-		if (!user_fetched)
-			return;
-		setFirst_name(user_fetched.first_name);
-		setLast_name(user_fetched.last_name);
-		setEmail_(user_fetched.email);
-		setMobile_number(user_fetched.mobile_number);
-		setUsername(user_fetched.username);
-		setDisplay_name(user_fetched.display_name);
-		setBio(user_fetched.bio);
-		setProfile_picture(user_fetched.profile_picture);
-	} , [user_fetched]);
-
+    
     const { triggerAlert } = useAlert()
 
-	const handleSubmit = (type, message) => {
-		triggerAlert(type, message)
-	}
-
+    const handleSubmit = (type, message) => {
+        triggerAlert(type, message)
+    }
 
     const login = async () => {
         try {
@@ -192,6 +125,14 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
+        if (!authTokens?.access_token) {
+            Cookies.remove('access_token')
+            Cookies.remove('refresh_token')
+            setAuthTokens(null)
+            setUser(null)
+            return;
+        }
+
         try {
             const response = await fetch(VITE_API_LOGOUT, {
                 method: 'POST',
@@ -206,11 +147,11 @@ export const AuthProvider = ({ children }) => {
                 setAuthTokens(null)
                 setUser(null)
             } else {
-                console.log('Logout failed', data)
+                console.log('--> Logout failed', data)
             }
         } catch (error) {
             console.error('error', error)
-        } 
+        }
     };
 
     const get_expiration_time = (token) => {
@@ -241,7 +182,7 @@ export const AuthProvider = ({ children }) => {
                 };
                 setAuthTokens(updatedTokens);
                 setUser(jwtDecode(data.access));
-                Cookies.set('access_token', JSON.stringify(updatedTokens.access_token))  
+                Cookies.set('access_token', JSON.stringify(updatedTokens.access_token))
                 Cookies.set('refresh_token', JSON.stringify(updatedTokens.refresh_token))
             }
             else {
@@ -299,27 +240,6 @@ export const AuthProvider = ({ children }) => {
         setUser: setUser,
 
         getAuthHeaders: getAuthHeaders,
-
-        // -----------------------------------------------------------
-        user_fetched: user_fetched,
-        setUser_fetched: setUser_fetched,
-        first_name: first_name,
-        setFirst_name: setFirst_name,
-        last_name: last_name,
-        setLast_name: setLast_name,
-        email_: email_,
-        setEmail_: setEmail_,
-        mobile_number: mobile_number,
-        setMobile_number: setMobile_number,
-        username: username,
-        setUsername: setUsername,
-        display_name: display_name,
-        setDisplay_name: setDisplay_name,
-        bio: bio,
-        setBio: setBio,
-        profile_picture: profile_picture,
-        setProfile_picture: setProfile_picture
-        // -----------------------------------------------------------
     }
 
     return (

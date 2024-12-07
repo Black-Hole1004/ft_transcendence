@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import useAuth from '../../context/AuthContext'
+import { useSocket } from '../../components/Layout/Layout'
 
 const USER_API = import.meta.env.VITE_USER_API
 const BASE_URL = import.meta.env.VITE_BASE_URL
@@ -32,6 +33,8 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 }
 
 const Settings = () => {
+
+	const { refreshUserData , fetchUser } = useSocket()
 	const dialogRef = useRef(null)
 	const [twoFactorAuthEnabled, setTwoFactorAuthEnabled] = useState(false)
 
@@ -102,26 +105,7 @@ const Settings = () => {
 	const { authTokens, logout, getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
 
-	const fetchUser = async () => {
-		try {
-			const response = await fetch(USER_API, {
-				method: 'GET',
-				headers: getAuthHeaders(),
-			})
-			const data = await response.json()
-			if (response.ok) {
-				return data
-			} else {
-				console.log('Failed to fetch user data')
-				logout();
-				return null
-			}
-		} catch (error) {
-			console.log(error)
-			logout();
-			return null
-		}
-	}
+	
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -192,6 +176,7 @@ const Settings = () => {
 					setRemoveImage(false)
 					console.log('User data updated successfully')
 					triggerAlert('success', 'User data updated successfully')
+					refreshUserData()
 				}
 			})
 			.catch((error) => {
@@ -272,7 +257,7 @@ const Settings = () => {
 		setRemoveImage(true)
 	}
 
-	console.log('user ----->', user)
+	// console.log('user ----->', user)
 
 	return (
 		<>

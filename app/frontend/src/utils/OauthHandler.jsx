@@ -23,8 +23,9 @@ const OauthHandler = () => {
 			}
 			setAuthTokens(data)
 			setUser(jwtDecode(accessToken));
+			console.log('User=============>', jwtDecode(accessToken));
 			navigate("/dashboard", { replace: true });
-			window.location.reload();
+			// window.location.reload();
 		}
 	}, [setAuthTokens, navigate]);
 

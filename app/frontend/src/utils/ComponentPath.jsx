@@ -32,22 +32,22 @@ const ComponentPath = () => {
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
 				
 				{/* Layout wrapping all private routes */}
-				<Route element={<Layout />}>
-					<Route path="/Game" element={<PrivateRoute><Game /></PrivateRoute>} />
-					<Route path="/Chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
-					<Route path="/Custom" element={<PrivateRoute><Custom /></PrivateRoute>} />
-					<Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-					<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-					<Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-					<Route path='/local-game' element={<PrivateRoute><LocalGame /></PrivateRoute>} />
-					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
-					<Route path="/chat/:conversation_key" element={<PrivateRoute><Chat /></PrivateRoute>} />
-					<Route path="/local-game-setup" element={<PrivateRoute><LocalGameSetup /></PrivateRoute>} />
-					<Route path="/searching" element={<PrivateRoute><SearchingAnimation /></PrivateRoute>} />
+				<Route element={<PrivateRoute><Layout /></PrivateRoute>}>
+					<Route path="/Game" element={<Game />} />
+					<Route path="/Chat" element={<Chat />} />
+					<Route path="/Custom" element={<Custom />} />
+					<Route path="/Profile" element={<Profile />} />
+					<Route path="/Settings" element={<Settings />} />
+					<Route path="/Dashboard" element={<Dashboard />} />
+					<Route path='/local-game' element={<LocalGame />} />
+					<Route path="/Tournament" element={<Tournament />} />
+					<Route path="/chat/:conversation_key" element={<Chat />} />
+					<Route path="/local-game-setup" element={<LocalGameSetup />} />
+					<Route path="/searching" element={<SearchingAnimation />} />
 					{/* <Route path='/remote-game' element={<RemoteGame />} /> */}
 					{/* <Route path='/remote-game-setup' element={<RemoteGameSetup />} /> */}
-					<Route path="/2fa" element={<PrivateRoute><TwoFactorAuth /></PrivateRoute>} />
-					<Route path="*" element={<PrivateRoute><NotFound /></PrivateRoute>} />
+					<Route path="/2fa" element={<TwoFactorAuth />} />
+					<Route path="*" element={<NotFound />} />
 				</Route>
 				
 			</Routes>

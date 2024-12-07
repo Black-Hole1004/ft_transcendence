@@ -8,7 +8,8 @@ import { use } from 'react'
 function FriendsList() {
 	const [users, setUsers] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
-	const { getAuthHeaders, profile_picture } = useAuth()
+	const { getAuthHeaders } = useAuth()
+	const { profile_picture } = useSocket()
 
 	const { socket_notify, socket_friends } = useSocket();
 
@@ -29,8 +30,8 @@ function FriendsList() {
 		get_all_users()
 	}, [])
 
-	const filterUsers = users.filter((user) => {
-		return user.username.toLowerCase().startsWith(searchQuery.toLowerCase())
+	const filterUsers = users?.filter((user) => {
+		return user.username.toLowerCase().startsWith(searchQuery.toLowerCase()) || []
 	})
 
 	// this useEffect listens for friend request acceptances
@@ -92,7 +93,7 @@ function FriendsList() {
 			<div className='w-[96%] overflow-y-auto users'>
 				{
 					filterUsers.map((user) => {
-						return <UserFriendsList key={user.id} user={user} profile_picture={profile_picture} />
+						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} />
 					})
 				}
 			</div>
