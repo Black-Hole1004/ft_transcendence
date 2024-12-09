@@ -1,27 +1,229 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
-import _ from 'lodash'
+import React, { useEffect, useRef, useState } from 'react';
 
-const RemotePongTable = ({
-
+const RemotePongTable = ({ 
+    gameState,
+    onPaddleMove,
+    playerNumber,
+    isPaused,
+    handlePause,
+    backgroundId,
+    isGameOver,
+    pausesRemaining,
+    pausingPlayer
 }) => {
+    const canvasRef = useRef(null);
+    const containerRef = useRef(null);
+    const requestRef = useRef(null);
+    
+    // Canvas size state
+    const [canvasSize, setCanvasSize] = useState({ width: 800, height: 400 });
+    const MAX_CANVAS_WIDTH = 1200;
 
-	const canvasRef = useRef(null)
-	const [isPaused, setIsPaused] = useState(false)
-	console.log('RemotePongTable ...')
+    // Keyboard state for smooth movement
+    const [isUpPressed, setIsUpPressed] = useState(false);
+    const [isDownPressed, setIsDownPressed] = useState(false);
 
-	return (
-		<div className='flex flex-col items-center gap-7'>
-			<canvas
-				ref={canvasRef}
-				width={800}
-				height={400}
-				className={`game-table border border-primary rounded-2xl ${
-					isPaused ? 'brightness-[20%]' : 'brightness-[1]'
-				}`}
-			/>
+    useEffect(() => {
+        if (!gameState || !canvasRef.current) return;
+        
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+    
+        const draw = () => {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+    
+            // Draw dark background
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
+    
+            // Draw center line
+            ctx.setLineDash([5, 15]);
+            ctx.beginPath();
+            ctx.moveTo(canvasSize.width / 2, 0);
+            ctx.lineTo(canvasSize.width / 2, canvasSize.height);
+            ctx.strokeStyle = 'white';
+            ctx.stroke();
+    
+            // Draw ball with trail effect and glow
+            if (gameState.ball) {
+                // Draw ball trail/glow
+                ctx.shadowBlur = 20;
+                ctx.shadowColor = 'white';
+                ctx.beginPath();
+                ctx.arc(
+                    gameState.ball.x,
+                    gameState.ball.y,
+                    10, // ball radius
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fillStyle = 'white';
+                ctx.fill();
+                ctx.closePath();
+                ctx.shadowBlur = 0;
+            }
+    
+            // Draw paddles with rounded corners and glow effect
+            const drawPaddle = (x, y, color) => {
+                const width = 20;  // paddle width
+                const height = 110; // paddle height
+                const radius = 10;  // corner radius
+    
+                // Add glow effect for paddles
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = color;
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                
+                // Draw rounded rectangle
+                ctx.moveTo(x + radius, y);
+                ctx.lineTo(x + width - radius, y);
+                ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                ctx.lineTo(x + width, y + height - radius);
+                ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                ctx.lineTo(x + radius, y + height);
+                ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+                ctx.lineTo(x, y + radius);
+                ctx.quadraticCurveTo(x, y, x + radius, y);
+                
+                ctx.closePath();
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset shadow blur
+            };
+    
+            // Draw paddles with player colors
+            if (gameState.player1) {
+                drawPaddle(
+                    gameState.player1.x,
+                    gameState.player1.y,
+                    'white' // Player 1 color (blue)
+                );
+            }
+    
+            if (gameState.player2) {
+                drawPaddle(
+                    gameState.player2.x,
+                    gameState.player2.y,
+                    'white' // Player 2 color (green)
+                );
+            }
+        };
+    
+        // Create animation loop
+        const animate = () => {
+            draw();
+            requestRef.current = requestAnimationFrame(animate);
+        };
+    
+        // Start animation
+        animate();
+    
+        // Cleanup
+        return () => {
+            if (requestRef.current) {
+                cancelAnimationFrame(requestRef.current);
+            }
+        };
+    }, [gameState, canvasSize.width, canvasSize.height]);
 
-		</div>
-	)
-}
+    // Handle keyboard input for paddle movement
+    useEffect(() => {
 
-export default RemotePongTable
+        const handleKeyDown = (e) => {
+            if (isPaused) return;
+            
+            const upKey = playerNumber === 1 ? 'w' : 'ArrowUp';
+            const downKey = playerNumber === 1 ? 's' : 'ArrowDown';
+        
+            if (e.key === upKey) {
+                onPaddleMove('startUp');
+            }
+            if (e.key === downKey) {
+                onPaddleMove('startDown');
+            }
+        };
+        
+        const handleKeyUp = (e) => {
+            const upKey = playerNumber === 1 ? 'w' : 'ArrowUp';
+            const downKey = playerNumber === 1 ? 's' : 'ArrowDown';
+        
+            if (e.key === upKey) {
+                onPaddleMove('stopUp');
+            }
+            if (e.key === downKey) {
+                onPaddleMove('stopDown');
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+        };
+    }, [isPaused, playerNumber]);
+
+
+    useEffect(() => {
+        if (!gameState || isPaused) return;
+    
+        const movePaddle = () => {
+            if (isUpPressed) {
+                onPaddleMove('up');
+            }
+            if (isDownPressed) {
+                onPaddleMove('down');
+            }
+        };
+    
+        const intervalId = setInterval(movePaddle, 16); // ~60fps
+    
+        return () => clearInterval(intervalId);
+    }, [isPaused, isUpPressed, isDownPressed, onPaddleMove]);
+
+    return (
+        <div ref={containerRef} className="flex flex-col items-center gap-7 max-lg:order-first max-lg:w-full">
+            <canvas
+                ref={canvasRef}
+                width={canvasSize.width}
+                height={canvasSize.height}
+                className={`game-table border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+                style={{ 
+                    borderRadius: '25px', 
+                    width: '100%', 
+                    height: 'auto', 
+                    maxWidth: `${MAX_CANVAS_WIDTH}px`,
+                    background: `url('/assets/images/tables/table/1.png')`,
+                    backgroundSize: 'cover'
+                }}
+            />
+            {!isGameOver && (
+                <button
+                    onClick={handlePause}
+                    disabled={
+                        (!isPaused && pausesRemaining[playerNumber] <= 0) || 
+                        (isPaused && pausingPlayer !== playerNumber)
+                    }
+                    className={`pause flex items-center gap-3 brightness-[1] leading-[0.95] ${
+                        (!isPaused && pausesRemaining[playerNumber] <= 0) || 
+                        (isPaused && pausingPlayer !== playerNumber)
+                            ? 'opacity-50 cursor-not-allowed'
+                            : ''
+                    }`}
+                >
+                    <img 
+                        src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`} 
+                        alt="" 
+                    />
+                    <p className="align-middle">
+                        {isPaused ? 'resume' : `pause (${pausesRemaining[playerNumber]} left)`}
+                    </p>
+                </button>
+            )}
+        </div>
+    );
+};
+
+export default RemotePongTable;

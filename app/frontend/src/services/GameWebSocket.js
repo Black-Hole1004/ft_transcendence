@@ -85,7 +85,6 @@ class GameWebSocket {
     handleMessage(event) {
         try {
             const data = JSON.parse(event.data);
-            console.log('Raw WebSocket message received:', data); 
 
             if (data.type === 'game_info') {
                 this.playerNumber = data.player_number;
@@ -93,7 +92,7 @@ class GameWebSocket {
 
             const handlers = {
                 game_info: this.handleGameInfo.bind(this),
-                state_update: this.handleStateUpdate.bind(this),
+                game_state_update: this.handleGameStateUpdate.bind(this),
                 paddles_update: this.handlePaddlesUpdate.bind(this),
                 ball_update: this.handleBallUpdate.bind(this),
                 score_update: this.handleScoreUpdate.bind(this),
@@ -126,9 +125,10 @@ class GameWebSocket {
         this.callbacks.game_info?.(data);
     }
 
-    handleStateUpdate(data) {
-        console.log('Handling state update:', data);
-        this.callbacks.state_update?.(data);
+
+    handleGameStateUpdate(data) {
+        console.log('Handling game state update:', data);
+        this.callbacks.game_state_update?.(data);
     }
 
     handlePaddlesUpdate(data) {
@@ -202,11 +202,11 @@ class GameWebSocket {
         }
     }
 
-    sendPaddleMove(y) {
-        console.log('Sending paddle move:', y);
+
+    sendPaddleMove(action) {  // action will be 'startUp', 'startDown', 'stopUp', or 'stopDown'
         this.send({
-            type: 'paddle_move',
-            y: y
+            type: 'paddle_direction',
+            action: action
         });
     }
 

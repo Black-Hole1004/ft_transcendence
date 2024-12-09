@@ -11,17 +11,19 @@ class GamePhysics:
         self.canvas_width = canvas_width
         self.canvas_height = canvas_height
         self.max_ball_angle = 75  # Maximum angle in degrees
-
+    
     def update_ball_position(self, ball, delta_time):
         """Update ball position with proper time-based movement"""
         # Scale the movement to be faster
-        movement_scale = 2.0  # Adjust this value to change overall speed
+        movement_scale = 1.5  # Adjust this value to change overall speed
+        
         next_x = ball['x'] + (ball['velocityX'] * ball['speed'] * delta_time * movement_scale)
         next_y = ball['y'] + (ball['velocityY'] * ball['speed'] * delta_time * movement_scale)
         
         # Wall collisions (top and bottom)
         if next_y + ball['radius'] > self.canvas_height or next_y - ball['radius'] < 0:
             ball['velocityY'] = -ball['velocityY']
+            # Prevent ball from going out of bounds for smoother bounce and position accuracy
             if next_y + ball['radius'] > self.canvas_height:
                 next_y = self.canvas_height - ball['radius']
             if next_y - ball['radius'] <= 0:
@@ -30,19 +32,47 @@ class GamePhysics:
         ball['x'] = next_x
         ball['y'] = next_y
 
-    def handle_paddle_collision(self, ball, paddle):
-        """Match local game paddle collision behavior"""
-        # Simple direction change like in local game
-        ball['velocityX'] = -ball['velocityX']
+    # def handle_paddle_collision(self, ball, paddle):
+    #     """Match local game paddle collision behavior"""
+    #     # Simple direction change like in local game
+    #     ball['velocityX'] = -ball['velocityX']
 
+    #     # Position correction
+    #     if paddle['x'] < self.canvas_width / 2:  # Left paddle
+    #         ball['x'] = paddle['x'] + paddle['width'] + ball['radius']
+    #     else:  # Right paddle
+    #         ball['x'] = paddle['x'] - ball['radius']
+        
+    #     # Speed increase like in local game
+    #     ball['speed'] = min(ball['speed'] + ball['speedIncrement'], ball['maxSpeed'])
+    def handle_paddle_collision(self, ball, paddle):
+        """Improved paddle collision physics"""
+        # Reverse X direction
+        ball['velocityX'] = -ball['velocityX']
+        
+        # Calculate collision point relative to paddle center
+        relative_intersect_y = (paddle['y'] + (paddle['height'] / 2)) - ball['y']
+        normalized_intersect = relative_intersect_y / (paddle['height'] / 2)
+        
+        # Calculate bounce angle (maximum 75 degrees)
+        bounce_angle = normalized_intersect * (self.max_ball_angle * math.pi / 180)
+        
+        # Update velocities based on bounce angle
+        speed = math.sqrt(ball['velocityX'] ** 2 + ball['velocityY'] ** 2)
+        ball['velocityY'] = -speed * math.sin(bounce_angle)
+        
         # Position correction
         if paddle['x'] < self.canvas_width / 2:  # Left paddle
             ball['x'] = paddle['x'] + paddle['width'] + ball['radius']
         else:  # Right paddle
             ball['x'] = paddle['x'] - ball['radius']
         
-        # Speed increase like in local game
-        ball['speed'] = min(ball['speed'] + ball['speedIncrement'], ball['maxSpeed'])
+        # Speed increase with better scaling
+        new_speed = min(ball['speed'] + ball['speedIncrement'], ball['maxSpeed'])
+        speed_scale = new_speed / ball['speed']
+        ball['speed'] = new_speed
+        ball['velocityX'] *= speed_scale
+        ball['velocityY'] *= speed_scale
 
     def check_paddle_collision(self, ball, paddle):
         """Check if ball collides with paddle"""
@@ -72,17 +102,39 @@ class GamePhysics:
             return 1  # Player 1 scores
         return 0
 
+    # def reset_ball(self, ball, direction=1):
+    #     """Reset ball with random angle"""
+    #     ball['x'] = self.canvas_width / 2
+    #     ball['y'] = self.canvas_height / 2
+    #     ball['speed'] = 8  # Reset to initial speed
+        
+    #     angle = random.uniform(-45, 45) * math.pi / 180 # Random angle between -45 and 45 degrees
+    #     speed = ball['speed']
+        
+    #     ball['velocityX'] = math.cos(angle) * speed * direction # Randomize direction
+    #     ball['velocityY'] = math.sin(angle) * speed # Randomize Y velocity
+    
     def reset_ball(self, ball, direction=1):
-        """Reset ball with random angle"""
+        """Reset ball with improved randomization"""
+        # Center the ball
         ball['x'] = self.canvas_width / 2
         ball['y'] = self.canvas_height / 2
-        ball['speed'] = 8  # Reset to initial speed
         
-        angle = random.uniform(-45, 45) * math.pi / 180 # Random angle between -45 and 45 degrees
+        # Reset to initial speed
+        ball['speed'] = 8  # Match initial speed
+        
+        # Generate random angle between -45 and 45 degrees
+        angle = random.uniform(-45, 45) * math.pi / 180
         speed = ball['speed']
         
+        # Set velocities with proper scaling
         ball['velocityX'] = math.cos(angle) * speed * direction # Randomize direction
-        ball['velocityY'] = math.sin(angle) * speed # Randomize Y velocity
+        ball['velocityY'] = math.sin(angle) * speed
+        
+        # Add slight randomization to initial speed
+        speed_variation = random.uniform(0.9, 1.1)
+        ball['velocityX'] *= speed_variation
+        ball['velocityY'] *= speed_variation
 
 class GameState:
     def __init__(self, game_id, canvas_width=800, canvas_height=400):
@@ -98,6 +150,10 @@ class GameState:
         self.pause_time = None # time when game was paused
         self.pause_timeout = 20 # time in seconds before game is resumed automatically
         
+        # for paddle movement
+        self.player1_movement = None  # 'up', 'down', or None
+        self.player2_movement = None  # 'up', 'down', or None
+        
         # Game status
         self.connected_players = 0
         self.players_ready = set()
@@ -108,10 +164,10 @@ class GameState:
             'x': canvas_width / 2,
             'y': canvas_height / 2,
             'radius': 20,
-            'speed': 8,
-            'velocityX': 8,
-            'velocityY': 8,
-            'speedIncrement': 1.5,
+            'speed': 9,
+            'velocityX': 9,
+            'velocityY': 9,
+            'speedIncrement': 1.8,
             'maxSpeed': 25
         }
         
@@ -141,7 +197,7 @@ class GameState:
         self.is_paused = True
         self.game_over = False
         self.winner = None
-
+        
 class GameConsumer(AsyncWebsocketConsumer):
     # Class variable to store game states
     game_states = {}
@@ -293,6 +349,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             
             handlers = {
                 'paddle_move': self.handle_paddle_move,
+                'paddle_direction': self.handle_paddle_direction,
                 'player_ready': self.handle_player_ready,
                 'restart_game': self.handle_restart_request,
                 'pause_game': self.handle_pause_game,
@@ -315,10 +372,69 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'message': str(e)
             }))
 
+    async def update_paddles(self, delta_time):
+        """Update paddle positions with improved smoothness"""
+        paddle_speed = 630 * delta_time  # Increased from 400 to 800 for faster movement
+        
+        # Update player 1 paddle with interpolation
+        if self.game_state.player1_movement == 'up':
+            target_y = max(0, self.game_state.player1_paddle['y'] - paddle_speed)
+            self.game_state.player1_paddle['y'] = target_y
+        elif self.game_state.player1_movement == 'down':
+            target_y = min(
+                400 - 110,  # canvas height - paddle height
+                self.game_state.player1_paddle['y'] + paddle_speed
+            )
+            self.game_state.player1_paddle['y'] = target_y
+
+        # Update player 2 paddle with interpolation
+        if self.game_state.player2_movement == 'up':
+            target_y = max(0, self.game_state.player2_paddle['y'] - paddle_speed)
+            self.game_state.player2_paddle['y'] = target_y
+        elif self.game_state.player2_movement == 'down':
+            target_y = min(
+                400 - 110,
+                self.game_state.player2_paddle['y'] + paddle_speed
+            )
+            self.game_state.player2_paddle['y'] = target_y
+    
+    async def handle_paddle_direction(self, data):
+        """Handle paddle direction changes with immediate response"""
+        try:
+            action = data.get('action')
+            player_paddle = self.game_state.player1_paddle if self.player_number == 1 else self.game_state.player2_paddle
+            
+            # Instant movement state change
+            if self.player_number == 1:
+                if action == 'startUp':
+                    self.game_state.player1_movement = 'up'
+                    # Initial movement for instant response
+                    player_paddle['y'] = max(0, player_paddle['y'] - 7)
+                elif action == 'startDown':
+                    self.game_state.player1_movement = 'down'
+                    player_paddle['y'] = min(400 - 110, player_paddle['y'] + 7)
+                elif action in ['stopUp', 'stopDown']:
+                    self.game_state.player1_movement = None
+            else:
+                if action == 'startUp':
+                    self.game_state.player2_movement = 'up'
+                    player_paddle['y'] = max(0, player_paddle['y'] - 7)
+                elif action == 'startDown':
+                    self.game_state.player2_movement = 'down'
+                    player_paddle['y'] = min(400 - 110, player_paddle['y'] + 7)
+                elif action in ['stopUp', 'stopDown']:
+                    self.game_state.player2_movement = None
+            
+            # Immediate state broadcast for responsive feel
+            await self.broadcast_game_state()
+
+        except Exception as e:
+            print(f"Error in handle_paddle_direction: {str(e)}")
+            
     async def game_loop(self):
         """Main game loop with optimized timings"""
-        physics_interval = 1/60  # Doubled physics rate (was 1/60)
-        broadcast_interval = 1/20  # Increased broadcast rate (was 1/20)
+        physics_interval = 1/120  # Doubled physics rate (was 1/60)
+        broadcast_interval = 1/60  # Increased broadcast rate (was 1/20)
         last_physics_time = time.time()
         last_broadcast_time = time.time()
         last_timer_update = time.time()
@@ -352,6 +468,9 @@ class GameConsumer(AsyncWebsocketConsumer):
                     if current_time - last_physics_time >= physics_interval:
                         delta_time = min(current_time - last_physics_time, 0.017)  # Cap delta time
                         last_physics_time = current_time
+
+                        # Update paddle positions
+                        await self.update_paddles(delta_time)
                         
                         # Update ball position
                         self.physics.update_ball_position(self.game_state.ball, delta_time)
@@ -386,32 +505,29 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def handle_paddle_move(self, data):
         """Handle paddle movement with improved smoothness"""
         try:
-            new_y = float(data.get('y', 0))
-            paddle_speed = 15 # pixels per frame, sppeed of paddle movement
+            direction = data.get('direction')
+            paddle_speed = 15  # pixels per frame
             
             if self.player_number == 1:
                 current_y = self.game_state.player1_paddle['y']
-                target_y = max(0, min(new_y, self.game_state.canvas_height - self.game_state.paddle_height))
-                
-                # Smooth movement: limit the movement to the paddle_speed
-                if abs(target_y - current_y) > paddle_speed:
-                    self.game_state.player1_paddle['y'] += (
-                        paddle_speed if target_y > current_y else -paddle_speed
+                if direction == 'up':
+                    new_y = max(0, current_y - paddle_speed)
+                else:  # down
+                    new_y = min(
+                        400 - 110,  # canvas height - paddle height
+                        current_y + paddle_speed
                     )
-                else:
-                    self.game_state.player1_paddle['y'] = target_y  # Directly set if within range
-
+                self.game_state.player1_paddle['y'] = new_y
             else:
                 current_y = self.game_state.player2_paddle['y']
-                target_y = max(0, min(new_y, self.game_state.canvas_height - self.game_state.paddle_height))
-                
-                # Smooth movement: limit the movement to the paddle_speed
-                if abs(target_y - current_y) > paddle_speed:
-                    self.game_state.player2_paddle['y'] += (
-                        paddle_speed if target_y > current_y else -paddle_speed
+                if direction == 'up':
+                    new_y = max(0, current_y - paddle_speed)
+                else:  # down
+                    new_y = min(
+                        400 - 110,  # canvas height - paddle height
+                        current_y + paddle_speed
                     )
-                else:
-                    self.game_state.player2_paddle['y'] = target_y  # Directly set if within range
+                self.game_state.player2_paddle['y'] = new_y
 
             # Send paddle updates immediately
             await self.channel_layer.group_send(
@@ -420,12 +536,12 @@ class GameConsumer(AsyncWebsocketConsumer):
                     'type': 'paddles_update',
                     'paddles': {
                         '1': {
-                            'x': self.game_state.player1_paddle['x'], 
-                            'y': round(self.game_state.player1_paddle['y'], 2)
+                            'x': self.game_state.player1_paddle['x'],
+                            'y': self.game_state.player1_paddle['y']
                         },
                         '2': {
-                            'x': self.game_state.player2_paddle['x'], 
-                            'y': round(self.game_state.player2_paddle['y'], 2)
+                            'x': self.game_state.player2_paddle['x'],
+                            'y': self.game_state.player2_paddle['y']
                         }
                     }
                 }
@@ -613,18 +729,8 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.game_state.ball['speed'] = 8
         self.physics.reset_ball(self.game_state.ball, direction=-1 if scorer == 1 else 1)
         
-        # Broadcast score
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'score_update',
-                'scorer': scorer,
-                'scores': {
-                    '1': self.game_state.player1_paddle['score'],
-                    '2': self.game_state.player2_paddle['score']
-                }
-            }
-        )
+        # Instead of separate score update, broadcast full game state
+        await self.broadcast_game_state()
         
         # Check for game over
         if (self.game_state.player1_paddle['score'] >= 10 or 
@@ -634,19 +740,30 @@ class GameConsumer(AsyncWebsocketConsumer):
             await self.handle_game_over()
 
     async def broadcast_game_state(self):
-        """Broadcast game state to all players"""
+        """Broadcast complete game state to all players"""
         current_state = {
             'ball': {
                 'x': round(self.game_state.ball['x'], 2),
                 'y': round(self.game_state.ball['y'], 2)
             },
-            'time_remaining': round(self.game_state.time_remaining), # Round to nearest second
+            'player1': {
+                'x': self.game_state.player1_paddle['x'],
+                'y': self.game_state.player1_paddle['y'],
+                'score': self.game_state.player1_paddle['score']
+            },
+            'player2': {
+                'x': self.game_state.player2_paddle['x'],
+                'y': self.game_state.player2_paddle['y'],
+                'score': self.game_state.player2_paddle['score']
+            },
+            'time_remaining': round(self.game_state.time_remaining),
+            'winner': self.game_state.winner,
         }
         
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': 'ball_update',
+                'type': 'game_state_update',
                 'state': current_state
             }
         )
@@ -785,3 +902,11 @@ class GameConsumer(AsyncWebsocketConsumer):
             'type': 'paddle_collision',
             'player': event.get('player')
         }))
+        
+    async def game_state_update(self, event):
+        """Handle game state update event"""
+        await self.send(text_data=json.dumps({
+            'type': 'game_state_update',
+            'state': event['state']
+        }))
+    

@@ -89,7 +89,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                     preferences = self.matchmaking_queue[self.channel_name]['preferences']
                     
                     try:
-                        game = await self.create_game_session(
+                        game = await self.create_game_session (
                             current_user, 
                             opponent_user, 
                             preferences
