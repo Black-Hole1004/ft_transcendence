@@ -67,14 +67,14 @@ const RemoteGame = () => {
 	// Location state data
 	const { gameId, playerNumber, opponent, currentUser, settings } = location.state || {}
 
-	// // adjusting the player info based on the playerNumber, so that the current player is always on the right side
-	// const isSelfOnRight = true;
-	// // Determine which player info to show on each side
-	// const rightPlayer = currentUser;  // Current player always on right
-	// const leftPlayer = opponent;      // Opponent always on left
+	// adjusting the player info based on the playerNumber, so that the current player is always on the right side
+	const isSelfOnRight = true;
+	// Determine which player info to show on each side
+	const rightPlayer = currentUser;  // Current player always on right
+	const leftPlayer = opponent;      // Opponent always on left
 	
-	// const [rightScore, setRightScore] = useState(0);
-    // const [leftScore, setLeftScore] = useState(0);
+	const [rightScore, setRightScore] = useState(0); // Current player's score
+    const [leftScore, setLeftScore] = useState(0);  // Opponent's score
 
 	// Game state
 	const [gameState, setGameState] = useState(null)
@@ -97,23 +97,12 @@ const RemoteGame = () => {
 		socketRef.current = ws
 
 		// Connect to game
-		ws.connect(gameId)
+		ws.connect(gameId, playerNumber)
 
 		// Event handlers
 		ws.on('game_info', (data) => {
 			console.log('Received initial game state:', data)
 			setGameState(data.state)
-
-			// if (gameState) {
-			// 	if (playerNumber === 1) {
-			// 		setRightScore(data.state.player1.score)
-			// 		setLeftScore(data.state.player2.score)
-			// 	}
-			// 	else {
-			// 		setRightScore(data.state.player2.score)
-			// 		setLeftScore(data.state.player1.score)
-			// 	}
-			// }
 		})
 
 		ws.on('game_state_update', (data) => {
@@ -132,13 +121,18 @@ const RemoteGame = () => {
 			// Update time remaining
 			setTimeRemaining(data.state.time_remaining)
 
-			// Update player scores
-			setPlayer1Score(data.state.player1.score)
-			setPlayer2Score(data.state.player2.score)
+			// Update player scores - based on player number : if playerNumber is 1, then player1 score is rightScore
+			if (playerNumber === 1) {
+				setRightScore(data.state.player1.score) // my score (player 1)
+				setLeftScore(data.state.player2.score) // opponent's score (player 2)
+			} else {
+				setRightScore(data.state.player2.score) // my score (player 2)
+				setLeftScore(data.state.player1.score) // opponent's score (player 1)
+			}
 
 			// Update winner
 			if (data.state.winner) {
-				setWinner(data.state.winner)
+				setWinner(data.state.winner) // 
 			}
 
 		});
@@ -243,20 +237,21 @@ const RemoteGame = () => {
 
 					{/* Score and Timer */}
 					<GameScore
-						player1Score={player1Score}
-						player2Score={player2Score}
+						player1Score={leftScore}  // Opponent's score (left side)
+						player2Score={rightScore} // Player's score (right side)
 						isPaused={isPaused}
 					/>
 					<Timer isPaused={isPaused} timeRemaining={timeRemaining} />
 
 					{/* Main game area */}
 					<div className='flex-1 w-full flex max-lg:flex-wrap max-lg:justify-around justify-between font-dreamscape-sans'>
+						{/* Left side - Always opponent */}
 						<RemotePlayer
 							isPaused={isPaused}
-							PlayerName={ playerNumber === 1 ? currentUser.username : opponent.username }
-							BadgeName={ playerNumber === 1 ? currentUser.badge?.name : opponent.badge?.name }
-							playerImage={ playerNumber === 1 ? currentUser.profile_picture : opponent.profile_picture }
-							badgeImage={ playerNumber === 1 ? currentUser.badge?.image : opponent.badge?.image }
+							PlayerName={leftPlayer.username}
+							BadgeName={leftPlayer.badge?.name}
+							playerImage={leftPlayer.profile_picture}
+							badgeImage={leftPlayer.badge?.image}
 						/>
 
 						<RemotePongTable
@@ -269,14 +264,15 @@ const RemoteGame = () => {
 							isGameOver={isGameOver}
 							pausesRemaining={pausesRemaining}
 							pausingPlayer={pausingPlayer}
+							isSelfOnRight={isSelfOnRight} // Current player is always on right to handle perspective
 						/>
-
+						{/* Right side - Always current player */}
 						<RemotePlayer
 							isPaused={isPaused}
-							PlayerName={ playerNumber === 2 ? currentUser.username : opponent.username }
-							BadgeName={ playerNumber === 2 ? currentUser.badge?.name : opponent.badge?.name }
-							playerImage={ playerNumber === 2 ? currentUser.profile_picture : opponent.profile_picture }
-							badgeImage={ playerNumber === 2 ? currentUser.badge?.image : opponent.badge?.image }
+							PlayerName={rightPlayer.username}
+							BadgeName={rightPlayer.badge?.name}
+							playerImage={rightPlayer.profile_picture}
+							badgeImage={rightPlayer.badge?.image}
 						/>
 					</div>
 				</div>

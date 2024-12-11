@@ -10,13 +10,14 @@ class GameWebSocket {
         this.playerNumber = null;
     }
 
-    connect(gameId) {
+    connect(gameId, playerNumber) {
         if (!gameId) {
-            console.error('No game ID provided');
+            console.error('No game ID provided from server');
             return;
         }
         
         this.gameId = gameId;
+        this.playerNumber = playerNumber;
 
         if (this.reconnectTimeout) {
             clearTimeout(this.reconnectTimeout);
@@ -32,13 +33,27 @@ class GameWebSocket {
                 this.socket = null;
             }
 
-            this.socket = new WebSocket(wsUrl);
+            this.socket = new WebSocket(wsUrl); // Create WebSocket connection
             this.setupEventHandlers();
 
         } catch (error) {
             console.error('Error creating WebSocket:', error);
             this.handleError(error);
         }
+    }
+
+    sendPlayerNumber() {
+        console.log('Sending player number initialization:', this.playerNumber);
+        this.send({
+            type: 'player_number_init',
+            player_number: this.playerNumber
+        });
+    }
+
+    // Add handler for confirmation
+    handlePlayerNumberConfirmed(data) {
+        console.log('Player number confirmed:', data.player_number);
+        this.callbacks.player_number_confirmed?.(data);
     }
 
     setupEventHandlers() {
@@ -53,6 +68,9 @@ class GameWebSocket {
         this.isConnected = true;
         this.connectionAttempts = 0;
         this.callbacks.connect?.();
+
+        // Send player number
+        this.sendPlayerNumber();
     }
 
     handleClose(event) {
@@ -92,6 +110,7 @@ class GameWebSocket {
 
             const handlers = {
                 game_info: this.handleGameInfo.bind(this),
+                player_number_confirmed: this.handlePlayerNumberConfirmed.bind(this),
                 game_state_update: this.handleGameStateUpdate.bind(this),
                 paddles_update: this.handlePaddlesUpdate.bind(this),
                 ball_update: this.handleBallUpdate.bind(this),

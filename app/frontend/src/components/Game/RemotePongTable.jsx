@@ -9,7 +9,8 @@ const RemotePongTable = ({
     backgroundId,
     isGameOver,
     pausesRemaining,
-    pausingPlayer
+    pausingPlayer,
+    isSelfOnRight
 }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
@@ -29,87 +30,103 @@ const RemotePongTable = ({
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
     
-        const draw = () => {
-            // Clear canvas
+        // Clear and prepare the canvas
+        const clearCanvas = (ctx) => {
             ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-    
-            // Draw dark background
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
-    
-            // Draw center line
+        };
+
+        // Draw the center line
+        const drawCenterLine = (ctx) => {
             ctx.setLineDash([5, 15]);
             ctx.beginPath();
             ctx.moveTo(canvasSize.width / 2, 0);
             ctx.lineTo(canvasSize.width / 2, canvasSize.height);
             ctx.strokeStyle = 'white';
             ctx.stroke();
-    
-            // Draw ball with trail effect and glow
-            if (gameState.ball) {
-                // Draw ball trail/glow
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = 'white';
-                ctx.beginPath();
-                ctx.arc(
-                    gameState.ball.x,
-                    gameState.ball.y,
-                    10, // ball radius
-                    0,
-                    Math.PI * 2
-                );
-                ctx.fillStyle = 'white';
-                ctx.fill();
-                ctx.closePath();
-                ctx.shadowBlur = 0;
-            }
-    
-            // Draw paddles with rounded corners and glow effect
-            const drawPaddle = (x, y, color) => {
-                const width = 20;  // paddle width
-                const height = 110; // paddle height
-                const radius = 10;  // corner radius
-    
-                // Add glow effect for paddles
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = color;
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                
-                // Draw rounded rectangle
-                ctx.moveTo(x + radius, y);
-                ctx.lineTo(x + width - radius, y);
-                ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-                ctx.lineTo(x + width, y + height - radius);
-                ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-                ctx.lineTo(x + radius, y + height);
-                ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-                ctx.lineTo(x, y + radius);
-                ctx.quadraticCurveTo(x, y, x + radius, y);
-                
-                ctx.closePath();
-                ctx.fill();
-                ctx.shadowBlur = 0; // Reset shadow blur
-            };
-    
-            // Draw paddles with player colors
-            if (gameState.player1) {
-                drawPaddle(
-                    gameState.player1.x,
-                    gameState.player1.y,
-                    'white' // Player 1 color (blue)
-                );
-            }
-    
-            if (gameState.player2) {
-                drawPaddle(
-                    gameState.player2.x,
-                    gameState.player2.y,
-                    'white' // Player 2 color (green)
-                );
+        };
+
+        // Draw a single paddle
+        const drawPaddle = (ctx, x, y, color) => {
+            const width = 20;   // paddle width
+            const height = 110; // paddle height
+            const radius = 10;  // corner radius
+
+            // Add glow effect
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = color;
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            
+            // Draw rounded rectangle
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            
+            ctx.closePath();
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        };
+
+        // Draw ball with glow effect
+        const drawBall = (ctx, ball) => {
+            if (!ball) return;
+            
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = 'white';
+            ctx.beginPath();
+            ctx.arc(
+                ball.x,
+                ball.y,
+                10,
+                0,
+                Math.PI * 2
+            );
+            ctx.fillStyle = 'white';
+            ctx.fill();
+            ctx.closePath();
+            ctx.shadowBlur = 0;
+        };
+
+        // Draw paddles based on player perspective
+        const drawPaddles = (ctx, gameState, playerNumber) => {
+            if (!gameState.player1 || !gameState.player2) return;
+
+            const PADDLE_RIGHT_X = canvasSize.width - 30; // Right side position
+            const PADDLE_LEFT_X = 10;    // Left side position
+
+            if (playerNumber === 1) {
+                // Player 1's view - current player on right
+                drawPaddle(ctx, PADDLE_RIGHT_X, gameState.player1.y, 'white');  // Me
+                drawPaddle(ctx, PADDLE_LEFT_X, gameState.player2.y, 'white');   // Opponent
+            } else {
+                // Player 2's view - current player on right
+                drawPaddle(ctx, PADDLE_RIGHT_X, gameState.player2.y, 'white');  // Me
+                drawPaddle(ctx, PADDLE_LEFT_X, gameState.player1.y, 'white');   // Opponent
             }
         };
-    
+
+        // Main draw function that coordinates everything
+        const draw = () => {
+            if (!gameState || !canvasRef.current) return;
+            
+            const ctx = canvasRef.current.getContext('2d');
+            
+            // Execute drawing functions in order
+            clearCanvas(ctx);
+            drawCenterLine(ctx);
+            drawPaddles(ctx, gameState, playerNumber);
+            drawBall(ctx, gameState.ball);
+        };
+        
+
         // Create animation loop
         const animate = () => {
             draw();
@@ -129,41 +146,34 @@ const RemotePongTable = ({
 
     // Handle keyboard input for paddle movement
     useEffect(() => {
-
         const handleKeyDown = (e) => {
             if (isPaused) return;
             
-            const upKey = playerNumber === 1 ? 'w' : 'ArrowUp';
-            const downKey = playerNumber === 1 ? 's' : 'ArrowDown';
-        
-            if (e.key === upKey) {
+            if (e.key === 'ArrowUp') {
                 onPaddleMove('startUp');
             }
-            if (e.key === downKey) {
+            if (e.key === 'ArrowDown') {
                 onPaddleMove('startDown');
             }
         };
         
         const handleKeyUp = (e) => {
-            const upKey = playerNumber === 1 ? 'w' : 'ArrowUp';
-            const downKey = playerNumber === 1 ? 's' : 'ArrowDown';
-        
-            if (e.key === upKey) {
+            if (e.key === 'ArrowUp') {
                 onPaddleMove('stopUp');
             }
-            if (e.key === downKey) {
+            if (e.key === 'ArrowDown') {
                 onPaddleMove('stopDown');
             }
         };
-
+    
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
-
+    
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('keyup', handleKeyUp);
         };
-    }, [isPaused, playerNumber]);
+    }, [isPaused, onPaddleMove]);
 
 
     useEffect(() => {

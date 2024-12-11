@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import MatchmakingService from '../../services/MatchmakingService'
 import './MatchMaking.css'
 import MatchFoundDisplay from './MatchFoundDisplay';
-import Player from './Player'
 
 
 // Main Matchmaking component

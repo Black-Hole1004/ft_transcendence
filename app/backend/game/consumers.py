@@ -32,19 +32,7 @@ class GamePhysics:
         ball['x'] = next_x
         ball['y'] = next_y
 
-    # def handle_paddle_collision(self, ball, paddle):
-    #     """Match local game paddle collision behavior"""
-    #     # Simple direction change like in local game
-    #     ball['velocityX'] = -ball['velocityX']
-
-    #     # Position correction
-    #     if paddle['x'] < self.canvas_width / 2:  # Left paddle
-    #         ball['x'] = paddle['x'] + paddle['width'] + ball['radius']
-    #     else:  # Right paddle
-    #         ball['x'] = paddle['x'] - ball['radius']
-        
-    #     # Speed increase like in local game
-    #     ball['speed'] = min(ball['speed'] + ball['speedIncrement'], ball['maxSpeed'])
+    
     def handle_paddle_collision(self, ball, paddle):
         """Improved paddle collision physics"""
         # Reverse X direction
@@ -139,9 +127,18 @@ class GamePhysics:
 class GameState:
     def __init__(self, game_id, canvas_width=800, canvas_height=400):
         self.game_id = game_id
+        
+        self.player1_id = None # player id from the matchmaking service to track players
+        self.player2_id = None # player id from the matchmaking service to track players
+        
         self.canvas_width = canvas_width
         self.canvas_height = canvas_height
         
+        # track players ids 
+        self.player1_id = None
+        self.player2_id = None
+        
+        self.player1_id 
         # pause/resume  management system
         self.pause_limit = 3 # number of pauses allowed for player
         self.player1_pauses_remaining = self.pause_limit
@@ -244,20 +241,20 @@ class GameConsumer(AsyncWebsocketConsumer):
                 self.channel_name
             )
             
-            # Assign player number
             if self.game_state.connected_players >= 2:
-                # print("Game is full")
+                print("Game is full")
                 await self.close()
                 return
-                
-            if not self.game_state.player1_paddle['connected']:
-                self.player_number = 1
-                self.game_state.player1_paddle['connected'] = True
-            else:
-                self.player_number = 2
-                self.game_state.player2_paddle['connected'] = True
+
+            # Assign player number
+            # if not self.game_state.player1_paddle['connected']:
+            #     self.player_number = 1
+            #     self.game_state.player1_paddle['connected'] = True
+            # else:
+            #     self.player_number = 2
+            #     self.game_state.player2_paddle['connected'] = True
             
-            self.game_state.connected_players += 1
+            # self.game_state.connected_players += 1
             
             # print(f"Assigned as Player {self.player_number}")
             
@@ -347,8 +344,9 @@ class GameConsumer(AsyncWebsocketConsumer):
             data = json.loads(text_data)
             message_type = data.get('type')
             
+            # Message handlers for different message types
             handlers = {
-                'paddle_move': self.handle_paddle_move,
+                'player_number_init': self.handle_player_number_init, # the player number received from the frontend from the matchmaking service                'paddle_move': self.handle_paddle_move,
                 'paddle_direction': self.handle_paddle_direction,
                 'player_ready': self.handle_player_ready,
                 'restart_game': self.handle_restart_request,
@@ -372,6 +370,33 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'message': str(e)
             }))
 
+    async def handle_player_number_init(self, data):
+        """Handle player number initialization"""
+        try:
+            self.player_number = data.get('player_number')
+            player_id = data.get('player_id') # player id (user id) from the matchmaking service (frontend)
+            
+            if self.player_number == 1:
+                self.game_state.player1_id = player_id
+                self.game_state.player1_paddle['connected'] = True
+            else:
+                self.game_state.player2_id = player_id
+                self.game_state.player2_paddle['connected'] = True
+            
+            self.game_state.connected_players += 1
+            
+            # Just confirm player number was set
+            await self.send(json.dumps({
+                'type': 'player_number_confirmed',
+                'player_number': self.player_number
+            }))
+            
+        except Exception as e:
+            await self.send(json.dumps({
+                'type': 'error',
+                'message': f'Error initializing player number: {str(e)}'
+            }))
+            
     async def update_paddles(self, delta_time):
         """Update paddle positions with improved smoothness"""
         paddle_speed = 630 * delta_time  # Increased from 400 to 800 for faster movement
@@ -732,7 +757,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         # Instead of separate score update, broadcast full game state
         await self.broadcast_game_state()
         
-        # Check for game over
+        # Check for game over by score limit
         if (self.game_state.player1_paddle['score'] >= 10 or 
             self.game_state.player2_paddle['score'] >= 10):
             self.game_state.game_over = True
@@ -777,12 +802,24 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(self.room_group_name, message)
 
     async def handle_game_over(self):
-        """Handle game over state"""
-        # print("\n=== Game Over ===")
-        # print(f"Time Remaining: {round(self.game_state.time_remaining)}s")
-        # print(f"Final Score - P1: {self.game_state.player1_paddle['score']}, P2: {self.game_state.player2_paddle['score']}")
-        
+        """Handle game over state"""        
         reason = 'time_up' if self.game_state.time_remaining <= 0 else 'score_limit'
+        
+        winner_number = self.game_state.winner
+        #     winner_number = 1 if self.game_state.player1_paddle['score'] > self.game_state.player2_paddle['score'] else 2
+        # get winner_id
+        winner_id = self.game_state.player1_id if winner_number == 1 else self.game_state.player2_id
+        loser_id = self.game_state.player1_id if winner_number == 2 else self.game_state.player2_id
+        winner_score = self.game_state.player1_paddle['score'] if winner_number == 1 else self.game_state.player2_paddle['score']
+        loser_score = self.game_state.player2_paddle['score'] if winner_number == 1 else self.game_state.player1_paddle['score']
+        
+        # update the the database, winner and loser score, game status to completed, winner and loser users with the appropriate xp points
+        await self.update_game_results(
+            winner_id=winner_id,
+            loser_id=loser_id,
+            winner_score=winner_score,
+            loser_score=loser_score
+        )
         
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -798,6 +835,59 @@ class GameConsumer(AsyncWebsocketConsumer):
             }
         )
 
+    async def update_game_results(self, winner_id, loser_id, winner_score, loser_score):
+        """Update game results in database"""
+        try:
+            # Get game from database
+            game = await self.get_game_session(self.game_id)
+            
+            # Update game status
+            game.status = GameSessions.GameStatus.FINISHED
+            game.end_time = timezone.now()
+            game.winner_id = winner_id
+            game.loser_id = loser_id
+            game.score_player1 = winner_score if self.game_state.player1_id == winner_id else loser_score
+            game.score_player2 = loser_score if self.game_state.player1_id == winner_id else winner_score
+            
+            # Calculate XP changes
+            xp_gain = self.calculate_xp_gain(winner_score, loser_score)
+            
+            # Update winner stats
+            winner = await self.get_user(winner_id)
+            winner.xp += xp_gain
+            winner.games_won += 1
+            await self.update_user(winner)
+            
+            # Update loser stats
+            loser = await self.get_user(loser_id)
+            loser.xp -= (xp_gain // 2)  # Lose half of what winner gains
+            loser.games_lost += 1
+            await self.update_user(loser)
+            
+            # Save game
+            await self.save_game(game)
+            
+            # Notify players of results
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'game_ended',
+                    'winner_id': winner_id,
+                    'final_scores': {
+                        str(winner_id): winner_score,
+                        str(loser_id): loser_score
+                    },
+                    'xp_changes': {
+                        str(winner_id): xp_gain,
+                        str(loser_id): -(xp_gain // 2)
+                    }
+                }
+            )
+            
+        except Exception as e:
+            print(f"Error updating game results: {e}")
+            traceback.print_exc()
+    
     # WebSocket event handler methods
     async def ball_update(self, event):
         """Handle ball update event"""

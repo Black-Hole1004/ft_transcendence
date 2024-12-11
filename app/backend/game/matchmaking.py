@@ -35,7 +35,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
         
         print(f"Authenticated user connected: {self.user.username}")
         
-        # Store player info
+        # Store player info in matchmaking queue
         self.matchmaking_queue[self.channel_name] = {
             'searching': False,
             'preferences': None,
