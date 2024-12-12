@@ -7,17 +7,19 @@ class GameWebSocket {
         this.maxRetries = 1;
         this.reconnectTimeout = null;
         this.gameId = null;
+        this.userId = null;
         this.playerNumber = null;
     }
 
-    connect(gameId, playerNumber) {
-        if (!gameId) {
-            console.error('No game ID provided from server');
+    connect(gameId, playerNumber, userId) {
+        if (!gameId || !userId) {
+            console.error('No game ID or user ID provided');
             return;
         }
         
         this.gameId = gameId;
         this.playerNumber = playerNumber;
+        this.userId = userId;
 
         if (this.reconnectTimeout) {
             clearTimeout(this.reconnectTimeout);
@@ -43,10 +45,15 @@ class GameWebSocket {
     }
 
     sendPlayerNumber() {
-        console.log('Sending player number initialization:', this.playerNumber);
+        console.log('initializing player : ', {
+            playerNumber: this.playerNumber,
+            userId: this.userId
+        });
+    
         this.send({
             type: 'player_number_init',
-            player_number: this.playerNumber
+            player_number: this.playerNumber,
+            player_id: this.userId
         });
     }
 

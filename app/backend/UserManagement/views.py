@@ -35,9 +35,8 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
-# from .forms import UserProfileForm
-#pass=Ahaloui@@13+
-#gmail=aymene@gmail.com
+from rest_framework.exceptions import ValidationError
+
 
 
 from .models import UserSession

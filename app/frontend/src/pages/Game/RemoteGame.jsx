@@ -97,7 +97,8 @@ const RemoteGame = () => {
 		socketRef.current = ws
 
 		// Connect to game
-		ws.connect(gameId, playerNumber)
+		console.log('Connecting to game:', gameId, 'as player', playerNumber, 'with user_id', currentUser.id)
+		ws.connect(gameId, playerNumber, currentUser.id)
 
 		// Event handlers
 		ws.on('game_info', (data) => {
@@ -215,7 +216,7 @@ const RemoteGame = () => {
 
 	return (
 		<div
-			className={`backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}
+			className={`backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-35' : 'bg-backdrop-40'}`}
 		>
 			<section className='flex'>
 				<div className='flex-1 margin-page flex flex-col items-center gap-8'>

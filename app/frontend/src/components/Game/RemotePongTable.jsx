@@ -146,9 +146,7 @@ const RemotePongTable = ({
 
     // Handle keyboard input for paddle movement
     useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (isPaused) return;
-            
+        const handleKeyDown = (e) => {            
             if (e.key === 'ArrowUp') {
                 onPaddleMove('startUp');
             }
@@ -173,7 +171,7 @@ const RemotePongTable = ({
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('keyup', handleKeyUp);
         };
-    }, [isPaused, onPaddleMove]);
+    }, [onPaddleMove]);
 
 
     useEffect(() => {
@@ -199,7 +197,7 @@ const RemotePongTable = ({
                 ref={canvasRef}
                 width={canvasSize.width}
                 height={canvasSize.height}
-                className={`game-table border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+                className={`game-table border ${isPaused ? 'brightness-[80%]' : 'brightness-[1]'}`}
                 style={{ 
                     borderRadius: '25px', 
                     width: '100%', 

@@ -26,13 +26,13 @@ class GameSessions(models.Model):
     )
     winner = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
-        related_name='games_won',
+        related_name='won_games',
         null=True, 
         on_delete=models.SET_NULL
     )
     loser = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
-        related_name='games_lost',
+        related_name='lost_games',
         null=True, 
         on_delete=models.SET_NULL
     )

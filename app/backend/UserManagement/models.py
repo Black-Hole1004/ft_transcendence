@@ -70,6 +70,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     # added by tabi3a
     xp = models.IntegerField(default=0)
     
+    # Game statistics
+    won_games_count = models.IntegerField(default=0)    # Instead of games_won
+    lost_games_count = models.IntegerField(default=0)   # Instead of games_lost
+    total_games_count = models.IntegerField(default=0)  # Track total games
+    
     is_logged_with_oauth = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'email'
