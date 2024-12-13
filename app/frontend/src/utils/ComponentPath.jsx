@@ -11,6 +11,7 @@ const Profile = React.lazy(() => import('../pages/Profile/Profile'))
 const Settings = React.lazy(() => import('../pages/Settings/Settings'))
 const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
 const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
+const TournamentTest = React.lazy(() => import('../pages/Tournament/TournamentTest'))
 const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
 const Layout = React.lazy(() => import('../components/Layout/Layout'))
 const TwoFactorAuth = React.lazy(() => import('../pages/TwoFactorAuth/TwoFactorAuth'))
@@ -41,6 +42,9 @@ const ComponentPath = () => {
 					<Route path="/Dashboard" element={<Dashboard />} />
 					<Route path='/local-game' element={<LocalGame />} />
 					<Route path="/Tournament" element={<Tournament />} />
+
+					<Route path="/TournamentTest" element={<TournamentTest />} />
+
 					<Route path="/chat/:conversation_key" element={<Chat />} />
 					<Route path="/local-game-setup" element={<LocalGameSetup />} />
 					<Route path="/searching" element={<SearchingAnimation />} />

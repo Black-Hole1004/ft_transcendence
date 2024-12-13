@@ -269,3 +269,111 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         return friends
 
 
+#------------------------------------------------------------------------------------
+
+class TournamentConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.tournament_id = self.scope['url_route']['kwargs']['tournament_id']
+        self.tournament_group_name = f'tournament_{self.tournament_id}'
+
+        # Join tournament group
+        await self.channel_layer.group_add(
+            self.tournament_group_name,
+            self.channel_name
+        )
+        await self.accept()
+        tournament_data = await self.get_tournament_data()
+        await self.send(text_data=json.dumps({
+            tournament_data
+        }))
+
+    async def disconnect(self, close_code):
+        # Leave tournament group
+        await self.channel_layer.group_discard(
+            self.tournament_group_name,
+            self.channel_name
+        )
+    
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        action = data.get('action')
+        if action == 'update_match':
+            match_data = data.get('match_data')
+            updated_data = await self.update_match(match_data)
+
+            # Broadcast the updated match data to the group
+            await self.channel_layer.group_send(
+                self.tournament_group_name,
+                {
+                    'type': 'match_update',
+                    'updated_data': updated_data
+                }
+            )
+    
+    async def tournament_update(self, event):
+        await self.send(text_data=json.dumps(event['data']))
+    
+    @database_sync_to_async
+    def get_tournament_data(self):
+        tournament = Tournament.objects.get(id=self.tournament_id)
+        matches = Match.objects.filter(tournament_id=self.tournament_id)
+        return {
+            'tournament': {
+                'id': tournament.id,
+                'name': tournament.name,
+                'status': tournament.status,
+                'winner': tournament.winner.username if tournament.winner else None
+            },
+            'matches': [
+                {
+                    'id': match.id,
+                    'player1': match.player1.username,
+                    'player2': match.player2.username,
+                    'player1_score': match.player1_score,
+                    'player2_score': match.player2_score,
+                    'round_number': match.round_number,
+                    'status': match.status,
+                    'winner': match.winner.username if match.winner else None
+                } for match in matches
+            ]
+        }
+    
+    @database_sync_to_async
+    def update_match(self, match_data):
+        match_id = match_data.get('match_id')
+        match = Match.objects.get(id=match_id)
+
+        match.player1_score = match_data.get('player1_score', match.player1_score)
+        match.player2_score = match_data.get('player2_score', match.player2_score)
+
+        if match_data.get('complete', False):
+            match.status = 'COMPLETED'
+            winner = match.player1 if match.player1_score > match.player2_score else match.player2
+            match.winner = winner
+            match.save()
+
+            #Handle tournament progressions
+            if match.round_number == 1:
+                # Check if both semi-finals are complete
+                other_semi = Match.objects.filter(
+                    tournament_id=match.tournament_id, 
+                    round_number=1
+                ).exclude(id=match_id).first()
+            
+            if other_semi.status == 'COMPLETED':
+                # Create finals match
+                Match.objects.create(
+                    tournament=match.tournament,
+                    player1=match.winner,
+                    player2=other_semi.winner,
+                    round_number=2
+                )
+            elif match.round_number == 2:
+                # Tournament is complete
+                tournament = match.tournament
+                tournament.status = 'COMPLETED'
+                tournament.winner = match.winner
+                tournament.save()
+        
+        match.save()
+        return self.get_tournament_data()

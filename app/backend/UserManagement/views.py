@@ -63,7 +63,9 @@ from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 
 
-
+from .models import Tournament, TournamentParticipant, Match
+from .serializers import TournamentSerializer, MatchSerializer
+from django.db import transaction
 
 
 User = get_user_model()
@@ -372,6 +374,14 @@ class UserListView(generics.ListAPIView):
         context['request'] = self.request
         return context
 
+class UsersListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
 class SendFriendRequestView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -479,3 +489,99 @@ class FriendShipRequestListView(APIView):
         friend_requests = FriendShipRequest.objects.filter(user_to=user, status='pending')
         serializer = FriendRequestSerializer(friend_requests, many=True, context={'request': request})
         return Response(serializer.data, status=200)
+
+
+# Tournament views for creating and managing tournaments
+class TournamentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        tournaments = Tournament.objects.all()
+        serializer = TournamentSerializer(tournaments, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        print(f"Request data =====> {request.data}")
+        with transaction.atomic():
+            users = request.data.get('users', [])
+            print(f"Users =========> {users}")
+
+
+            if len(users) != 4:
+                return Response(
+                    {'error': 'Invalid number of users'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            tournament = Tournament.objects.create(
+                name = request.data.get('name', 'Tournament'),
+            )
+
+            for idx, user_id in enumerate(users, 1):
+                TournamentParticipant.objects.create(
+                    tournament=tournament,
+                    user_id=user_id,
+                    seed=idx
+                )
+            
+            Match.objects.create(
+                tournament=tournament,
+                player1_id=users[0],
+                player2_id=users[3],
+                round_number=1
+            )
+
+            Match.objects.create(
+                tournament=tournament,
+                player1_id=users[1],
+                player2_id=users[2],
+                round_number=1
+            )
+
+            tournament.status = 'IN_PROGRESS'
+            tournament.save()
+
+            serializer = TournamentSerializer(tournament)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class TournamentDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_objects(self, pk):
+        try:
+            return Tournament.objects.get(pk=pk)
+        except Tournament.DoesNotExist:
+            raise None
+    
+    def get(self, request, pk):
+        tournament = self.get_objects(pk)
+        if tournament is None:
+            return Response(
+                {'error': 'Tournament not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = TournamentSerializer(tournament)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        tournament = self.get_objects(pk)
+        if tournament is None:
+            return Response(
+                {'error': 'Tournament not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = TournamentSerializer(tournament, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        tournament = self.get_objects(pk)
+        if tournament is None:
+            return Response(
+                {'error': 'Tournament not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        tournament.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
