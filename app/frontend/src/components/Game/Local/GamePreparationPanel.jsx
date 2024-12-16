@@ -28,6 +28,16 @@ const GamePreparationPanel = ({
 						setValue={(field, value) => onPlayerUpdate('player2', field, value)}
 					/>
 					<Inputs
+						id={'Player 3'}
+						value={players.player3}
+						setValue={(field, value) => onPlayerUpdate('player3', field, value)}
+					/>
+					<Inputs
+						id={'Player 4'}
+						value={players.player4}
+						setValue={(field, value) => onPlayerUpdate('player4', field, value)}
+					/>
+					<Inputs
 						id={'Ball'}
 						value={gameConfig.ball}
 						duration={gameConfig.duration}
@@ -60,7 +70,7 @@ const GamePreparationPanel = ({
 						className='font-dreamscape labels w-full p-2 bg-primary text-secondary rounded brightness-90
 					hover:scale-[1.02] hover:brightness-100 transition duration-200 ease-in'
 					>
-						Start Game
+						Start Tournament
 					</button>
 				</div>
 			</form>
