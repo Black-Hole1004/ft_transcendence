@@ -120,6 +120,10 @@ class GameState:
     def __init__(self, game_id, canvas_width=800, canvas_height=400):
         self.game_id = game_id
         
+        
+        self.player1_side = 'right'  # to Tell backend player 1 wants to be on right
+        self.player2_side = 'left'   # Player 2 on left
+        
         self.player1_id = None # player id from the matchmaking service to track players
         self.player2_id = None # player id from the matchmaking service to track players
         
@@ -142,7 +146,7 @@ class GameState:
         # Game status
         self.connected_players = 0
         self.players_ready = set()
-        self.time_remaining = 30  # 1 minute and 5 seconds
+        self.time_remaining = 90  # 1 minute and a half
         
         # Ball properties
         self.ball = {
@@ -161,8 +165,9 @@ class GameState:
         self.paddle_height = 110
         
         # Player paddles
-        self.player1_paddle = {
-            'x': 10,
+        self.player1_paddle = { # player 1 paddle ==> left side of the canvas ==> opponent paddle
+            # 'x': 10, # always start at the left side of the canvas
+            'x': canvas_width - 30, # always start at the right side of the canvas
             'y': canvas_height / 2 - self.paddle_height / 2,
             'height': self.paddle_height,
             'width': self.paddle_width,
@@ -170,9 +175,10 @@ class GameState:
             'connected': False
         }
         
-        self.player2_paddle = {
-            'x': canvas_width - 30,
-            'y': 0,
+        self.player2_paddle = { # player 2 paddle ==> right side of the canvas ==> my paddle
+            # 'x': canvas_width - 30, # always start at the right side of the canvas
+            'x': 10,
+            'y': canvas_height / 2 - self.paddle_height / 2,
             'height': self.paddle_height,
             'width': self.paddle_width,
             'score': 0,
@@ -399,28 +405,71 @@ class GameConsumer(AsyncWebsocketConsumer):
             )
             self.game_state.player2_paddle['y'] = target_y
     
+    # async def handle_paddle_direction(self, data):
+    #     """Handle paddle direction changes with immediate response"""
+    #     try:
+    #         #check if the game is OVER
+    #         if self.game_state is None or self.game_state.game_over:
+    #             return
+            
+    #         action = data.get('action')
+    #         player_paddle = self.game_state.player1_paddle if self.player_number == 1 else self.game_state.player2_paddle
+            
+    #         # Instant movement state change
+    #         if self.player_number == 1:
+    #             if action == 'startUp':
+    #                 self.game_state.player1_movement = 'up'
+    #                 # Initial movement for instant response
+    #                 player_paddle['y'] = max(0, player_paddle['y'] - 7)
+    #             elif action == 'startDown':
+    #                 self.game_state.player1_movement = 'down'
+    #                 player_paddle['y'] = min(400 - 110, player_paddle['y'] + 7)
+    #             elif action in ['stopUp', 'stopDown']:
+    #                 self.game_state.player1_movement = None
+    #         else:
+    #             if action == 'startUp':
+    #                 self.game_state.player2_movement = 'up'
+    #                 player_paddle['y'] = max(0, player_paddle['y'] - 7)
+    #             elif action == 'startDown':
+    #                 self.game_state.player2_movement = 'down'
+    #                 player_paddle['y'] = min(400 - 110, player_paddle['y'] + 7)
+    #             elif action in ['stopUp', 'stopDown']:
+    #                 self.game_state.player2_movement = None
+            
+    #         # Immediate state broadcast for responsive feel
+    #         await self.broadcast_game_state()
+
+    #     except Exception as e:
+    #         print(f"Error in handle_paddle_direction: {str(e)}")
+    
     async def handle_paddle_direction(self, data):
         """Handle paddle direction changes with immediate response"""
         try:
-            #check if the game is OVER
+            # Check if game is over
             if self.game_state is None or self.game_state.game_over:
                 return
             
             action = data.get('action')
-            player_paddle = self.game_state.player1_paddle if self.player_number == 1 else self.game_state.player2_paddle
             
-            # Instant movement state change
+            # Set paddle position based on player number
             if self.player_number == 1:
+                player_paddle = self.game_state.player1_paddle
+                # Set player 1's paddle to right side
+                player_paddle['x'] = self.game_state.canvas_width - 30
+                
                 if action == 'startUp':
                     self.game_state.player1_movement = 'up'
-                    # Initial movement for instant response
                     player_paddle['y'] = max(0, player_paddle['y'] - 7)
                 elif action == 'startDown':
                     self.game_state.player1_movement = 'down'
                     player_paddle['y'] = min(400 - 110, player_paddle['y'] + 7)
                 elif action in ['stopUp', 'stopDown']:
                     self.game_state.player1_movement = None
-            else:
+            else:  # Player 2
+                player_paddle = self.game_state.player2_paddle
+                # Set player 2's paddle to left side
+                player_paddle['x'] = 10
+                
                 if action == 'startUp':
                     self.game_state.player2_movement = 'up'
                     player_paddle['y'] = max(0, player_paddle['y'] - 7)
@@ -430,7 +479,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 elif action in ['stopUp', 'stopDown']:
                     self.game_state.player2_movement = None
             
-            # Immediate state broadcast for responsive feel
+            # Broadcast updated state
             await self.broadcast_game_state()
 
         except Exception as e:
@@ -802,31 +851,9 @@ class GameConsumer(AsyncWebsocketConsumer):
             winner_score=winner_score,
             loser_score=loser_score
         )
-        
-        # await self.channel_layer.group_send(
-        #     self.room_group_name,
-        #     {
-        #         'type': 'game_ended',
-        #         'reason': reason,
-        #         'winner': self.game_state.winner,
-        #         'final_scores': {
-        #             '1': self.game_state.player1_paddle['score'],
-        #             '2': self.game_state.player2_paddle['score']
-        #         },
-        #         'time_remaining': round(self.game_state.time_remaining)
-        #     }
-        # )
 
     def calculate_xp_gain(self, winner_score, loser_score):
         """Calculate XP gain based on game results"""
-        """
-            {'name': 'NOVICE ASTRONAUT', 'xp': 0, 'image': '/badges/novice.png'},
-            {'name': 'COSMIC EXPLORER', 'xp': 2000, 'image': '/badges/cosmic.png'},
-            {'name': 'STELLAR VOYAGER', 'xp': 4000, 'image': '/badges/stellar.png'},
-            {'name': 'GALACTIC TRAILBLAZER', 'xp': 6000, 'image': '/badges/galactic.png'},
-            {'name': 'CELESTIAL MASTER', 'xp': 8000, 'image': '/badges/celestial.png'}
-            
-        """
         # Calculate XP gain based on score difference
         score_diff = abs(winner_score - loser_score)
         xp_gain = 250 + (score_diff * 10) # 250 base XP + 10 XP per score difference

@@ -219,6 +219,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://api.intra.42.fr",
+    "http://10.12.2.9:5173",  # Frontend URL
 ] # todo: to be changed in production
 
 # Ensure secure cookies in production
@@ -226,7 +227,12 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '10.12.2.9',  # Backend IP
+]
 
 AUTHENTICATION_BACKENDS = (
     'core.GoogleOauth2.CustomGoogleOAuth2',  # Google OAuth
@@ -234,7 +240,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # Default authentication
 )
 
-LOGIN_REDIRECT_URL = 'http://localhost:5173/Dashboard'
+# LOGIN_REDIRECT_URL = 'http://localhost:5173/Dashboard'
 LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
@@ -286,31 +292,18 @@ CACHES = {
     }
 }
 
-# for debugging purposes
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': True,  # This will disable existing loggers
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         'game': {  # Your custom logger
-#             'handlers': ['console'],
-#             'level': 'INFO',
-#             'propagate': False,
-#         },
-#     },
-# }
+# settings.py
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'prompt': 'consent',
+}
 
-# Disable Django's logging
-# import logging
-# logging.getLogger('django').setLevel(logging.WARNING)
-# logging.getLogger('django.server').setLevel(logging.WARNING)
-# logging.getLogger('django.channels').setLevel(logging.WARNING)
-# logging.getLogger('django.channels.server').setLevel(logging.WARNING)
+# Add this if you're using social-auth-app-django
+SOCIAL_AUTH_ALLOWED_REDIRECT_HOSTS = [
+    'localhost:5173',
+    '10.12.2.9:5173',
+]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'email', 

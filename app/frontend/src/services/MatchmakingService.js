@@ -1,4 +1,6 @@
 // src/services/MatchmakingService.js
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
+
 class MatchmakingService {
     constructor() {
         this.socket = null;

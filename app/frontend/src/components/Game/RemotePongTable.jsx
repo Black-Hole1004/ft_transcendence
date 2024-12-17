@@ -24,12 +24,14 @@ const RemotePongTable = ({
     const [isUpPressed, setIsUpPressed] = useState(false);
     const [isDownPressed, setIsDownPressed] = useState(false);
 
+    // this function will transform the coordinates based on the player number
+    
     useEffect(() => {
         if (!gameState || !canvasRef.current) return;
         
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-    
+        
         // Clear and prepare the canvas
         const clearCanvas = (ctx) => {
             ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
@@ -82,8 +84,13 @@ const RemotePongTable = ({
             ctx.shadowBlur = 6;
             ctx.shadowColor = 'white';
             ctx.beginPath();
+
+            // Transform ball x-position based on player perspective
+                // Transform ball position based on player number
+            const ballX = playerNumber === 2 ? (canvasSize.width - ball.x) : ball.x;
+            
             ctx.arc(
-                ball.x,
+                ballX,
                 ball.y,
                 10,
                 0,
@@ -122,8 +129,8 @@ const RemotePongTable = ({
             // Execute drawing functions in order
             clearCanvas(ctx);
             drawCenterLine(ctx);
-            drawPaddles(ctx, gameState, playerNumber);
             drawBall(ctx, gameState.ball);
+            drawPaddles(ctx, gameState, playerNumber);
         };
         
 
