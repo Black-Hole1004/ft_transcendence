@@ -251,7 +251,68 @@ const Tournament = () => {
 		<div className="flex flex-row items-start justify-center min-h-screen overflow-hidden" >
 
 			{/* start missing part */}
+			<div className="w-[35%] flex flex-col overflow-hidden  p-8">
+				<div className=''>
+					<h1 className='text-6xl font-dreamscape'
+						style={{
+							textShadow: '0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)',
+						}}
+					>
+						CELESTIAL PONG CLASH
+					</h1>
+					<div className='flex flex-col justify-center'>
+						<p className='text-gray-300 text-base font-medium text-justify pr-40'>
+							The Celestial Pong Clash invites players from across the galaxy to compete in
+							intense interstellar battles, where victory depends on mastering precision and
+							strategy in the vast cosmic realm.
+						</p>
+					</div>
+				</div>
 
+				<div className='justify-center rounded-3xl mt-20 w-[60%] border border-white border-b-opacity-20'>
+					<h2 className='text-2xl font-semibold flex items-center justify-center'>PLAYERS</h2>
+					<div className="space-y-4 p-4 ">
+						{
+							players.map((player, index) => {
+								return (
+									<div
+										key={index}
+										className='user-container flex items-center justify-between font-dreamscape-sans
+									rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
+										<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[68%]'>
+											<img
+												src={player.avatar}
+												className='h-16 rounded-full ring-1 ring-primary select-none'
+												alt='user-image'
+												loading='eager'
+											/>
+											<div className='flex flex-wrap items-center overflow-hidden'>
+												<p className='text-primary nickname-size leading-[1] truncate mr-1'>
+													{player.nickname}
+												</p>
+												<p className='text-achievement text-xs '> {player.achievement}</p>
+											</div>
+										</div>
+										<div>
+
+										</div>
+										<div className='h-full mx-1 flex items-center'>
+											<img
+												src={player.icon}
+												className='h-16 select-none'
+												alt='achievement-icon'
+												loading='eager'
+											/>
+											<p className={`xp text-primary leading-[1]`}>{`${player.xp}` + 'xp'}</p>
+										</div>
+									</div>
+								)
+							}
+							)
+						}
+					</div>
+				</div>
+			</div>
 			{/* end missing part */}
 
 			{/* Warning Message */}
