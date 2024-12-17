@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from UserManagement.models import User
 from rest_framework import generics, status
 from Chat.models import Conversation, Message
+from UserManagement.models import User, FriendShip
 from .serializers import ConversationSerializer, UserInfosSerializer, MessageSerializer, SearchResultSerializer
 
 from rest_framework.response import Response
@@ -42,12 +42,12 @@ def getUserInfos(request, conversation_key):
 
     if len(ids) != 2 or not all(id.isdigit() for id in ids) or request.user.id not in map(int, ids):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
-    print('ids: ', ids)
+    # print('ids: ', ids)
     if int(ids[0]) > int(ids[1]):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
     user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
-    print('user_id: ', user_id)
-    print('request.user.id: ', request.user.id)
+    # print('user_id: ', user_id)
+    # print('request.user.id: ', request.user.id)
 
     user_infos = User.objects.filter(id=user_id)
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
@@ -79,4 +79,26 @@ def getSearchedUsers(request, user):
 
     return Response({
         'search_result': search_serializer.data
+    })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@csrf_exempt
+def getFriendshipStatus(request, conversation_key):
+    ids = conversation_key.split('_')
+    other_user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
+    user1 = User.objects.get(id=request.user.id)
+    user2 = User.objects.get(id=other_user_id)
+
+    is_friend_from = FriendShip.objects.filter(user_from=user1, user_to=user2).exists()
+    is_friend_to = FriendShip.objects.filter(user_from=user2, user_to=user1).exists()
+
+    status = is_friend_to or is_friend_from
+    
+    conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
+    
+    return Response({
+        'status': status,
+        'blocked_by': conversation.blocked_by
     })

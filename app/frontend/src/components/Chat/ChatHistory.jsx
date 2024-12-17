@@ -6,6 +6,7 @@ import useAuth from '../../context/AuthContext'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({
+	setBlockerId,
 	conversationKey,
 	setConversationKey,
 	conversationMessages,
@@ -109,6 +110,7 @@ function ChatHistory({
 				{(searchResult ? searchResult : conversations).map((conversation) => (
 					<User
 					key={conversation.id}
+					setBlockerId={setBlockerId}
 					search={!!searchResult}
 					conversation={conversation}
 					conversationKey={conversationKey}

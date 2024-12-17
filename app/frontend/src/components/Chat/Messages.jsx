@@ -67,6 +67,7 @@ const Messages = ({
 						{conversationMessages.map((message, index) => (
 							<Message
 								key={index}
+								index={index}
 								message={message}
 								currentLoggedInUserId={currentLoggedInUserId}
 								recipientProfileImage={recipientProfileImage}

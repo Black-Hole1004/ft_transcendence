@@ -19,7 +19,7 @@ class ConversationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Conversation
-        fields = ['id', 'conversation_key', 'other_user', 'last_message', 'is_blocked']
+        fields = ['id', 'conversation_key', 'other_user', 'last_message', 'blocked_by']
 
     def get_other_user(self, obj):
         request = self.context.get('request')

@@ -28,7 +28,7 @@ class Conversation(models.Model):
     user1_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1', default=1)
     user2_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2', default=2)
     last_message = models.ForeignKey('Message', on_delete=models.SET_NULL, null=True, related_name='last_message')
-    is_blocked = models.BooleanField(default=False)
+    blocked_by = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"Conversation_id: {self.id}, between: {self.user1_id.username} and {self.user2_id.username}"

@@ -1,6 +1,6 @@
 const StartConversation = () => {
 	return (
-		<div className='flex-1 h-full flex flex-col justify-center items-center text-primary
+		<div className='flex-1 w-full flex flex-col justify-center items-center text-primary
 			p-5 gap-2 text-center bg-[rgba(27,22,17,0.5)]'>
 			<img
 				className='w-[40%] select-none'

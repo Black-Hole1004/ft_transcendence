@@ -1,13 +1,12 @@
-const Message = ({ key, currentLoggedInUserId, message, recipientProfileImage }) => {
+const Message = ({ index, currentLoggedInUserId, message, recipientProfileImage }) => {
 	let content = message.content
 	let senderId = message.sender_id
 	let time = new Date(message.sent_datetime)
 
 	const messageTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-
 	return (
 		<div
-			key={key}
+			key={index}
 			id='message'
 			className={`flex items-start lg:gap-2 gap-1 px-2 w-full
 			${senderId === currentLoggedInUserId ? 'justify-end' : ''}`}
