@@ -8,6 +8,8 @@ import PongTable from '../../components/Game/PongTable'
 import Timer from '../../components/Game/Timer'
 import Confetti from 'react-confetti'
 
+import { useTournament } from '../../context/TournamentContext'
+
 //--smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<div className='fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50'>
@@ -64,7 +66,18 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 )
 
 const LocalGame = () => {
+
+
 	const navigate = useNavigate()
+
+	// code ahaloui added
+	const {
+		setSemiFinal1winner,
+		setSemiFinal2winner,
+		setFinalWinner,
+		setTournamentState
+	} = useTournament();
+
 	const [isPaused, setIsPaused] = useState(false)
 	const [isGameOver, setIsGameOver] = useState(false)
 	const [player1Score, setPlayer1Score] = useState(0)
@@ -76,8 +89,8 @@ const LocalGame = () => {
 	const [attacks, setAttacks] = useState([])
 
 	const location = useLocation()
-	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize } = location.state || {}
-	
+	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize, tournamentRound } = location.state || {}
+
 	const [timeRemaining, setTimeRemaining] = useState(duration || 60)
 	const [showRestartPopup, setShowRestartPopup] = useState(false)
 	const [resetParameters, setResetParameters] = useState(false)
@@ -116,10 +129,21 @@ const LocalGame = () => {
 		return null
 	}
 
+	// const handleClose = () => {
+	// 	setShowRestartPopup(false)
+	// 	navigate('/local-game-setup')
+	// }
+	// Update handleClose for tournament flow
 	const handleClose = () => {
-		setShowRestartPopup(false)
-		navigate('/local-game-setup')
-	}
+		setShowRestartPopup(false);
+		if (tournamentRound) {
+			navigate('/tournament', { replace: true });
+		} else {
+			navigate('/local-game-setup');
+		}
+	};
+
+
 
 	const restartGame = () => {
 		setPlayer1Score(0)
@@ -132,15 +156,40 @@ const LocalGame = () => {
 		setWinner(null)
 	}
 
+	// const gameOver = () => {
+	// 	setIsGameOver(true)
+	// 	setIsPaused(true)
+	// 	setShowRestartPopup(true)
+	// 	setWinner(getWinner())
+	// 	setShowConfetti(true)
+	// 	setTimeout(() => setShowConfetti(false), 5000) // Stop confetti after 5 seconds
+	// }
+
 	const gameOver = () => {
-		setIsGameOver(true)
-		setIsPaused(true)
-		setShowRestartPopup(true)
-		setWinner(getWinner())
-		setShowConfetti(true)
-		setTimeout(() => setShowConfetti(false), 5000) // Stop confetti after 5 seconds
-	}
-	;``
+		setIsGameOver(true);
+		setIsPaused(true);
+		setShowRestartPopup(true);
+		const winner = getWinner();
+		setWinner(winner);
+
+		if (tournamentRound) {
+			switch (tournamentRound) {
+				case 'semifinal1':
+					setSemiFinal1winner(winner);
+					setTournamentState('semifinal2');
+					break;
+				case 'semifinal2':
+					setSemiFinal2winner(winner);
+					setTournamentState('final');
+					break;
+				case 'final':
+					setFinalWinner(winner);
+					setTournamentState('completed');
+					break;
+			}
+		}
+	};
+	; ``
 	return (
 		<>
 			<section className='flex'>

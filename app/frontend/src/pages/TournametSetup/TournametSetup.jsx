@@ -44,7 +44,7 @@ const TournamentSetup = () => {
         },
 	})
 
-	const { backgroundId = defaultBackgroundId } = location.state || {}
+	const { backgroundId } = location.state || {}
 
 	const updatePlayerConfig = (playerId, field, value) => {
 		// console.log('value: ', value)
@@ -80,10 +80,10 @@ const TournamentSetup = () => {
 					paddleSize: gameConfig.paddle.size ? gameConfig.paddle.size : GAME_CONSTRAINTS.PADDLE.DEFAULT_SIZE,
 
 					backgroundId: gameConfig.isBackgroundVisible ? backgroundId : null,
-					player1: { name: players.player1.name},
-					player2: { name: players.player2.name},
-                    player3: { name: players.player3.name},
-                    player4: { name: players.player4.name},
+					player1: { name: players.player1.name, color: players.player1.color },
+					player2: { name: players.player2.name, color: players.player2.color },
+                    player3: { name: players.player3.name, color: players.player3.color },
+                    player4: { name: players.player4.name, color: players.player4.color },
 				},
 			})
 		}

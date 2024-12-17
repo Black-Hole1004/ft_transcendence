@@ -27,16 +27,6 @@ const GamePreparationPanel = ({
 						value={players.player2}
 						setValue={(field, value) => onPlayerUpdate('player2', field, value)}
 					/>
-					{/* <Inputs
-						id={'Player 3'}
-						value={players.player3}
-						setValue={(field, value) => onPlayerUpdate('player3', field, value)}
-					/>
-					<Inputs
-						id={'Player 4'}
-						value={players.player4}
-						setValue={(field, value) => onPlayerUpdate('player4', field, value)}
-					/> */}
 					<Inputs
 						id={'Ball'}
 						value={gameConfig.ball}
