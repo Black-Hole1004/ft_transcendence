@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../components/Home/Buttons/Button';
+import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
 
 const players = [
 	{
@@ -78,6 +79,20 @@ const players = [
 ]
 
 const Tournament = () => {
+	const location = useLocation()
+	const { mode, player1, player2, player3, player4, backgroundId, duration, ballSize, ballColor, paddleSize } = location.state || {}
+	console.log('duration: ', duration)
+	console.log('ballSize: ', ballSize)
+	console.log('ballColor: ', ballColor)
+	console.log('paddleSize: ', paddleSize)
+
+	console.log(mode)
+	console.log(player1)
+	console.log(player2)
+	console.log(player3)
+	console.log(player4)
+	console.log(backgroundId)
+
 	return (
 		<div className="flex flex-row items-start justify-center min-h-screen overflow-hidden">
 

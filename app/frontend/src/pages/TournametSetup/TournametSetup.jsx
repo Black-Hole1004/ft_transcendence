@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { GAME_CONSTRAINTS } from '../../constants/gameConstants'
 
 import GameCustomizationPanel from '../../components/Game/Local/GameCustomizationPanel'
-import GamePreparationPanel from '../../components/Game/Local/GamePreparationPanel'
+import GamePreparationPanelT from '../../components/Game/Local/GamePreparationPanelT'
 
 const TournamentSetup = () => {
 	const navigate = useNavigate()
@@ -68,18 +68,22 @@ const TournamentSetup = () => {
 		e.preventDefault()
 		console.log('ballColor: ', gameConfig.ball.color)
 		if (players.player1.name && players.player2.name && players.player3.name && players.player4.name) {
+			console.log('player1: ', players.player1.name)
+			console.log('player2: ', players.player2.name)
 			navigate('/Tournament', {
 				state: {
 					mode: 'local',
-					duration: gameConfig.duration,
-					ballSize: gameConfig.ball.size,
-					ballColor: gameConfig.ball.color,
-					paddleSize: gameConfig.paddle.size,
+
+					duration: gameConfig.duration ? gameConfig.duration : GAME_CONSTRAINTS.DURATION.DEFAULT,
+					ballSize: gameConfig.ball.size ? gameConfig.ball.size : GAME_CONSTRAINTS.BALL.DEFAULT_SIZE,
+					ballColor: gameConfig.ball.color ? gameConfig.ball.color : GAME_CONSTRAINTS.COLORS.DEFAULT,
+					paddleSize: gameConfig.paddle.size ? gameConfig.paddle.size : GAME_CONSTRAINTS.PADDLE.DEFAULT_SIZE,
+
 					backgroundId: gameConfig.isBackgroundVisible ? backgroundId : null,
-					player1: { name: players.player1.name, color: players.player1.color },
-					player2: { name: players.player2.name, color: players.player2.color },
-                    player3: { name: players.player3.name, color: players.player3.color },
-                    player4: { name: players.player4.name, color: players.player4.color },
+					player1: { name: players.player1.name},
+					player2: { name: players.player2.name},
+                    player3: { name: players.player3.name},
+                    player4: { name: players.player4.name},
 				},
 			})
 		}
@@ -156,7 +160,7 @@ const TournamentSetup = () => {
 					onGameConfigUpdate={updateGameConfig}
 				/>
 
-				<GamePreparationPanel
+				<GamePreparationPanelT
 					players={players}
 					gameConfig={gameConfig}
 					onSubmit={handleSubmit}

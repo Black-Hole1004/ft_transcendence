@@ -67,6 +67,7 @@ const LocalGameSetup = () => {
 					ballSize: gameConfig.ball.size,
 					ballColor: gameConfig.ball.color,
 					paddleSize: gameConfig.paddle.size,
+					
 					backgroundId: gameConfig.isBackgroundVisible ? backgroundId : null,
 					player1: { name: players.player1.name, color: players.player1.color },
 					player2: { name: players.player2.name, color: players.player2.color },

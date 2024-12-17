@@ -76,9 +76,8 @@ const LocalGame = () => {
 	const [attacks, setAttacks] = useState([])
 
 	const location = useLocation()
-	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize } =
-		location.state || {}
-
+	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize } = location.state || {}
+	
 	const [timeRemaining, setTimeRemaining] = useState(duration || 60)
 	const [showRestartPopup, setShowRestartPopup] = useState(false)
 	const [resetParameters, setResetParameters] = useState(false)
