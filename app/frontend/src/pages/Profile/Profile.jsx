@@ -146,8 +146,8 @@ const Profile = () => {
 					</div>
 					<ProfileBio src={`${BASE_URL}${profile_picture}`} bio={bio} />
 					<div
-						className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
-							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
+						className='lp:ml-about-lp flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
+							xl:gap-20 lg:gap-10 gap-3 max-lp:ml-0 mt-2'
 					>
 						<AboutSection
 							first_name={first_name}

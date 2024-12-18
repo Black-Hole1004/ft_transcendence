@@ -105,6 +105,7 @@ export default {
 				// Profile Page
 				'container-x-lp': 'clamp(3.125rem, 33.929vw - 27.411rem, 26.875rem)',
 				'container-x-ms': 'clamp(0.313rem, 4.841vw - 0.595rem, 2.5rem)',
+				'about-lp': 'clamp(0.5rem, 0.872vw + 0.168rem, 1.563rem)',
 			},
 		},
 	},

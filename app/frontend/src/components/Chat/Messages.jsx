@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import Message from './Message.jsx'
 
 const Messages = ({
-	isUserBlocked,
 	currentLoggedInUserId,
 	conversationMessages,
 	recipientProfileImage,
@@ -54,7 +53,7 @@ const Messages = ({
 	return (
 		<div
 			id='container'
-			className={`flex-1 w-[98%] overflow-y-auto flex flex-col gap-1.5 ${isUserBlocked ? 'mb-8' : ''}`}
+			className={`flex-1 w-[98%] overflow-y-auto flex flex-col gap-1.5`}
 		>
 			{Object.entries(groupedMessages).map(([date, conversationMessages]) => (
 				<div key={date} className='flex flex-col gap-3 w-full'>

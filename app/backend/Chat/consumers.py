@@ -100,7 +100,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def set_conversation_status(self, conversation, blocker_id):
         try:
-            print(blocker_id)
+            # print(blocker_id)
             if blocker_id > 0:
                 conversation.blocked_by = blocker_id
                 is_friend_from = FriendShip.objects.filter(user_from=self.user1, user_to=self.user2)
@@ -108,7 +108,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 is_friend_from.delete()
                 is_friend_to.delete()
             else:
-                print('= 0')
+                # print('= 0')
                 conversation.blocked_by = 0
             conversation.save()
         except Exception as e:
@@ -187,9 +187,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 )
 
         elif message_type == 'block':
-            print('heeeeeeeeeeere ')
             blocker_id = data['blocker_id']
-            print('blocker_id: ', blocker_id)
             conversation = await self.check_conversation_existed(self.conversation_key, self.user.id, self.other_user)
 
             await self.set_conversation_status(conversation, blocker_id)
@@ -201,11 +199,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'blocker_id': blocker_id,
                 }
             )
-
-            # print('self.userid: ', self.user.id)
-            # print('self.other_user: ', self.other_user)
-            # print('conversation_key: ', self.conversation_key)
-            # print('Block')
 
 
 

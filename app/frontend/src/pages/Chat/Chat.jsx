@@ -26,7 +26,6 @@ const Chat = () => {
 	const [blockerId, setBlockerId] = useState(0)
 	const [areFriends, setAreFriends] = useState(false)
 	const [recipientInfo, setRecipientInfo] = useState(null)
-	const [isUserBlocked, setIsUserBlocked] = useState(false) // replace
 	const [conversationKey, setConversationKey] = useState(null)
 	const [conversationMessages, setConversationMessages] = useState([])
 	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0)
@@ -76,7 +75,7 @@ const Chat = () => {
 		if (conversationKey) {
 			friendshipStatus()
 		}
-	}, [conversationKey])
+	}, [conversationKey, blockerId])
 
 	useEffect(() => {
 		// Extract conversation key from URL
@@ -217,8 +216,8 @@ const Chat = () => {
 			${conversationKey ? 'lg:justify-between' : 'lg:justify-center'}`}
 		>
 			<div
-				className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center overflow-hidden
-						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
+				className='flex tb:flex-row flex-col lg:border-2 tb:border-1.5 tb:items-center
+						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1 overflow-hidden'
 			>
 				{/* Chat History Component */}
 				<ChatHistory
@@ -252,7 +251,6 @@ const Chat = () => {
 
 							{/* Chat Messages */}
 							<Messages
-								isUserBlocked={isUserBlocked}
 								conversationMessages={conversationMessages}
 								recipientProfileImage={recipientProfileImage}
 								currentLoggedInUserId={currentLoggedInUserId}

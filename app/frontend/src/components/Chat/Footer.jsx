@@ -3,7 +3,7 @@ import Picker from '@emoji-mart/react'
 import { useEffect, useState, useRef } from 'react'
 
 const Footer = ({ sendConversationMessage, messageInputRef, handleMessageKeyPress, conversationKey }) => {
-	const [width, setWidth] = useState(0)
+	const [width, setWidth] = useState(window.innerWidth)
 	const [showEmoji, setShowEmoji] = useState(false)
 	const emojiPickerRef = useRef(null)
 	const emojiButtonRef = useRef(null)
@@ -56,13 +56,6 @@ const Footer = ({ sendConversationMessage, messageInputRef, handleMessageKeyPres
 					className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container 
 			border border-border border-chat rounded-[50px]'
 				>
-					<button>
-						<img
-							src='/assets/images/icons/paperclip.svg'
-							className='select-none'
-							alt='paperclip-icon'
-						/>
-					</button>
 					<input
 						type='text'
 						maxLength={1000}

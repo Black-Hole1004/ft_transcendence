@@ -10,57 +10,88 @@ import Confetti from 'react-confetti'
 
 //--smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
-	<div className='fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50'>
-		<div className='bg-[#0E0B0A] border-2 border-[#76797Cff] text-[#E6DDC6] rounded-lg shadow-xl w-[480px] overflow-hidden relative'>
-			<div
-				className="h-60 bg-[url('path/to/venus-pingpong-background.jpg')] bg-cover bg-center relative"
-				style={{ filter: 'brightness(1.2)' }}
+	<div
+		className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center
+		flex flex-col justify-center items-center bg-secondary border-1.5 border-primary rounded-xl w-[30%]'
+	>
+		<h2 className='font-dreamscape '>GAME OVER</h2>
+		{winner ? (
+			<div className='font-heavy'>
+				<p className='text-2xl'>Cosmic Champion:</p>
+				<p className='text-4xl'>{winner.name}</p>
+				<p className='text-lg'>Your stellar skills have conquered the arena!</p>
+			</div>
+		) : (
+			<p className='text-2xl font-medium'>A cosmic deadlock! The match ends in a tie.</p>
+		)}
+		<div className='flex justify-center space-x-6 mt-8'>
+			<button
+				onClick={onRestart}
+				className='bg-primary text-secondary font-bold py-3 px-8 font-heavy
+					rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
 			>
-				{' '}
-				{/* Increase brightness */}
-				<div className='absolute inset-0 bg-gradient-to-b from-transparent to-[#0E0B0A]'></div>
-				{/* Centering GAME OVER Text */}
-				<div className='absolute inset-0 flex flex-col items-center justify-center'>
-					<h2 className='text-5xl font-bold text-[#E6DDC6] drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] tracking-wider'>
-						GAME OVER
-					</h2>
-				</div>
-			</div>
-
-			<div className='p-8 relative z-10'>
-				{winner ? (
-					<div className='text-center'>
-						<p className='text-2xl mb-2'>Cosmic Champion:</p>
-						<p className='text-4xl font-bold mb-4 text-[#BE794A] glow drop-shadow-[0_2px_10px_rgba(190,121,74,0.8)]'>
-							{winner.name}
-						</p>
-						<p className='text-lg mb-6 text-[#E6DDC6] opacity-90'>
-							Your stellar skills have conquered the arena!
-						</p>
-					</div>
-				) : (
-					<p className='text-2xl text-center mb-6'>
-						A cosmic deadlock! The match ends in a tie.
-					</p>
-				)}
-
-				<div className='flex justify-center space-x-6 mt-8'>
-					<button
-						onClick={onRestart}
-						className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
-					>
-						Play Again
-					</button>
-					<button
-						onClick={onClose}
-						className='bg-transparent hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full border-2 border-[#BE794A] transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
-					>
-						Return to Base
-					</button>
-				</div>
-			</div>
+				Play Again
+			</button>
+			<button
+				onClick={onClose}
+				className='bg-transparent font-heavy hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full border-2 border-[#BE794A] transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
+			>
+				Return to Base
+			</button>
 		</div>
 	</div>
+
+	// <div className='fixed inset-0  bg-opacity-25 flex items-center justify-center z-40'>
+	// 	<div className='bg-secondary border-2 border-[#76797Cff] text-[#E6DDC6] rounded-lg shadow-xl w-[480px] overflow-hidden relative'>
+	// 		<div
+	// 			className="h-60 bg-[url('path/to/venus-pingpong-background.jpg')] bg-cover bg-center relative"
+	// 			style={{ filter: 'brightness(1.2)' }}
+	// 		>
+	// 			{' '}
+	// 			{/* Increase brightness */}
+	// 			<div className='absolute'></div>
+	// 			{/* Centering GAME OVER Text */}
+	// 			<div className='absolute inset-0 flex flex-col items-center justify-center'>
+	// 				<h2 className='text-5xl font-bold text-[#E6DDC6] drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] tracking-wider'>
+	// 					GAME OVER
+	// 				</h2>
+	// 			</div>
+	// 		</div>
+
+	// 		<div className='p-8 relative z-10'>
+	// 			{winner ? (
+	// 				<div className='text-center'>
+	// 					<p className='text-2xl mb-2'>Cosmic Champion:</p>
+	// 					<p className='text-4xl font-bold mb-4 text-[#BE794A] glow drop-shadow-[0_2px_10px_rgba(190,121,74,0.8)]'>
+	// 						{winner.name}
+	// 					</p>
+	// 					<p className='text-lg mb-6 text-[#E6DDC6] opacity-90'>
+	// 						Your stellar skills have conquered the arena!
+	// 					</p>
+	// 				</div>
+	// 			) : (
+	// 				<p className='text-2xl text-center mb-6'>
+	// 					A cosmic deadlock! The match ends in a tie.
+	// 				</p>
+	// 			)}
+
+	// 			<div className='flex justify-center space-x-6 mt-8'>
+	// 				<button
+	// 					onClick={onRestart}
+	// 					className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
+	// 				>
+	// 					Play Again
+	// 				</button>
+	// 				<button
+	// 					onClick={onClose}
+	// 					className='bg-transparent hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full border-2 border-[#BE794A] transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
+	// 				>
+	// 					Return to Base
+	// 				</button>
+	// 			</div>
+	// 		</div>
+	// 	</div>
+	// </div>
 )
 
 const LocalGame = () => {
@@ -132,7 +163,7 @@ const LocalGame = () => {
 
 	const gameOver = () => {
 		setIsGameOver(true)
-		setIsPaused(true)
+		setIsPaused(false)
 		setShowRestartPopup(true)
 		setWinner(getWinner())
 		setShowConfetti(true)
@@ -141,7 +172,7 @@ const LocalGame = () => {
 	return (
 		<>
 			<section
-				className={`flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}
+				className={`relative flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}
 			>
 				<div className='flex flex-col'>
 					<GameScore
@@ -160,7 +191,7 @@ const LocalGame = () => {
 						playerImage={player1.image}
 						badgeImage={player1.badgeImage}
 						GameMode={mode}
-						/>
+					/>
 					<Player
 						id={2}
 						isPaused={isPaused}
@@ -184,11 +215,11 @@ const LocalGame = () => {
 						ballSize={ballSize}
 					/>
 				</div>
+				{showRestartPopup && (
+					<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
+				)}
 			</section>
-			{showRestartPopup && (
-				<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
-			)}
-			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
+			{winner && showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
 		</>
 	)
 }
