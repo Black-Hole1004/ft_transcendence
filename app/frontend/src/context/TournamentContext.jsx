@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const TournamentContext = createContext(null);
 
@@ -31,6 +31,14 @@ export const TournamentProvider = ({ children }) => {
         setTournamentData,
         resetTournament
     };
+
+    const cleanup = () => {
+        resetTournament();
+    };
+
+    useEffect(() => {
+        return () => cleanup
+    }, []);
 
     
 

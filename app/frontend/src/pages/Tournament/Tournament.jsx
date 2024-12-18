@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is
 import { useTournament } from '../../context/TournamentContext';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useCallback } from 'react';
+import { Confetti } from 'react-confetti';
 
 
 const players = [
@@ -99,6 +101,8 @@ const Tournament = () => {
 		resetTournament
 	} = useTournament();
 
+	const [showChampionCelebration, setShowChampionCelebration] = useState(false);
+
 
 	const { mode, player1, player2, player3, player4, backgroundId, duration, ballSize, ballColor, paddleSize }
 		= tournamentData || {};
@@ -118,6 +122,32 @@ const Tournament = () => {
 						<span>vs</span>
 						<span className="font-semibold">{player2Name}</span>
 					</div>
+				</div>
+			</div>
+		</div>
+	);
+
+	const ChampionCelebration = ({ winner }) => (
+		<div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+			<div className="bg-gradient-to-b from-yellow-500 to-orange-600 p-8 rounded-2xl shadow-2xl text-center max-w-2xl mx-4 border-4 border-yellow-300 animate-bounce">
+				<div className="mb-6">
+					<h1 className="text-4xl font-dreamscape text-white mb-4">🏆 TOURNAMENT CHAMPION 🏆</h1>
+					<div className="flex items-center justify-center gap-6">
+						<img
+							src={winner?.avatar || '../../../dist/assets/images/avatar.jpg'}
+							alt="Champion"
+							className="w-32 h-32 rounded-full border-4 border-yellow-300 shadow-lg"
+						/>
+						<div className="text-left">
+							<h2 className="text-3xl font-dreamscape text-white mb-2">{winner?.name}</h2>
+							<p className="text-yellow-100 text-lg">{winner?.achievement}</p>
+							<p className="text-yellow-100">XP: {winner?.xp}</p>
+						</div>
+					</div>
+				</div>
+				<div className="space-y-2 animate-pulse">
+					<p className="text-white text-xl font-dreamscape">CELESTIAL MASTER OF THE TOURNAMENT</p>
+					<p className="text-yellow-200">Victory achieved in glorious combat!</p>
 				</div>
 			</div>
 		</div>
@@ -188,6 +218,15 @@ const Tournament = () => {
 		}, 3000);
 	};
 
+	useEffect(() => {
+		if (finalWinner && tournamentState === 'completed') {
+			setShowChampionCelebration(true);
+			setTimeout(() => {
+				setShowChampionCelebration(false);
+			}, 5000);
+		}
+	}, [finalWinner, tournamentState]);
+
 	const handleTournamentAction = () => {
 		switch (tournamentState) {
 			case 'not_started':
@@ -228,23 +267,42 @@ const Tournament = () => {
 		}
 	};
 
-	// Add this right after your context destructuring
+	const handlePopState = useCallback(() => {
+		if (tournamentState !== 'not_started' && tournamentState !== 'completed') {
+			const confirmed = window.confirm('Tournament is in progress. Are you sure you want to leave?');
+			if (confirmed) {
+				resetTournament();
+				navigate('/tournament-setup');
+			} else {
+				window.history.pushState(null, '', window.location.pathname);
+			}
+		}
+	}, [tournamentState, resetTournament, navigate]);
+
 	useEffect(() => {
+		window.addEventListener('popstate', handlePopState);
+		return () => {
+			window.removeEventListener('popstate', handlePopState);
+		};
+	}, [handlePopState]);
+
+
+
+	useEffect(() => {
+		// Check and store tournament data
 		if (location.state && !tournamentData) {
+			console.log('Setting tournament data from location state...');
 			setTournamentData(location.state);
 		}
-	}, [location.state, tournamentData, setTournamentData]);
-
-	// And update your loading check to redirect to setup
-	useEffect(() => {
-		if (!tournamentData) {
-			// 
+		// Handle navigation if no data is available
+		else if (!location.state && !tournamentData && tournamentState === 'not_started') {
+			console.log('No tournament data found, navigating to setup...');
+			navigate('/CustomTournament');
 		}
-	}, [tournamentData, navigate]);
+	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState]);
 
-	// Then change your loading check to
 	if (!tournamentData) {
-		return null;
+		return <div>Loading...</div>;
 	}
 
 	return (
@@ -314,6 +372,18 @@ const Tournament = () => {
 				</div>
 			</div>
 			{/* end missing part */}
+
+			{/* Champion celebration */}
+			{showChampionCelebration && finalWinner && (
+				<>
+					<Confetti
+						numberOfPieces={200}
+						recycle={false}
+						colors={['#FFD700', '#FFA500', '#FF8C00', '#FF7F50']}
+					/>
+					<ChampionCelebration winner={finalWinner} />
+				</>
+			)}
 
 			{/* Warning Message */}
 			{showWarning && (

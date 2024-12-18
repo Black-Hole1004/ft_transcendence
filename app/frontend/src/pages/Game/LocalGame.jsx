@@ -10,6 +10,13 @@ import Confetti from 'react-confetti'
 
 import { useTournament } from '../../context/TournamentContext'
 
+const SuddenDeathMessage = () => (
+	<div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse">
+		<span className="font-bold">SUDDEN DEATH!</span>
+		<span className="ml-2">First point wins!</span>
+	</div>
+);
+
 //--smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<div className='fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50'>
@@ -77,6 +84,7 @@ const LocalGame = () => {
 		setFinalWinner,
 		setTournamentState
 	} = useTournament();
+	const [isSuddenDeath, setIsSuddenDeath] = useState(false);
 
 	const [isPaused, setIsPaused] = useState(false)
 	const [isGameOver, setIsGameOver] = useState(false)
@@ -123,11 +131,28 @@ const LocalGame = () => {
 		}
 	}, [timeRemaining, isPaused, isGameOver])
 
+	// const getWinner = () => {
+	// 	if (player1Score > player2Score) return player1
+	// 	if (player2Score > player1Score) return player2
+	// 	return null
+	// }
+
 	const getWinner = () => {
-		if (player1Score > player2Score) return player1
-		if (player2Score > player1Score) return player2
-		return null
-	}
+		if (player1Score > player2Score) {
+			return player1;
+		} else if (player2Score > player1Score) {
+			return player2;
+		} else {
+			// If scores are equal
+			if (tournamentRound) { // If this is a tournament match
+				setIsSuddenDeath(true);
+				setIsGameOver(false);
+				setTimeRemaining(30); // Set 30 seconds for sudden death
+				return null;
+			}
+			return null; // For non-tournament games, just return null for a tie
+		}
+	};
 
 	// const handleClose = () => {
 	// 	setShowRestartPopup(false)
@@ -166,13 +191,25 @@ const LocalGame = () => {
 	// }
 
 	const gameOver = () => {
+		const winner = getWinner();
+
+		// If there's a tie in tournament mode
+		if (!winner && tournamentRound) {
+			setIsSuddenDeath(true);
+			setTimeRemaining(30); // 30 seconds sudden death round
+			setIsGameOver(false);
+			setIsPaused(false);
+			return; // Don't proceed with normal game over
+		}
+
+		// Normal game over flow
 		setIsGameOver(true);
 		setIsPaused(true);
 		setShowRestartPopup(true);
-		const winner = getWinner();
 		setWinner(winner);
 
-		if (tournamentRound) {
+		// Handle tournament progression
+		if (tournamentRound && winner) {
 			switch (tournamentRound) {
 				case 'semifinal1':
 					setSemiFinal1winner(winner);
@@ -189,7 +226,35 @@ const LocalGame = () => {
 			}
 		}
 	};
-	; ``
+	useEffect(() => {
+		if (isSuddenDeath && timeRemaining === 0) {
+			// If sudden death time expires, use a tiebreaker (e.g., higher XP)
+			const tiebreakerWinner = player1.xp > player2.xp ? player1 : player2;
+			setIsGameOver(true);
+			setIsPaused(true);
+			setShowRestartPopup(true);
+			setWinner(tiebreakerWinner);
+			setIsSuddenDeath(false);
+
+			// Handle tournament progression
+			if (tournamentRound) {
+				switch (tournamentRound) {
+					case 'semifinal1':
+						setSemiFinal1winner(tiebreakerWinner);
+						setTournamentState('semifinal2');
+						break;
+					case 'semifinal2':
+						setSemiFinal2winner(tiebreakerWinner);
+						setTournamentState('final');
+						break;
+					case 'final':
+						setFinalWinner(tiebreakerWinner);
+						setTournamentState('completed');
+						break;
+				}
+			}
+		}
+	}, [timeRemaining, isSuddenDeath]);
 	return (
 		<>
 			<section className='flex'>
@@ -199,7 +264,13 @@ const LocalGame = () => {
 						player2Score={player2Score}
 						isPaused={isPaused}
 					/>
-					<Timer isPaused={isPaused} timeRemaining={timeRemaining} />
+					<Timer
+						isPaused={isPaused}
+						timeRemaining={timeRemaining}
+						isSuddenDeath={isSuddenDeath}
+					/>
+					{/* Add the sudden death message here */}
+					{isSuddenDeath && <SuddenDeathMessage />}
 					<div className='flex-1 w-full flex max-lg:flex-wrap max-lg:justify-around justify-between font-dreamscape-sans'>
 						<div className='justify-center items-center w-1/4'>
 							<Player
