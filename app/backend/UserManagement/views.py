@@ -585,3 +585,76 @@ class TournamentDetailView(APIView):
             )
         tournament.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.db import connections
+from django.conf import settings
+from datetime import datetime
+import redis
+from .serializers import HealthCheckSerializer
+class HealthCheckView(APIView):
+    """
+    API endpoint that checks the health of the backend services
+    """
+    permission_classes = []  # Allow unauthenticated access
+    
+    def get_database_status(self):
+        try:
+            db = connections['default']
+            db.cursor()
+            return {
+                "status": "healthy",
+                "message": "Database connection successful"
+            }
+        except Exception as e:
+            return {
+                "status": "unhealthy",
+                "message": str(e)
+            }
+    
+    def get_redis_status(self):
+        if hasattr(settings, 'REDIS_URL'):
+            try:
+                r = redis.from_url(settings.REDIS_URL)
+                r.ping()
+                return {
+                    "status": "healthy",
+                    "message": "Redis connection successful"
+                }
+            except redis.RedisError as e:
+                return {
+                    "status": "unhealthy",
+                    "message": str(e)
+                }
+        return None
+
+    def get(self, request, *args, **kwargs):
+        # Get service statuses
+        db_status = self.get_database_status()
+        redis_status = self.get_redis_status()
+        
+        # Determine overall health
+        is_healthy = (
+            db_status["status"] == "healthy" and 
+            (redis_status is None or redis_status["status"] == "healthy")
+        )
+        
+        # Prepare response data
+        health_data = {
+            "status": "healthy" if is_healthy else "unhealthy",
+            "timestamp": datetime.now(),
+            "version": getattr(settings, 'API_VERSION', '1.0.0'),
+            "database": db_status,
+        }
+        
+        # Add Redis status if configured
+        if redis_status is not None:
+            health_data["redis"] = redis_status
+        
+        # Serialize and return response
+        serializer = HealthCheckSerializer(health_data)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK if is_healthy else status.HTTP_503_SERVICE_UNAVAILABLE
+        )

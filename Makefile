@@ -3,10 +3,10 @@
 all: up
 
 up:
-	docker-compose up --build
+	docker-compose up 
 
 build:
-	docker-compose build
+	docker-compose up --build
 
 updetached:
 	docker-compose up -d

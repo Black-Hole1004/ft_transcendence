@@ -79,3 +79,10 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = '__all__'
+
+class HealthCheckSerializer(serializers.Serializer):
+    status = serializers.CharField()
+    timestamp = serializers.DateTimeField()
+    version = serializers.CharField()
+    database = serializers.DictField()
+    redis = serializers.DictField(required=False)

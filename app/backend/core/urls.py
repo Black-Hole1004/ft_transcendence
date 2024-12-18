@@ -15,6 +15,7 @@ from UserManagement.views import LogoutView
 from UserManagement.views import TournamentView
 from UserManagement.views import TournamentDetailView
 from UserManagement.views import UsersListView
+from UserManagement.views import HealthCheckView
 
 
 from rest_framework_simplejwt.views import (
@@ -52,4 +53,5 @@ urlpatterns = [
 
     path('api/tournament/', TournamentView.as_view(), name='tournament-list'),
     path('api/tournament/<int:id>/', TournamentDetailView.as_view(), name='tournament-detail'),
+    path('api/health/', HealthCheckView.as_view(), name='healthCheck'),    
 ]
