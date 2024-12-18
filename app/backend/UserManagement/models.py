@@ -47,6 +47,31 @@ class Achievement:
                 return level
         return Achievement.LEVELS[0]
 
+    @staticmethod
+    def get_badge_progress(xp):
+        # Get thresholds
+        thresholds = [0, 2000, 4000, 6000, 8000, 10000]
+        
+        # Find current level
+        current_threshold = 0
+        next_threshold = 2000
+        for i in range(len(thresholds)-1):
+            if thresholds[i] <= xp < thresholds[i+1]:
+                current_threshold = thresholds[i]
+                next_threshold = thresholds[i + 1]
+                break
+
+        # Calculate progress
+        progress = xp - current_threshold
+        total_range = next_threshold - current_threshold
+        progress_percentage = (progress / total_range) * 100
+
+        return {
+            'current_threshold': current_threshold,
+            'next_threshold': next_threshold,
+            'progress_percentage': min(progress_percentage, 100)
+        }
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     status_choices = [

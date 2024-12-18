@@ -11,12 +11,15 @@ const RemotePlayer = (props) => {
 			return path
 		}
 
-		return `${import.meta.env.VITE_BASE_URL}${path}`
+		const pathComplete = `${import.meta.env.VITE_BASE_URL}${path}`;
+		console.log(pathComplete);
+		return pathComplete;
+
 	}, [])
 
 	// Memoize the image URLs
 	const profileImageUrl = useMemo(
-		() => getImageUrl(props.playerImage),
+		() => getImageUrl(props.playerImage, 'profile'),
 		[props.playerImage, getImageUrl]
 	)
 

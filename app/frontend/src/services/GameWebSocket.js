@@ -128,7 +128,9 @@ class GameWebSocket {
                 game_started: this.handleGameStarted.bind(this),
                 game_paused: this.handleGamePaused.bind(this),
                 game_resumed: this.handleGameResumed.bind(this),
+                
                 game_restarted: this.handleGameRestarted.bind(this),
+
                 player_disconnected: this.handlePlayerDisconnected.bind(this),
                 waiting_for_player: this.handleWaitingForPlayer.bind(this),
                 error: this.handleServerError.bind(this)
@@ -213,6 +215,7 @@ class GameWebSocket {
         console.log('Handling server error:', data);
         this.callbacks.error?.(new Error(data.message));
     }
+
 
     // Send methods
     send(data) {

@@ -7,57 +7,7 @@ import RemotePongTable from '../../components/Game/RemotePongTable'
 import Timer from '../../components/Game/Timer'
 import Confetti from 'react-confetti'
 import GameWebSocket from '../../services/GameWebSocket'
-
-const GameOverPopup = ({ winner, onRestart, onClose }) => (
-	<div className='fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50'>
-		<div className='bg-[#0E0B0A] border-2 border-[#76797Cff] text-[#E6DDC6] rounded-lg shadow-xl w-[480px] overflow-hidden relative'>
-			<div
-				className="h-60 bg-[url('path/to/venus-pingpong-background.jpg')] bg-cover bg-center relative"
-				style={{ filter: 'brightness(1.2)' }}
-			>
-				<div className='absolute inset-0 bg-gradient-to-b from-transparent to-[#0E0B0A]'></div>
-				<div className='absolute inset-0 flex flex-col items-center justify-center'>
-					<h2 className='text-5xl font-bold text-[#E6DDC6] drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] tracking-wider'>
-						GAME OVER
-					</h2>
-				</div>
-			</div>
-
-			<div className='p-8 relative z-10'>
-				{winner ? (
-					<div className='text-center'>
-						<p className='text-2xl mb-2'>Cosmic Champion:</p>
-						<p className='text-4xl font-bold mb-4 text-[#BE794A] glow drop-shadow-[0_2px_10px_rgba(190,121,74,0.8)]'>
-							{winner.name}
-						</p>
-						<p className='text-lg mb-6 text-[#E6DDC6] opacity-90'>
-							Your stellar skills have conquered the arena!
-						</p>
-					</div>
-				) : (
-					<p className='text-2xl text-center mb-6'>
-						A cosmic deadlock! The match ends in a tie.
-					</p>
-				)}
-
-				<div className='flex justify-center space-x-6 mt-8'>
-					<button
-						onClick={onRestart}
-						className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
-					>
-						Play Again
-					</button>
-					<button
-						onClick={onClose}
-						className='bg-transparent hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full border-2 border-[#BE794A] transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
-					>
-						Return to Base
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-)
+import GameOverPopup from '../../components/Game/GameOverPopup'
 
 const RemoteGame = () => {
 	const navigate = useNavigate()
@@ -83,8 +33,8 @@ const RemoteGame = () => {
 	const [showRestartPopup, setShowRestartPopup] = useState(false)
 	const [showConfetti, setShowConfetti] = useState(false)
 	const [winner, setWinner] = useState(null)
-	const [player1Score, setPlayer1Score] = useState(0)
-	const [player2Score, setPlayer2Score] = useState(0)
+	const [loser, setLoser] = useState(null)
+
 	const [timeRemaining, setTimeRemaining] = useState(settings?.duration || 60)
 
 	// Pause/Resume state
@@ -138,11 +88,6 @@ const RemoteGame = () => {
 
 		});
 
-		ws.on('score_update', (data) => {
-			setPlayer1Score(data.scores['1'])
-			setPlayer2Score(data.scores['2'])
-		})
-
 		ws.on('game_paused', (data) => {
 			setIsPaused(true)
 			setPausingPlayer(data.player)
@@ -157,11 +102,46 @@ const RemoteGame = () => {
 		ws.on('game_started', () => setIsPaused(false))
 
 		ws.on('game_ended', (data) => {
+			console.log('Game ended: data received => ', data)
 			setIsGameOver(true)
 			setShowRestartPopup(true)
-			setWinner(data.winner)
+			
+			//set winner
+			const winner_user = {
+				username: data.winner_user.username,
+				id: data.winner_user.id,
+				old_xp: data.winner_user.old_xp,
+				new_xp: data.winner_user.new_xp,
+				xp_change: data.winner_user.xp_change,
+				score: data.winner_user.score,
+				badge: data.winner_user.badge,
+				profile_picture: data.winner_user.profile_picture
+			}
+			setWinner(winner_user)
+
+			//set loser
+			const loser_user = {
+				username: data.loser_user.username,
+				id: data.loser_user.id,
+				old_xp: data.loser_user.old_xp,
+				new_xp: data.loser_user.new_xp,
+				xp_change: data.loser_user.xp_change,
+				score: data.loser_user.score,
+				badge: data.loser_user.badge,
+				profile_picture: data.loser_user.profile_picture
+			}
+			setLoser(loser_user)
+
 			setShowConfetti(true)
 			setTimeout(() => setShowConfetti(false), 5000)
+		})
+		
+		ws.on('player_quit', (data) => {
+			// Handle when other player quits
+			setIsGameOver(true)
+			setWinner(currentUser) // Set current player as winner since other player quit
+			setLoser(opponent)
+			setShowRestartPopup(true)
 		})
 
 		return () => ws.disconnect()
@@ -204,15 +184,28 @@ const RemoteGame = () => {
 		socketRef.current?.send({ type: 'start_game' })
 	}
 
+
+	const handleQuitGame = () => {
+		if (!socketRef.current || !playerNumber) return
+		
+		socketRef.current.send({
+			type: 'quit_game',
+			player: playerNumber
+		})
+		
+		// Navigate back to setup
+		navigate('/remote-game-setup')
+	}
+
 	const handleClose = () => {
 		setShowRestartPopup(false)
 		navigate('/remote-game-setup')
 	}
-
+	
 	const restartGame = () => {
-		socketRef.current?.send({ type: 'restart_game' })
-		setShowRestartPopup(false)
-	}
+		if (!socketRef.current || !playerNumber) return;
+		setShowRestartPopup(false);
+	};
 
 	return (
 		<div
@@ -222,18 +215,16 @@ const RemoteGame = () => {
 				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
 					{/* Game controls */}
 					<div className='flex gap-4'>
-						<button
-							onClick={handleReady}
-							className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-2 px-6 rounded-full transition duration-300'
-						>
-							Ready
-						</button>
-						<button
-							onClick={handleStartGame}
-							className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-2 px-6 rounded-full transition duration-300'
-						>
-							Start Game
-						</button>
+						{!isGameOver && (
+							<>
+								<button onClick={handleReady} className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-2 px-6 rounded-full transition duration-300'>
+									Ready
+								</button>
+								<button onClick={handleStartGame} className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-2 px-6 rounded-full transition duration-300'>
+									Start Game
+								</button>
+							</>
+						)}
 					</div>
 
 					{/* Score and Timer */}
@@ -280,7 +271,13 @@ const RemoteGame = () => {
 			</section>
 
 			{showRestartPopup && (
-				<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
+				<GameOverPopup 
+					winner={winner}
+					loser={loser}
+					currentPlayerId={currentUser.id}
+					onRestart={restartGame}
+					onClose={handleClose}
+				/>
 			)}
 			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
 		</div>
