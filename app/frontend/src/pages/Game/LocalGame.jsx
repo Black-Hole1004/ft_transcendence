@@ -10,36 +10,44 @@ import Confetti from 'react-confetti'
 
 //--smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
-	<div
-		className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center
-		flex flex-col justify-center items-center bg-secondary border-1.5 border-primary rounded-xl w-[30%]'
-	>
-		<h2 className='font-dreamscape '>GAME OVER</h2>
-		{winner ? (
-			<div className='font-heavy'>
-				<p className='text-2xl'>Cosmic Champion:</p>
-				<p className='text-4xl'>{winner.name}</p>
-				<p className='text-lg'>Your stellar skills have conquered the arena!</p>
+	<>
+		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
+		<div
+			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20
+			flex flex-col justify-center items-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded-xl gameoverpopup'
+		>
+			<h2 className='font-dreamscape '>GAME OVER</h2>
+			{winner ? (
+				<div className='font-heavy'>
+					<p className='text-left text-2xl'>Cosmic Champion:</p>
+					<h3 className='players-usernames font-dreamscape-sans pt-3 pb-7 text-center glow drop-shadow-[0_2px_10px_rgba(255,206,158,0.5)]'>
+						{winner.name}
+					</h3>
+					<p className='text-lg text-center'>
+						Your stellar skills have conquered the arena!
+					</p>
+				</div>
+			) : (
+				<p className='text-2xl font-medium'>A cosmic deadlock! The match ends in a tie.</p>
+			)}
+			<div className='w-full flex justify-between my-10 lg:gap-10 gap-6'>
+				<button
+					onClick={onRestart}
+					className='font-heavy bg-primary text-secondary py-3 flex-1
+				rounded-2xl transition duration-300 ease-in-out transform hover:scale-105'
+				>
+					Play Again
+				</button>
+				<button
+					onClick={onClose}
+					className='font-heavy text-primary py-3 rounded-2xl border-2 border-primary flex-1
+				hover:bg-[rgba(251,251,238,.2)] transition duration-300 ease-in-out transform hover:scale-105'
+				>
+					Return to Base
+				</button>
 			</div>
-		) : (
-			<p className='text-2xl font-medium'>A cosmic deadlock! The match ends in a tie.</p>
-		)}
-		<div className='flex justify-center space-x-6 mt-8'>
-			<button
-				onClick={onRestart}
-				className='bg-primary text-secondary font-bold py-3 px-8 font-heavy
-					rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
-			>
-				Play Again
-			</button>
-			<button
-				onClick={onClose}
-				className='bg-transparent font-heavy hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full border-2 border-[#BE794A] transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
-			>
-				Return to Base
-			</button>
 		</div>
-	</div>
+	</>
 
 	// <div className='fixed inset-0  bg-opacity-25 flex items-center justify-center z-40'>
 	// 	<div className='bg-secondary border-2 border-[#76797Cff] text-[#E6DDC6] rounded-lg shadow-xl w-[480px] overflow-hidden relative'>
@@ -167,7 +175,7 @@ const LocalGame = () => {
 		setShowRestartPopup(true)
 		setWinner(getWinner())
 		setShowConfetti(true)
-		setTimeout(() => setShowConfetti(false), 5000) // Stop confetti after 5 seconds
+		setTimeout(() => setShowConfetti(false), 8000) // Stop confetti after 5 seconds
 	}
 	return (
 		<>
@@ -218,8 +226,21 @@ const LocalGame = () => {
 				{showRestartPopup && (
 					<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
 				)}
+				{winner && showConfetti && (
+					<Confetti
+						style={{
+							position: 'fixed',
+							top: 0,
+							left: 0,
+							width: '100vw',
+							height: '100vh',
+							zIndex: 20,
+						}}
+						recycle={false}
+						numberOfPieces={500}
+					/>
+				)}
 			</section>
-			{winner && showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
 		</>
 	)
 }

@@ -91,3 +91,20 @@
 .MuiSlider-thumbColorPrimary {
 	background-color: #fbfbee !important;
 }
+
+.gameoverpopup {
+	width: clamp(18.125rem, 18.142vw + 14.723rem, 43.75rem);
+	/* padding-left: clamp(1.25rem, 6.195vw + 0.088rem, 10rem); */
+	/* padding-right: clamp(1.25rem, 6.195vw + 0.088rem, 10rem); */
+}
+
+
+.gameoverpopup h2 {
+	font-size: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
+	margin-top: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
+	margin-bottom: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
+}
+
+.gameoverpopup p, button {
+	font-size: clamp(0.813rem, 0.221vw + 0.771rem, 1.125rem);
+}

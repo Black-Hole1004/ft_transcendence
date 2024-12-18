@@ -23,7 +23,7 @@ const Chat = () => {
 	const webSocketRef = useRef(null)
 	const messageInputRef = useRef(null)
 
-	const [blockerId, setBlockerId] = useState(0)
+	const [blockerId, setBlockerId] = useState(null)
 	const [areFriends, setAreFriends] = useState(false)
 	const [recipientInfo, setRecipientInfo] = useState(null)
 	const [conversationKey, setConversationKey] = useState(null)
