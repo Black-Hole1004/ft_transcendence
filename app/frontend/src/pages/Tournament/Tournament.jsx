@@ -5,7 +5,9 @@ import { useTournament } from '../../context/TournamentContext';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useCallback } from 'react';
-import { Confetti } from 'react-confetti';
+import Confetti from 'react-confetti';
+import ChampionCelebration from '../../components/Tournament/ChampionCelebration';
+import MatchWarning from '../../components/Tournament/MatchWarning';
 
 
 const players = [
@@ -110,48 +112,9 @@ const Tournament = () => {
 
 	const [showWarning, setShowWarning] = useState(false);
 
-	// Add this warning component
-	const MatchWarning = ({ player1Name, player2Name }) => (
-		<div className="fixed top-4 right-4 bg-yellow-500/90 backdrop-blur-sm text-black p-6 rounded-lg shadow-2xl z-50 animate-bounce">
-			<div className="flex flex-col items-center gap-3">
-				<div className="text-2xl">🏓</div>
-				<div className="text-center">
-					<h3 className="font-bold text-xl mb-2">Match Starting in 3...</h3>
-					<div className="flex items-center gap-2 justify-center">
-						<span className="font-semibold">{player1Name}</span>
-						<span>vs</span>
-						<span className="font-semibold">{player2Name}</span>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
 
-	const ChampionCelebration = ({ winner }) => (
-		<div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-			<div className="bg-gradient-to-b from-yellow-500 to-orange-600 p-8 rounded-2xl shadow-2xl text-center max-w-2xl mx-4 border-4 border-yellow-300 animate-bounce">
-				<div className="mb-6">
-					<h1 className="text-4xl font-dreamscape text-white mb-4">🏆 TOURNAMENT CHAMPION 🏆</h1>
-					<div className="flex items-center justify-center gap-6">
-						<img
-							src={winner?.avatar || '../../../dist/assets/images/avatar.jpg'}
-							alt="Champion"
-							className="w-32 h-32 rounded-full border-4 border-yellow-300 shadow-lg"
-						/>
-						<div className="text-left">
-							<h2 className="text-3xl font-dreamscape text-white mb-2">{winner?.name}</h2>
-							<p className="text-yellow-100 text-lg">{winner?.achievement}</p>
-							<p className="text-yellow-100">XP: {winner?.xp}</p>
-						</div>
-					</div>
-				</div>
-				<div className="space-y-2 animate-pulse">
-					<p className="text-white text-xl font-dreamscape">CELESTIAL MASTER OF THE TOURNAMENT</p>
-					<p className="text-yellow-200">Victory achieved in glorious combat!</p>
-				</div>
-			</div>
-		</div>
-	);
+
+
 
 	const startSemiFinal1 = () => {
 		setShowWarning(true);
@@ -308,6 +271,20 @@ const Tournament = () => {
 	return (
 		<div className="flex flex-row items-start justify-center min-h-screen overflow-hidden" >
 
+			{/* Champion celebration */}
+			{showChampionCelebration && finalWinner && (
+				<>
+					<Confetti
+						width={window.innerWidth}
+						height={window.innerHeight}
+						numberOfPieces={200}
+						recycle={false}
+						colors={['#FFD700', '#FFA500', '#FF8C00', '#FF7F50']}
+					/>
+					<ChampionCelebration winner={finalWinner} />
+				</>
+			)}
+
 			{/* start missing part */}
 			<div className="w-[35%] flex flex-col overflow-hidden  p-8">
 				<div className=''>
@@ -373,17 +350,7 @@ const Tournament = () => {
 			</div>
 			{/* end missing part */}
 
-			{/* Champion celebration */}
-			{showChampionCelebration && finalWinner && (
-				<>
-					<Confetti
-						numberOfPieces={200}
-						recycle={false}
-						colors={['#FFD700', '#FFA500', '#FF8C00', '#FF7F50']}
-					/>
-					<ChampionCelebration winner={finalWinner} />
-				</>
-			)}
+
 
 			{/* Warning Message */}
 			{showWarning && (
