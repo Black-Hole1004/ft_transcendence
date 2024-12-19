@@ -7,16 +7,17 @@ import useAuth from '../../context/AuthContext'
 import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { createContext, useContext } from 'react'
-import { use } from 'react'
 
 
-const BASE_URL = import.meta.env.VITE_BASE_URL
 const USER_API = import.meta.env.VITE_USER_API;
+const WP_NOTIFY = import.meta.env.VITE_WP_NOTIFY;
+const WP_FRINEDS = import.meta.env.VITE_WP_FRINEDS;
+const WP_NOTIFICATIONS = import.meta.env.VITE_WP_NOTIFICATIONS;
 const SocketContext = createContext()
 export const useSocket = () => useContext(SocketContext)
 
 function Layout() {
-	
+
 	const { authTokens, getAuthHeaders } = useAuth()
 	const [refreshData, setRefreshData] = useState(0);
 	const [socket_notify, setSocketNotify] = useState(null);
@@ -109,79 +110,79 @@ function Layout() {
 		return;
 
 	useEffect(() => {
-        const newSocket = new WebSocket(`ws://127.0.0.1:8000/ws/notify/?access_token=${access_token}`);
-
-        newSocket.onopen = () => {
-            console.log('---- WebSocket Connected from Notify Consumer ----');
-        };
-        newSocket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            console.log('WebSocket data:', data);
-        };
-
-        newSocket.onclose = (event) => {
-            console.log('WebSocket Closed form Notify Consumer:', event);
-        };
-
-        newSocket.onerror = (error) => {
-            console.error('WebSocket Error:', error);
-        };
-
-		setSocketNotify(newSocket);
-    
-    return () => {
-        newSocket.close();
-    };
-    }, [authTokens?.access_token]);
-
-	useEffect(() => {
-		const newSocket = new WebSocket(`ws://127.0.0.1:8000/ws/friends/?access_token=${access_token}`);
+		const newSocket = new WebSocket(WP_NOTIFY+'?access_token='+access_token);
 
 		newSocket.onopen = () => {
-            console.log('---- WebSocket Connected from AcceptFriendsRequest Consumer ----');
-        };
-        newSocket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            console.log('WebSocket data:', data);
-        };
+			console.log('---- WebSocket Connected from Notify Consumer ----');
+		};
+		newSocket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			console.log('WebSocket data:', data);
+		};
 
-        newSocket.onclose = (event) => {
-            console.log('WebSocket Closed form AcceptFriendsRequest Consumer:', event);
-        };
+		newSocket.onclose = (event) => {
+			console.log('WebSocket Closed form Notify Consumer:', event);
+		};
 
-        newSocket.onerror = (error) => {
-            console.error('WebSocket Error:', error);
-        };
+		newSocket.onerror = (error) => {
+			console.error('WebSocket Error:', error);
+		};
 
-		setSocketFriends(newSocket);
-    
-    return () => {
-        newSocket.close();
-    };
+		setSocketNotify(newSocket);
+
+		return () => {
+			newSocket.close();
+		};
 	}, [authTokens?.access_token]);
 
 	useEffect(() => {
-		const newSocket = new WebSocket(`ws://127.0.0.1:8000/ws/notifications/?access_token=${access_token}`);
+		const newSocket = new WebSocket(WP_FRINEDS+'?access_token='+access_token);
+
+		newSocket.onopen = () => {
+			console.log('---- WebSocket Connected from AcceptFriendsRequest Consumer ----');
+		};
+		newSocket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			console.log('WebSocket data:', data);
+		};
+
+		newSocket.onclose = (event) => {
+			console.log('WebSocket Closed form AcceptFriendsRequest Consumer:', event);
+		};
+
+		newSocket.onerror = (error) => {
+			console.error('WebSocket Error:', error);
+		};
+
+		setSocketFriends(newSocket);
+
+		return () => {
+			newSocket.close();
+		};
+	}, [authTokens?.access_token]);
+
+	useEffect(() => {
+		const newSocket = new WebSocket(WP_NOTIFICATIONS+'?access_token='+access_token);
 
 		newSocket.onopen = () => {
 			console.log('---- WebSocket Connected from Notifications Consumer ----');
 		};
 
 		newSocket.onmessage = (event) => {
-            console.log('WebSocket message received:', event.data);
-            const data = JSON.parse(event.data);
-                console.log('Notification for current user:', data);
-                setNotifications((prevNotifications) => [
-                    ...prevNotifications,
-                    {
-                        id: data.id,
-                        message: data.message,
-                        type: 'friend_request',
-                        from_user: data.from_user,
-                        profile_picture: data.profile_picture,
-                    },
-                ]);
-        };
+			console.log('WebSocket message received:', event.data);
+			const data = JSON.parse(event.data);
+			console.log('Notification for current user:', data);
+			setNotifications((prevNotifications) => [
+				...prevNotifications,
+				{
+					id: data.id,
+					message: data.message,
+					type: 'friend_request',
+					from_user: data.from_user,
+					profile_picture: data.profile_picture,
+				},
+			]);
+		};
 
 
 		newSocket.onclose = (event) => {
@@ -198,7 +199,7 @@ function Layout() {
 			newSocket.close();
 		}
 	}
-	, [authTokens?.access_token]);
+		, [authTokens?.access_token]);
 
 	const sockets = {
 		socket_notify: socket_notify,

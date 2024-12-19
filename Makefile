@@ -6,7 +6,7 @@ up:
 	docker-compose up 
 
 ssl:
-	bash app/nginx/generate_ssl.sh
+	bash app/nginx/tools/generate_ssl.sh
 
 build:
 	docker-compose up --build

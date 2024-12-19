@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import { useSocket } from '../../Layout/Layout'
 
 
-const SEND_FRIEND_REQUEST = 'http://127.0.0.1:8000/api/send_friend_request/'
+const SEND_FRIEND_REQUEST = import.meta.env.VITE_SEND_FRIEND_REQUEST
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 function UserFriendsList({ user_friend, user_profile_picture }) {

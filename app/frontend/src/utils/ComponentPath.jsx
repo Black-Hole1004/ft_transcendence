@@ -31,7 +31,6 @@ const ComponentPath = () => {
 	return (
 			<Routes>
 				{/* Redirect to /Dashboard if authenticated on the home path */}
-				{console.log("access: ", authTokens)}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
 				
 				{/* Layout wrapping all private routes */}
