@@ -5,4 +5,8 @@ from . import views
 
 urlpatterns = [
     path('profile/stats/', views.get_profile_stats, name='profile-stats'),
+    path('leaderboard/', views.get_leaderboard, name='leaderboard'),
+    path('achievements/', views.get_achievements, name='achievements'),
+    path('me/', views.get_user_data, name='user_data'),
+
 ]

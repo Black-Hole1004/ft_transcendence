@@ -13,37 +13,26 @@ const Matchmaking = () => {
     const [opponent, setOpponent] = useState(null);
     
     const [matchData, setMatchData] = useState(null);
-    // const [countdown, setCountdown] = useState(null);
     const [matchmakingService] = useState(new MatchmakingService());
+    const [count, setCountdown] = useState(5);
 
     useEffect(() => {
-        const settings = location.state?.settings;
-        console.log('Initializing matchmaking with settings:', settings);
 
         matchmakingService.connect();
 
         matchmakingService.on('connect', () => {
-            console.log('Connected to matchmaking service');
             setStatus('connected');
-            matchmakingService.findMatch(settings);
+            matchmakingService.findMatch();
         });
 
         matchmakingService.on('searching', (data) => {
-            console.log('Searching for opponent:', data);
             setStatus('searching');
         });
 
         matchmakingService.on('match_found', async (data) => {
-            console.log('Match found with data:', data);
             setStatus('match_found');
             setOpponent(data.opponent);
             setMatchData(data);
-
-            // Start countdown
-            // for (let i = 3; i > 0; i--) {
-            //     setCountdown(i);
-            //     await new Promise((r) => setTimeout(r, 1000));
-            // }
 
             if (!data.game_id) {
                 console.error('Server did not provide game_id');
@@ -51,17 +40,13 @@ const Matchmaking = () => {
                 return;
             }
 
-            const settings = location.state?.settings || {
-                backgroundId: 1,
-                paddleHeight: 110,
-                ballRadius: 15,
-                powerUps: 1,
-                attacks: 1,
-                Player1Color: '#ffffff',
-                Player2Color: '#ffffff',
-                BallColor: '#ffffff',
-                duration: 30,
-            };
+            const backgroundId = location.state?.backgroundId || 1;
+            
+            // Start countdown
+            for (let i = 5; i > 0; i--) {
+                setCountdown(i);
+                await new Promise((r) => setTimeout(r, 1000));
+            }
 
             navigate('/remote-game', {
                 state: {
@@ -70,24 +55,12 @@ const Matchmaking = () => {
                     gameId: data.game_id,
                     opponent: data.opponent,
                     currentUser: data.current_user,
-                    settings: settings,
+                    backgroundId : backgroundId,
                 },
-            });
-    
-            // navigate('/game-test', {
-            //     state: {
-            //         gameId: data.game_id,
-            //         playerNumber: data.player_number,
-            //         opponent: data.opponent,
-            //         currentUser: data.current_user,
-            //         settings: settings,
-            //     },
-            // });
-            
+            });        
         });
 
         return () => {
-            console.log('Cleaning up matchmaking');
             matchmakingService.disconnect();
         };
     }, []);
@@ -101,7 +74,7 @@ const Matchmaking = () => {
     return (
         <div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary flex items-center justify-center'>
             {status === 'match_found' ? (
-                <MatchFoundDisplay matchData={matchData} /> /* countdown={countdown} */
+                <MatchFoundDisplay matchData={matchData} countdown={count} />
             ) : (
                 <div className='w-1/3 min-w-[400px]'>
                     <div className='w-full flex flex-col items-center gap-8 bg-backdrop-80 p-12 rounded-lg shadow-xl'>

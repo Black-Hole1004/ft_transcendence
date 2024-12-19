@@ -19,12 +19,14 @@ const Custom = () => {
     const handleStart = () => {
         setStep(2)
     }
+    
+
 
     const handleGameModeSelect = (mode) => {
         if (mode === 'local') {
             navigate('/local-game-setup', { state: { backgroundId } })
         } else {
-            navigate('/remote-game-setup', { state: { backgroundId } })
+            navigate('/matchmaking', { state: { backgroundId } })
         }
     }
 

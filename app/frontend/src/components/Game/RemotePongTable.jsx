@@ -31,7 +31,7 @@ const RemotePongTable = ({
         
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        
+    
         // Clear and prepare the canvas
         const clearCanvas = (ctx) => {
             ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);

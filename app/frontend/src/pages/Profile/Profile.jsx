@@ -8,39 +8,6 @@ import AboutSection from '../../components/Profile/AboutSection'
 import UserStatsGraph from '../../components/Profile/UserStatsGraph'
 import useAuth from '../../context/AuthContext'
 
-
-// const AnimatedProgressBar = ({ targetProgress }) => {
-// 	const [currentProgress, setCurrentProgress] = useState(0)
-
-// 	useEffect(() => {
-// 		// Start at 0
-// 		setCurrentProgress(0)
-
-// 		// Animate to target value
-// 		setTimeout(() => {
-// 			setCurrentProgress(targetProgress)
-// 		}, 100)
-// 	}, [targetProgress])
-
-// 	return (
-// 		<div className='relative w-full rounded-lg h-[65%] bg-gray-700 overflow-hidden'>
-// 			<div
-// 				className='rounded-lg h-full bg-level transition-all duration-1000 ease-out'
-// 				style={{
-// 					width: `${currentProgress}%`,
-// 					// Optional: Add gradient or shimmer effect
-// 					backgroundImage:
-// 						'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%)',
-// 					backgroundSize: '200% 100%',
-// 					animation: 'shimmer 2s infinite',
-// 				}}
-// 			/>
-// 		</div>
-// 	)
-// }
-
-
-
 const USER_API = import.meta.env.VITE_USER_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 

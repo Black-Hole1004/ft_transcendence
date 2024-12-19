@@ -12,19 +12,12 @@ const MatchFoundDisplay = ({ matchData, countdown }) => {
 
     const getImageUrl = (path, type = 'profile') => {
         if (!path) {
-            console.log(`No ${type} image path provided`);
             return '/assets/images/default-avatar.png';
-        }
-        
-        console.log(`Original ${type} image path:`, path);
-        
+        }    
         if (path.startsWith('http')) {
-            console.log(`Using complete URL for ${type}:`, path);
             return path;
         }
-
         const fullUrl = `${import.meta.env.VITE_BASE_URL}${path}`;
-        console.log(`Constructed ${type} URL:`, fullUrl);
         return fullUrl;
     };
 
@@ -71,16 +64,16 @@ const MatchFoundDisplay = ({ matchData, countdown }) => {
                         </div>
                     )}
                 </div>
-
-                {/* VS and Countdown Section */}
-                {/* <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center scale-75 sm:scale-90 md:scale-100'>
+                
+                {/* VS  and Countdown */}
+                <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center scale-75 sm:scale-90 md:scale-100'>
                     <span className='text-8xl font-bold text-white mb-8'>VS</span>
                     {countdown && (
                         <div className='text-9xl font-bold text-gray-500 animate-pulse'>
                             {countdown}
                         </div>
                     )}
-                </div> */}
+                </div>
 
                 {/* Player 2 */}
                 <div className='flex flex-col items-center scale-75 sm:scale-90 md:scale-100'>

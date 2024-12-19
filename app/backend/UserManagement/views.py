@@ -336,7 +336,7 @@ def get_user_time_spent(request):
 
     return JsonResponse({'data': list(sessions)})
 
-# user profile statistics
+# user profile statistics-------------------------------------------------------------
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -427,3 +427,132 @@ def get_profile_stats(request):
         return Response({
             'error': str(e)
         }, status=500)
+    
+# leaderboard-------------------------------------------------------------
+
+# views.py
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+from .models import Achievement
+
+User = get_user_model()
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_leaderboard(request):
+    try:
+        # Get top 20 users ordered by XP
+        top_users = User.objects.order_by('-xp')[:20]
+        
+        # Prepare user data with achievements
+        leaderboard_data = []
+        for user in top_users:
+            # Get user's current achievement based on XP
+            achievement = Achievement.get_badge(user.xp)
+            
+            leaderboard_data.append({
+                'id': user.id,
+                'username': user.username,
+                'xp': user.xp,
+                'profile_picture': user.profile_picture.url if user.profile_picture else None,
+                'achievement': achievement  # This already includes name and image
+            })
+        
+        return Response({
+            'users': leaderboard_data
+        })
+        
+    except Exception as e:
+        return Response({
+            'error': str(e)
+        }, status=500)
+
+#achievements -------------------------------------------------------------------------------
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_achievements(request):
+    try:
+        # Get all available achievements
+        achievements = [
+            {
+                'name': 'Novice Astronaut',
+                'image': 'novice-astronaut',
+                'xp_required': 0,
+                'description': 'Begin your cosmic journey'
+            },
+            {
+                'name': 'Cosmic Explorer',
+                'image': 'cosmic-explorer',
+                'xp_required': 2000,
+                'description': 'Venture beyond the familiar'
+            },
+            {
+                'name': 'Stellar Voyager',
+                'image': 'stellar-voyager',
+                'xp_required': 4000,
+                'description': 'Navigate through stellar challenges'
+            },
+            {
+                'name': 'Galactic Trailblazer',
+                'image': 'galactic-trailblazer',
+                'xp_required': 6000,
+                'description': 'Forge new paths in the galaxy'
+            },
+            {
+                'name': 'Celestial Master',
+                'image': 'celestial-master',
+                'xp_required': 8000,
+                'description': 'Achieve cosmic mastery'
+            }
+        ]
+        
+        # Get current user's XP for progress calculation
+        user_xp = request.user.xp
+        
+        # Add progress information
+        for i in range(len(achievements)):
+            current = achievements[i]
+            next_threshold = achievements[i + 1]['xp_required'] if i < len(achievements) - 1 else 10000
+            
+            # Calculate progress percentage
+            if user_xp >= next_threshold:
+                progress = 100
+            elif user_xp < current['xp_required']:
+                progress = 0
+            else:
+                progress = ((user_xp - current['xp_required']) / 
+                          (next_threshold - current['xp_required'])) * 100
+                
+            current['progress'] = round(progress, 2)
+            current['user_xp'] = user_xp
+            
+        return Response({
+            'achievements': achievements,
+            'current_xp': user_xp
+        })
+        
+    except Exception as e:
+        return Response({
+            'error': str(e)
+        }, status=500)
+        
+# get current logged in user data
+# UserManagement/views.py
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_data(request):
+    try:
+        user = request.user
+        return JsonResponse({
+            'id': user.id,
+            'username': user.username,
+            'xp': user.xp,
+            'email': user.email,
+            'profile_picture': user.profile_picture.url if hasattr(user, 'profile_picture') and user.profile_picture else None,
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
