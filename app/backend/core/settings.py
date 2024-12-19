@@ -206,11 +206,7 @@ CSRF_COOKIE_SECURE = True
 CORS_ALLOW_CREDENTIALS = True
 
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://api.intra.42.fr",
-    "https://localhost",
-] # todo: to be changed in production
+
 
 # Ensure secure cookies in production
 if not DEBUG:
@@ -225,8 +221,11 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # Default authentication
 )
 
-LOGIN_REDIRECT_URL = 'http://localhost:5173/Dashboard'
-LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
+
+
+
+LOGIN_REDIRECT_URL = 'https://localhost/Dashboard'
+LOGOUT_REDIRECT_URL = 'https://localhost/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
@@ -248,9 +247,11 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 
 #todo: Creds should be changed in production
 
-SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-cdcc23cff090940f13730afd65feb14fe10adba125685f2f6b47055c98256fd7'
-SOCIAL_AUTH_INTRA42_SECRET = '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'
-SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'http://localhost:8000/social-auth/complete/intra42/'
+# SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-cdcc23cff090940f13730afd65feb14fe10adba125685f2f6b47055c98256fd7'
+# SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
+SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'https://localhost/api/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
@@ -259,3 +260,16 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'email', 
     'profile',
 ]
+
+#redirect HTTP to HTTPS
+# SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://api.intra.42.fr",
+    "https://localhost",
+] # todo: to be changed in production
+CORS_ALLOW_CREDENTIALS = True

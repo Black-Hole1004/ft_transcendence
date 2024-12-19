@@ -67,6 +67,18 @@ from .models import Tournament, TournamentParticipant, Match
 from .serializers import TournamentSerializer, MatchSerializer
 from django.db import transaction
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.db import connections
+from django.conf import settings
+from datetime import datetime
+import redis
+from .serializers import HealthCheckSerializer
+import time
+import socket
+from rest_framework.exceptions import ValidationError
+
 
 User = get_user_model()
 #todo: (DELETE THIS LATER) simple view to test permissions control and jwt decoding
@@ -202,13 +214,6 @@ class LoginView(APIView):
                         'refresh_token': refresh_token,
                         'message': 'User authenticated successfully'
                     })
-                    response.set_cookie(
-                        key='access_token',
-                        value=access_token,
-                        httponly=True,
-                        secure=True,
-                        samesite='Lax'
-                    )
                     return response
                 else:
                     return JsonResponse({'error': 'Invalid credentials'}, status=401)
@@ -585,76 +590,124 @@ class TournamentDetailView(APIView):
             )
         tournament.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.db import connections
-from django.conf import settings
-from datetime import datetime
-import redis
-from .serializers import HealthCheckSerializer
+
 class HealthCheckView(APIView):
     """
-    API endpoint that checks the health of the backend services
+    Enhanced health check endpoint that monitors various system components
     """
     permission_classes = []  # Allow unauthenticated access
-    
-    def get_database_status(self):
+
+    def check_database(self):
+        start_time = time.time()
         try:
-            db = connections['default']
-            db.cursor()
+            for name in connections:
+                cursor = connections[name].cursor()
+                cursor.execute("SELECT 1")
+                cursor.fetchone()
+            latency = (time.time() - start_time) * 1000  # Convert to milliseconds
             return {
                 "status": "healthy",
-                "message": "Database connection successful"
+                "message": "Database connection successful",
+                "latency": round(latency, 2)
             }
         except Exception as e:
             return {
                 "status": "unhealthy",
                 "message": str(e)
             }
-    
-    def get_redis_status(self):
-        if hasattr(settings, 'REDIS_URL'):
-            try:
-                r = redis.from_url(settings.REDIS_URL)
-                r.ping()
-                return {
-                    "status": "healthy",
-                    "message": "Redis connection successful"
-                }
-            except redis.RedisError as e:
-                return {
-                    "status": "unhealthy",
-                    "message": str(e)
-                }
-        return None
+
+    def check_redis(self):
+        if not hasattr(settings, 'REDIS_URL'):
+            return {
+                "status": "unknown",
+                "message": "Redis not configured"
+            }
+
+        start_time = time.time()
+        try:
+            redis_client = redis.from_url(settings.REDIS_URL)
+            redis_client.ping()
+            latency = (time.time() - start_time) * 1000
+            return {
+                "status": "healthy",
+                "message": "Redis connection successful",
+                "latency": round(latency, 2)
+            }
+        except redis.RedisError as e:
+            return {
+                "status": "unhealthy",
+                "message": str(e)
+            }
+
+    def check_disk_usage(self):
+        try:
+            disk = psutil.disk_usage('/')
+            return {
+                "total": disk.total,
+                "used": disk.used,
+                "free": disk.free,
+                "percent": disk.percent
+            }
+        except Exception as e:
+            return {"error": str(e)}
+
+    def check_memory_usage(self):
+        try:
+            memory = psutil.virtual_memory()
+            return {
+                "total": memory.total,
+                "available": memory.available,
+                "percent": memory.percent,
+                "used": memory.used,
+                "free": memory.free
+            }
+        except Exception as e:
+            return {"error": str(e)}
+
+    def check_cpu_usage(self):
+        try:
+            cpu_percent = psutil.cpu_percent(interval=1)
+            cpu_count = psutil.cpu_count()
+            return {
+                "percent": cpu_percent,
+                "cpu_count": cpu_count
+            }
+        except Exception as e:
+            return {"error": str(e)}
 
     def get(self, request, *args, **kwargs):
-        # Get service statuses
-        db_status = self.get_database_status()
-        redis_status = self.get_redis_status()
-        
-        # Determine overall health
-        is_healthy = (
-            db_status["status"] == "healthy" and 
-            (redis_status is None or redis_status["status"] == "healthy")
-        )
-        
-        # Prepare response data
-        health_data = {
-            "status": "healthy" if is_healthy else "unhealthy",
-            "timestamp": datetime.now(),
-            "version": getattr(settings, 'API_VERSION', '1.0.0'),
-            "database": db_status,
+        services_status = {
+            "database": self.check_database(),
+            "redis": self.check_redis()
         }
+
+        # System metrics
+        system_metrics = {
+            "hostname": socket.gethostname(),
+            "disk": self.check_disk_usage(),
+            "memory": self.check_memory_usage(),
+            "cpu": self.check_cpu_usage()
+        }
+
+        # Determine overall health
+        is_healthy = all(
+            service["status"] == "healthy"
+            for service in services_status.values()
+            if service["status"] != "unknown"
+        )
+
+        response_data = {
+            "status": "healthy" if is_healthy else "unhealthy",
+            "timestamp": datetime.now().isoformat(),
+            "environment": os.getenv("DJANGO_ENV", "development"),
+            "services": services_status,
+            "system": system_metrics
+        }
+
+        serializer = HealthCheckSerializer(response_data)
+        response_status = status.HTTP_200_OK if is_healthy else status.HTTP_503_SERVICE_UNAVAILABLE
         
-        # Add Redis status if configured
-        if redis_status is not None:
-            health_data["redis"] = redis_status
-        
-        # Serialize and return response
-        serializer = HealthCheckSerializer(health_data)
         return Response(
             serializer.data,
-            status=status.HTTP_200_OK if is_healthy else status.HTTP_503_SERVICE_UNAVAILABLE
+            status=response_status
         )

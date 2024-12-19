@@ -57,7 +57,8 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 
                 # Update user fields based on customization status
                 self.update_user_fields(user, user_data)
-                
+
+
                 # Always update essential fields
                 for field in self.ESSENTIAL_FIELDS:
                     if field in user_data:
@@ -80,9 +81,8 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
                 refresh_token = str(refresh)
-                print(f'user.is_logged_with_oauth --------> {user.is_logged_with_oauth}')
                 redirect_url = (
-                    f"http://localhost:5173/dashboard?"
+                    f"https://localhost/dashboard?"
                     f"access_token={access_token}&"
                     f"refresh_token={refresh_token}"
                 )

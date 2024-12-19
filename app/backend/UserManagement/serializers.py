@@ -83,6 +83,6 @@ class MatchSerializer(serializers.ModelSerializer):
 class HealthCheckSerializer(serializers.Serializer):
     status = serializers.CharField()
     timestamp = serializers.DateTimeField()
-    version = serializers.CharField()
-    database = serializers.DictField()
-    redis = serializers.DictField(required=False)
+    environment = serializers.CharField()
+    services = serializers.DictField()
+    system = serializers.DictField()

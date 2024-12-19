@@ -37,7 +37,7 @@ urlpatterns = [
     path('api/display_text/', views.display_text, name='display-text'),
     path('api/user/', UserProfileView.as_view(), name='user-profile'),
     path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
-    path('social-auth/', include('social_django.urls', namespace='social')),
+    path('api/social-auth/', include('social_django.urls', namespace='social')),
     path('api/check_password/', views.check_user_password, name='check_user_password'),
     path('api/time-spent/', views.get_user_time_spent, name='time_spent'),
     path('api/logout/', views.LogoutView.as_view(), name='logout'),
@@ -50,7 +50,6 @@ urlpatterns = [
     path('api/friend_request/accept/<int:friend_request_id>/', AcceptFriendRequestView.as_view(), name='accept-friend-request'),
     path('api/friend_request/cancel/<int:friend_request_id>/', CancelFriendRequestView.as_view(), name='cancel-friend-request'),
     path('api/friend_ship_request/', FriendShipRequestListView.as_view(), name='friend_ship_request'),
-
     path('api/tournament/', TournamentView.as_view(), name='tournament-list'),
     path('api/tournament/<int:id>/', TournamentDetailView.as_view(), name='tournament-detail'),
     path('api/health/', HealthCheckView.as_view(), name='healthCheck'),    

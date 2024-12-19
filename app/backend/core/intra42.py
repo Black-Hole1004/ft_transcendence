@@ -17,6 +17,7 @@ import os
 
 
 class Intra42OAuth2(BaseOAuth2):
+    
     """Intra42 OAuth2 authentication backend"""
     name = 'intra42'
     AUTHORIZATION_URL = 'https://api.intra.42.fr/v2/oauth/authorize'
@@ -125,8 +126,7 @@ class Intra42OAuth2(BaseOAuth2):
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
             refresh_token = str(refresh)
-
-            redirect_url = f"http://localhost:5173/dashboard?access_token={access_token}&refresh_token={refresh_token}"
+            redirect_url = f"https://localhost/dashboard?access_token={access_token}&refresh_token={refresh_token}"
             return HttpResponseRedirect(redirect_url)
 
         else:

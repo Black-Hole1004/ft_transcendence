@@ -21,8 +21,10 @@ export const AuthProvider = ({ children }) => {
     const accessToken = Cookies.get('access_token');
     const refreshToken = Cookies.get('refresh_token');
 
+
     const [authTokens, setAuthTokens] = useState(() => {
         try {
+            
             if (accessToken && refreshToken) {
                 return {
                     access_token: JSON.parse(accessToken),
@@ -65,8 +67,17 @@ export const AuthProvider = ({ children }) => {
                 console.log('Login successful', data)
                 setAuthTokens(data)
                 setUser(jwtDecode(data.access_token))
-                Cookies.set('access_token', JSON.stringify(data.access_token))
-                Cookies.set('refresh_token', JSON.stringify(data.refresh_token))
+                
+                const access_token = JSON.stringify(data.access_token)
+                const refresh_token = JSON.stringify(data.refresh_token)
+
+                
+                Cookies.set('refresh_token', refresh_token, { sameSite: 'None', secure: true });
+                Cookies.set('access_token', access_token, { sameSite: 'None', secure: true });
+                Cookies.set('access', access_token, { sameSite: 'None', secure: true });
+                console.log("access....: ", Cookies.get('access'))
+                console.log('Cookies set:', Cookies.get('refresh_token'), Cookies.get('access_token'));
+                
                 // window.location.href = FRONTEND_URL + 'dashboard'
                 navigate('/dashboard')
             }
@@ -108,7 +119,11 @@ export const AuthProvider = ({ children }) => {
 
 
     const getAuthHeaders = () => {
+        console.log('--- getAuthHeaders ---')
         const access_token = Cookies.get('access_token');
+        const refresh_token = Cookies.get('refresh_token');
+        console.log('access_token: ============>', access_token)
+        console.log('refresh_token: ============>', refresh_token)
         if (access_token) {
             try {
                 const token = JSON.parse(access_token);
