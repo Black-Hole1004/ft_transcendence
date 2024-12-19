@@ -32,7 +32,9 @@ urlpatterns = [
     path('social-auth/', include('social_django.urls', namespace='social')),
     # added by tabi3a : check user existence
     path('api/check-user/', views.check_user_exists, name='check-user'),
+    
     path('api/game/', include('game.urls')),
+    path('api/user/', include('UserManagement.urls')),
     
     path('api/check_password/', views.check_user_password, name='check_user_password'),
     path('api/time-spent/', views.get_user_time_spent, name='time_spent'),

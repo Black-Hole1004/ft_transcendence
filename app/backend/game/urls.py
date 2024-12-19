@@ -5,26 +5,10 @@ from . import views
 
 urlpatterns = [
     
-    # Game setup endpoints
+    # # Game queries
+    # path('history/', views.get_game_history, name='game_history'),
     
-    # Game session management
-    path('create/', views.create_game, name='create_game'),
-    path('join/<int:game_id>/', views.join_game, name='join_game'),
-    path('update/<int:game_id>/', views.update_game_state, name='update_game'),
-    path('end/<int:game_id>/', views.end_game, name='end_game'),
-    path('disconnect/<int:game_id>/', views.handle_disconnect, name='disconnect'),
-    
-    # Game queries
-    path('history/', views.get_game_history, name='game_history'),
-    
-    # Game actions for debugging purposes
-    path('debug/game/<int:game_id>/', views.check_game_session, name='check_game'),
-    path('debug/active-games/', views.list_active_games, name='list_active_games'),
+    # # Game actions for debugging purposes
+    # path('debug/game/<int:game_id>/', views.check_game_session, name='check_game'),
+    # path('debug/active-games/', views.list_active_games, name='list_active_games'),
 ]
-
-
-# list all active games
-#http://localhost:8000/admin/game/gamesessions/
-
-# check a specific game
-#http://localhost:8000/api/game/debug/game/1/

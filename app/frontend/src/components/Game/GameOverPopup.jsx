@@ -30,7 +30,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 
 	return (
         <div className='fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50'>
-            <div className='bg-[#0E0B0A] border-2 border-[#76797C] rounded-2xl shadow-2xl w-[55rem] overflow-hidden'>
+            <div className='bg-[#0E0B0A] border-2 border-[#76797C] rounded-2xl shadow-2xl w-[40rem] overflow-hidden'>
                 {/* Result Banner */}
 
 
@@ -94,22 +94,6 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
                             <span className='text-[#E6DDC6]'>{currentPlayerStats?.new_xp}</span>
                         </div>
                     </div>
-
-                    {/* Badge Info */}
-                    {/* <div className='bg-[#1A1A1A] rounded-lg p-4 flex items-center gap-4'>
-                        <img
-                            src={badgeImageUrl}
-                            alt={currentPlayerStats?.badge?.name}
-                            className='w-12 h-12 object-contain'
-                            onError={(e) => {
-                                e.target.style.display = 'none'
-                            }}
-                        />
-                        <div>
-                            <h3 className='text-[#E6DDC6] font-semibold'>{currentPlayerStats?.badge?.name}</h3>
-                            <p className='text-gray-400 text-sm'>Current Achievement</p>
-                        </div>
-                    </div> */}
 
 					<div className='bg-[#1A1A1A] rounded-lg p-4'>
                         <h3 className='text-[#E6DDC6] font-semibold mb-4'>Current Achievement</h3>

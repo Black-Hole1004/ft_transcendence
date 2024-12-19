@@ -25,7 +25,6 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 from .models import User
-from .models import UserSession
 import os
 import jwt
 from django.conf import settings
@@ -38,6 +37,9 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 from rest_framework.exceptions import ValidationError
 
 
+from django.db.models import Count, Q
+from .models import Achievement
+from game.models import GameSessions
 
 from .models import UserSession
 from django.utils import timezone
@@ -333,3 +335,95 @@ def get_user_time_spent(request):
     sessions = UserSession.objects.time_spent_per_day(user)
 
     return JsonResponse({'data': list(sessions)})
+
+# user profile statistics
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile_stats(request):
+    try:
+        user = request.user
+        games = GameSessions.objects.filter(
+            Q(player1=user) | Q(player2=user),
+            status='FINISHED'
+        )
+        
+        total_games = games.count()
+        wins = games.filter(winner=user).count()
+        win_rate = (wins / total_games * 100) if total_games > 0 else 0
+        
+        recent_matches = []
+        for game in games.order_by('-start_time')[:5]:
+            is_player1 = (game.player1 == user)
+            
+            current_player = game.player1 if is_player1 else game.player2
+            opponent = game.player2 if is_player1 else game.player1
+            
+            # Get badge data
+            current_badge = Achievement.get_badge(current_player.xp)
+            opponent_badge = Achievement.get_badge(opponent.xp)
+            
+            # Get profile pictures
+            current_profile_picture = current_player.profile_picture.url if current_player.profile_picture else None
+            opponent_profile_picture = opponent.profile_picture.url if opponent.profile_picture else None
+            
+            # Get scores
+            current_score = game.score_player1 if is_player1 else game.score_player2
+            opponent_score = game.score_player2 if is_player1 else game.score_player1
+            
+            # XP gain logic
+            current_xp_gain = game.player1_xp_gain if is_player1 else game.player2_xp_gain
+            opponent_xp_gain = game.player2_xp_gain if is_player1 else game.player1_xp_gain
+            
+            # Improved result determination
+            if game.score_player1 == game.score_player2:
+                result = 'DRAW'
+            else:
+                if (is_player1 and game.winner == game.player1) or (not is_player1 and game.winner == game.player2):
+                    result = 'VICTORY'
+                else:
+                    result = 'DEFEAT'
+            
+            match_data = {
+                'current_player': {
+                    'profile_picture': current_profile_picture,
+                    'badge_image': current_badge['image'],
+                    'xp_gain': current_xp_gain,
+                    'score': current_score
+                },
+                'opponent': {
+                    'profile_picture': opponent_profile_picture,
+                    'badge_image': opponent_badge['image'],
+                    'xp_gain': opponent_xp_gain,
+                    'score': opponent_score
+                },
+                'result': result,
+            }
+            recent_matches.append(match_data)
+
+        # Rest of the code remains the same...
+        user_badge = Achievement.get_badge(user.xp)
+        progress_data = Achievement.get_badge_progress(user.xp)
+        user_badge.update(progress_data)
+        
+        overall_progress = (user.xp / 10000 * 100) if user.xp < 10000 else 100
+        
+        return Response({
+            'stats': {
+                'total_games': total_games,
+                'games_won': wins,
+                'win_rate': round(win_rate, 2),
+                'xp': user.xp
+            },
+            'achievement': {
+                'current': user_badge,
+                'overall_progress': round(overall_progress, 2)
+            },
+            'match_history': recent_matches
+        })
+        
+    except Exception as e:
+        print(f"Error in get_profile_stats: {str(e)}")
+        return Response({
+            'error': str(e)
+        }, status=500)

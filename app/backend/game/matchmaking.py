@@ -38,7 +38,6 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
         # Store player info in matchmaking queue
         self.matchmaking_queue[self.channel_name] = {
             'searching': False,
-            'preferences': None,
             'user': self.user,
             'connected_at': time.time()
         }
@@ -59,8 +58,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                     'message': 'Looking for opponent...'
                 }))
                 
-                # Store preferences and start search
-                self.matchmaking_queue[self.channel_name]['preferences'] = data.get('preferences', {})
+                # Store and start search
                 self.matchmaking_queue[self.channel_name]['searching'] = True
                 await self.find_opponent()
                 
@@ -86,13 +84,11 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                     opponent_data['searching']):
                     
                     opponent_user = opponent_data['user']
-                    preferences = self.matchmaking_queue[self.channel_name]['preferences']
                     
                     try:
                         game = await self.create_game_session (
                             current_user, 
-                            opponent_user, 
-                            preferences
+                            opponent_user,
                         )
                         
                         # Use your Achievement class to get badge info
@@ -153,12 +149,11 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
 
 
     @database_sync_to_async
-    def create_game_session(self, player1, player2, preferences):
+    def create_game_session(self, player1, player2):
         """Create a new game session"""
         game = GameSessions.objects.create(
             player1=player1,
             player2=player2,
-            background_id=preferences.get('backgroundId', 1),
             status=GameSessions.GameStatus.WAITING
         )
         return game

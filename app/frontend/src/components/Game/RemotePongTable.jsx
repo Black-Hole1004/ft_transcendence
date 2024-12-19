@@ -86,7 +86,6 @@ const RemotePongTable = ({
             ctx.beginPath();
 
             // Transform ball x-position based on player perspective
-                // Transform ball position based on player number
             const ballX = playerNumber === 2 ? (canvasSize.width - ball.x) : ball.x;
             
             ctx.arc(
@@ -155,18 +154,22 @@ const RemotePongTable = ({
     useEffect(() => {
         const handleKeyDown = (e) => {            
             if (e.key === 'ArrowUp') {
+                e.preventDefault();
                 onPaddleMove('startUp');
             }
             if (e.key === 'ArrowDown') {
+                e.preventDefault();
                 onPaddleMove('startDown');
             }
         };
         
         const handleKeyUp = (e) => {
             if (e.key === 'ArrowUp') {
+                e.preventDefault();
                 onPaddleMove('stopUp');
             }
             if (e.key === 'ArrowDown') {
+                e.preventDefault();
                 onPaddleMove('stopDown');
             }
         };

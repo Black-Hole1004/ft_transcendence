@@ -142,17 +142,17 @@ class GameState:
         # Game status
         self.connected_players = 0
         self.players_ready = set()
-        self.time_remaining = 20  # 1 minute and a half
+        self.time_remaining = 60  # 1 minute and a half
         
         # Ball properties
         self.ball = {
             'x': canvas_width / 2,
             'y': canvas_height / 2,
             'radius': 20,
-            'speed': 6,
-            'velocityX': 6,
-            'velocityY': 6,
-            'speedIncrement': 1.2,
+            'speed': 8,
+            'velocityX': 8,
+            'velocityY': 8,
+            'speedIncrement': 1.1,
             'maxSpeed': 18
         }
         
@@ -262,8 +262,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                     return
                 # Update player connection status
                 if self.player_number == 1:
+                    await self.update_user_status(self.game_state.player1_id, 'online')
                     self.game_state.player1_paddle['connected'] = False
                 else:
+                    await self.update_user_status(self.game_state.player2_id, 'online')
                     self.game_state.player2_paddle['connected'] = False
                 
                 self.game_state.connected_players -= 1
@@ -325,7 +327,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             
             # Message handlers for different message types
             handlers = {
-                'player_number_init': self.handle_player_number_init, # the player number received from the frontend from the matchmaking service                'paddle_move': self.handle_paddle_move,
+                'player_number_init': self.handle_player_number_init, # the player number received from the frontend from the matchmaking service 
                 'paddle_direction': self.handle_paddle_direction,
                 'player_ready': self.handle_player_ready,
                 'restart_game': self.handle_restart_request,
@@ -419,10 +421,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                 
                 if action == 'startUp':
                     self.game_state.player1_movement = 'up'
-                    player_paddle['y'] = max(0, player_paddle['y'] - 7)
+                    player_paddle['y'] = max(0, player_paddle['y'] - 8)
                 elif action == 'startDown':
                     self.game_state.player1_movement = 'down'
-                    player_paddle['y'] = min(400 - 110, player_paddle['y'] + 7)
+                    player_paddle['y'] = min(400 - 110, player_paddle['y'] + 8)
                 elif action in ['stopUp', 'stopDown']:
                     self.game_state.player1_movement = None
             else:  # Player 2
@@ -432,10 +434,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                 
                 if action == 'startUp':
                     self.game_state.player2_movement = 'up'
-                    player_paddle['y'] = max(0, player_paddle['y'] - 7)
+                    player_paddle['y'] = max(0, player_paddle['y'] - 8)
                 elif action == 'startDown':
                     self.game_state.player2_movement = 'down'
-                    player_paddle['y'] = min(400 - 110, player_paddle['y'] + 7)
+                    player_paddle['y'] = min(400 - 110, player_paddle['y'] + 8)
                 elif action in ['stopUp', 'stopDown']:
                     self.game_state.player2_movement = None
             
@@ -594,6 +596,9 @@ class GameConsumer(AsyncWebsocketConsumer):
                 len(self.game_state.players_ready) == 2 and 
                 not self.game_state.game_over):
                 
+                            # Update both players' status to 'ingame'
+                await self.update_user_status(self.game_state.player1_id, 'ingame')
+                await self.update_user_status(self.game_state.player2_id, 'ingame')
                 self.game_state.is_paused = False
                 
                 # Start game loop if not already running
@@ -815,16 +820,36 @@ class GameConsumer(AsyncWebsocketConsumer):
             loser_score=loser_score
         )
 
-    def calculate_xp_gain(self, winner_score, loser_score):
-        """Calculate XP gain based on game results"""
-        # Calculate XP gain based on score difference
-        score_diff = abs(winner_score - loser_score)
+    def calculate_xp_changes(self, winner_score, loser_score):
+        """Calculate XP changes based on score difference"""
+        score_diff = winner_score - loser_score
+        
+        # For a draw
         if score_diff == 0:
-            xp_g = 50
-        else:
-            xp_g = 250
-        xp_gain = xp_g + (score_diff * 10) # 250 base XP + 10 XP per score difference
-        return xp_gain
+            return {
+                'winner_xp': 100,  # Base XP for participating
+                'loser_xp': 100    # Both get same XP in a draw
+            }
+        
+        # Calculate base XP gain/loss
+        base_xp = 200  # Base XP for winning
+        bonus_per_point = 20   # Additional XP per point difference
+        
+        # Winner's XP calculation
+        winner_xp = base_xp + (score_diff * bonus_per_point)
+        # Cap maximum XP gain at 300
+        winner_xp = min(winner_xp, 300)
+        
+        # Loser's XP loss calculation
+        # Lose less XP if they kept the score close
+        loser_xp = -(base_xp // 2) - (score_diff * (bonus_per_point // 2))
+        # Cap maximum XP loss at -250
+        loser_xp = max(loser_xp, -250)
+        
+        return {
+            'winner_xp': winner_xp,
+            'loser_xp': loser_xp
+        }
 
     async def get_user(self, user_id):
         """
@@ -871,16 +896,29 @@ class GameConsumer(AsyncWebsocketConsumer):
                 print("Game session with id {self.game_id} not found")
                 return
             
+            # Set both players back to 'online' status after the game ends
+            await self.update_user_status(winner_id, 'online')
+            await self.update_user_status(loser_id, 'online')
+            
             # Calculate XP changes
-            xp_gain = self.calculate_xp_gain(winner_score, loser_score)
-            if (winner_score - loser_score == 0):
-                xp_change = xp_gain
+            xp_changes = self.calculate_xp_changes(winner_score, loser_score)
+                
+            # update xp changes
+            game.winner_score = winner_score
+            game.loser_score = loser_score
+            
+            # Update XP gains in game session
+            if self.game_state.player1_id == winner_id:
+                game.player1_xp_gain = xp_changes['winner_xp']
+                game.player2_xp_gain = xp_changes['loser_xp']
             else:
-                xp_change = xp_gain // 2
+                game.player1_xp_gain = xp_changes['loser_xp']
+                game.player2_xp_gain = xp_changes['winner_xp']
+            
             # Update winner stats
             winner = await self.get_user(winner_id)
             old_winner_xp = winner.xp  # Store old XP for sending in response
-            winner.xp += xp_change
+            winner.xp += xp_changes['winner_xp']
             winner.won_games_count += 1
             winner.total_games_count += 1
             await self.update_user(winner)
@@ -888,10 +926,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             # Update loser stats
             loser = await self.get_user(loser_id)
             old_loser_xp = loser.xp  # Store old XP for sending in response
-            if (winner_score - loser_score == 0):
-                loser.xp += xp_change
-            else:
-                loser.xp = max(0, loser.xp - xp_change)
+            loser.xp = max(0, loser.xp + xp_changes['loser_xp'])  # Prevent negative XP
             loser.lost_games_count += 1
             loser.total_games_count += 1
             await self.update_user(loser)
@@ -901,11 +936,11 @@ class GameConsumer(AsyncWebsocketConsumer):
             game.end_time = timezone.now()
             game.winner_id = winner_id
             game.loser_id = loser_id
-            game.score_player1 = winner_score if self.game_state.player1_id == winner_id else loser_score
-            game.score_player2 = loser_score if self.game_state.player1_id == winner_id else winner_score
+            game.score_player1 = winner_score if (self.game_state.player1_id == winner_id) else loser_score
+            game.score_player2 = loser_score if (self.game_state.player1_id == winner_id) else winner_score
             await sync_to_async(game.save)()
 
-            # Get badges (assuming you have a similar Achievement class as in matchmaking)
+            # Get badges 
             winner_badge = Achievement.get_badge(winner.xp) # {name, xp, image}
             loser_badge = Achievement.get_badge(loser.xp)
             
@@ -926,7 +961,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                         'profile_picture': winner.profile_picture.url if winner.profile_picture else None,
                         'old_xp': old_winner_xp,
                         'new_xp': winner.xp,
-                        'xp_change': xp_change,
+                        'xp_change': xp_changes['winner_xp'],
                         'score': winner_score,
                         'badge': winner_badge
                     },
@@ -936,45 +971,25 @@ class GameConsumer(AsyncWebsocketConsumer):
                         'profile_picture': loser.profile_picture.url if loser.profile_picture else None,
                         'old_xp': old_loser_xp,
                         'new_xp': loser.xp,
-                        'xp_change': xp_change if winner_score == loser_score else -xp_change,  # Make it negative for loss
+                        'xp_change': xp_changes['loser_xp'],
                         'score': loser_score,
                         'badge': loser_badge
                     }
                 }
-            )
-            
-            print("\n" + "="*80)
-            print("                               GAME OVER                                     ")
-            print("="*80 + "\n")
-            
-            print("GAME DETAILS:")
-            print(f"Game ID: {game.game_id}")
-            print(f"Reason: {'time_up' if self.game_state.time_remaining <= 0 else 'score_limit'}")
-            print("\n" + "-"*80)
-            
-            print("WINNER INFORMATION:")
-            print("-"*80)
-            print(f"ID: {winner.id}")
-            print(f"Username: {winner.username}")
-            print(f"Profile Picture: {winner.profile_picture.url if winner.profile_picture else 'None'}")
-            print(f"Score: {winner_score}")
-            print(f"XP Change: {old_winner_xp} -> {winner.xp} (Gained: +{xp_gain})")
-            print(f"Badge: {winner_badge['name']} ({winner_badge['image']})")
-            print("\n" + "-"*80)
-            
-            print("LOSER INFORMATION:")
-            print("-"*80)
-            print(f"ID: {loser.id}")
-            print(f"Username: {loser.username}")
-            print(f"Profile Picture: {loser.profile_picture.url if loser.profile_picture else 'None'}")
-            print(f"Score: {loser_score}")
-            print(f"XP Change: {old_loser_xp} -> {loser.xp} (Lost: {-(xp_gain // 2)})")
-            print(f"Badge: {loser_badge['name']} ({loser_badge['image']})")
-            print("\n" + "="*80 + "\n")
-            
+            )            
         except Exception as e:
             print(f"Error updating game results: {e}")
             traceback.print_exc()
+    
+    async def update_user_status(self, user_id, status):
+        """Update user status"""
+        try:
+            user = await self.get_user(user_id)
+            if user:
+                user.status = status
+                await self.update_user(user)
+        except Exception as e:
+            print(f"Error updating user status: {str(e)}")
     
     # WebSocket event handler methods------------------------------------------------------
     

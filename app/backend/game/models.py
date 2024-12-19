@@ -24,6 +24,7 @@ class GameSessions(models.Model):
         null=True, 
         on_delete=models.CASCADE
     )
+    # game result fields
     winner = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         related_name='won_games',
@@ -41,25 +42,25 @@ class GameSessions(models.Model):
     score_player1 = models.IntegerField(default=0)
     score_player2 = models.IntegerField(default=0)
     
-    # Time tracking
-    start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(null=True, blank=True)
+    # scores winner and loser
+    winner_score = models.IntegerField(default=0)
+    loser_score = models.IntegerField(default=0)
     
-    # Game configuration
-    background_id = models.IntegerField(default=1)
+    #xp gained by the players
+    player1_xp_gain = models.IntegerField(default=0)
+    player2_xp_gain = models.IntegerField(default=0)
     
+        
     # Game state
     is_paused = models.BooleanField(default=False)
+    start_time = models.DateTimeField(auto_now_add=True)
+    
     status = models.CharField(
         max_length=20,
         choices=GameStatus.choices,
         default=GameStatus.WAITING
     )
     
-    # Player ready states
-    player1_ready = models.BooleanField(default=False)
-    player2_ready = models.BooleanField(default=False)
-
     class Meta:
         db_table = 'game_session'
         ordering = ['-start_time']  # Latest games first
