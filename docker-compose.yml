@@ -1,12 +1,11 @@
 version: '3.8'
 
-
 networks:
   ft_transcendence_network:
     name: ft_transcendence_network
 
-
 services:
+  # PostgreSQL Database
   ft_transcendence_db:
     container_name: ft_transcendence_db
     image: postgres:14
@@ -22,11 +21,12 @@ services:
       - ft_transcendence_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      start_period: 45s
       interval: 5s
       timeout: 30s
-      retries: 5
     restart: always
-  
+
+  # Django Backend
   backend:
     container_name: backend
     build: app/backend/.
@@ -35,7 +35,6 @@ services:
     env_file:
       - app/backend/.env
     environment:
-      - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=core.settings
     depends_on:
       ft_transcendence_db:
@@ -46,11 +45,12 @@ services:
       - ./app/backend:/app/backend
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      start_period: 45s
       interval: 5s
       timeout: 30s
-      retries: 5
     restart: always
-  
+
+  # React Frontend
   frontend:
     container_name: frontend
     build: app/frontend/.
@@ -64,14 +64,13 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5173/health"]
       interval: 5s
-      timeout: 10s
-      retries: 3
-    
-  
+      timeout: 30s
+    restart: always
+
+  # Redis
   redis:
     container_name: redis
     image: redis:7
@@ -81,12 +80,12 @@ services:
       - ft_transcendence_network
     volumes:
       - ./app/redis_data:/data
-    restart: always
     depends_on:
       backend:
         condition: service_healthy
-  
+    restart: always
 
+  # Nginx
   nginx:
     container_name: nginx
     image: nginx
