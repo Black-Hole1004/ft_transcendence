@@ -53,7 +53,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user = await database_sync_to_async(User.objects.get)(id=self.userid)
         cache.set(f"user_{self.userid}_channel", self.channel_name)
         if self.user.is_authenticated:
-            # print('accepted')
             await self.accept()
         else:
             await self.close()
@@ -100,7 +99,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def set_conversation_status(self, conversation, blocker_id):
         try:
-            # print(blocker_id)
             if blocker_id > 0:
                 conversation.blocked_by = blocker_id
                 is_friend_from = FriendShip.objects.filter(user_from=self.user1, user_to=self.user2)
@@ -108,7 +106,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 is_friend_from.delete()
                 is_friend_to.delete()
             else:
-                # print('= 0')
                 conversation.blocked_by = 0
             conversation.save()
         except Exception as e:
@@ -121,58 +118,38 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message_type = data['message_type']
         self.conversation_key = data['conversation_key']
         self.participants = data['conversation_key'].split('_')
-        # print('list: ', self.participants)
 
         if len(set(self.participants)) == 1 or self.userid not in map(int, self.participants):
-            # print('heeeeere')
             return
 
-
-        # print('userid: ', self.userid)
-        # print('conversation_key: ', self.conversation_key)
         self.other_user = int(self.participants[0]) if int(self.participants[0]) != self.userid else int(self.participants[1])
-        # print('other_user: ', self.other_user)
 
         if message_type == 'join':
-            # print('===============================')
             if self.participants:
                 self.room_group_name = f"chat_{self.conversation_key}"
 
                 await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-                
+
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
-                # print('===> self.other_user_channel', self.other_user_channel)
-                
+
                 if self.other_user_channel:
-                    # print('join')
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
-                # else:
-                #     pass
 
         elif message_type == 'message':
-            # print('++++++++++++++++++++++++++++')
             if self.room_group_name and data['sender'] == self.userid:
                 sender = data['sender']
                 message = data['message']
-                # conversation_key = data['conversation_key']
                 self.old_user_channel = self.other_user_channel
                 self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
-                # print('===> self.old_user_channel', self.old_user_channel)
                 if self.old_user_channel is not self.other_user_channel:
-                    # print('message') 
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
 
-                # print('self.user.id', self.user.id)
-                # print('self.other_user', self.other_user)
-
                 conversation = await self.check_conversation_existed(self.conversation_key, self.user.id, self.other_user)
-                # print('1')
                 saved_message = await self.save_message(
                     conversation_id = conversation.id,
                     sender_id = sender,
                     content = message
                 )
-                # print('2')
 
 
                 await self.channel_layer.group_send(
@@ -219,5 +196,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'sender': event['sender'],
             'timestamp': event['timestamp'],
         }))
-
-

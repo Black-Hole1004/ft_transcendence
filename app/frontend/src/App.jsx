@@ -7,6 +7,9 @@ import ComponentPath from './utils/ComponentPath';
 import { AlertProvider } from './components/AlertContext';
 import './context/WebSocketContext';
 
+import Loader from './components/Loader/Loader'
+
+
 
 function App() {
 	return (
@@ -14,7 +17,7 @@ function App() {
 			<AlertProvider>
 				<AuthProvider>
 					<WebSocketProvider>
-							<React.Suspense fallback={<div>Loading...</div>}>
+							<React.Suspense fallback={<Loader />}>
 								<OauthHandler />
 								<ComponentPath />
 							</React.Suspense>

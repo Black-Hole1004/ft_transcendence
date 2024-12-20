@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import useAuth from "../context/AuthContext"
 import PrivateRoute from './PrivateRoute';
 
+const Loader = React.lazy(() => import('../components/Loader/Loader'))
 const Home = React.lazy(() => import('../pages/Home/Home'))
 const Chat = React.lazy(() => import('../pages/Chat/Chat'))
 const Game = React.lazy(() => import('../pages/Game/Game'))
@@ -31,6 +32,7 @@ const ComponentPath = () => {
 				{/* Redirect to /Dashboard if authenticated on the home path */}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
 				<Route path="/2fa" element={<TwoFactorAuth />} />
+				<Route path="/loading" element={<Loader />} />
 
 				{/* Layout wrapping all private routes */}
 				<Route element={<Layout />}>
