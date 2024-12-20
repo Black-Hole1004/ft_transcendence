@@ -105,3 +105,132 @@ services:
       frontend:
         condition: service_healthy
     restart: always
+  
+
+  # elasticsearch:
+  #   container_name: elasticsearch
+  #   image: elasticsearch:8.12.0
+  #   privileged: true
+  #   environment:
+  #     - node.name=elasticsearch
+  #     - discovery.type=single-node
+  #     - ELASTIC_USERNAME=elastic
+  #     - ELASTIC_PASSWORD=test@test
+  #     - xpack.security.enabled=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #     nofile:
+  #       soft: 65536
+  #       hard: 65536
+  #   ports:
+  #     - "9200:9200"
+  #   networks:
+  #     - ft_transcendence_network
+  #   volumes:
+  #     - ./app/elasticsearch_data:/usr/share/elasticsearch/data
+  #     - ./app/elasticsearch/setup-elasticsearch.sh:/app/elasticsearch/setup-elasticsearch.sh
+  #   command: >
+  #     bash -c "
+  #       chmod +x /app/elasticsearch/setup-elasticsearch.sh &&
+  #       /app/elasticsearch/setup-elasticsearch.sh
+  #       "
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "curl -s -u elastic:test@test http://localhost:9200/_cluster/health | grep -q 'status.*green'"]
+  #     interval: 20s
+  #     timeout: 30s
+  #     retries: 5
+  #   restart: always
+
+  # logstash:
+  #   container_name: logstash
+  #   image: logstash:8.12.0
+  #   ports:
+  #     - "5044:5044"
+  #     - "5000:5000/tcp"
+  #     - "5000:5000/udp"
+  #   environment:
+  #     - LS_JAVA_OPTS=-Xmx512m -Xms512m
+  #   networks:
+  #     - ft_transcendence_network
+  #   volumes:
+  #     - ./app/logstash/config/:/usr/share/logstash/config
+  #     - ./app/logstash/pipeline:/usr/share/logstash/pipeline
+  #   depends_on:
+  #     elasticsearch:
+  #       condition: service_healthy
+  #   restart: always
+
+  # kibana:
+  #   container_name: kibana
+  #   image: kibana:8.12.0
+  #   ports:
+  #     - "5601:5601"
+  #   environment:
+  #     - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+  #     - ELASTICSEARCH_SERVICE_ACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYTpCRlktREFZUUJXQUFRUUxPd3dRWA
+  #   networks:
+  #     - ft_transcendence_network
+  #   depends_on:
+  #     elasticsearch:
+  #       condition: service_healthy
+  #   restart: always
+
+  # Elasticsearch
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.10.2
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false  # Disable security for simplicity (not recommended in production)
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./app/elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - ft_transcendence_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: always
+
+  # Logstash
+  logstash:
+    container_name: logstash
+    image: logstash:8.10.2
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app/logstash/pipeline:/usr/share/logstash/pipeline
+    environment:
+      - xpack.monitoring.elasticsearch.hosts=http://elasticsearch:9200
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - ft_transcendence_network
+    restart: always
+
+  # Kibana
+  kibana:
+    container_name: kibana
+    image: kibana:8.10.2
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - ft_transcendence_network
+    restart: always

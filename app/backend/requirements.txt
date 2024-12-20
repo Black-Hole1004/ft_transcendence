@@ -46,3 +46,4 @@ typing-extensions==4.12.2
 urllib3==2.2.2
 zope.interface==7.0.3
 psycopg
+python-logstash==0.4.6
