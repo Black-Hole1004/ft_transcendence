@@ -15,10 +15,8 @@ const RemoteGame = () => {
 	const socketRef = useRef(null)
 
 	// Location state data
-	const { gameId, playerNumber, opponent, currentUser, settings } = location.state || {}
+	const { gameId, playerNumber, opponent, currentUser, backgroundId } = location.state || {}
 
-	// adjusting the player info based on the playerNumber, so that the current player is always on the right side
-	const isSelfOnRight = true;
 	// Determine which player info to show on each side
 	const rightPlayer = currentUser;  // Current player always on right
 	const leftPlayer = opponent;      // Opponent always on left
@@ -252,11 +250,10 @@ const RemoteGame = () => {
 							playerNumber={playerNumber}
 							isPaused={isPaused}
 							handlePause={handlePause}
-							backgroundId={settings?.backgroundId}
+							backgroundId={backgroundId}
 							isGameOver={isGameOver}
 							pausesRemaining={pausesRemaining}
 							pausingPlayer={pausingPlayer}
-							isSelfOnRight={isSelfOnRight} // Current player is always on right to handle perspective
 						/>
 						{/* Right side - Always current player */}
 						<RemotePlayer

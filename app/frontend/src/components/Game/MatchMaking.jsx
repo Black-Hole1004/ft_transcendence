@@ -18,12 +18,32 @@ const Matchmaking = () => {
 
     useEffect(() => {
 
-        matchmakingService.connect();
+        const currentUserId = location.state?.currentUser?.id;
+
+        if (currentUserId === undefined) {
+            console.error('No user ID provided in location state');
+            navigate('/custom');
+            return;
+        }
+
+        matchmakingService.connect(currentUserId);
 
         matchmakingService.on('connect', () => {
             setStatus('connected');
             matchmakingService.findMatch();
         });
+
+        matchmakingService.on('error', (error) => {
+            console.error('Matchmaking error:', error);
+            setStatus('error');
+            // Optionally redirect back or show error message
+        });
+
+        matchmakingService.on('timeout', (data) => {
+            console.log('Search timeout:', data);
+            setStatus('timeout');
+        });
+
 
         matchmakingService.on('searching', (data) => {
             setStatus('searching');
@@ -51,7 +71,6 @@ const Matchmaking = () => {
             navigate('/remote-game', {
                 state: {
                     playerNumber: data.player_number,
-                    matchData: data,
                     gameId: data.game_id,
                     opponent: data.opponent,
                     currentUser: data.current_user,
@@ -68,13 +87,26 @@ const Matchmaking = () => {
     const handleCancel = () => {
         console.log('Cancelling search');
         matchmakingService.cancelSearch();
-        navigate('/remote-game-setup');
+        navigate('/custom');
     };
 
     return (
         <div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary flex items-center justify-center'>
             {status === 'match_found' ? (
                 <MatchFoundDisplay matchData={matchData} countdown={count} />
+            ) : status === 'timeout' ? (
+                <div className='w-1/3 min-w-[400px]'>
+                    <div className='w-full flex flex-col items-center gap-8 bg-backdrop-80 p-12 rounded-lg shadow-xl'>
+                        <h2 className='text-3xl font-bold'>Time Out</h2>
+                        <p>No ppponent found at the moment, Please try again later.</p>
+                        <button 
+                            onClick={() => navigate('/custom')}
+                            className='px-8 py-3 bg-primary text-backdrop-80 rounded-lg hover:bg-opacity-90 transition-all font-bold'
+                        >
+                            Back to Menu
+                        </button>
+                    </div>
+                </div>
             ) : (
                 <div className='w-1/3 min-w-[400px]'>
                     <div className='w-full flex flex-col items-center gap-8 bg-backdrop-80 p-12 rounded-lg shadow-xl'>
@@ -85,20 +117,20 @@ const Matchmaking = () => {
                             {status === 'searching' && 'Searching for opponent...'}
                             {status === 'error' && 'Error finding match'}
                         </div>
-
+    
                         <div className='loading-indicator'>
                             <div className='paddle left'></div>
                             <div className='ball'></div>
                             <div className='paddle right'></div>
                         </div>
-
+    
                         <button 
                             onClick={handleCancel}
                             className='px-8 py-3 bg-primary text-backdrop-80 rounded-lg hover:bg-opacity-90 transition-all font-bold'
                         >
                             Cancel
                         </button>
-
+    
                         <div className='text-sm text-gray-400 text-center'>
                             <p>Current Status: {status}</p>
                             <p>WebSocket State: {matchmakingService.socket?.readyState}</p>

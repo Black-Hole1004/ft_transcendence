@@ -26,7 +26,29 @@ const Custom = () => {
         if (mode === 'local') {
             navigate('/local-game-setup', { state: { backgroundId } })
         } else {
-            navigate('/matchmaking', { state: { backgroundId } })
+            // Get access token from cookies
+            const cookies = document.cookie.split(';');
+            const accessToken = cookies.find(cookie => cookie.trim().startsWith('access_token='))?.split('=')[1];
+
+            if (!accessToken) {
+                console.error('No access token found in cookies');
+                return;
+            }
+
+            // Decode JWT token to get user ID
+            try {
+                const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
+                const userId = decodedToken.user_id;
+                navigate('/matchmaking', { 
+                    state: { 
+                        backgroundId : backgroundId,
+                        currentUser : { id: userId }
+                    } 
+                });
+
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+            }
         }
     }
 

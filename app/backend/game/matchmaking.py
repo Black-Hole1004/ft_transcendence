@@ -15,10 +15,6 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
         await self.accept()
         
         # Debug prints
-        print(f"New connection attempt to matchmaking service")
-        print(f"Channel name: {self.channel_name}")
-        print(f"Scope user: {self.scope['user']}")
-        print(f"Is authenticated: {self.scope['user'].is_authenticated}")
         if hasattr(self.scope['user'], 'username'):
             print(f"Username: {self.scope['user'].username}")
         
@@ -32,13 +28,15 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
             }))
             await self.close()
             return
+
+        # Remove any existing connections for this user
+        await self.remove_existing_user_connection()
         
-        print(f"Authenticated user connected: {self.user.username}")
-        
-        # Store player info in matchmaking queue
+        # Store player info in matchmaking queue with user ID
         self.matchmaking_queue[self.channel_name] = {
             'searching': False,
             'user': self.user,
+            'user_id': self.user.id,  # Store user ID explicitly
             'connected_at': time.time()
         }
 
@@ -47,12 +45,31 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
             'message': f'Connected to matchmaking service as {self.user.username}'
         }))
 
+    async def remove_existing_user_connection(self):
+        """Remove any existing connections for the current user"""
+        channels_to_remove = []
+        for channel, data in self.matchmaking_queue.items():
+            if data['user'].id == self.user.id:
+                channels_to_remove.append(channel)
+        
+        for channel in channels_to_remove:
+            del self.matchmaking_queue[channel]
+
     async def receive(self, text_data):
         try:
             data = json.loads(text_data)
             
             if data['type'] == 'find_match':
-                # Send searching status first
+                # Check if user is already in queue
+                if any(q['user'].id == self.user.id and q['searching'] 
+                    for q in self.matchmaking_queue.values()):
+                    await self.send(json.dumps({
+                        'type': 'error',
+                        'message': 'Already searching for a match'
+                    }))
+                    return
+
+                # Send searching status
                 await self.send(json.dumps({
                     'type': 'searching',
                     'message': 'Looking for opponent...'
@@ -77,21 +94,40 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
 
     async def find_opponent(self):
         current_user = self.matchmaking_queue[self.channel_name]['user']
+        current_user_id = current_user.id
         
+        # Set timeout duration
+        TIMEOUT_SECONDS = 90
+        start_time = time.time()
+    
         while self.matchmaking_queue[self.channel_name]['searching']:
+            # Check if timeout reached
+            if time.time() - start_time > TIMEOUT_SECONDS:
+                # Stop searching
+                self.matchmaking_queue[self.channel_name]['searching'] = False
+                # Send timeout notification
+                await self.send(json.dumps({
+                    'type': 'timeout',
+                    'message': 'No opponent found. Please try again later.'
+                }))
+                return
+            
             for opponent_channel, opponent_data in self.matchmaking_queue.items():
-                if (opponent_channel != self.channel_name and 
-                    opponent_data['searching']):
-                    
+                # Skip if it's the same user or user ID
+                if (opponent_channel == self.channel_name or 
+                    opponent_data['user'].id == current_user_id):
+                    continue
+
+                if opponent_data['searching']:
                     opponent_user = opponent_data['user']
                     
                     try:
-                        game = await self.create_game_session (
+                        game = await self.create_game_session(
                             current_user, 
                             opponent_user,
                         )
                         
-                        # Use your Achievement class to get badge info
+                        # Get badges
                         current_user_badge = Achievement.get_badge(current_user.xp)
                         opponent_badge = Achievement.get_badge(opponent_user.xp)
                         
@@ -105,7 +141,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                                 'username': current_user.username,
                                 'profile_picture': current_user.profile_picture.url,
                                 'xp': current_user.xp,
-                                'badge': current_user_badge  # This will have name and image from your Achievement class
+                                'badge': current_user_badge
                             },
                             'opponent': {
                                 'id': opponent_user.id,
@@ -146,8 +182,6 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
             
             await asyncio.sleep(1)
 
-
-
     @database_sync_to_async
     def create_game_session(self, player1, player2):
         """Create a new game session"""
@@ -164,5 +198,17 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         """Handle WebSocket disconnection"""
-        if self.channel_name in self.matchmaking_queue:
-            del self.matchmaking_queue[self.channel_name]
+        try:
+            # First, cancel any ongoing search
+            if self.channel_name in self.matchmaking_queue:
+                self.matchmaking_queue[self.channel_name]['searching'] = False
+            
+            # Clean up the queue
+            if self.channel_name in self.matchmaking_queue:
+                del self.matchmaking_queue[self.channel_name]
+            
+            # Close the WebSocket connection gracefully
+            await self.close()
+            
+        except Exception as e:
+            print(f"Error during disconnect: {e}")

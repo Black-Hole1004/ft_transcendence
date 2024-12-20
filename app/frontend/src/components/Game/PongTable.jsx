@@ -351,7 +351,15 @@ const resetPaddleHeight = (setPaddle) => {
         width={canvasSize.width}
         height={canvasSize.height}
         className={`game-table border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
-        style={{ borderRadius: '25px', width: '100%', height: 'auto', maxWidth: `${MAX_CANVAS_WIDTH}px` }}
+        style={{
+            width: '100%',
+            height: 'auto',
+            borderRadius: '25px',
+            maxWidth: `${MAX_CANVAS_WIDTH}px`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundImage: `url('/assets/images/tables/table${backgroundId}.png')`,
+        }}
       />
       {!isGameOver && (
         <button onClick={handlePause} className="pause flex items-center gap-3 brightness-[1] leading-[0.95]">

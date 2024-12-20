@@ -6,11 +6,10 @@ const RemotePongTable = ({
     playerNumber,
     isPaused,
     handlePause,
-    backgroundId,
     isGameOver,
     pausesRemaining,
     pausingPlayer,
-    isSelfOnRight
+    backgroundId
 }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
@@ -35,8 +34,8 @@ const RemotePongTable = ({
         // Clear and prepare the canvas
         const clearCanvas = (ctx) => {
             ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
+            // ctx.fillStyle = 'black';
+            // ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
         };
 
         // Draw the center line
@@ -213,8 +212,9 @@ const RemotePongTable = ({
                     width: '100%', 
                     height: 'auto', 
                     maxWidth: `${MAX_CANVAS_WIDTH}px`,
-                    background: `url('/assets/images/tables/table/1.png')`,
-                    backgroundSize: 'cover'
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundImage: `url('/assets/images/tables/table${backgroundId}.png')`,
                 }}
             />
             {!isGameOver && (

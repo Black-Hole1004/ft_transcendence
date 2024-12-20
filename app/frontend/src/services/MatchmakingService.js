@@ -6,11 +6,14 @@ class MatchmakingService {
         this.socket = null;
         this.callbacks = {};
         this.handleMessage = this.handleMessage.bind(this);
+        this.currentUserId = null;
     }
 
-    connect() {
+    connect(userId) {
+        this.currentUserId = userId;
+
         this.socket = new WebSocket(
-            `ws://localhost:8000/ws/matchmaking/`
+            `ws://localhost:8000/ws/matchmaking/?user_id=${userId}`
         );
         
         this.socket.onopen = () => {
@@ -19,7 +22,12 @@ class MatchmakingService {
         };
         
         this.socket.onmessage = this.handleMessage;
-        this.socket.onclose = () => this.callbacks.onDisconnect?.();
+        this.socket.onclose = () => {
+            console.log('Disconnected from matchmaking service');
+            this.callbacks.onDisconnect?.();
+            // Clear the stored user ID on disconnect
+            this.currentUserId = null;
+        };
         this.socket.onerror = (error) => console.error('Matchmaking error:', error);
     }
 
@@ -41,6 +49,9 @@ class MatchmakingService {
                 case 'cancelled':
                     this.callbacks.onCancelled?.(data);
                     break;
+                case 'timeout':
+                    this.callbacks.onTimeout?.(data);
+                    break;
                 case 'error':
                     this.callbacks.onError?.(data);
                     break;
@@ -52,22 +63,28 @@ class MatchmakingService {
 
     findMatch() {
         this.send({
-            type: 'find_match'
+            type: 'find_match',
+            user_id: this.currentUserId // Send the user ID with the request
         });
     }
 
     cancelSearch() {
         this.send({
-            type: 'cancel_match'
+            type: 'cancel_match',
+            user_id: this.currentUserId // Send the user ID with the request
         });
     }
 
     send(data) {
         if (this.socket?.readyState === WebSocket.OPEN) {
-            console.log('Sending message:', data); // Debug log
+            console.log('Sending message:', data);
             this.socket.send(JSON.stringify(data));
         } else {
             console.error('Socket is not open');
+            this.callbacks.onError?.({ 
+                type: 'error', 
+                message: 'Connection lost. Please refresh the page.' 
+            });
         }
     }
 
@@ -90,6 +107,9 @@ class MatchmakingService {
                 break;
             case 'error':
                 this.callbacks.onError = callback;
+                break;
+            case 'timeout':
+                this.callbacks.onTimeout = callback;
                 break;
             case 'status':
                 this.callbacks.onStatus = callback;
