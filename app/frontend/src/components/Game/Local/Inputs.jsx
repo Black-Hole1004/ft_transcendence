@@ -17,7 +17,7 @@ const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 						value={`${id === 'Ball' ? duration : value.name}`}
 						placeholder={`${id === 'Ball' ? 'Game duration (seconds)' : 'Player Name'}`}
 						className='inputs border border-border rounded-lg bg-[rgb(183,170,156,8%)] placeholder:text-border
-						text-primary placeholder:font-regular placeholders outline-none w-[90%]'
+						text-primary placeholder:font-regular placeholders outline-none w-[90%] transition-all duration-300'
 						required
 					/>
 				</div>
@@ -35,6 +35,7 @@ const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 						sx={{
 							// Border
 							border: 1,
+							outline: 'none',
 							borderRadius: 2,
 							borderColor: '#646464',
 

@@ -8,7 +8,6 @@ import GameScore from '../../components/Game/GameScore'
 import PongTable from '../../components/Game/PongTable'
 import Confetti from 'react-confetti'
 
-//--smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<>
 		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
@@ -48,58 +47,6 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 			</div>
 		</div>
 	</>
-
-	// <div className='fixed inset-0  bg-opacity-25 flex items-center justify-center z-40'>
-	// 	<div className='bg-secondary border-2 border-[#76797Cff] text-[#E6DDC6] rounded-lg shadow-xl w-[480px] overflow-hidden relative'>
-	// 		<div
-	// 			className="h-60 bg-[url('path/to/venus-pingpong-background.jpg')] bg-cover bg-center relative"
-	// 			style={{ filter: 'brightness(1.2)' }}
-	// 		>
-	// 			{' '}
-	// 			{/* Increase brightness */}
-	// 			<div className='absolute'></div>
-	// 			{/* Centering GAME OVER Text */}
-	// 			<div className='absolute inset-0 flex flex-col items-center justify-center'>
-	// 				<h2 className='text-5xl font-bold text-[#E6DDC6] drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)] tracking-wider'>
-	// 					GAME OVER
-	// 				</h2>
-	// 			</div>
-	// 		</div>
-
-	// 		<div className='p-8 relative z-10'>
-	// 			{winner ? (
-	// 				<div className='text-center'>
-	// 					<p className='text-2xl mb-2'>Cosmic Champion:</p>
-	// 					<p className='text-4xl font-bold mb-4 text-[#BE794A] glow drop-shadow-[0_2px_10px_rgba(190,121,74,0.8)]'>
-	// 						{winner.name}
-	// 					</p>
-	// 					<p className='text-lg mb-6 text-[#E6DDC6] opacity-90'>
-	// 						Your stellar skills have conquered the arena!
-	// 					</p>
-	// 				</div>
-	// 			) : (
-	// 				<p className='text-2xl text-center mb-6'>
-	// 					A cosmic deadlock! The match ends in a tie.
-	// 				</p>
-	// 			)}
-
-	// 			<div className='flex justify-center space-x-6 mt-8'>
-	// 				<button
-	// 					onClick={onRestart}
-	// 					className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
-	// 				>
-	// 					Play Again
-	// 				</button>
-	// 				<button
-	// 					onClick={onClose}
-	// 					className='bg-transparent hover:bg-[#61463A] text-[#E6DDC6] font-bold py-3 px-8 rounded-full border-2 border-[#BE794A] transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'
-	// 				>
-	// 					Return to Base
-	// 				</button>
-	// 			</div>
-	// 		</div>
-	// 	</div>
-	// </div>
 )
 
 const LocalGame = () => {

@@ -53,6 +53,11 @@
 	padding: clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem) clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem);
 }
 
+.inputs:focus {
+	outline: solid #fbfbee;
+	outline-offset: 1px;
+}
+
 .placeholders {
 	font-size: clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem);
 }
@@ -94,8 +99,6 @@
 
 .gameoverpopup {
 	width: clamp(18.125rem, 18.142vw + 14.723rem, 43.75rem);
-	/* padding-left: clamp(1.25rem, 6.195vw + 0.088rem, 10rem); */
-	/* padding-right: clamp(1.25rem, 6.195vw + 0.088rem, 10rem); */
 }
 
 

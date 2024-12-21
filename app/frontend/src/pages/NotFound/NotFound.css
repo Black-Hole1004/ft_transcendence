@@ -1,5 +1,6 @@
-.not-found div {
-	-webkit-background-clip: text;
+.background {
+	line-height: 1;
+	background-clip: text;
 }
 
 .not-found h1 {
@@ -8,4 +9,10 @@
 
 .not-found h3, button {
 	font-size: clamp(0.438rem, 0.664vw + 0.313rem, 1.375rem);
+}
+
+.back-to-home:hover {
+	border: none;
+	outline: 1px solid #fbfbee;
+	outline-offset: 2px;
 }
