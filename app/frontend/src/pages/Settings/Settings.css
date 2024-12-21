@@ -55,8 +55,8 @@
 }
 
 .inputs:focus, .bio-input:focus {
-	outline: solid #fbfbee;
-	outline-offset: 1px;
+	outline: 1px solid #fbfbee;
+	outline-offset: 2px;
 }
 
 .placeholders {
@@ -77,7 +77,6 @@
 .save-button {
 	margin-right: clamp(0.75rem, 2.124vw + 0.352rem, 3.75rem);
 }
-
 
 
 

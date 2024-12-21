@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import './Game.css'
+import Confetti from 'react-confetti'
 import Timer from '../../components/Game/Timer'
 import Player from '../../components/Game/Player'
 import GameScore from '../../components/Game/GameScore'
 import PongTable from '../../components/Game/PongTable'
-import Confetti from 'react-confetti'
 
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<>
@@ -15,9 +15,9 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20
 			flex flex-col justify-center items-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded-xl gameoverpopup'
 		>
-			<h2 className='font-dreamscape '>GAME OVER</h2>
+			<h2 className='font-dreamscape'>GAME OVER</h2>
 			{winner ? (
-				<div className='font-heavy'>
+				<div className='font-heavy mb-20'>
 					<p className='text-left text-2xl'>Cosmic Champion:</p>
 					<h3 className='players-usernames font-dreamscape-sans pt-3 pb-7 text-center glow drop-shadow-[0_2px_10px_rgba(255,206,158,0.5)]'>
 						{winner.name}
@@ -27,22 +27,23 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 					</p>
 				</div>
 			) : (
-				<p className='text-2xl font-medium'>A cosmic deadlock! The match ends in a tie.</p>
+				<p className='text-2xl font-medium mb-20'>A cosmic deadlock! The match ends in a tie.</p>
 			)}
 			<div className='w-full flex justify-between my-10 lg:gap-10 gap-6'>
 				<button
 					onClick={onRestart}
-					className='font-heavy bg-primary text-secondary py-3 flex-1
-				rounded-2xl transition duration-300 ease-in-out transform hover:scale-105'
+					className='font-heavy bg-primary text-secondary py-3 flex-1 rounded
+					hover:scale-[1.01] hover:brightness-100 transition-all duration-300 ease-in-out
+					hover:outline hover:outline-offset-2 hover:outline-2 hover:outline-primary'
 				>
 					Play Again
 				</button>
 				<button
 					onClick={onClose}
-					className='font-heavy text-primary py-3 rounded-2xl border-2 border-primary flex-1
-				hover:bg-[rgba(251,251,238,.2)] transition duration-300 ease-in-out transform hover:scale-105'
+					className='font-heavy text-primary py-3 border border-border rounded flex-1
+					bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'
 				>
-					Return to Base
+					Personalize Game
 				</button>
 			</div>
 		</div>

@@ -302,7 +302,7 @@ const Settings = () => {
 									type='file'
 									id='profile_picture'
 									name='profile_picture'
-									style={{ display: 'none' }}
+									className='hidden'
 									onChange={handleImageChange}
 								/>
 								<Button

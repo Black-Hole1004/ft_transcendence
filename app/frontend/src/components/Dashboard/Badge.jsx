@@ -20,7 +20,7 @@ function Badge({ image, title, level }) {
 				className='hover:scale-[1.2] transition duration-500 select-none'
 				alt={`${title} Badge`}
 			/>
-			<p className='achievements-titles-font font-dreamscape-sans'>{title}</p>
+			<p className='achievements-titles-font font-dreamscape-san select-none'>{title}</p>
 		</div>
 	)
 }
