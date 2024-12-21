@@ -1,6 +1,13 @@
 import './NotFound.css'
+import { useNavigate } from 'react-router-dom'
 
-export default function NotFound() {
+const NotFound = () => {
+	const navigate = useNavigate()
+
+	const handleBackToHome = () => {
+		navigate('/')
+	}
+
 	return (
 		<div
 			className='not-found h-screen flex flex-col justify-center items-center
@@ -14,11 +21,16 @@ export default function NotFound() {
 				<h3 className='font-regular mb-10'>
 					This page is lost in space. Return to the homepage and keep exploring!
 				</h3>
-				<button className='w-[40%] py-1 font-medium rounded-lg border border-primary text-primary
-					transition-all hover:bg-primary hover:text-secondary duration-500'>
+				<button
+					onClick={handleBackToHome}
+					className='w-[40%] py-1 font-medium rounded-lg border border-primary text-primary
+					transition-all hover:bg-primary hover:text-secondary duration-500'
+				>
 					Back To Home
 				</button>
 			</div>
 		</div>
 	)
 }
+
+export default NotFound
