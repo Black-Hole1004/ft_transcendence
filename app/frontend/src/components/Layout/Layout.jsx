@@ -10,6 +10,7 @@ function Layout() {
 	const { first_name, preview, last_name, username, profile_picture } = useAuth()
 	const user_data = { first_name, last_name, username, profile_picture }
 
+	console.log(window.history.length)
 	return (
 		<div className='relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'>
 			<AlertWrapper />
