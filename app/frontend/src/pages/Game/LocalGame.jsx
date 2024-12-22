@@ -11,14 +11,14 @@ import PongTable from '../../components/Game/PongTable'
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<>
 		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
-		<div
+		{/* <div
 			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20
 			flex flex-col justify-center items-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded-xl gameoverpopup'
 		>
 			{winner ? (
-				<h2 className='font-dreamscape'>VICTORY ACHIEVED</h2>
+				<h1 className='font-dreamscape'>VICTORY ACHIEVED</h1>
 			) : (
-				<h2 className='font-dreamscape'>GAME OVER</h2>
+				<h1 className='font-dreamscape'>GAME OVER</h1>
 			)}
 			{winner ? (
 				<div className='font-heavy mb-20'>
@@ -46,6 +46,118 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 					onClick={onClose}
 					className='font-heavy text-primary py-3 border border-border rounded flex-1
 					bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'
+				>
+					Personalize Game
+				</button>
+			</div>
+		</div> */}
+
+		<div
+			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20 w-[40rem]
+			flex flex-col justify-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded text-center gameoverpopup'
+		>
+			{/* Result Banner */}
+
+			<h1
+				className={`font-dreamscape text-6xl tracking-wider ${
+					winner ? 'text-online' : 'text-defeat'
+				}`}
+			>
+				{winner ? 'YOU WON' : 'YOU LOST'}
+			</h1>
+
+			{/* Content Section */}
+			<div className='flex flex-col gap-2'>
+				{/* Player Stats */}
+				<div className='flex items-center gap-4 mb-3'>
+					<img
+						src={'/assets/images/moudrib.jpeg'}
+						alt={'mouad55'}
+						className='rounded-full ring-1 ring-primary object-cover'
+						onError={(e) => {
+							e.target.src = '/assets/images/default-avatar.png'
+						}}
+					/>
+					<div className='flex flex-col items-start'>
+						<h3 className='font-heavy text-primary'>{'mouad55'}</h3>
+						<p className='achievement-name font-dreamscape-sans text-level'>
+							{'celestial master'}
+						</p>
+						<p className='font-medium text-border leading-none'>Score: {'4'}</p>
+					</div>
+				</div>
+
+				{/* XP Change */}
+				<div className='bg-border bg-opacity-20 rounded p-4'>
+					<h3 className='text-primary font-heavy text-start mb-4'>
+						Your Experience Update
+					</h3>
+					<div className='ml-2'>
+						<div className='flex justify-between text-lg font-medium'>
+							<span className='text-gray-400'>Previous XP</span>
+							<span className='text-primary'>{'12313'}</span>
+						</div>
+						<div className='flex justify-between text-lg font-medium'>
+							<span className='text-gray-400'>XP Change</span>
+							<span className={`${winner ? 'text-online' : 'text-defeat'}`}>
+								{232 >= 0 ? `+${232}` : 232}
+							</span>
+						</div>
+						<div className='flex justify-between text-lg font-medium'>
+							<span className='text-gray-400'>New XP</span>
+							<span className='text-primary'>{'13215'}</span>
+						</div>
+					</div>
+				</div>
+
+				<div className='bg-border bg-opacity-20 rounded p-4'>
+					<h3 className='text-primary font-heavy mb-4 text-start'>Current Achievement</h3>
+					<div className='flex items-center gap-4'>
+						<div>
+							<img
+								src={'/assets/images/Achievements/celestial-master.png'}
+								alt={'celestial master'}
+								className='w-16 h-16 object-contain hover:scale-105 transition duration-500'
+								onError={(e) => {
+									e.target.style.display = 'none'
+								}}
+							/>
+						</div>
+						<div className='flex-1 flex flex-col'>
+							<p className='font-dreamscape-sans text-xl text-level mb-2'>
+								{'celestial master'}
+							</p>
+							<div className='flex justify-between text-sm text-primary font-medium'>
+								<span>{'0'}xp</span>
+								<span>{'2000'}xp</span>
+							</div>
+							<div className='h-2 rounded-md bg-[rgb(121,118,110,0.7)] mt-1 flex items-center overflow-hidden'>
+								<div
+									className='rounded-lg h-full bg-level transition-all duration-1000 ease-out'
+									style={{
+										width: `${64}%`,
+									}}
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* Action Buttons */}
+			<div className='w-full flex justify-between mb-5 lg:gap-10 gap-6'>
+				<button
+					onClick={onRestart}
+					className='font-dreamscape bg-primary text-secondary py-3 flex-1 rounded
+					hover:scale-[1.01] hover:brightness-100 transition-all duration-300 ease-in-out
+					hover:outline hover:outline-offset-2 hover:outline-2 hover:outline-primary'
+				>
+					Play Again
+				</button>
+				<button
+					onClick={onClose}
+					className='font-heavy text-primary py-3 border border-border rounded flex-1
+							bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'
 				>
 					Personalize Game
 				</button>
