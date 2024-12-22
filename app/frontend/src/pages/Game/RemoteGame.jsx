@@ -192,12 +192,12 @@ const RemoteGame = () => {
 		})
 		
 		// Navigate back to setup
-		navigate('/remote-game-setup')
+		navigate('/custom')
 	}
 
 	const handleClose = () => {
 		setShowRestartPopup(false)
-		navigate('/remote-game-setup')
+		navigate('/custom')
 	}
 	
 	const restartGame = () => {

@@ -22,7 +22,7 @@ const Matchmaking = () => {
 
         if (currentUserId === undefined) {
             console.error('No user ID provided in location state');
-            navigate('/custom');
+            navigate('/dashboard');
             return;
         }
 
@@ -87,7 +87,7 @@ const Matchmaking = () => {
     const handleCancel = () => {
         console.log('Cancelling search');
         matchmakingService.cancelSearch();
-        navigate('/custom');
+        navigate('/dashboard');
     };
 
     return (

@@ -10,9 +10,11 @@ const RemotePlayer = (props) => {
 		if (path.startsWith('http')) {
 			return path
 		}
+		if (path.startsWith('/assets')) {
+			return path;
+		}
 
 		const pathComplete = `${import.meta.env.VITE_BASE_URL}${path}`;
-		console.log(pathComplete);
 		return pathComplete;
 
 	}, [])
@@ -49,6 +51,7 @@ const RemotePlayer = (props) => {
 				}}
 			/>
 			<p className='players-usernames truncate'>{displayName}</p>
+			
 			<img
 				src={badgeImageUrl}
 				className='achievements-icons hover:scale-[1.2] transition duration-500'

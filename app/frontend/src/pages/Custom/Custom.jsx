@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import './Custom.css'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const Custom = () => {
+    const location = useLocation();
+    const navigate = useNavigate()
     const [backgroundId, setBackgroundId] = useState(1)
+    const mode = location.state?.mode; // Get the mode from the location state
+    
+
     const [step, setStep] = useState(1)
     const xp = 6231
-    const navigate = useNavigate()
 
     // Handle click for background selection
     const handleClick = (id) => {
@@ -17,8 +21,14 @@ const Custom = () => {
     }
 
     const handleStart = () => {
-        setStep(2)
-    }
+        if (mode === 'training') {
+            // For AI mode, go directly to AI setup
+            navigate('/ai-game-setup', { state: { backgroundId } });
+        } else {
+            // For 1vs1 mode, show the local/remote choice
+            setStep(2);
+        }
+    };
     
 
 

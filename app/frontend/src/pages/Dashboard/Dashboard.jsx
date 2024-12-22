@@ -5,6 +5,7 @@ import FriendsList from '../../components/Dashboard/FriendsList/FriendsList'
 import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
 import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMessage'
 import useAuth from '../../context/AuthContext'
+
 import { useEffect, useState } from 'react'
 
 const Dashboard = () => {

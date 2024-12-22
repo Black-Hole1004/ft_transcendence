@@ -552,6 +552,7 @@ def get_user_data(request):
             'xp': user.xp,
             'email': user.email,
             'profile_picture': user.profile_picture.url if hasattr(user, 'profile_picture') and user.profile_picture else None,
+            'badge': Achievement.get_badge(user.xp)
         })
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
