@@ -1,0 +1,59 @@
+import React from "react"
+import { Routes, Route, Navigate } from 'react-router-dom';
+import useAuth from "../context/AuthContext"
+import PrivateRoute from './PrivateRoute';
+
+const Home = React.lazy(() => import('../pages/Home/Home'))
+const Chat = React.lazy(() => import('../pages/Chat/Chat'))
+const Game = React.lazy(() => import('../pages/Game/Game'))
+const Custom = React.lazy(() => import('../pages/Custom/Custom'))
+const Profile = React.lazy(() => import('../pages/Profile/Profile'))
+const Settings = React.lazy(() => import('../pages/Settings/Settings'))
+const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
+const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
+const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
+const Layout = React.lazy(() => import('../components/Layout/Layout'))
+const TwoFactorAuth = React.lazy(() => import('../pages/TwoFactorAuth/TwoFactorAuth'))
+const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
+// const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
+const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
+// const RemoteGameSetup = React.lazy(() => import('../pages/Game/RemoteGameSetup'))
+const SearchingAnimation = React.lazy(() => import('../components/Game/Remote/SearchingAnimation'))
+
+
+
+
+const ComponentPath = () => {
+	const { authTokens } = useAuth();
+
+	return (
+			<Routes>
+				{/* Redirect to /Dashboard if authenticated on the home path */}
+				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
+				<Route path="/2fa" element={<TwoFactorAuth />} />
+
+				{/* Layout wrapping all private routes */}
+				<Route element={<Layout />}>
+					<Route path="/Game" element={<PrivateRoute><Game /></PrivateRoute>} />
+					<Route path="/Chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
+					<Route path="/Custom" element={<PrivateRoute><Custom /></PrivateRoute>} />
+					<Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+					<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+					<Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+					<Route path='/local-game' element={<PrivateRoute><LocalGame /></PrivateRoute>} />
+					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
+					<Route path="/chat/:conversation_key" element={<PrivateRoute><Chat /></PrivateRoute>} />
+					<Route path="/local-game-setup" element={<PrivateRoute><LocalGameSetup /></PrivateRoute>} />
+					<Route path="/searching" element={<PrivateRoute><SearchingAnimation /></PrivateRoute>} />
+					{/* <Route path='/remote-game' element={<RemoteGame />} /> */}
+					{/* <Route path='/remote-game-setup' element={<RemoteGameSetup />} /> */}
+				</Route>
+
+				{/* Catch-all route */}
+				<Route path="*" element={<NotFound />} />
+			</Routes>
+
+	);
+};
+
+export default ComponentPath

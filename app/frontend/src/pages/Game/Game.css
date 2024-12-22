@@ -35,11 +35,56 @@
 }
 
 .game-table {
-	/* transform: rotate(90deg); */
 	width: clamp(37.5rem, 37.611vw + 30.448rem, 90.625rem);
 	height: clamp(18.75rem, 19.912vw + 15.017rem, 46.875rem);
+	
 }
 
 .glow {
-  text-shadow: 0 0 10px #BE794A, 0 0 20px #BE794A, 0 0 30px #BE794A;
+	text-shadow: 0 0 10px #BE794A, 0 0 20px #BE794A, 0 0 30px #BE794A;
+}
+
+.game-customization-card {
+	width: clamp(62.5rem, 32.552vw + 41.667rem, 93.75rem);
+	margin-top: clamp(2.5rem, 4.425vw + 1.67rem, 8.75rem);
+	padding: clamp(1rem, 1.563vw + 0rem, 2.5rem);
+}
+
+.inputs {
+	padding: clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem) clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem);
+}
+
+.placeholders {
+	font-size: clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem);
+}
+
+.labels {
+	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
+}
+
+.title-size {
+	font-size: clamp(1.125rem, 0.265vw + 1.075rem, 1.5rem);
+}
+
+.custom-color-input {
+	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
+}
+
+.MuiPopover-paper {
+	background-color: rgb(27, 22, 17, 90%) !important;
+	border: 1px solid #646464;
+	padding: 6px;
+	width: 230px;
+}
+
+.MuiFormControl-root {
+	background-color: rgb(183,170,156,8%) !important;
+}
+
+.MuiColorInput-PopoverBody {
+	width: 70%;
+}
+
+.MuiSlider-thumbColorPrimary {
+	background-color: #fbfbee !important;
 }

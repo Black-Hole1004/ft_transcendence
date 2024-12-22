@@ -1,12 +1,20 @@
 import './Header.css'
-import { Link } from 'react-router-dom'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
+
+import { Link, useLocation } from 'react-router-dom'
 import React, { useState, useRef, useEffect } from 'react'
 
-function Header() {
+import { useWebSocket } from '../../context/WebSocketContext'
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
+function Header({ user_data }) {
+	const location = useLocation().pathname.split('/').slice(1, 2)
+
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+
+	const { notifications } = useWebSocket()
 
 	const dropdownRef = useRef(null)
 	const avatarButtonRef = useRef(null)
@@ -52,7 +60,7 @@ function Header() {
 	return (
 		<header
 			className='relative flex items-center justify-between text-primary header-margin font-medium
-			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end'
+			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end z-50'
 		>
 			<Link to={'/dashboard'} aria-label='Go to Dashboard'>
 				<img
@@ -67,12 +75,12 @@ function Header() {
 				</h1>
 			</Link>
 			<nav className='relative flex justify-between ml:gap-x-2.5 ms:gap-x-1.5'>
-				<Link to={'/chat'}>
-					<div className='relative'>
+				<div className={`relative ${location[0] === 'chat' ? 'pointer-events-none' : ''}`}>
+					<Link to={'/chat'}>
 						<img
 							src='/assets/images/icons/chat.svg'
 							alt='chat icon'
-							className='nav-icons select-none hover:brightness-150'
+							className={`nav-icons select-none ${location[0] === 'chat' ? '' : 'hover:brightness-200 transition duration-300'}`}
 						/>
 						<div
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
@@ -80,8 +88,8 @@ function Header() {
 						>
 							<p className='font-heavy text-[10px] p-0.5'>+99</p>
 						</div>
-					</div>
-				</Link>
+					</Link>
+				</div>
 				<button
 					ref={notificationButtonRef}
 					onClick={toggleNotification}
@@ -90,26 +98,25 @@ function Header() {
 					<img
 						src='/assets/images/icons/notification.svg'
 						alt='notification icon'
-						className='nav-icons select-none hover:brightness-150'
+						className='nav-icons select-none hover:brightness-200 transition duration-300'
 					/>
 					{!isNotificationOpen && (
 						<div
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
-						h-[30%] absolute z-10 rounded-full right-0 top-0'
+						h-[30%] absolute rounded-full right-0 top-0'
 						>
-							<p className='font-heavy text-[10px] p-0.5'>+99</p>
+							{notifications.length > 0 ? (<p className='font-heavy text-[10px] p-0.5'>{notifications.length > 99 ? '+99' : notifications.length}</p>) : null}
 						</div>
 					)}
 				</button>
-				{isNotificationOpen && (
-					<div
-						ref={notificationRef}
-						className='notification max-ms:w-full absolute z-10 ml:right-1/3 right-0
-							top-full flex flex-col border border-primary rounded-xl bg-secondary'
-					>
-						<NotificationDropdown />
-					</div>
-				)}
+				<div
+					ref={notificationRef}
+					className={`notification max-ms:w-full absolute z-10 ml:right-1/3 right-0
+							top-full flex flex-col border border-primary rounded-xl bg-secondary
+							transition-opacity duration-300 ${!isNotificationOpen ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+				>
+					<NotificationDropdown />
+				</div>
 				<button
 					ref={avatarButtonRef}
 					onClick={toggleDropdown}
@@ -117,29 +124,31 @@ function Header() {
 					className='relative'
 				>
 					<img
-						src='/assets/images/moudrib.jpeg'
+						src={`${BASE_URL}${user_data.profile_picture}`}
 						alt='user photo'
-						className='nav-icons border-[1px] rounded-full border-primary select-none'
+						className='nav-icons object-cover rounded-full ring-1 ring-primary select-none'
 					/>
 					<div
 						className='flex justify-center items-center bg-secondary border border-[#0B0B0B]
 						w-[34%] h-[34%] absolute z-10 rounded-full right-0 bottom-0'
 					>
 						<img
-							src='assets/images/icons/Arrow-dropdown.svg'
-							className={`w-[60%] duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+							src='/assets/images/icons/Arrow-dropdown.svg'
+							className={`w-[60%] select-none duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
 							alt='arrow icon'
 						/>
 					</div>
 				</button>
-				{isDropdownOpen && (
-					<div
-						ref={dropdownRef}
-						className='dropdown absolute z-10 right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary'
-					>
-						<UserAvatarDropdown setIsDropdownOpen={setIsDropdownOpen} />
-					</div>
-				)}
+				<div
+					ref={dropdownRef}
+					className={`dropdown absolute right-0 top-full flex flex-col border border-primary rounded-xl bg-secondary
+						transition-opacity duration-300 ${!isDropdownOpen ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+				>
+					<UserAvatarDropdown
+						setIsDropdownOpen={setIsDropdownOpen}
+						user_data={user_data}
+					/>
+				</div>
 			</nav>
 		</header>
 	)

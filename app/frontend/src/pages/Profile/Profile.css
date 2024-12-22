@@ -7,21 +7,21 @@
 	width: clamp(38.938rem, 34.115vw + 17.104rem, 71.688rem);
 	height: clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem);
 	background-size: cover;
-	background-image: url('./assets/images/Profile/user-info-lp.svg');
+	background-image: url('/assets/images/Profile/user-info-lp.svg');
 }
 
 .rank-card-lp {
 	width: clamp(23.063rem, 20.247vw + 10.104rem, 42.5rem);
 	height: clamp(12.563rem, 11.003vw + 5.521rem, 23.125rem);
 	background-size: cover;
-	background-image: url('./assets/images/Profile/rank-card-lp.svg');
+	background-image: url('/assets/images/Profile/rank-card-lp.svg');
 }
 
 .match-history-lp {
 	width: clamp(30.563rem, 26.823vw + 13.396rem, 56.313rem);
 	height: clamp(17.75rem, 15.56vw + 7.792rem, 32.688rem);
 	background-size: cover;
-	background-image: url('./assets/images/Profile/match-history-lp.svg');
+	background-image: url('/assets/images/Profile/match-history-lp.svg');
 }
 
 .cards-title {
@@ -52,6 +52,7 @@
 
 .profile-image {
 	width: clamp(3.75rem, 6.195vw + 2.588rem, 12.5rem);
+	height: clamp(3.75rem, 6.195vw + 2.588rem, 12.5rem);
 	margin-left: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
 	margin-right: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
 }

@@ -8,7 +8,7 @@ function Button({ image, title, className, mode }) {
 				className='brightness-[.5] hover:scale-[1.04] hover:brightness-100 transition duration-500'
 				alt='tournament-background'
 			/>
-			<h1 className={`absolute modes-font pointer-events-none top-[40%] ${title}`}>{mode}</h1>
+			<h1 className={`absolute pointer-events-none top-[40%] ${title}`}>{mode}</h1>
 		</button>
 	)
 }

@@ -17,17 +17,19 @@
 
 .nav-icons {
 	width: clamp(2.25rem, 0.818vw + 2.097rem, 3.375rem);
+	height: clamp(2.25rem, 0.818vw + 2.097rem, 3.375rem);
 }
 
 .dropdown {
 	width: clamp(11.563rem, 5.088vw + 10.608rem, 18.75rem);
 	height: clamp(13.75rem, 5.973vw + 12.63rem, 22.188rem);
 	gap: clamp(0.813rem, 0.354vw + 0.746rem, 1.313rem);
-	padding: clamp(1.688rem, 0.796vw + 1.538rem, 2.813rem) clamp(0.625rem, 0.354vw + 0.559rem, 1.125rem);
+	padding: clamp(1.563rem, 0.841vw + 1.405rem, 2.75rem) clamp(0.625rem, 0.354vw + 0.559rem, 1.125rem);
 }
 
 .dropdown-user-photo {
 	width: clamp(2.188rem, 0.885vw + 2.022rem, 3.438rem);
+	height: clamp(2.188rem, 0.885vw + 2.022rem, 3.438rem);
 }
 
 .fullname {
