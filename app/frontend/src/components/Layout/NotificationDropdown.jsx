@@ -1,20 +1,22 @@
 import Button from '../Home/Buttons/Button'
 import { useEffect, useState } from 'react'
 import React from 'react'
-import  useAuth  from '../../context/AuthContext'
+import useAuth from '../../context/AuthContext'
 import { useAlert } from '../AlertContext'
 
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
-function NotificationDropdown({ notifications , setNotifications }) {
+const ACCEPT_FRIEND_REQUEST = import.meta.env.VITE_ACCEPT_FRIEND_REQUEST
+const CANCEL_FRIEND_REQUEST = import.meta.env.VITE_CANCEL_FRIEND_REQUEST
+function NotificationDropdown({ notifications, setNotifications }) {
 
 
-	const { getAuthHeaders } = useAuth();
-	const { triggerAlert } = useAlert();
+    const { getAuthHeaders } = useAuth();
+    const { triggerAlert } = useAlert();
 
     const handleSubmit = (type, message) => {
-		triggerAlert(type, message)
-	}
+        triggerAlert(type, message)
+    }
 
 
     const handleAcceptFriendRequest = async (friendRequestId) => {
@@ -23,50 +25,50 @@ function NotificationDropdown({ notifications , setNotifications }) {
             return;
         }
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/friend_request/accept/${friendRequestId}/`, {
+            const response = await fetch(`${ACCEPT_FRIEND_REQUEST}${friendRequestId}/`, {
                 method: 'POST',
                 headers: getAuthHeaders(),
             });
             const data = await response.json();
             console.log('Accepted Friend Request:', data);
-			if (response.status === 201) {
-            	// Remove notification after acceptance
-				setNotifications((prevNotifications) =>
-					prevNotifications.filter(notification => notification.id !== friendRequestId)
-				);
-				handleSubmit('success', data.message)
-			}else{
-				handleSubmit('error', data.message)
-			}
+            if (response.status === 201) {
+                // Remove notification after acceptance
+                setNotifications((prevNotifications) =>
+                    prevNotifications.filter(notification => notification.id !== friendRequestId)
+                );
+                handleSubmit('success', data.message)
+            } else {
+                handleSubmit('error', data.message)
+            }
         } catch (error) {
             console.error('Error accepting friend request:', error);
-			triggerAlert('error', 'Error accepting friend request')
+            triggerAlert('error', 'Error accepting friend request')
         }
     };
-	
-	const handleCancelFriendRequest = async (friendRequestId) => {
+
+    const handleCancelFriendRequest = async (friendRequestId) => {
         if (!friendRequestId) {
             console.error('No friend request ID provided');
             return;
         }
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/friend_request/cancel/${friendRequestId}/`, {
+            const response = await fetch(`${CANCEL_FRIEND_REQUEST}${friendRequestId}/`, {
                 method: 'POST',
                 headers: getAuthHeaders(),
             });
             const data = await response.json();
             if (response.status === 201) {
-				// Remove notification after cancellation
-				setNotifications((prevNotifications) =>
-					prevNotifications.filter(notification => notification.id !== friendRequestId)
-				);
-				handleSubmit('success', data.message)
-			}else{
-				handleSubmit('error', data.message)
-			}
+                // Remove notification after cancellation
+                setNotifications((prevNotifications) =>
+                    prevNotifications.filter(notification => notification.id !== friendRequestId)
+                );
+                handleSubmit('success', data.message)
+            } else {
+                handleSubmit('error', data.message)
+            }
         } catch (error) {
             console.error('Error canceling friend request:', error);
-			triggerAlert('error', 'Error canceling friend request')
+            triggerAlert('error', 'Error canceling friend request')
         }
     };
 
@@ -78,7 +80,7 @@ function NotificationDropdown({ notifications , setNotifications }) {
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    const new_notifications = data.map((notification) => ({...notification, flag: 'true'}));
+                    const new_notifications = data.map((notification) => ({ ...notification, flag: 'true' }));
                     setNotifications(new_notifications);
                 } else {
                     console.error('Failed to fetch notifications');
@@ -107,7 +109,7 @@ function NotificationDropdown({ notifications , setNotifications }) {
                                         alt='User Avatar'
                                     />
                                     {
-                                        notification.flag ? ( <p>{notification.username} sent you a Friend Request!</p> ) : ( <p>{notification.from_user} sent you a Friend Request!</p> )
+                                        notification.flag ? (<p>{notification.username} sent you a Friend Request!</p>) : (<p>{notification.from_user} sent you a Friend Request!</p>)
                                     }
                                 </div>
                                 <div className='flex gap-1 mr-1'>

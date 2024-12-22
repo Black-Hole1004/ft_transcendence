@@ -16,7 +16,7 @@ function FriendsList() {
 	const get_all_users = async () => {
 		console.log('-----------------> get_all_users')
 		try {
-			const response = await fetch('https://127.0.0.1:8000/api/users/', {
+			const response = await fetch('https://localhost/api/users/', {
 				method: 'GET',
 				headers: getAuthHeaders(),
 			})

@@ -10,13 +10,13 @@ const TournamentTest = () => {
 
     useEffect(() => {
         // Fetch existing users
-        fetch('http://127.0.0.1:8000/api/userss/', {
+        fetch('https://localhost/api/userss/', {
             method: 'GET',
             headers: getAuthHeaders(),
         })
-        .then(res => res.json())
-        .then(data => setUsers(data))
-        .catch(err => console.error('Error fetching users:', err));
+            .then(res => res.json())
+            .then(data => setUsers(data))
+            .catch(err => console.error('Error fetching users:', err));
 
         // Fetch existing tournaments
         fetch('/api/tournaments/')
@@ -33,7 +33,7 @@ const TournamentTest = () => {
         console.log('selectedUsers ===>', selectedUsers);
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/tournament/', {
+            const response = await fetch('https://localhost/api/tournament/', {
                 method: 'POST',
                 headers: getAuthHeaders(),
                 body: JSON.stringify({

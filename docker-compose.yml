@@ -62,8 +62,8 @@ services:
   frontend:
     container_name: frontend
     build: app/frontend/.
-    ports:
-      - "5173:5173"
+    # ports:
+    #   - "5173:5173"
     networks:
       - ft_transcendence_network
     volumes:
@@ -73,7 +73,7 @@ services:
       backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5173/health"]
+      test: ["CMD", "nc", "-z", "localhost", "5173"]
       interval: 5s
       timeout: 30s
     restart: always
@@ -98,6 +98,7 @@ services:
     container_name: nginx
     image: nginx
     ports:
+      - "80:80"
       - "443:443"
     volumes:
       - ./app/nginx/tools/generate_ssl.sh:/app/nginx/tools/generate_ssl.sh
@@ -113,12 +114,6 @@ services:
         condition: service_healthy
       frontend:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:443/health", "-k"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
     restart: always
   
 
@@ -133,8 +128,6 @@ services:
       - .env
     networks:
       - ft_transcendence_network
-    depends_on:
-      - ft_transcendence_db
     healthcheck:
       test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
       interval: 1s

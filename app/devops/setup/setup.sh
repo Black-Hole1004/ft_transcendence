@@ -1,4 +1,6 @@
 #!/bin/bash
+
+
 ########## part 1 ##########
 if [ -z "${ELASTIC_PASSWORD}" ] || [ -z "${KIBANA_PASSWORD}" ]; then
     echo "Set the ELASTIC_PASSWORD and KIBANA_PASSWORD environment variables in the .env file"
@@ -63,7 +65,31 @@ until curl -s \
   -d "{\"password\":\"${KIBANA_PASSWORD}\"}" \
   | grep -q "^{}"; do sleep 5; done
 
+
 ########## part 7 ##########
+# Path to the ILM policy creation script
+ILM_POLICY_SCRIPT="./create_ilm_policy.sh"
+
+# Check if the ILM policy script exists
+if [ -f "$ILM_POLICY_SCRIPT" ]; then
+    echo "Running ILM Policy Creation Script"
+    # Make sure the script is executable
+    chmod +x "$ILM_POLICY_SCRIPT"
+    
+    # Execute the script
+    "$ILM_POLICY_SCRIPT"
+    
+    # Check the exit status
+    if [ $? -eq 0 ]; then
+        echo "ILM Policy created successfully"
+    else
+        echo "Failed to create ILM Policy"
+        exit 1
+    fi
+fi
+
+
+########## part 8 ##########
 echo "All done!, removing the setup container"
 CONTAINER_ID=$(hostname)
 curl --unix-socket /var/run/docker.sock -X DELETE "http://localhost/containers/${CONTAINER_ID}?force=true"
