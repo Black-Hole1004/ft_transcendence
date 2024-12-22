@@ -87,22 +87,3 @@ if [ -f "$ILM_POLICY_SCRIPT" ]; then
         echo "-----------------> Failed to create ILM Policy <---------------------"
     fi
 fi
-
-
-# ########## part 8 ##########
-# echo "All done!, removing the setup container"
-# CONTAINER_ID=$(hostname)
-# curl --unix-socket /var/run/docker.sock -X DELETE "http://localhost/containers/${CONTAINER_ID}?force=true"
-
-echo "Attempting to remove the setup container"
-CONTAINER_ID=$(hostname)
-echo "Container ID: $CONTAINER_ID"
-
-# Use docker command instead of curl
-if docker rm -f "$CONTAINER_ID"; then
-    echo "Container removed successfully"
-else
-    echo "Failed to remove container"
-    # Optionally, you might not want to exit here
-    exit 1
-fi

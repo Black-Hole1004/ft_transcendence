@@ -7,10 +7,6 @@ networks:
 volumes:
   certs:
     name: certs
-  elasticsearch:
-    name: elasticsearch
-  kibana:
-    name: kibana
 
 services:
   # PostgreSQL Database
@@ -24,7 +20,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./app/postgres_data:/var/lib/postgresql/data
+      - ./app/data/postgresql:/var/lib/postgresql/data
     networks:
       - ft_transcendence_network
     healthcheck:
@@ -87,7 +83,7 @@ services:
     networks:
       - ft_transcendence_network
     volumes:
-      - ./app/redis_data:/data
+      - ./app/data/redis:/data
     depends_on:
       backend:
         condition: service_healthy
@@ -98,36 +94,56 @@ services:
     container_name: nginx
     image: nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:80"   # Map HTTP port
+      - "443:443" # Map HTTPS port
     volumes:
+      # SSL certificate generation script
       - ./app/nginx/tools/generate_ssl.sh:/app/nginx/tools/generate_ssl.sh
+
+      # SSL certificates folder
       - ./app/nginx/ssl_certificates:/etc/nginx/ssl
+
+      # Nginx configuration file
       - ./app/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
+
+      # Backend profile pictures directory
       - ./app/backend/profile_pictures:/app/backend/profile_pictures
-      - ./app/nginx/logs/access.log:/var/log/nginx/access.log
-    command: sh -c "chmod +x /app/nginx/tools/generate_ssl.sh && /app/nginx/tools/generate_ssl.sh && nginx -g 'daemon off;'"
+
+      # Nginx logs directory
+      - ./app/nginx/logs:/var/log/nginx
+    command: >
+      sh -c "
+        chmod +x /app/nginx/tools/generate_ssl.sh &&
+        /app/nginx/tools/generate_ssl.sh &&
+        nginx -g 'daemon off;'
+      "
     networks:
-      - ft_transcendence_network
+      - ft_transcendence_network # Attach to the shared network
     depends_on:
       backend:
-        condition: service_healthy
+        condition: service_healthy # Ensure backend is healthy before starting
       frontend:
-        condition: service_healthy
-    restart: always
+        condition: service_healthy # Ensure frontend is healthy before starting
+    restart: always # Automatically restart if the container stops
+    # healthcheck:
+    #   # Check if Nginx is responding on HTTP
+    #   test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+    #   interval: 30s # Run the health check every 30 seconds
+    #   timeout: 10s  # Time to wait for a response
+    #   retries: 3    # Number of retries before marking unhealthy
   
 
   #setup for elasticsearch
   setup:
     container_name: setup
-    build: ./app/devops/setup/.
+    build: ./app/elk/setup/.
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
       - /var/run/docker.sock:/var/run/docker.sock
-    env_file:
-      - .env
     networks:
       - ft_transcendence_network
+    env_file:
+      - .env
     healthcheck:
       test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
       interval: 1s
@@ -141,10 +157,10 @@ services:
     depends_on:
       setup:
         condition: service_healthy
-    build: ./app/devops/elasticsearch/.
+    build: ./app/elk/elasticsearch/.
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - ./app/devops/elasticsearch/data:/usr/share/elasticsearch/data
+      - ./app/data/elasticsearch:/usr/share/elasticsearch/data
     ports:
       - '9200:9200'
     env_file:
@@ -164,10 +180,10 @@ services:
     depends_on:
       setup:
         condition: service_healthy
-    build: ./app/devops/kibana/.
+    build: ./app/elk/kibana/.
     volumes:
       - certs:/usr/share/kibana/config/certs
-      - ./app/devops/kibana/data:/usr/share/kibana/data
+      - ./app/data/kibana:/usr/share/kibana/data
     ports:
       - '5601:5601'
     env_file:
@@ -183,7 +199,7 @@ services:
     depends_on:
       setup:
         condition: service_healthy
-    build: ./app/devops/logstash/.
+    build: ./app/elk/logstash/.
     volumes:
       - certs:/usr/share/logstash/certs
       - ./app/nginx/logs/access.log:/usr/share/logstash/nginx/access.log

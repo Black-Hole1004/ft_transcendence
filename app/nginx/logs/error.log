@@ -1,0 +1,33 @@
+2024/12/22 22:15:46 [notice] 12#12: using the "epoll" event method
+2024/12/22 22:15:46 [notice] 12#12: nginx/1.27.3
+2024/12/22 22:15:46 [notice] 12#12: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/22 22:15:46 [notice] 12#12: OS: Linux 5.15.49-linuxkit
+2024/12/22 22:15:46 [notice] 12#12: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/22 22:15:46 [notice] 12#12: start worker processes
+2024/12/22 22:15:46 [notice] 12#12: start worker process 13
+2024/12/22 22:15:46 [notice] 12#12: start worker process 14
+2024/12/22 22:24:10 [notice] 11#11: using the "epoll" event method
+2024/12/22 22:24:10 [notice] 11#11: nginx/1.27.3
+2024/12/22 22:24:10 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/22 22:24:10 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/22 22:24:10 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/22 22:24:10 [notice] 11#11: start worker processes
+2024/12/22 22:24:10 [notice] 11#11: start worker process 12
+2024/12/22 22:24:10 [notice] 11#11: start worker process 13
+2024/12/22 22:25:57 [notice] 11#11: using the "epoll" event method
+2024/12/22 22:25:57 [notice] 11#11: nginx/1.27.3
+2024/12/22 22:25:57 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/22 22:25:57 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/22 22:25:57 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/22 22:25:57 [notice] 11#11: start worker processes
+2024/12/22 22:25:57 [notice] 11#11: start worker process 12
+2024/12/22 22:25:57 [notice] 11#11: start worker process 13
+2024/12/22 22:38:51 [notice] 11#11: using the "epoll" event method
+2024/12/22 22:38:51 [notice] 11#11: nginx/1.27.3
+2024/12/22 22:38:51 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/22 22:38:51 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/22 22:38:51 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/22 22:38:51 [notice] 11#11: start worker processes
+2024/12/22 22:38:51 [notice] 11#11: start worker process 12
+2024/12/22 22:38:51 [notice] 11#11: start worker process 13
+2024/12/22 23:01:50 [error] 12#12: *872 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET /ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MzM5Mzg2LCJpYXQiOjE3MzQ5MDczODYsImp0aSI6IjVkNjY1OTJmMDJlOTRiNWNiNWU4ZGUwYjdiZDI5M2Q0IiwidXNlcl9pZCI6MX0.Avep9hXKOz79e4LkD0yT8b0p-ee5pTJwifIlUgUmayw%22 HTTP/1.1", upstream: "http://172.21.0.4:8000/ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MzM5Mzg2LCJpYXQiOjE3MzQ5MDczODYsImp0aSI6IjVkNjY1OTJmMDJlOTRiNWNiNWU4ZGUwYjdiZDI5M2Q0IiwidXNlcl9pZCI6MX0.Avep9hXKOz79e4LkD0yT8b0p-ee5pTJwifIlUgUmayw%22", host: "localhost"
