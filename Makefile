@@ -23,7 +23,8 @@ prune:
 	@rm -rf ./app/postgres_data
 	@rm -rf ./app/nginx/ssl_certificates
 	@rm -rf ./app/redis_data
-	@rm -rf ./app/elesticsearch_data
+	@rm -rf ./app/devops/elasticsearch/data
+	@rm -rf ./app/devops/kibana/data
 
 scan: build
 	docker scan ft_transcendence-pingpong

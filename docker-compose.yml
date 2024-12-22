@@ -104,6 +104,7 @@ services:
       - ./app/nginx/ssl_certificates:/etc/nginx/ssl
       - ./app/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./app/backend/profile_pictures:/app/backend/profile_pictures
+      - ./app/nginx/logs/access.log:/var/log/nginx/access.log
     command: sh -c "chmod +x /app/nginx/tools/generate_ssl.sh && /app/nginx/tools/generate_ssl.sh && nginx -g 'daemon off;'"
     networks:
       - ft_transcendence_network
@@ -112,6 +113,12 @@ services:
         condition: service_healthy
       frontend:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:443/health", "-k"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     restart: always
   
 
@@ -127,8 +134,7 @@ services:
     networks:
       - ft_transcendence_network
     depends_on:
-      backend:
-        condition: service_healthy
+      - ft_transcendence_db
     healthcheck:
       test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
       interval: 1s
@@ -145,7 +151,7 @@ services:
     build: ./app/devops/elasticsearch/.
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
-      - ./app/devops/elasticsearch:/usr/share/elasticsearch/data
+      - ./app/devops/elasticsearch/data:/usr/share/elasticsearch/data
     ports:
       - '9200:9200'
     env_file:
@@ -168,7 +174,7 @@ services:
     build: ./app/devops/kibana/.
     volumes:
       - certs:/usr/share/kibana/config/certs
-      - kibana:/usr/share/kibana/data
+      - ./app/devops/kibana/data:/usr/share/kibana/data
     ports:
       - '5601:5601'
     env_file:
@@ -187,7 +193,7 @@ services:
     build: ./app/devops/logstash/.
     volumes:
       - certs:/usr/share/logstash/certs
-      - ./app/nginx/access.log:/usr/share/logstash/nginx/access.log
+      - ./app/nginx/logs/access.log:/usr/share/logstash/nginx/access.log
     env_file:
       - .env
     networks:

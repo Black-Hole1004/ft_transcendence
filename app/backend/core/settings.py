@@ -65,6 +65,14 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+print("DEBUG: ", DEBUG)
+
+
+
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,
@@ -85,29 +93,29 @@ SOCIALACCOUNT_PROVIDERS = {
 #     },
 # }
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "json": {
-            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
-        },
-    },
-    "handlers": {
-        "logstash": {
-            "class": "graypy.GELFUDPHandler",
-            "host": "logstash", 
-            "port": 5044,
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["logstash"],
-            "level": "INFO",
-            "propagate": True,
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": {
+#         "json": {
+#             "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+#         },
+#     },
+#     "handlers": {
+#         "logstash": {
+#             "class": "graypy.GELFUDPHandler",
+#             "host": "logstash", 
+#             "port": 5044,
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["logstash"],
+#             "level": "INFO",
+#             "propagate": True,
+#         },
+#     },
+# }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -242,20 +250,14 @@ SIMPLE_JWT = {
 }
 
 SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SECURE = True
 
 CORS_ALLOW_CREDENTIALS = True
 
 
 
 
-# Ensure secure cookies in production
-if not DEBUG:
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -305,11 +307,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'profile',
 ]
 
-#redirect HTTP to HTTPS
-# SECURE_SSL_REDIRECT = True
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -317,3 +315,4 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost",
 ] # todo: to be changed in production
 CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = False

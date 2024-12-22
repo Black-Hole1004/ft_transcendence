@@ -119,11 +119,7 @@ export const AuthProvider = ({ children }) => {
 
 
     const getAuthHeaders = () => {
-        console.log('--- getAuthHeaders ---')
         const access_token = Cookies.get('access_token');
-        const refresh_token = Cookies.get('refresh_token');
-        console.log('access_token: ============>', access_token)
-        console.log('refresh_token: ============>', refresh_token)
         if (access_token) {
             try {
                 const token = JSON.parse(access_token);

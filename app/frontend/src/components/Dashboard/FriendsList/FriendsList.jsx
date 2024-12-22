@@ -14,19 +14,26 @@ function FriendsList() {
 	const { socket_notify, socket_friends } = useSocket();
 
 	const get_all_users = async () => {
+		console.log('-----------------> get_all_users')
 		try {
-			const response = await fetch('http://127.0.0.1:8000/api/users/', {
+			const response = await fetch('https://127.0.0.1:8000/api/users/', {
 				method: 'GET',
 				headers: getAuthHeaders(),
 			})
 			const data = await response.json()
+			console.log('data =====> []', data)
 			setUsers(data)
 		}
 		catch (error) {
+			console.log('data =====>error []')
 			console.error('Error:', error)
 		}
 	}
+
+
+
 	useEffect(() => {
+		console.log('-----------------> useEffect')
 		get_all_users()
 	}, [])
 

@@ -676,6 +676,10 @@ class HealthCheckView(APIView):
             return {"error": str(e)}
 
     def get(self, request, *args, **kwargs):
+
+        print(f"Request scheme: {request.scheme}")
+        print(f"Request path: {request.path}")
+        print(f"Request META: {request.META}")
         services_status = {
             "database": self.check_database(),
             "redis": self.check_redis()
