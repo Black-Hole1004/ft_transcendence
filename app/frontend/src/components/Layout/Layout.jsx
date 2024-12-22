@@ -1,11 +1,23 @@
 import Alert from '../Alert'
 import Header from './Header'
-import { useEffect } from 'react'
+import { useEffect , useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import { useAlert } from '../AlertContext'
 import useAuth from '../../context/AuthContext'
 
 function Layout() {
+	const [showAlert, setShowAlert] = useState(true)
+	const [alertType, setAlertType] = useState('info')
+	const [alertMessage, setAlertMessage] = useState(
+		'A problem has been occured while submitting your data.'
+	)
+
+	if (showAlert === true) {
+		setTimeout(() => {
+			setShowAlert(false)
+		}, 10000)
+	}
+
 	const { first_name, preview, last_name, username, profile_picture } = useAuth()
 	const user_data = { first_name, last_name, username, profile_picture }
 	return (

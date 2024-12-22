@@ -22,8 +22,9 @@ from django.http import HttpResponseRedirect
 
 from django.core.files.uploadedfile import UploadedFile
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+
 from .models import User
-from .models import UserSession
 import os
 import jwt
 from django.conf import settings
@@ -33,12 +34,15 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
-# from .forms import UserProfileForm
-#pass=Ahaloui@@13+
-#gmail=aymene@gmail.com
+from rest_framework.exceptions import ValidationError
 
 from rest_framework import generics
 
+from django.db.models import Count, Q
+from .models import Achievement
+from game.models import GameSessions
+
+from .models import UserSession
 from django.utils import timezone
 
 from django.contrib.auth import get_user_model
@@ -272,7 +276,6 @@ class UserProfileView(APIView):
             user_data = request.data.copy()
             profile_picture = request.FILES.get('profile_picture', None)
 
-            print(f"before User data: {user_data}")
             # Handle profile picture removal if requested
             if request.data.get('remove_profile_picture') == 'true':
                 remove_profile_picture(user)
@@ -286,18 +289,27 @@ class UserProfileView(APIView):
                 if field in user_data:
                     user_data.pop(field, None)
             
-            # Handle profile picture update if new picture is uploaded
-            if profile_picture:
-                update_profile_picture(user, profile_picture)
-
+            # Handle profile picture update or removal
+            if 'profile_picture' in user_data:
+                if profile_picture:
+                    update_profile_picture(user, profile_picture)
+                elif user_data['profile_picture'] in [None, '', 'null']:
+                    # Remove the current profile picture if it's not the default
+                    if user.profile_picture and user.profile_picture.name != 'profile_pictures/avatar.jpg':
+                        if os.path.isfile(user.profile_picture.path):
+                            os.remove(user.profile_picture.path)
+                    user.profile_picture = 'profile_pictures/avatar.jpg'
+                    user.save(update_fields=['profile_picture'])
+                    user_data.pop('profile_picture')
+            
             # Serialize the data and update the user instance
             serializer = UserSerializer(user, data=user_data, partial=True)
             if not serializer.is_valid():
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            print(f"after User data: {user_data}")
+            
             updated_user = serializer.save()
 
-            # if password was changed, generate new tokens
+            # If password was changed, generate new tokens
             new_tokens = None
             if 'new_password' in user_data:
                 new_tokens = self.reauthenticate_and_generate_tokens(updated_user, user_data['new_password'])
@@ -317,21 +329,38 @@ class UserProfileView(APIView):
     
     def reauthenticate_and_generate_tokens(self, user, new_password):
         """Reauthenticate the user using the new password and generate new JWT tokens."""
-        # Re-authenticate user using the new password to ensure the password change worked
         user = authenticate(username=user.username, password=new_password)
-        
         if not user:
             raise ValidationError('Authentication failed. Invalid credentials.')
 
-        # If authentication is successful, generate new tokens
         return generate_new_tokens(user)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def check_user_exists(request):
+    """Debug endpoint to check if user exists"""
+    email = request.data.get('email')
+    user = User.objects.filter(email=email).first()
+    
+    if user:
+        return Response({
+            'exists': True,
+            'is_active': user.is_active,
+            'email': user.email,
+            'username': user.username
+        })
+    return Response({
+        'exists': False,
+        'message': 'No user found with this email'
+    })
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_time_spent(request):
-    user = request.user  # Assuming user is authenticated
+    user = request.user
     sessions = UserSession.objects.time_spent_per_day(user)
-
     # Return the sessions with time spent in seconds or minutes
     return JsonResponse({'data': list(sessions)})
 
@@ -460,3 +489,225 @@ class FriendShipRequestListView(APIView):
         friend_requests = FriendShipRequest.objects.filter(user_to=user, status='pending')
         serializer = FriendRequestSerializer(friend_requests, many=True, context={'request': request})
         return Response(serializer.data, status=200)
+
+# user profile statistics-------------------------------------------------------------
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile_stats(request):
+    try:
+        user = request.user
+        games = GameSessions.objects.filter(
+            Q(player1=user) | Q(player2=user),
+            status='FINISHED'
+        )
+        
+        total_games = games.count()
+        wins = games.filter(winner=user).count()
+        win_rate = (wins / total_games * 100) if total_games > 0 else 0
+        
+        recent_matches = []
+        for game in games.order_by('-start_time')[:5]:
+            is_player1 = (game.player1 == user)
+            
+            current_player = game.player1 if is_player1 else game.player2
+            opponent = game.player2 if is_player1 else game.player1
+            
+            # Get badge data
+            current_badge = Achievement.get_badge(current_player.xp)
+            opponent_badge = Achievement.get_badge(opponent.xp)
+            
+            # Get profile pictures
+            current_profile_picture = current_player.profile_picture.url if current_player.profile_picture else None
+            opponent_profile_picture = opponent.profile_picture.url if opponent.profile_picture else None
+            
+            # Get scores
+            current_score = game.score_player1 if is_player1 else game.score_player2
+            opponent_score = game.score_player2 if is_player1 else game.score_player1
+            
+            # XP gain logic
+            current_xp_gain = game.player1_xp_gain if is_player1 else game.player2_xp_gain
+            opponent_xp_gain = game.player2_xp_gain if is_player1 else game.player1_xp_gain
+            
+            # Improved result determination
+            if game.score_player1 == game.score_player2:
+                result = 'DRAW'
+            else:
+                if (is_player1 and game.winner == game.player1) or (not is_player1 and game.winner == game.player2):
+                    result = 'VICTORY'
+                else:
+                    result = 'DEFEAT'
+            
+            match_data = {
+                'current_player': {
+                    'profile_picture': current_profile_picture,
+                    'badge_image': current_badge['image'],
+                    'xp_gain': current_xp_gain,
+                    'score': current_score
+                },
+                'opponent': {
+                    'profile_picture': opponent_profile_picture,
+                    'badge_image': opponent_badge['image'],
+                    'xp_gain': opponent_xp_gain,
+                    'score': opponent_score
+                },
+                'result': result,
+            }
+            recent_matches.append(match_data)
+
+        # Rest of the code remains the same...
+        user_badge = Achievement.get_badge(user.xp)
+        progress_data = Achievement.get_badge_progress(user.xp)
+        user_badge.update(progress_data)
+        
+        overall_progress = (user.xp / 10000 * 100) if user.xp < 10000 else 100
+        
+        return Response({
+            'stats': {
+                'total_games': total_games,
+                'games_won': wins,
+                'win_rate': round(win_rate, 2),
+                'xp': user.xp
+            },
+            'achievement': {
+                'current': user_badge,
+                'overall_progress': round(overall_progress, 2)
+            },
+            'match_history': recent_matches
+        })
+        
+    except Exception as e:
+        print(f"Error in get_profile_stats: {str(e)}")
+        return Response({
+            'error': str(e)
+        }, status=500)
+    
+# leaderboard-------------------------------------------------------------
+
+# views.py
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+from .models import Achievement
+
+User = get_user_model()
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_leaderboard(request):
+    try:
+        # Get top 20 users ordered by XP
+        top_users = User.objects.order_by('-xp')[:20]
+        
+        # Prepare user data with achievements
+        leaderboard_data = []
+        for user in top_users:
+            # Get user's current achievement based on XP
+            achievement = Achievement.get_badge(user.xp)
+            
+            leaderboard_data.append({
+                'id': user.id,
+                'username': user.username,
+                'xp': user.xp,
+                'profile_picture': user.profile_picture.url if user.profile_picture else None,
+                'achievement': achievement  # This already includes name and image
+            })
+        
+        return Response({
+            'users': leaderboard_data
+        })
+        
+    except Exception as e:
+        return Response({
+            'error': str(e)
+        }, status=500)
+
+#achievements -------------------------------------------------------------------------------
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_achievements(request):
+    try:
+        # Get all available achievements
+        achievements = [
+            {
+                'name': 'Novice Astronaut',
+                'image': 'novice-astronaut',
+                'xp_required': 0,
+                'description': 'Begin your cosmic journey'
+            },
+            {
+                'name': 'Cosmic Explorer',
+                'image': 'cosmic-explorer',
+                'xp_required': 2000,
+                'description': 'Venture beyond the familiar'
+            },
+            {
+                'name': 'Stellar Voyager',
+                'image': 'stellar-voyager',
+                'xp_required': 4000,
+                'description': 'Navigate through stellar challenges'
+            },
+            {
+                'name': 'Galactic Trailblazer',
+                'image': 'galactic-trailblazer',
+                'xp_required': 6000,
+                'description': 'Forge new paths in the galaxy'
+            },
+            {
+                'name': 'Celestial Master',
+                'image': 'celestial-master',
+                'xp_required': 8000,
+                'description': 'Achieve cosmic mastery'
+            }
+        ]
+        
+        # Get current user's XP for progress calculation
+        user_xp = request.user.xp
+        
+        # Add progress information
+        for i in range(len(achievements)):
+            current = achievements[i]
+            next_threshold = achievements[i + 1]['xp_required'] if i < len(achievements) - 1 else 10000
+            
+            # Calculate progress percentage
+            if user_xp >= next_threshold:
+                progress = 100
+            elif user_xp < current['xp_required']:
+                progress = 0
+            else:
+                progress = ((user_xp - current['xp_required']) / 
+                          (next_threshold - current['xp_required'])) * 100
+                
+            current['progress'] = round(progress, 2)
+            current['user_xp'] = user_xp
+            
+        return Response({
+            'achievements': achievements,
+            'current_xp': user_xp
+        })
+        
+    except Exception as e:
+        return Response({
+            'error': str(e)
+        }, status=500)
+        
+# get current logged in user data
+# UserManagement/views.py
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_data(request):
+    try:
+        user = request.user
+        return JsonResponse({
+            'id': user.id,
+            'username': user.username,
+            'xp': user.xp,
+            'email': user.email,
+            'profile_picture': user.profile_picture.url if hasattr(user, 'profile_picture') and user.profile_picture else None,
+            'badge': Achievement.get_badge(user.xp)
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    

@@ -1,0 +1,1142 @@
+DEBUG 2024-11-08 18:13:50,796 selector_events Using selector: KqueueSelector
+INFO 2024-11-08 18:13:51,753 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2024-11-08 18:13:51,755 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2024-11-08 18:13:51,756 server Listening on TCP address 127.0.0.1:8000
+INFO 2024-11-08 18:14:00,666 runserver WebSocket HANDSHAKING /ws/matchmaking/ [127.0.0.1:57587]
+DEBUG 2024-11-08 18:14:00,667 http_protocol Upgraded connection ['127.0.0.1', 57587] to WebSocket
+DEBUG 2024-11-08 18:14:00,718 ws_protocol WebSocket ['127.0.0.1', 57587] open and established
+INFO 2024-11-08 18:14:00,719 runserver WebSocket CONNECT /ws/matchmaking/ [127.0.0.1:57587]
+DEBUG 2024-11-08 18:14:00,719 ws_protocol WebSocket ['127.0.0.1', 57587] accepted by application
+DEBUG 2024-11-08 18:14:00,719 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:14:00,721 ws_protocol WebSocket incoming frame on ['127.0.0.1', 57587]
+INFO 2024-11-08 18:14:08,842 runserver WebSocket HANDSHAKING /ws/matchmaking/ [127.0.0.1:57660]
+DEBUG 2024-11-08 18:14:08,843 http_protocol Upgraded connection ['127.0.0.1', 57660] to WebSocket
+DEBUG 2024-11-08 18:14:08,847 ws_protocol WebSocket ['127.0.0.1', 57660] open and established
+INFO 2024-11-08 18:14:08,847 runserver WebSocket CONNECT /ws/matchmaking/ [127.0.0.1:57660]
+DEBUG 2024-11-08 18:14:08,847 ws_protocol WebSocket ['127.0.0.1', 57660] accepted by application
+DEBUG 2024-11-08 18:14:08,849 ws_protocol WebSocket incoming frame on ['127.0.0.1', 57660]
+DEBUG 2024-11-08 18:14:08,850 ws_protocol Sent WebSocket packet to client for ['127.0.0.1', 57660]
+DEBUG 2024-11-08 18:14:08,850 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:14:08,857 ws_protocol WebSocket closed for ['127.0.0.1', 57660]
+INFO 2024-11-08 18:14:08,857 runserver WebSocket DISCONNECT /ws/matchmaking/ [127.0.0.1:57660]
+INFO 2024-11-08 18:14:08,863 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:57663]
+DEBUG 2024-11-08 18:14:08,863 http_protocol Upgraded connection ['127.0.0.1', 57663] to WebSocket
+DEBUG 2024-11-08 18:14:08,867 ws_protocol Sent WebSocket packet to client for ['127.0.0.1', 57587]
+DEBUG 2024-11-08 18:14:08,885 ws_protocol WebSocket ['127.0.0.1', 57663] open and established
+INFO 2024-11-08 18:14:08,885 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:57663]
+DEBUG 2024-11-08 18:14:08,885 ws_protocol WebSocket ['127.0.0.1', 57663] accepted by application
+DEBUG 2024-11-08 18:14:08,900 ws_protocol Sent WebSocket packet to client for ['127.0.0.1', 57663]
+DEBUG 2024-11-08 18:14:08,901 ws_protocol WebSocket closed for ['127.0.0.1', 57587]
+INFO 2024-11-08 18:14:08,901 runserver WebSocket DISCONNECT /ws/matchmaking/ [127.0.0.1:57587]
+INFO 2024-11-08 18:14:08,903 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:57665]
+DEBUG 2024-11-08 18:14:08,903 http_protocol Upgraded connection ['127.0.0.1', 57665] to WebSocket
+DEBUG 2024-11-08 18:14:08,912 ws_protocol WebSocket ['127.0.0.1', 57665] open and established
+INFO 2024-11-08 18:14:08,912 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:57665]
+DEBUG 2024-11-08 18:14:08,912 ws_protocol WebSocket ['127.0.0.1', 57665] accepted by application
+DEBUG 2024-11-08 18:14:08,913 ws_protocol Sent WebSocket packet to client for ['127.0.0.1', 57665]
+DEBUG 2024-11-08 18:14:50,096 ws_protocol WebSocket closed for ['127.0.0.1', 57663]
+INFO 2024-11-08 18:14:50,097 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:57663]
+DEBUG 2024-11-08 18:14:50,098 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:14:50,098 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:14:50,099 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:15:14,787 ws_protocol WebSocket closed for ['127.0.0.1', 57665]
+INFO 2024-11-08 18:15:14,787 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:57665]
+DEBUG 2024-11-08 18:15:14,788 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:14,788 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:14,790 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:27,985 runserver WebSocket HANDSHAKING /ws/matchmaking/ [127.0.0.1:58306]
+DEBUG 2024-11-08 18:15:27,985 http_protocol Upgraded connection ['127.0.0.1', 58306] to WebSocket
+DEBUG 2024-11-08 18:15:27,988 ws_protocol WebSocket ['127.0.0.1', 58306] open and established
+INFO 2024-11-08 18:15:27,989 runserver WebSocket CONNECT /ws/matchmaking/ [127.0.0.1:58306]
+DEBUG 2024-11-08 18:15:27,989 ws_protocol WebSocket ['127.0.0.1', 58306] accepted by application
+DEBUG 2024-11-08 18:15:27,989 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:27,994 ws_protocol WebSocket incoming frame on ['127.0.0.1', 58306]
+INFO 2024-11-08 18:15:32,959 runserver WebSocket HANDSHAKING /ws/matchmaking/ [127.0.0.1:58349]
+DEBUG 2024-11-08 18:15:32,959 http_protocol Upgraded connection ['127.0.0.1', 58349] to WebSocket
+DEBUG 2024-11-08 18:15:32,966 ws_protocol WebSocket ['127.0.0.1', 58349] open and established
+INFO 2024-11-08 18:15:32,966 runserver WebSocket CONNECT /ws/matchmaking/ [127.0.0.1:58349]
+DEBUG 2024-11-08 18:15:32,966 ws_protocol WebSocket ['127.0.0.1', 58349] accepted by application
+DEBUG 2024-11-08 18:15:32,968 ws_protocol WebSocket incoming frame on ['127.0.0.1', 58349]
+DEBUG 2024-11-08 18:15:32,969 ws_protocol Sent WebSocket packet to client for ['127.0.0.1', 58349]
+DEBUG 2024-11-08 18:15:32,969 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:32,975 ws_protocol WebSocket closed for ['127.0.0.1', 58349]
+INFO 2024-11-08 18:15:32,976 runserver WebSocket DISCONNECT /ws/matchmaking/ [127.0.0.1:58349]
+INFO 2024-11-08 18:15:32,978 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58352]
+DEBUG 2024-11-08 18:15:32,978 http_protocol Upgraded connection ['127.0.0.1', 58352] to WebSocket
+DEBUG 2024-11-08 18:15:32,980 ws_protocol Sent WebSocket packet to client for ['127.0.0.1', 58306]
+DEBUG 2024-11-08 18:15:32,993 ws_protocol WebSocket closed for ['127.0.0.1', 58306]
+INFO 2024-11-08 18:15:32,993 runserver WebSocket DISCONNECT /ws/matchmaking/ [127.0.0.1:58306]
+DEBUG 2024-11-08 18:15:33,008 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:33,009 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:33,009 ws_protocol WebSocket ['127.0.0.1', 58352] open and established
+INFO 2024-11-08 18:15:33,009 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58352]
+DEBUG 2024-11-08 18:15:33,009 ws_protocol WebSocket ['127.0.0.1', 58352] accepted by application
+INFO 2024-11-08 18:15:33,014 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58354]
+DEBUG 2024-11-08 18:15:33,015 http_protocol Upgraded connection ['127.0.0.1', 58354] to WebSocket
+DEBUG 2024-11-08 18:15:33,020 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:15:33,026 ws_protocol WebSocket closed for ['127.0.0.1', 58352]
+INFO 2024-11-08 18:15:33,026 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58352]
+DEBUG 2024-11-08 18:15:33,028 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:33,028 util Waiter future is already done <Future cancelled> ()
+DEBUG 2024-11-08 18:15:33,030 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:15:33,031 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:33,033 ws_protocol WebSocket ['127.0.0.1', 58354] open and established
+INFO 2024-11-08 18:15:33,033 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58354]
+DEBUG 2024-11-08 18:15:33,033 ws_protocol WebSocket ['127.0.0.1', 58354] accepted by application
+DEBUG 2024-11-08 18:15:33,036 ws_protocol WebSocket closed for ['127.0.0.1', 58354]
+INFO 2024-11-08 18:15:33,037 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58354]
+DEBUG 2024-11-08 18:15:33,038 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:33,038 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:33,038 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:34,035 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58366]
+DEBUG 2024-11-08 18:15:34,035 http_protocol Upgraded connection ['127.0.0.1', 58366] to WebSocket
+DEBUG 2024-11-08 18:15:34,037 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:34,038 ws_protocol WebSocket ['127.0.0.1', 58366] open and established
+INFO 2024-11-08 18:15:34,038 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58366]
+DEBUG 2024-11-08 18:15:34,038 ws_protocol WebSocket ['127.0.0.1', 58366] accepted by application
+DEBUG 2024-11-08 18:15:34,041 ws_protocol WebSocket closed for ['127.0.0.1', 58366]
+INFO 2024-11-08 18:15:34,041 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58366]
+DEBUG 2024-11-08 18:15:34,042 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:34,042 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:34,042 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:34,541 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58373]
+DEBUG 2024-11-08 18:15:34,541 http_protocol Upgraded connection ['127.0.0.1', 58373] to WebSocket
+DEBUG 2024-11-08 18:15:34,542 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:34,543 ws_protocol WebSocket ['127.0.0.1', 58373] open and established
+INFO 2024-11-08 18:15:34,544 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58373]
+DEBUG 2024-11-08 18:15:34,544 ws_protocol WebSocket ['127.0.0.1', 58373] accepted by application
+DEBUG 2024-11-08 18:15:34,546 ws_protocol WebSocket closed for ['127.0.0.1', 58373]
+INFO 2024-11-08 18:15:34,546 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58373]
+DEBUG 2024-11-08 18:15:34,547 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:34,547 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:34,548 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:35,045 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58380]
+DEBUG 2024-11-08 18:15:35,045 http_protocol Upgraded connection ['127.0.0.1', 58380] to WebSocket
+DEBUG 2024-11-08 18:15:35,047 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:35,051 ws_protocol WebSocket ['127.0.0.1', 58380] open and established
+INFO 2024-11-08 18:15:35,051 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58380]
+DEBUG 2024-11-08 18:15:35,051 ws_protocol WebSocket ['127.0.0.1', 58380] accepted by application
+DEBUG 2024-11-08 18:15:35,055 ws_protocol WebSocket closed for ['127.0.0.1', 58380]
+INFO 2024-11-08 18:15:35,055 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58380]
+DEBUG 2024-11-08 18:15:35,056 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:35,056 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:35,057 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:36,059 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58391]
+DEBUG 2024-11-08 18:15:36,059 http_protocol Upgraded connection ['127.0.0.1', 58391] to WebSocket
+DEBUG 2024-11-08 18:15:36,060 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:36,062 ws_protocol WebSocket ['127.0.0.1', 58391] open and established
+INFO 2024-11-08 18:15:36,062 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58391]
+DEBUG 2024-11-08 18:15:36,062 ws_protocol WebSocket ['127.0.0.1', 58391] accepted by application
+DEBUG 2024-11-08 18:15:36,065 ws_protocol WebSocket closed for ['127.0.0.1', 58391]
+INFO 2024-11-08 18:15:36,065 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58391]
+DEBUG 2024-11-08 18:15:36,066 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:36,067 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:36,067 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:36,541 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58398]
+DEBUG 2024-11-08 18:15:36,541 http_protocol Upgraded connection ['127.0.0.1', 58398] to WebSocket
+DEBUG 2024-11-08 18:15:36,543 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:36,544 ws_protocol WebSocket ['127.0.0.1', 58398] open and established
+INFO 2024-11-08 18:15:36,544 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58398]
+DEBUG 2024-11-08 18:15:36,544 ws_protocol WebSocket ['127.0.0.1', 58398] accepted by application
+DEBUG 2024-11-08 18:15:36,547 ws_protocol WebSocket closed for ['127.0.0.1', 58398]
+INFO 2024-11-08 18:15:36,547 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58398]
+DEBUG 2024-11-08 18:15:36,548 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:36,548 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:36,548 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:37,071 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58405]
+DEBUG 2024-11-08 18:15:37,071 http_protocol Upgraded connection ['127.0.0.1', 58405] to WebSocket
+DEBUG 2024-11-08 18:15:37,073 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:37,074 ws_protocol WebSocket ['127.0.0.1', 58405] open and established
+INFO 2024-11-08 18:15:37,074 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58405]
+DEBUG 2024-11-08 18:15:37,075 ws_protocol WebSocket ['127.0.0.1', 58405] accepted by application
+DEBUG 2024-11-08 18:15:37,077 ws_protocol WebSocket closed for ['127.0.0.1', 58405]
+INFO 2024-11-08 18:15:37,077 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58405]
+DEBUG 2024-11-08 18:15:37,078 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:37,078 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:37,078 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:38,080 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58416]
+DEBUG 2024-11-08 18:15:38,080 http_protocol Upgraded connection ['127.0.0.1', 58416] to WebSocket
+DEBUG 2024-11-08 18:15:38,082 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:38,083 ws_protocol WebSocket ['127.0.0.1', 58416] open and established
+INFO 2024-11-08 18:15:38,084 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58416]
+DEBUG 2024-11-08 18:15:38,084 ws_protocol WebSocket ['127.0.0.1', 58416] accepted by application
+DEBUG 2024-11-08 18:15:38,086 ws_protocol WebSocket closed for ['127.0.0.1', 58416]
+INFO 2024-11-08 18:15:38,086 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58416]
+DEBUG 2024-11-08 18:15:38,087 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:38,087 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:38,087 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:38,541 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58423]
+DEBUG 2024-11-08 18:15:38,541 http_protocol Upgraded connection ['127.0.0.1', 58423] to WebSocket
+DEBUG 2024-11-08 18:15:38,543 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:38,544 ws_protocol WebSocket ['127.0.0.1', 58423] open and established
+INFO 2024-11-08 18:15:38,544 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58423]
+DEBUG 2024-11-08 18:15:38,545 ws_protocol WebSocket ['127.0.0.1', 58423] accepted by application
+DEBUG 2024-11-08 18:15:38,547 ws_protocol WebSocket closed for ['127.0.0.1', 58423]
+INFO 2024-11-08 18:15:38,547 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58423]
+DEBUG 2024-11-08 18:15:38,548 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:38,549 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:38,549 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:39,091 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58430]
+DEBUG 2024-11-08 18:15:39,091 http_protocol Upgraded connection ['127.0.0.1', 58430] to WebSocket
+DEBUG 2024-11-08 18:15:39,093 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:39,094 ws_protocol WebSocket ['127.0.0.1', 58430] open and established
+INFO 2024-11-08 18:15:39,094 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58430]
+DEBUG 2024-11-08 18:15:39,094 ws_protocol WebSocket ['127.0.0.1', 58430] accepted by application
+DEBUG 2024-11-08 18:15:39,097 ws_protocol WebSocket closed for ['127.0.0.1', 58430]
+INFO 2024-11-08 18:15:39,097 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58430]
+DEBUG 2024-11-08 18:15:39,098 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:39,098 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:39,098 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:40,101 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58441]
+DEBUG 2024-11-08 18:15:40,101 http_protocol Upgraded connection ['127.0.0.1', 58441] to WebSocket
+DEBUG 2024-11-08 18:15:40,103 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:40,104 ws_protocol WebSocket ['127.0.0.1', 58441] open and established
+INFO 2024-11-08 18:15:40,104 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58441]
+DEBUG 2024-11-08 18:15:40,104 ws_protocol WebSocket ['127.0.0.1', 58441] accepted by application
+DEBUG 2024-11-08 18:15:40,107 ws_protocol WebSocket closed for ['127.0.0.1', 58441]
+INFO 2024-11-08 18:15:40,107 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58441]
+DEBUG 2024-11-08 18:15:40,108 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:40,108 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:40,109 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:40,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58448]
+DEBUG 2024-11-08 18:15:40,540 http_protocol Upgraded connection ['127.0.0.1', 58448] to WebSocket
+DEBUG 2024-11-08 18:15:40,542 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:40,543 ws_protocol WebSocket ['127.0.0.1', 58448] open and established
+INFO 2024-11-08 18:15:40,543 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58448]
+DEBUG 2024-11-08 18:15:40,543 ws_protocol WebSocket ['127.0.0.1', 58448] accepted by application
+DEBUG 2024-11-08 18:15:40,546 ws_protocol WebSocket closed for ['127.0.0.1', 58448]
+INFO 2024-11-08 18:15:40,546 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58448]
+DEBUG 2024-11-08 18:15:40,546 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:40,546 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:40,547 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:41,115 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58455]
+DEBUG 2024-11-08 18:15:41,115 http_protocol Upgraded connection ['127.0.0.1', 58455] to WebSocket
+DEBUG 2024-11-08 18:15:41,117 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:41,118 ws_protocol WebSocket ['127.0.0.1', 58455] open and established
+INFO 2024-11-08 18:15:41,119 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58455]
+DEBUG 2024-11-08 18:15:41,119 ws_protocol WebSocket ['127.0.0.1', 58455] accepted by application
+DEBUG 2024-11-08 18:15:41,122 ws_protocol WebSocket closed for ['127.0.0.1', 58455]
+INFO 2024-11-08 18:15:41,122 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58455]
+DEBUG 2024-11-08 18:15:41,122 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:41,122 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:41,123 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:42,127 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58466]
+DEBUG 2024-11-08 18:15:42,127 http_protocol Upgraded connection ['127.0.0.1', 58466] to WebSocket
+DEBUG 2024-11-08 18:15:42,129 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:42,131 ws_protocol WebSocket ['127.0.0.1', 58466] open and established
+INFO 2024-11-08 18:15:42,131 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58466]
+DEBUG 2024-11-08 18:15:42,131 ws_protocol WebSocket ['127.0.0.1', 58466] accepted by application
+DEBUG 2024-11-08 18:15:42,134 ws_protocol WebSocket closed for ['127.0.0.1', 58466]
+INFO 2024-11-08 18:15:42,134 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58466]
+DEBUG 2024-11-08 18:15:42,135 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:42,135 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:42,136 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:42,543 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58473]
+DEBUG 2024-11-08 18:15:42,543 http_protocol Upgraded connection ['127.0.0.1', 58473] to WebSocket
+DEBUG 2024-11-08 18:15:42,545 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:42,560 ws_protocol WebSocket ['127.0.0.1', 58473] open and established
+INFO 2024-11-08 18:15:42,560 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58473]
+DEBUG 2024-11-08 18:15:42,560 ws_protocol WebSocket ['127.0.0.1', 58473] accepted by application
+DEBUG 2024-11-08 18:15:42,574 ws_protocol WebSocket closed for ['127.0.0.1', 58473]
+INFO 2024-11-08 18:15:42,574 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58473]
+DEBUG 2024-11-08 18:15:42,585 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:42,585 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:42,587 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:43,138 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58480]
+DEBUG 2024-11-08 18:15:43,139 http_protocol Upgraded connection ['127.0.0.1', 58480] to WebSocket
+DEBUG 2024-11-08 18:15:43,141 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:43,142 ws_protocol WebSocket ['127.0.0.1', 58480] open and established
+INFO 2024-11-08 18:15:43,142 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58480]
+DEBUG 2024-11-08 18:15:43,142 ws_protocol WebSocket ['127.0.0.1', 58480] accepted by application
+DEBUG 2024-11-08 18:15:43,145 ws_protocol WebSocket closed for ['127.0.0.1', 58480]
+INFO 2024-11-08 18:15:43,145 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58480]
+DEBUG 2024-11-08 18:15:43,146 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:43,146 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:43,146 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:44,148 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58491]
+DEBUG 2024-11-08 18:15:44,148 http_protocol Upgraded connection ['127.0.0.1', 58491] to WebSocket
+DEBUG 2024-11-08 18:15:44,150 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:44,151 ws_protocol WebSocket ['127.0.0.1', 58491] open and established
+INFO 2024-11-08 18:15:44,151 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58491]
+DEBUG 2024-11-08 18:15:44,151 ws_protocol WebSocket ['127.0.0.1', 58491] accepted by application
+DEBUG 2024-11-08 18:15:44,154 ws_protocol WebSocket closed for ['127.0.0.1', 58491]
+INFO 2024-11-08 18:15:44,154 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58491]
+DEBUG 2024-11-08 18:15:44,156 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:44,156 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:44,156 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:44,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58498]
+DEBUG 2024-11-08 18:15:44,542 http_protocol Upgraded connection ['127.0.0.1', 58498] to WebSocket
+DEBUG 2024-11-08 18:15:44,544 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:44,546 ws_protocol WebSocket ['127.0.0.1', 58498] open and established
+INFO 2024-11-08 18:15:44,546 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58498]
+DEBUG 2024-11-08 18:15:44,546 ws_protocol WebSocket ['127.0.0.1', 58498] accepted by application
+DEBUG 2024-11-08 18:15:44,548 ws_protocol WebSocket closed for ['127.0.0.1', 58498]
+INFO 2024-11-08 18:15:44,548 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58498]
+DEBUG 2024-11-08 18:15:44,548 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:44,548 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:44,549 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:45,163 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58505]
+DEBUG 2024-11-08 18:15:45,164 http_protocol Upgraded connection ['127.0.0.1', 58505] to WebSocket
+DEBUG 2024-11-08 18:15:45,166 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:45,167 ws_protocol WebSocket ['127.0.0.1', 58505] open and established
+INFO 2024-11-08 18:15:45,167 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58505]
+DEBUG 2024-11-08 18:15:45,168 ws_protocol WebSocket ['127.0.0.1', 58505] accepted by application
+DEBUG 2024-11-08 18:15:45,171 ws_protocol WebSocket closed for ['127.0.0.1', 58505]
+INFO 2024-11-08 18:15:45,171 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58505]
+DEBUG 2024-11-08 18:15:45,172 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:45,172 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:45,173 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:46,177 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58516]
+DEBUG 2024-11-08 18:15:46,177 http_protocol Upgraded connection ['127.0.0.1', 58516] to WebSocket
+DEBUG 2024-11-08 18:15:46,179 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:46,180 ws_protocol WebSocket ['127.0.0.1', 58516] open and established
+INFO 2024-11-08 18:15:46,180 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58516]
+DEBUG 2024-11-08 18:15:46,180 ws_protocol WebSocket ['127.0.0.1', 58516] accepted by application
+DEBUG 2024-11-08 18:15:46,183 ws_protocol WebSocket closed for ['127.0.0.1', 58516]
+INFO 2024-11-08 18:15:46,183 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58516]
+DEBUG 2024-11-08 18:15:46,185 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:46,185 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:46,186 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:46,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58523]
+DEBUG 2024-11-08 18:15:46,540 http_protocol Upgraded connection ['127.0.0.1', 58523] to WebSocket
+DEBUG 2024-11-08 18:15:46,542 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:46,543 ws_protocol WebSocket ['127.0.0.1', 58523] open and established
+INFO 2024-11-08 18:15:46,543 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58523]
+DEBUG 2024-11-08 18:15:46,543 ws_protocol WebSocket ['127.0.0.1', 58523] accepted by application
+DEBUG 2024-11-08 18:15:46,545 ws_protocol WebSocket closed for ['127.0.0.1', 58523]
+INFO 2024-11-08 18:15:46,546 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58523]
+DEBUG 2024-11-08 18:15:46,547 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:46,547 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:46,548 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:47,189 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58530]
+DEBUG 2024-11-08 18:15:47,189 http_protocol Upgraded connection ['127.0.0.1', 58530] to WebSocket
+DEBUG 2024-11-08 18:15:47,192 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:47,193 ws_protocol WebSocket ['127.0.0.1', 58530] open and established
+INFO 2024-11-08 18:15:47,193 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58530]
+DEBUG 2024-11-08 18:15:47,193 ws_protocol WebSocket ['127.0.0.1', 58530] accepted by application
+DEBUG 2024-11-08 18:15:47,197 ws_protocol WebSocket closed for ['127.0.0.1', 58530]
+INFO 2024-11-08 18:15:47,197 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58530]
+DEBUG 2024-11-08 18:15:47,198 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:47,198 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:47,199 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:48,205 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58541]
+DEBUG 2024-11-08 18:15:48,205 http_protocol Upgraded connection ['127.0.0.1', 58541] to WebSocket
+DEBUG 2024-11-08 18:15:48,206 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:48,207 ws_protocol WebSocket ['127.0.0.1', 58541] open and established
+INFO 2024-11-08 18:15:48,208 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58541]
+DEBUG 2024-11-08 18:15:48,208 ws_protocol WebSocket ['127.0.0.1', 58541] accepted by application
+DEBUG 2024-11-08 18:15:48,210 ws_protocol WebSocket closed for ['127.0.0.1', 58541]
+INFO 2024-11-08 18:15:48,211 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58541]
+DEBUG 2024-11-08 18:15:48,212 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:48,212 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:48,213 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:48,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58548]
+DEBUG 2024-11-08 18:15:48,540 http_protocol Upgraded connection ['127.0.0.1', 58548] to WebSocket
+DEBUG 2024-11-08 18:15:48,541 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:48,542 ws_protocol WebSocket ['127.0.0.1', 58548] open and established
+INFO 2024-11-08 18:15:48,543 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58548]
+DEBUG 2024-11-08 18:15:48,543 ws_protocol WebSocket ['127.0.0.1', 58548] accepted by application
+DEBUG 2024-11-08 18:15:48,545 ws_protocol WebSocket closed for ['127.0.0.1', 58548]
+INFO 2024-11-08 18:15:48,545 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58548]
+DEBUG 2024-11-08 18:15:48,546 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:48,546 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:48,546 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:49,215 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58555]
+DEBUG 2024-11-08 18:15:49,215 http_protocol Upgraded connection ['127.0.0.1', 58555] to WebSocket
+DEBUG 2024-11-08 18:15:49,217 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:49,218 ws_protocol WebSocket ['127.0.0.1', 58555] open and established
+INFO 2024-11-08 18:15:49,218 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58555]
+DEBUG 2024-11-08 18:15:49,218 ws_protocol WebSocket ['127.0.0.1', 58555] accepted by application
+DEBUG 2024-11-08 18:15:49,221 ws_protocol WebSocket closed for ['127.0.0.1', 58555]
+INFO 2024-11-08 18:15:49,222 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58555]
+DEBUG 2024-11-08 18:15:49,223 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:49,223 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:49,223 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:50,229 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58566]
+DEBUG 2024-11-08 18:15:50,229 http_protocol Upgraded connection ['127.0.0.1', 58566] to WebSocket
+DEBUG 2024-11-08 18:15:50,231 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:50,232 ws_protocol WebSocket ['127.0.0.1', 58566] open and established
+INFO 2024-11-08 18:15:50,232 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58566]
+DEBUG 2024-11-08 18:15:50,233 ws_protocol WebSocket ['127.0.0.1', 58566] accepted by application
+DEBUG 2024-11-08 18:15:50,236 ws_protocol WebSocket closed for ['127.0.0.1', 58566]
+INFO 2024-11-08 18:15:50,236 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58566]
+DEBUG 2024-11-08 18:15:50,237 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:50,237 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:50,238 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:50,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58573]
+DEBUG 2024-11-08 18:15:50,539 http_protocol Upgraded connection ['127.0.0.1', 58573] to WebSocket
+DEBUG 2024-11-08 18:15:50,541 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:50,542 ws_protocol WebSocket ['127.0.0.1', 58573] open and established
+INFO 2024-11-08 18:15:50,542 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58573]
+DEBUG 2024-11-08 18:15:50,542 ws_protocol WebSocket ['127.0.0.1', 58573] accepted by application
+DEBUG 2024-11-08 18:15:50,545 ws_protocol WebSocket closed for ['127.0.0.1', 58573]
+INFO 2024-11-08 18:15:50,545 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58573]
+DEBUG 2024-11-08 18:15:50,546 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:50,546 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:50,546 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:51,243 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58580]
+DEBUG 2024-11-08 18:15:51,243 http_protocol Upgraded connection ['127.0.0.1', 58580] to WebSocket
+DEBUG 2024-11-08 18:15:51,246 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:51,247 ws_protocol WebSocket ['127.0.0.1', 58580] open and established
+INFO 2024-11-08 18:15:51,247 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58580]
+DEBUG 2024-11-08 18:15:51,247 ws_protocol WebSocket ['127.0.0.1', 58580] accepted by application
+DEBUG 2024-11-08 18:15:51,250 ws_protocol WebSocket closed for ['127.0.0.1', 58580]
+INFO 2024-11-08 18:15:51,251 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58580]
+DEBUG 2024-11-08 18:15:51,252 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:51,252 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:51,253 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:52,257 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58591]
+DEBUG 2024-11-08 18:15:52,257 http_protocol Upgraded connection ['127.0.0.1', 58591] to WebSocket
+DEBUG 2024-11-08 18:15:52,259 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:52,260 ws_protocol WebSocket ['127.0.0.1', 58591] open and established
+INFO 2024-11-08 18:15:52,260 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58591]
+DEBUG 2024-11-08 18:15:52,260 ws_protocol WebSocket ['127.0.0.1', 58591] accepted by application
+DEBUG 2024-11-08 18:15:52,263 ws_protocol WebSocket closed for ['127.0.0.1', 58591]
+INFO 2024-11-08 18:15:52,263 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58591]
+DEBUG 2024-11-08 18:15:52,265 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:52,265 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:52,265 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:52,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58598]
+DEBUG 2024-11-08 18:15:52,540 http_protocol Upgraded connection ['127.0.0.1', 58598] to WebSocket
+DEBUG 2024-11-08 18:15:52,541 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:52,542 ws_protocol WebSocket ['127.0.0.1', 58598] open and established
+INFO 2024-11-08 18:15:52,543 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58598]
+DEBUG 2024-11-08 18:15:52,543 ws_protocol WebSocket ['127.0.0.1', 58598] accepted by application
+DEBUG 2024-11-08 18:15:52,545 ws_protocol WebSocket closed for ['127.0.0.1', 58598]
+INFO 2024-11-08 18:15:52,545 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58598]
+DEBUG 2024-11-08 18:15:52,547 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:52,547 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:52,548 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:53,272 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58605]
+DEBUG 2024-11-08 18:15:53,272 http_protocol Upgraded connection ['127.0.0.1', 58605] to WebSocket
+DEBUG 2024-11-08 18:15:53,274 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:53,275 ws_protocol WebSocket ['127.0.0.1', 58605] open and established
+INFO 2024-11-08 18:15:53,275 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58605]
+DEBUG 2024-11-08 18:15:53,275 ws_protocol WebSocket ['127.0.0.1', 58605] accepted by application
+DEBUG 2024-11-08 18:15:53,280 ws_protocol WebSocket closed for ['127.0.0.1', 58605]
+INFO 2024-11-08 18:15:53,280 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58605]
+DEBUG 2024-11-08 18:15:53,281 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:53,282 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:53,283 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:54,290 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58616]
+DEBUG 2024-11-08 18:15:54,290 http_protocol Upgraded connection ['127.0.0.1', 58616] to WebSocket
+DEBUG 2024-11-08 18:15:54,292 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:54,293 ws_protocol WebSocket ['127.0.0.1', 58616] open and established
+INFO 2024-11-08 18:15:54,293 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58616]
+DEBUG 2024-11-08 18:15:54,294 ws_protocol WebSocket ['127.0.0.1', 58616] accepted by application
+DEBUG 2024-11-08 18:15:54,296 ws_protocol WebSocket closed for ['127.0.0.1', 58616]
+INFO 2024-11-08 18:15:54,296 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58616]
+DEBUG 2024-11-08 18:15:54,298 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:54,298 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:54,298 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:54,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58623]
+DEBUG 2024-11-08 18:15:54,539 http_protocol Upgraded connection ['127.0.0.1', 58623] to WebSocket
+DEBUG 2024-11-08 18:15:54,540 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:54,542 ws_protocol WebSocket ['127.0.0.1', 58623] open and established
+INFO 2024-11-08 18:15:54,542 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58623]
+DEBUG 2024-11-08 18:15:54,542 ws_protocol WebSocket ['127.0.0.1', 58623] accepted by application
+DEBUG 2024-11-08 18:15:54,544 ws_protocol WebSocket closed for ['127.0.0.1', 58623]
+INFO 2024-11-08 18:15:54,544 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58623]
+DEBUG 2024-11-08 18:15:54,545 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:54,545 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:54,545 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:55,303 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58630]
+DEBUG 2024-11-08 18:15:55,303 http_protocol Upgraded connection ['127.0.0.1', 58630] to WebSocket
+DEBUG 2024-11-08 18:15:55,306 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:55,307 ws_protocol WebSocket ['127.0.0.1', 58630] open and established
+INFO 2024-11-08 18:15:55,307 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58630]
+DEBUG 2024-11-08 18:15:55,307 ws_protocol WebSocket ['127.0.0.1', 58630] accepted by application
+DEBUG 2024-11-08 18:15:55,310 ws_protocol WebSocket closed for ['127.0.0.1', 58630]
+INFO 2024-11-08 18:15:55,310 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58630]
+DEBUG 2024-11-08 18:15:55,311 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:55,311 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:55,312 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:56,317 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58641]
+DEBUG 2024-11-08 18:15:56,318 http_protocol Upgraded connection ['127.0.0.1', 58641] to WebSocket
+DEBUG 2024-11-08 18:15:56,319 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:56,320 ws_protocol WebSocket ['127.0.0.1', 58641] open and established
+INFO 2024-11-08 18:15:56,321 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58641]
+DEBUG 2024-11-08 18:15:56,321 ws_protocol WebSocket ['127.0.0.1', 58641] accepted by application
+DEBUG 2024-11-08 18:15:56,324 ws_protocol WebSocket closed for ['127.0.0.1', 58641]
+INFO 2024-11-08 18:15:56,324 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58641]
+DEBUG 2024-11-08 18:15:56,326 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:56,326 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:56,327 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:56,543 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58648]
+DEBUG 2024-11-08 18:15:56,543 http_protocol Upgraded connection ['127.0.0.1', 58648] to WebSocket
+DEBUG 2024-11-08 18:15:56,546 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:56,548 ws_protocol WebSocket ['127.0.0.1', 58648] open and established
+INFO 2024-11-08 18:15:56,548 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58648]
+DEBUG 2024-11-08 18:15:56,548 ws_protocol WebSocket ['127.0.0.1', 58648] accepted by application
+DEBUG 2024-11-08 18:15:56,551 ws_protocol WebSocket closed for ['127.0.0.1', 58648]
+INFO 2024-11-08 18:15:56,551 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58648]
+DEBUG 2024-11-08 18:15:56,552 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:56,552 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:56,553 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:57,330 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58655]
+DEBUG 2024-11-08 18:15:57,331 http_protocol Upgraded connection ['127.0.0.1', 58655] to WebSocket
+DEBUG 2024-11-08 18:15:57,333 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:57,335 ws_protocol WebSocket ['127.0.0.1', 58655] open and established
+INFO 2024-11-08 18:15:57,335 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58655]
+DEBUG 2024-11-08 18:15:57,335 ws_protocol WebSocket ['127.0.0.1', 58655] accepted by application
+DEBUG 2024-11-08 18:15:57,340 ws_protocol WebSocket closed for ['127.0.0.1', 58655]
+INFO 2024-11-08 18:15:57,340 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58655]
+DEBUG 2024-11-08 18:15:57,341 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:57,341 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:57,342 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:58,275 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58666]
+DEBUG 2024-11-08 18:15:58,275 http_protocol Upgraded connection ['127.0.0.1', 58666] to WebSocket
+DEBUG 2024-11-08 18:15:58,282 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:58,283 ws_protocol WebSocket ['127.0.0.1', 58666] open and established
+INFO 2024-11-08 18:15:58,284 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58666]
+DEBUG 2024-11-08 18:15:58,284 ws_protocol WebSocket ['127.0.0.1', 58666] accepted by application
+DEBUG 2024-11-08 18:15:58,295 ws_protocol WebSocket closed for ['127.0.0.1', 58666]
+INFO 2024-11-08 18:15:58,295 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58666]
+DEBUG 2024-11-08 18:15:58,309 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:58,310 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:58,314 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:58,348 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58669]
+DEBUG 2024-11-08 18:15:58,348 http_protocol Upgraded connection ['127.0.0.1', 58669] to WebSocket
+DEBUG 2024-11-08 18:15:58,361 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:58,364 ws_protocol WebSocket ['127.0.0.1', 58669] open and established
+INFO 2024-11-08 18:15:58,364 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58669]
+DEBUG 2024-11-08 18:15:58,364 ws_protocol WebSocket ['127.0.0.1', 58669] accepted by application
+DEBUG 2024-11-08 18:15:58,376 ws_protocol WebSocket closed for ['127.0.0.1', 58669]
+INFO 2024-11-08 18:15:58,376 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58669]
+DEBUG 2024-11-08 18:15:58,377 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:58,378 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:58,378 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:59,309 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58680]
+DEBUG 2024-11-08 18:15:59,309 http_protocol Upgraded connection ['127.0.0.1', 58680] to WebSocket
+DEBUG 2024-11-08 18:15:59,311 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:59,314 ws_protocol WebSocket ['127.0.0.1', 58680] open and established
+INFO 2024-11-08 18:15:59,314 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58680]
+DEBUG 2024-11-08 18:15:59,314 ws_protocol WebSocket ['127.0.0.1', 58680] accepted by application
+DEBUG 2024-11-08 18:15:59,317 ws_protocol WebSocket closed for ['127.0.0.1', 58680]
+INFO 2024-11-08 18:15:59,318 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58680]
+DEBUG 2024-11-08 18:15:59,318 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:59,319 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:59,319 pool Closed 1 connection(s)
+INFO 2024-11-08 18:15:59,382 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58683]
+DEBUG 2024-11-08 18:15:59,382 http_protocol Upgraded connection ['127.0.0.1', 58683] to WebSocket
+DEBUG 2024-11-08 18:15:59,384 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:15:59,388 ws_protocol WebSocket ['127.0.0.1', 58683] open and established
+INFO 2024-11-08 18:15:59,388 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58683]
+DEBUG 2024-11-08 18:15:59,388 ws_protocol WebSocket ['127.0.0.1', 58683] accepted by application
+DEBUG 2024-11-08 18:15:59,393 ws_protocol WebSocket closed for ['127.0.0.1', 58683]
+INFO 2024-11-08 18:15:59,394 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58683]
+DEBUG 2024-11-08 18:15:59,395 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:15:59,395 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:15:59,396 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:00,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58698]
+DEBUG 2024-11-08 18:16:00,541 http_protocol Upgraded connection ['127.0.0.1', 58698] to WebSocket
+INFO 2024-11-08 18:16:00,544 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58700]
+DEBUG 2024-11-08 18:16:00,545 http_protocol Upgraded connection ['127.0.0.1', 58700] to WebSocket
+DEBUG 2024-11-08 18:16:00,547 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:00,548 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:00,549 ws_protocol WebSocket ['127.0.0.1', 58698] open and established
+INFO 2024-11-08 18:16:00,549 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58698]
+DEBUG 2024-11-08 18:16:00,550 ws_protocol WebSocket ['127.0.0.1', 58698] accepted by application
+DEBUG 2024-11-08 18:16:00,552 ws_protocol WebSocket ['127.0.0.1', 58700] open and established
+INFO 2024-11-08 18:16:00,552 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58700]
+DEBUG 2024-11-08 18:16:00,552 ws_protocol WebSocket ['127.0.0.1', 58700] accepted by application
+DEBUG 2024-11-08 18:16:00,554 ws_protocol WebSocket closed for ['127.0.0.1', 58698]
+INFO 2024-11-08 18:16:00,555 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58698]
+DEBUG 2024-11-08 18:16:00,556 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:00,556 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:00,557 ws_protocol WebSocket closed for ['127.0.0.1', 58700]
+INFO 2024-11-08 18:16:00,557 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58700]
+DEBUG 2024-11-08 18:16:00,557 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:02,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58720]
+DEBUG 2024-11-08 18:16:02,541 http_protocol Upgraded connection ['127.0.0.1', 58720] to WebSocket
+INFO 2024-11-08 18:16:02,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58722]
+DEBUG 2024-11-08 18:16:02,542 http_protocol Upgraded connection ['127.0.0.1', 58722] to WebSocket
+DEBUG 2024-11-08 18:16:02,547 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:02,549 ws_protocol WebSocket ['127.0.0.1', 58720] open and established
+INFO 2024-11-08 18:16:02,549 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58720]
+DEBUG 2024-11-08 18:16:02,549 ws_protocol WebSocket ['127.0.0.1', 58720] accepted by application
+DEBUG 2024-11-08 18:16:02,552 ws_protocol WebSocket ['127.0.0.1', 58722] open and established
+INFO 2024-11-08 18:16:02,553 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58722]
+DEBUG 2024-11-08 18:16:02,553 ws_protocol WebSocket ['127.0.0.1', 58722] accepted by application
+DEBUG 2024-11-08 18:16:02,554 ws_protocol WebSocket closed for ['127.0.0.1', 58720]
+INFO 2024-11-08 18:16:02,554 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58720]
+DEBUG 2024-11-08 18:16:02,555 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:02,556 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:02,557 ws_protocol WebSocket closed for ['127.0.0.1', 58722]
+INFO 2024-11-08 18:16:02,557 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58722]
+DEBUG 2024-11-08 18:16:02,558 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:04,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58741]
+DEBUG 2024-11-08 18:16:04,540 http_protocol Upgraded connection ['127.0.0.1', 58741] to WebSocket
+DEBUG 2024-11-08 18:16:04,547 ws_protocol WebSocket ['127.0.0.1', 58741] open and established
+INFO 2024-11-08 18:16:04,548 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58741]
+DEBUG 2024-11-08 18:16:04,548 ws_protocol WebSocket ['127.0.0.1', 58741] accepted by application
+INFO 2024-11-08 18:16:04,551 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58743]
+DEBUG 2024-11-08 18:16:04,552 http_protocol Upgraded connection ['127.0.0.1', 58743] to WebSocket
+DEBUG 2024-11-08 18:16:04,553 ws_protocol WebSocket closed for ['127.0.0.1', 58741]
+INFO 2024-11-08 18:16:04,553 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58741]
+DEBUG 2024-11-08 18:16:04,555 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:04,555 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:04,557 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:04,558 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:04,559 ws_protocol WebSocket ['127.0.0.1', 58743] open and established
+INFO 2024-11-08 18:16:04,559 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58743]
+DEBUG 2024-11-08 18:16:04,559 ws_protocol WebSocket ['127.0.0.1', 58743] accepted by application
+DEBUG 2024-11-08 18:16:04,561 ws_protocol WebSocket closed for ['127.0.0.1', 58743]
+INFO 2024-11-08 18:16:04,562 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58743]
+DEBUG 2024-11-08 18:16:04,562 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:04,562 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:04,563 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:06,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58762]
+DEBUG 2024-11-08 18:16:06,541 http_protocol Upgraded connection ['127.0.0.1', 58762] to WebSocket
+INFO 2024-11-08 18:16:06,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58764]
+DEBUG 2024-11-08 18:16:06,543 http_protocol Upgraded connection ['127.0.0.1', 58764] to WebSocket
+DEBUG 2024-11-08 18:16:06,545 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:06,546 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:06,548 ws_protocol WebSocket ['127.0.0.1', 58762] open and established
+INFO 2024-11-08 18:16:06,548 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58762]
+DEBUG 2024-11-08 18:16:06,548 ws_protocol WebSocket ['127.0.0.1', 58762] accepted by application
+DEBUG 2024-11-08 18:16:06,551 ws_protocol WebSocket ['127.0.0.1', 58764] open and established
+INFO 2024-11-08 18:16:06,551 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58764]
+DEBUG 2024-11-08 18:16:06,552 ws_protocol WebSocket ['127.0.0.1', 58764] accepted by application
+DEBUG 2024-11-08 18:16:06,553 ws_protocol WebSocket closed for ['127.0.0.1', 58762]
+INFO 2024-11-08 18:16:06,553 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58762]
+DEBUG 2024-11-08 18:16:06,554 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:06,554 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:06,556 ws_protocol WebSocket closed for ['127.0.0.1', 58764]
+INFO 2024-11-08 18:16:06,556 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58764]
+DEBUG 2024-11-08 18:16:06,557 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:08,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58784]
+DEBUG 2024-11-08 18:16:08,540 http_protocol Upgraded connection ['127.0.0.1', 58784] to WebSocket
+INFO 2024-11-08 18:16:08,541 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58786]
+DEBUG 2024-11-08 18:16:08,541 http_protocol Upgraded connection ['127.0.0.1', 58786] to WebSocket
+DEBUG 2024-11-08 18:16:08,545 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:08,547 ws_protocol WebSocket ['127.0.0.1', 58784] open and established
+INFO 2024-11-08 18:16:08,548 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58784]
+DEBUG 2024-11-08 18:16:08,548 ws_protocol WebSocket ['127.0.0.1', 58784] accepted by application
+DEBUG 2024-11-08 18:16:08,553 ws_protocol WebSocket closed for ['127.0.0.1', 58784]
+INFO 2024-11-08 18:16:08,553 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58784]
+DEBUG 2024-11-08 18:16:08,554 ws_protocol WebSocket ['127.0.0.1', 58786] open and established
+INFO 2024-11-08 18:16:08,554 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58786]
+DEBUG 2024-11-08 18:16:08,554 ws_protocol WebSocket ['127.0.0.1', 58786] accepted by application
+DEBUG 2024-11-08 18:16:08,556 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:08,556 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:08,558 ws_protocol WebSocket closed for ['127.0.0.1', 58786]
+INFO 2024-11-08 18:16:08,558 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58786]
+DEBUG 2024-11-08 18:16:08,559 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:10,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58805]
+DEBUG 2024-11-08 18:16:10,542 http_protocol Upgraded connection ['127.0.0.1', 58805] to WebSocket
+INFO 2024-11-08 18:16:10,545 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58807]
+DEBUG 2024-11-08 18:16:10,545 http_protocol Upgraded connection ['127.0.0.1', 58807] to WebSocket
+DEBUG 2024-11-08 18:16:10,550 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:10,552 ws_protocol WebSocket ['127.0.0.1', 58805] open and established
+INFO 2024-11-08 18:16:10,552 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58805]
+DEBUG 2024-11-08 18:16:10,552 ws_protocol WebSocket ['127.0.0.1', 58805] accepted by application
+DEBUG 2024-11-08 18:16:10,557 ws_protocol WebSocket closed for ['127.0.0.1', 58805]
+INFO 2024-11-08 18:16:10,557 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58805]
+DEBUG 2024-11-08 18:16:10,557 ws_protocol WebSocket ['127.0.0.1', 58807] open and established
+INFO 2024-11-08 18:16:10,557 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58807]
+DEBUG 2024-11-08 18:16:10,557 ws_protocol WebSocket ['127.0.0.1', 58807] accepted by application
+DEBUG 2024-11-08 18:16:10,558 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:10,559 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:10,559 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:10,560 ws_protocol WebSocket closed for ['127.0.0.1', 58807]
+INFO 2024-11-08 18:16:10,560 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58807]
+DEBUG 2024-11-08 18:16:10,561 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:10,561 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:10,561 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:12,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58826]
+DEBUG 2024-11-08 18:16:12,540 http_protocol Upgraded connection ['127.0.0.1', 58826] to WebSocket
+INFO 2024-11-08 18:16:12,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58828]
+DEBUG 2024-11-08 18:16:12,542 http_protocol Upgraded connection ['127.0.0.1', 58828] to WebSocket
+DEBUG 2024-11-08 18:16:12,545 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:12,546 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:12,547 ws_protocol WebSocket ['127.0.0.1', 58826] open and established
+INFO 2024-11-08 18:16:12,548 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58826]
+DEBUG 2024-11-08 18:16:12,548 ws_protocol WebSocket ['127.0.0.1', 58826] accepted by application
+DEBUG 2024-11-08 18:16:12,550 ws_protocol WebSocket ['127.0.0.1', 58828] open and established
+INFO 2024-11-08 18:16:12,550 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58828]
+DEBUG 2024-11-08 18:16:12,550 ws_protocol WebSocket ['127.0.0.1', 58828] accepted by application
+DEBUG 2024-11-08 18:16:12,552 ws_protocol WebSocket closed for ['127.0.0.1', 58826]
+INFO 2024-11-08 18:16:12,552 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58826]
+DEBUG 2024-11-08 18:16:12,554 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:12,554 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:12,555 ws_protocol WebSocket closed for ['127.0.0.1', 58828]
+INFO 2024-11-08 18:16:12,555 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58828]
+DEBUG 2024-11-08 18:16:12,556 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:14,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58848]
+DEBUG 2024-11-08 18:16:14,540 http_protocol Upgraded connection ['127.0.0.1', 58848] to WebSocket
+INFO 2024-11-08 18:16:14,541 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58850]
+DEBUG 2024-11-08 18:16:14,542 http_protocol Upgraded connection ['127.0.0.1', 58850] to WebSocket
+DEBUG 2024-11-08 18:16:14,544 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:14,547 ws_protocol WebSocket ['127.0.0.1', 58848] open and established
+INFO 2024-11-08 18:16:14,547 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58848]
+DEBUG 2024-11-08 18:16:14,547 ws_protocol WebSocket ['127.0.0.1', 58848] accepted by application
+DEBUG 2024-11-08 18:16:14,555 ws_protocol WebSocket closed for ['127.0.0.1', 58848]
+INFO 2024-11-08 18:16:14,555 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58848]
+DEBUG 2024-11-08 18:16:14,556 ws_protocol WebSocket ['127.0.0.1', 58850] open and established
+INFO 2024-11-08 18:16:14,556 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58850]
+DEBUG 2024-11-08 18:16:14,556 ws_protocol WebSocket ['127.0.0.1', 58850] accepted by application
+DEBUG 2024-11-08 18:16:14,557 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:14,557 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:14,558 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:14,558 ws_protocol WebSocket closed for ['127.0.0.1', 58850]
+INFO 2024-11-08 18:16:14,558 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58850]
+DEBUG 2024-11-08 18:16:14,559 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:14,559 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:14,560 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:16,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58867]
+DEBUG 2024-11-08 18:16:16,540 http_protocol Upgraded connection ['127.0.0.1', 58867] to WebSocket
+INFO 2024-11-08 18:16:16,547 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58871]
+DEBUG 2024-11-08 18:16:16,547 http_protocol Upgraded connection ['127.0.0.1', 58871] to WebSocket
+DEBUG 2024-11-08 18:16:16,550 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:16,551 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:16,552 ws_protocol WebSocket ['127.0.0.1', 58867] open and established
+INFO 2024-11-08 18:16:16,552 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58867]
+DEBUG 2024-11-08 18:16:16,552 ws_protocol WebSocket ['127.0.0.1', 58867] accepted by application
+DEBUG 2024-11-08 18:16:16,555 ws_protocol WebSocket closed for ['127.0.0.1', 58867]
+INFO 2024-11-08 18:16:16,555 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58867]
+DEBUG 2024-11-08 18:16:16,556 ws_protocol WebSocket ['127.0.0.1', 58871] open and established
+INFO 2024-11-08 18:16:16,557 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58871]
+DEBUG 2024-11-08 18:16:16,557 ws_protocol WebSocket ['127.0.0.1', 58871] accepted by application
+DEBUG 2024-11-08 18:16:16,558 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:16,558 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:16,559 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:16,559 ws_protocol WebSocket closed for ['127.0.0.1', 58871]
+INFO 2024-11-08 18:16:16,559 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58871]
+DEBUG 2024-11-08 18:16:16,560 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:16,560 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:16,561 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:18,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58887]
+DEBUG 2024-11-08 18:16:18,539 http_protocol Upgraded connection ['127.0.0.1', 58887] to WebSocket
+INFO 2024-11-08 18:16:18,544 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58889]
+DEBUG 2024-11-08 18:16:18,545 http_protocol Upgraded connection ['127.0.0.1', 58889] to WebSocket
+DEBUG 2024-11-08 18:16:18,548 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:18,549 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:18,551 ws_protocol WebSocket ['127.0.0.1', 58887] open and established
+INFO 2024-11-08 18:16:18,551 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58887]
+DEBUG 2024-11-08 18:16:18,551 ws_protocol WebSocket ['127.0.0.1', 58887] accepted by application
+DEBUG 2024-11-08 18:16:18,553 ws_protocol WebSocket ['127.0.0.1', 58889] open and established
+INFO 2024-11-08 18:16:18,553 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58889]
+DEBUG 2024-11-08 18:16:18,554 ws_protocol WebSocket ['127.0.0.1', 58889] accepted by application
+DEBUG 2024-11-08 18:16:18,555 ws_protocol WebSocket closed for ['127.0.0.1', 58887]
+INFO 2024-11-08 18:16:18,555 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58887]
+DEBUG 2024-11-08 18:16:18,556 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:18,556 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:18,556 ws_protocol WebSocket closed for ['127.0.0.1', 58889]
+INFO 2024-11-08 18:16:18,557 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58889]
+DEBUG 2024-11-08 18:16:18,558 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:20,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58909]
+DEBUG 2024-11-08 18:16:20,540 http_protocol Upgraded connection ['127.0.0.1', 58909] to WebSocket
+INFO 2024-11-08 18:16:20,545 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58911]
+DEBUG 2024-11-08 18:16:20,545 http_protocol Upgraded connection ['127.0.0.1', 58911] to WebSocket
+DEBUG 2024-11-08 18:16:20,550 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:20,551 ws_protocol WebSocket ['127.0.0.1', 58909] open and established
+INFO 2024-11-08 18:16:20,551 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58909]
+DEBUG 2024-11-08 18:16:20,551 ws_protocol WebSocket ['127.0.0.1', 58909] accepted by application
+DEBUG 2024-11-08 18:16:20,554 ws_protocol WebSocket closed for ['127.0.0.1', 58909]
+INFO 2024-11-08 18:16:20,554 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58909]
+DEBUG 2024-11-08 18:16:20,555 ws_protocol WebSocket ['127.0.0.1', 58911] open and established
+INFO 2024-11-08 18:16:20,555 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58911]
+DEBUG 2024-11-08 18:16:20,555 ws_protocol WebSocket ['127.0.0.1', 58911] accepted by application
+DEBUG 2024-11-08 18:16:20,557 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:20,557 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:20,558 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:20,558 ws_protocol WebSocket closed for ['127.0.0.1', 58911]
+INFO 2024-11-08 18:16:20,558 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58911]
+INFO 2024-11-08 18:16:22,541 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58930]
+DEBUG 2024-11-08 18:16:22,541 http_protocol Upgraded connection ['127.0.0.1', 58930] to WebSocket
+INFO 2024-11-08 18:16:22,546 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58932]
+DEBUG 2024-11-08 18:16:22,546 http_protocol Upgraded connection ['127.0.0.1', 58932] to WebSocket
+DEBUG 2024-11-08 18:16:22,550 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:22,552 ws_protocol WebSocket ['127.0.0.1', 58930] open and established
+INFO 2024-11-08 18:16:22,552 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58930]
+DEBUG 2024-11-08 18:16:22,552 ws_protocol WebSocket ['127.0.0.1', 58930] accepted by application
+DEBUG 2024-11-08 18:16:22,554 ws_protocol WebSocket ['127.0.0.1', 58932] open and established
+INFO 2024-11-08 18:16:22,554 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58932]
+DEBUG 2024-11-08 18:16:22,554 ws_protocol WebSocket ['127.0.0.1', 58932] accepted by application
+DEBUG 2024-11-08 18:16:22,556 ws_protocol WebSocket closed for ['127.0.0.1', 58930]
+INFO 2024-11-08 18:16:22,556 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58930]
+DEBUG 2024-11-08 18:16:22,558 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:22,558 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:22,559 ws_protocol WebSocket closed for ['127.0.0.1', 58932]
+INFO 2024-11-08 18:16:22,560 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58932]
+DEBUG 2024-11-08 18:16:22,560 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:24,538 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58951]
+DEBUG 2024-11-08 18:16:24,538 http_protocol Upgraded connection ['127.0.0.1', 58951] to WebSocket
+INFO 2024-11-08 18:16:24,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58953]
+DEBUG 2024-11-08 18:16:24,543 http_protocol Upgraded connection ['127.0.0.1', 58953] to WebSocket
+DEBUG 2024-11-08 18:16:24,547 ws_protocol WebSocket ['127.0.0.1', 58951] open and established
+INFO 2024-11-08 18:16:24,547 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58951]
+DEBUG 2024-11-08 18:16:24,548 ws_protocol WebSocket ['127.0.0.1', 58951] accepted by application
+DEBUG 2024-11-08 18:16:24,552 ws_protocol WebSocket closed for ['127.0.0.1', 58951]
+INFO 2024-11-08 18:16:24,552 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58951]
+DEBUG 2024-11-08 18:16:24,552 ws_protocol WebSocket ['127.0.0.1', 58953] open and established
+INFO 2024-11-08 18:16:24,553 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58953]
+DEBUG 2024-11-08 18:16:24,553 ws_protocol WebSocket ['127.0.0.1', 58953] accepted by application
+DEBUG 2024-11-08 18:16:24,554 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:24,555 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:24,558 ws_protocol WebSocket closed for ['127.0.0.1', 58953]
+INFO 2024-11-08 18:16:24,558 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58953]
+DEBUG 2024-11-08 18:16:24,558 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:26,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58971]
+DEBUG 2024-11-08 18:16:26,540 http_protocol Upgraded connection ['127.0.0.1', 58971] to WebSocket
+INFO 2024-11-08 18:16:26,543 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58973]
+DEBUG 2024-11-08 18:16:26,543 http_protocol Upgraded connection ['127.0.0.1', 58973] to WebSocket
+DEBUG 2024-11-08 18:16:26,552 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:26,552 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:26,555 ws_protocol WebSocket ['127.0.0.1', 58971] open and established
+INFO 2024-11-08 18:16:26,556 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58971]
+DEBUG 2024-11-08 18:16:26,556 ws_protocol WebSocket ['127.0.0.1', 58971] accepted by application
+DEBUG 2024-11-08 18:16:26,562 ws_protocol WebSocket closed for ['127.0.0.1', 58971]
+INFO 2024-11-08 18:16:26,562 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58971]
+DEBUG 2024-11-08 18:16:26,563 ws_protocol WebSocket ['127.0.0.1', 58973] open and established
+INFO 2024-11-08 18:16:26,563 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58973]
+DEBUG 2024-11-08 18:16:26,563 ws_protocol WebSocket ['127.0.0.1', 58973] accepted by application
+DEBUG 2024-11-08 18:16:26,565 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:26,566 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:26,570 ws_protocol WebSocket closed for ['127.0.0.1', 58973]
+INFO 2024-11-08 18:16:26,570 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58973]
+DEBUG 2024-11-08 18:16:26,571 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:28,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58993]
+DEBUG 2024-11-08 18:16:28,539 http_protocol Upgraded connection ['127.0.0.1', 58993] to WebSocket
+INFO 2024-11-08 18:16:28,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:58995]
+DEBUG 2024-11-08 18:16:28,542 http_protocol Upgraded connection ['127.0.0.1', 58995] to WebSocket
+DEBUG 2024-11-08 18:16:28,544 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:28,546 ws_protocol WebSocket ['127.0.0.1', 58993] open and established
+INFO 2024-11-08 18:16:28,547 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58993]
+DEBUG 2024-11-08 18:16:28,547 ws_protocol WebSocket ['127.0.0.1', 58993] accepted by application
+DEBUG 2024-11-08 18:16:28,549 ws_protocol WebSocket ['127.0.0.1', 58995] open and established
+INFO 2024-11-08 18:16:28,549 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:58995]
+DEBUG 2024-11-08 18:16:28,549 ws_protocol WebSocket ['127.0.0.1', 58995] accepted by application
+DEBUG 2024-11-08 18:16:28,550 ws_protocol WebSocket closed for ['127.0.0.1', 58993]
+INFO 2024-11-08 18:16:28,550 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58993]
+DEBUG 2024-11-08 18:16:28,552 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:28,552 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:28,552 ws_protocol WebSocket closed for ['127.0.0.1', 58995]
+INFO 2024-11-08 18:16:28,552 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:58995]
+DEBUG 2024-11-08 18:16:28,553 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:30,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59014]
+DEBUG 2024-11-08 18:16:30,540 http_protocol Upgraded connection ['127.0.0.1', 59014] to WebSocket
+INFO 2024-11-08 18:16:30,541 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59016]
+DEBUG 2024-11-08 18:16:30,541 http_protocol Upgraded connection ['127.0.0.1', 59016] to WebSocket
+DEBUG 2024-11-08 18:16:30,548 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:30,554 ws_protocol WebSocket ['127.0.0.1', 59014] open and established
+INFO 2024-11-08 18:16:30,554 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59014]
+DEBUG 2024-11-08 18:16:30,554 ws_protocol WebSocket ['127.0.0.1', 59014] accepted by application
+DEBUG 2024-11-08 18:16:31,506 ws_protocol WebSocket ['127.0.0.1', 59016] open and established
+INFO 2024-11-08 18:16:31,506 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59016]
+DEBUG 2024-11-08 18:16:31,506 ws_protocol WebSocket ['127.0.0.1', 59016] accepted by application
+DEBUG 2024-11-08 18:16:31,507 ws_protocol WebSocket closed for ['127.0.0.1', 59014]
+INFO 2024-11-08 18:16:31,507 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59014]
+DEBUG 2024-11-08 18:16:31,508 ws_protocol WebSocket closed for ['127.0.0.1', 59016]
+INFO 2024-11-08 18:16:31,509 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59016]
+DEBUG 2024-11-08 18:16:31,509 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:31,509 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:31,524 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:32,547 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59036]
+DEBUG 2024-11-08 18:16:32,549 http_protocol Upgraded connection ['127.0.0.1', 59036] to WebSocket
+INFO 2024-11-08 18:16:32,558 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59038]
+DEBUG 2024-11-08 18:16:32,559 http_protocol Upgraded connection ['127.0.0.1', 59038] to WebSocket
+DEBUG 2024-11-08 18:16:32,576 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:32,580 ws_protocol WebSocket ['127.0.0.1', 59036] open and established
+INFO 2024-11-08 18:16:32,580 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59036]
+DEBUG 2024-11-08 18:16:32,580 ws_protocol WebSocket ['127.0.0.1', 59036] accepted by application
+DEBUG 2024-11-08 18:16:32,635 ws_protocol WebSocket ['127.0.0.1', 59038] open and established
+INFO 2024-11-08 18:16:32,636 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59038]
+DEBUG 2024-11-08 18:16:32,636 ws_protocol WebSocket ['127.0.0.1', 59038] accepted by application
+DEBUG 2024-11-08 18:16:32,637 ws_protocol WebSocket closed for ['127.0.0.1', 59036]
+INFO 2024-11-08 18:16:32,637 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59036]
+DEBUG 2024-11-08 18:16:32,639 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:32,639 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:32,639 ws_protocol WebSocket closed for ['127.0.0.1', 59038]
+INFO 2024-11-08 18:16:32,640 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59038]
+DEBUG 2024-11-08 18:16:32,640 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:34,538 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59058]
+DEBUG 2024-11-08 18:16:34,539 http_protocol Upgraded connection ['127.0.0.1', 59058] to WebSocket
+INFO 2024-11-08 18:16:34,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59060]
+DEBUG 2024-11-08 18:16:34,541 http_protocol Upgraded connection ['127.0.0.1', 59060] to WebSocket
+DEBUG 2024-11-08 18:16:34,543 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:34,545 ws_protocol WebSocket ['127.0.0.1', 59058] open and established
+INFO 2024-11-08 18:16:34,545 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59058]
+DEBUG 2024-11-08 18:16:34,545 ws_protocol WebSocket ['127.0.0.1', 59058] accepted by application
+DEBUG 2024-11-08 18:16:34,550 ws_protocol WebSocket ['127.0.0.1', 59060] open and established
+INFO 2024-11-08 18:16:34,550 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59060]
+DEBUG 2024-11-08 18:16:34,550 ws_protocol WebSocket ['127.0.0.1', 59060] accepted by application
+DEBUG 2024-11-08 18:16:34,551 ws_protocol WebSocket closed for ['127.0.0.1', 59058]
+INFO 2024-11-08 18:16:34,552 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59058]
+DEBUG 2024-11-08 18:16:34,553 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:34,554 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:34,555 ws_protocol WebSocket closed for ['127.0.0.1', 59060]
+INFO 2024-11-08 18:16:34,555 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59060]
+DEBUG 2024-11-08 18:16:34,555 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:36,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59079]
+DEBUG 2024-11-08 18:16:36,539 http_protocol Upgraded connection ['127.0.0.1', 59079] to WebSocket
+INFO 2024-11-08 18:16:36,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59081]
+DEBUG 2024-11-08 18:16:36,542 http_protocol Upgraded connection ['127.0.0.1', 59081] to WebSocket
+DEBUG 2024-11-08 18:16:36,544 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:36,546 ws_protocol WebSocket ['127.0.0.1', 59079] open and established
+INFO 2024-11-08 18:16:36,546 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59079]
+DEBUG 2024-11-08 18:16:36,546 ws_protocol WebSocket ['127.0.0.1', 59079] accepted by application
+DEBUG 2024-11-08 18:16:36,554 ws_protocol WebSocket closed for ['127.0.0.1', 59079]
+INFO 2024-11-08 18:16:36,554 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59079]
+DEBUG 2024-11-08 18:16:36,555 ws_protocol WebSocket ['127.0.0.1', 59081] open and established
+INFO 2024-11-08 18:16:36,555 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59081]
+DEBUG 2024-11-08 18:16:36,555 ws_protocol WebSocket ['127.0.0.1', 59081] accepted by application
+DEBUG 2024-11-08 18:16:36,556 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:36,556 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:36,557 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:36,558 ws_protocol WebSocket closed for ['127.0.0.1', 59081]
+INFO 2024-11-08 18:16:36,558 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59081]
+DEBUG 2024-11-08 18:16:36,560 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:36,560 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:36,561 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:38,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59100]
+DEBUG 2024-11-08 18:16:38,544 http_protocol Upgraded connection ['127.0.0.1', 59100] to WebSocket
+INFO 2024-11-08 18:16:38,547 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59102]
+DEBUG 2024-11-08 18:16:38,547 http_protocol Upgraded connection ['127.0.0.1', 59102] to WebSocket
+DEBUG 2024-11-08 18:16:38,563 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:38,564 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:38,566 ws_protocol WebSocket ['127.0.0.1', 59100] open and established
+INFO 2024-11-08 18:16:38,567 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59100]
+DEBUG 2024-11-08 18:16:38,627 ws_protocol WebSocket ['127.0.0.1', 59100] accepted by application
+DEBUG 2024-11-08 18:16:38,630 ws_protocol WebSocket closed for ['127.0.0.1', 59100]
+INFO 2024-11-08 18:16:38,631 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59100]
+DEBUG 2024-11-08 18:16:38,632 ws_protocol WebSocket ['127.0.0.1', 59102] open and established
+INFO 2024-11-08 18:16:38,632 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59102]
+DEBUG 2024-11-08 18:16:38,632 ws_protocol WebSocket ['127.0.0.1', 59102] accepted by application
+DEBUG 2024-11-08 18:16:38,633 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:38,634 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:38,635 ws_protocol WebSocket closed for ['127.0.0.1', 59102]
+INFO 2024-11-08 18:16:38,640 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59102]
+DEBUG 2024-11-08 18:16:38,640 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:40,538 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59123]
+DEBUG 2024-11-08 18:16:40,539 http_protocol Upgraded connection ['127.0.0.1', 59123] to WebSocket
+INFO 2024-11-08 18:16:40,546 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59125]
+DEBUG 2024-11-08 18:16:40,546 http_protocol Upgraded connection ['127.0.0.1', 59125] to WebSocket
+DEBUG 2024-11-08 18:16:40,557 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:40,559 ws_protocol WebSocket ['127.0.0.1', 59123] open and established
+INFO 2024-11-08 18:16:40,560 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59123]
+DEBUG 2024-11-08 18:16:40,560 ws_protocol WebSocket ['127.0.0.1', 59123] accepted by application
+DEBUG 2024-11-08 18:16:40,562 ws_protocol WebSocket ['127.0.0.1', 59125] open and established
+INFO 2024-11-08 18:16:40,563 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59125]
+DEBUG 2024-11-08 18:16:40,563 ws_protocol WebSocket ['127.0.0.1', 59125] accepted by application
+DEBUG 2024-11-08 18:16:40,565 ws_protocol WebSocket closed for ['127.0.0.1', 59123]
+INFO 2024-11-08 18:16:40,565 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59123]
+DEBUG 2024-11-08 18:16:40,567 ws_protocol WebSocket closed for ['127.0.0.1', 59125]
+INFO 2024-11-08 18:16:40,568 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59125]
+DEBUG 2024-11-08 18:16:40,568 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:40,569 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:40,570 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:42,548 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59146]
+DEBUG 2024-11-08 18:16:42,548 http_protocol Upgraded connection ['127.0.0.1', 59146] to WebSocket
+INFO 2024-11-08 18:16:42,559 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59148]
+DEBUG 2024-11-08 18:16:42,559 http_protocol Upgraded connection ['127.0.0.1', 59148] to WebSocket
+DEBUG 2024-11-08 18:16:42,578 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:42,582 ws_protocol WebSocket ['127.0.0.1', 59146] open and established
+INFO 2024-11-08 18:16:42,582 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59146]
+DEBUG 2024-11-08 18:16:42,583 ws_protocol WebSocket ['127.0.0.1', 59146] accepted by application
+DEBUG 2024-11-08 18:16:42,612 ws_protocol WebSocket closed for ['127.0.0.1', 59146]
+INFO 2024-11-08 18:16:42,612 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59146]
+DEBUG 2024-11-08 18:16:42,613 ws_protocol WebSocket ['127.0.0.1', 59148] open and established
+INFO 2024-11-08 18:16:42,614 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59148]
+DEBUG 2024-11-08 18:16:42,614 ws_protocol WebSocket ['127.0.0.1', 59148] accepted by application
+DEBUG 2024-11-08 18:16:42,616 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:42,617 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:42,622 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:42,622 ws_protocol WebSocket closed for ['127.0.0.1', 59148]
+INFO 2024-11-08 18:16:42,622 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59148]
+INFO 2024-11-08 18:16:44,543 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59167]
+DEBUG 2024-11-08 18:16:44,544 http_protocol Upgraded connection ['127.0.0.1', 59167] to WebSocket
+INFO 2024-11-08 18:16:44,546 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59169]
+DEBUG 2024-11-08 18:16:44,546 http_protocol Upgraded connection ['127.0.0.1', 59169] to WebSocket
+DEBUG 2024-11-08 18:16:44,548 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:44,550 ws_protocol WebSocket ['127.0.0.1', 59167] open and established
+INFO 2024-11-08 18:16:44,550 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59167]
+DEBUG 2024-11-08 18:16:44,550 ws_protocol WebSocket ['127.0.0.1', 59167] accepted by application
+DEBUG 2024-11-08 18:16:44,554 ws_protocol WebSocket ['127.0.0.1', 59169] open and established
+INFO 2024-11-08 18:16:44,554 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59169]
+DEBUG 2024-11-08 18:16:44,555 ws_protocol WebSocket ['127.0.0.1', 59169] accepted by application
+DEBUG 2024-11-08 18:16:44,556 ws_protocol WebSocket closed for ['127.0.0.1', 59167]
+INFO 2024-11-08 18:16:44,556 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59167]
+DEBUG 2024-11-08 18:16:44,557 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:44,557 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:44,558 ws_protocol WebSocket closed for ['127.0.0.1', 59169]
+INFO 2024-11-08 18:16:44,558 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59169]
+DEBUG 2024-11-08 18:16:44,558 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:46,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59189]
+DEBUG 2024-11-08 18:16:46,540 http_protocol Upgraded connection ['127.0.0.1', 59189] to WebSocket
+INFO 2024-11-08 18:16:46,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59191]
+DEBUG 2024-11-08 18:16:46,542 http_protocol Upgraded connection ['127.0.0.1', 59191] to WebSocket
+DEBUG 2024-11-08 18:16:46,545 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:46,547 ws_protocol WebSocket ['127.0.0.1', 59189] open and established
+INFO 2024-11-08 18:16:46,547 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59189]
+DEBUG 2024-11-08 18:16:46,547 ws_protocol WebSocket ['127.0.0.1', 59189] accepted by application
+DEBUG 2024-11-08 18:16:46,553 ws_protocol WebSocket closed for ['127.0.0.1', 59189]
+INFO 2024-11-08 18:16:46,553 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59189]
+DEBUG 2024-11-08 18:16:46,554 ws_protocol WebSocket ['127.0.0.1', 59191] open and established
+INFO 2024-11-08 18:16:46,554 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59191]
+DEBUG 2024-11-08 18:16:46,554 ws_protocol WebSocket ['127.0.0.1', 59191] accepted by application
+DEBUG 2024-11-08 18:16:46,555 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:46,555 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:46,556 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:46,556 ws_protocol WebSocket closed for ['127.0.0.1', 59191]
+INFO 2024-11-08 18:16:46,557 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59191]
+DEBUG 2024-11-08 18:16:46,557 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:46,558 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:46,558 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:48,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59210]
+DEBUG 2024-11-08 18:16:48,542 http_protocol Upgraded connection ['127.0.0.1', 59210] to WebSocket
+INFO 2024-11-08 18:16:48,549 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59212]
+DEBUG 2024-11-08 18:16:48,550 http_protocol Upgraded connection ['127.0.0.1', 59212] to WebSocket
+DEBUG 2024-11-08 18:16:48,566 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:48,566 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:48,573 ws_protocol WebSocket ['127.0.0.1', 59210] open and established
+INFO 2024-11-08 18:16:48,573 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59210]
+DEBUG 2024-11-08 18:16:48,636 ws_protocol WebSocket ['127.0.0.1', 59210] accepted by application
+DEBUG 2024-11-08 18:16:48,641 ws_protocol WebSocket closed for ['127.0.0.1', 59210]
+INFO 2024-11-08 18:16:48,642 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59210]
+DEBUG 2024-11-08 18:16:48,642 ws_protocol WebSocket ['127.0.0.1', 59212] open and established
+INFO 2024-11-08 18:16:48,642 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59212]
+DEBUG 2024-11-08 18:16:48,642 ws_protocol WebSocket ['127.0.0.1', 59212] accepted by application
+DEBUG 2024-11-08 18:16:48,643 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:48,644 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:48,644 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:48,645 ws_protocol WebSocket closed for ['127.0.0.1', 59212]
+INFO 2024-11-08 18:16:48,645 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59212]
+DEBUG 2024-11-08 18:16:48,660 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:48,660 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:48,662 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:50,539 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59232]
+DEBUG 2024-11-08 18:16:50,540 http_protocol Upgraded connection ['127.0.0.1', 59232] to WebSocket
+INFO 2024-11-08 18:16:50,545 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59234]
+DEBUG 2024-11-08 18:16:50,545 http_protocol Upgraded connection ['127.0.0.1', 59234] to WebSocket
+DEBUG 2024-11-08 18:16:50,547 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:50,548 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:50,549 ws_protocol WebSocket ['127.0.0.1', 59232] open and established
+INFO 2024-11-08 18:16:50,550 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59232]
+DEBUG 2024-11-08 18:16:50,550 ws_protocol WebSocket ['127.0.0.1', 59232] accepted by application
+DEBUG 2024-11-08 18:16:50,553 ws_protocol WebSocket closed for ['127.0.0.1', 59232]
+INFO 2024-11-08 18:16:50,553 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59232]
+DEBUG 2024-11-08 18:16:50,554 ws_protocol WebSocket ['127.0.0.1', 59234] open and established
+INFO 2024-11-08 18:16:50,555 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59234]
+DEBUG 2024-11-08 18:16:50,555 ws_protocol WebSocket ['127.0.0.1', 59234] accepted by application
+DEBUG 2024-11-08 18:16:50,556 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:50,556 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:50,557 ws_protocol WebSocket closed for ['127.0.0.1', 59234]
+INFO 2024-11-08 18:16:50,557 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59234]
+DEBUG 2024-11-08 18:16:50,558 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:52,538 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59254]
+DEBUG 2024-11-08 18:16:52,538 http_protocol Upgraded connection ['127.0.0.1', 59254] to WebSocket
+INFO 2024-11-08 18:16:52,542 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59256]
+DEBUG 2024-11-08 18:16:52,543 http_protocol Upgraded connection ['127.0.0.1', 59256] to WebSocket
+DEBUG 2024-11-08 18:16:52,548 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:52,549 ws_protocol WebSocket ['127.0.0.1', 59254] open and established
+INFO 2024-11-08 18:16:52,549 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59254]
+DEBUG 2024-11-08 18:16:52,550 ws_protocol WebSocket ['127.0.0.1', 59254] accepted by application
+DEBUG 2024-11-08 18:16:52,552 ws_protocol WebSocket ['127.0.0.1', 59256] open and established
+INFO 2024-11-08 18:16:52,552 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59256]
+DEBUG 2024-11-08 18:16:52,552 ws_protocol WebSocket ['127.0.0.1', 59256] accepted by application
+DEBUG 2024-11-08 18:16:52,554 ws_protocol WebSocket closed for ['127.0.0.1', 59254]
+INFO 2024-11-08 18:16:52,554 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59254]
+DEBUG 2024-11-08 18:16:52,556 ws_protocol WebSocket closed for ['127.0.0.1', 59256]
+INFO 2024-11-08 18:16:52,556 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59256]
+DEBUG 2024-11-08 18:16:52,556 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:52,557 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:52,558 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:54,538 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59275]
+DEBUG 2024-11-08 18:16:54,539 http_protocol Upgraded connection ['127.0.0.1', 59275] to WebSocket
+INFO 2024-11-08 18:16:54,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59277]
+DEBUG 2024-11-08 18:16:54,540 http_protocol Upgraded connection ['127.0.0.1', 59277] to WebSocket
+DEBUG 2024-11-08 18:16:54,543 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:54,544 ws_protocol WebSocket ['127.0.0.1', 59275] open and established
+INFO 2024-11-08 18:16:54,544 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59275]
+DEBUG 2024-11-08 18:16:54,544 ws_protocol WebSocket ['127.0.0.1', 59275] accepted by application
+DEBUG 2024-11-08 18:16:54,546 ws_protocol WebSocket ['127.0.0.1', 59277] open and established
+INFO 2024-11-08 18:16:54,546 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59277]
+DEBUG 2024-11-08 18:16:54,546 ws_protocol WebSocket ['127.0.0.1', 59277] accepted by application
+DEBUG 2024-11-08 18:16:54,548 ws_protocol WebSocket closed for ['127.0.0.1', 59275]
+INFO 2024-11-08 18:16:54,548 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59275]
+DEBUG 2024-11-08 18:16:54,549 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:54,549 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:54,550 ws_protocol WebSocket closed for ['127.0.0.1', 59277]
+INFO 2024-11-08 18:16:54,551 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59277]
+DEBUG 2024-11-08 18:16:54,551 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:56,545 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59296]
+DEBUG 2024-11-08 18:16:56,546 http_protocol Upgraded connection ['127.0.0.1', 59296] to WebSocket
+INFO 2024-11-08 18:16:56,556 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59298]
+DEBUG 2024-11-08 18:16:56,556 http_protocol Upgraded connection ['127.0.0.1', 59298] to WebSocket
+DEBUG 2024-11-08 18:16:56,562 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:56,563 ws_protocol WebSocket ['127.0.0.1', 59296] open and established
+INFO 2024-11-08 18:16:56,564 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59296]
+DEBUG 2024-11-08 18:16:56,564 ws_protocol WebSocket ['127.0.0.1', 59296] accepted by application
+DEBUG 2024-11-08 18:16:56,566 ws_protocol WebSocket closed for ['127.0.0.1', 59296]
+INFO 2024-11-08 18:16:56,566 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59296]
+DEBUG 2024-11-08 18:16:56,567 ws_protocol WebSocket ['127.0.0.1', 59298] open and established
+INFO 2024-11-08 18:16:56,567 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59298]
+DEBUG 2024-11-08 18:16:56,567 ws_protocol WebSocket ['127.0.0.1', 59298] accepted by application
+DEBUG 2024-11-08 18:16:56,568 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:56,568 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:56,569 pool Closed 1 connection(s)
+DEBUG 2024-11-08 18:16:56,569 ws_protocol WebSocket closed for ['127.0.0.1', 59298]
+INFO 2024-11-08 18:16:56,569 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59298]
+INFO 2024-11-08 18:16:58,538 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59318]
+DEBUG 2024-11-08 18:16:58,538 http_protocol Upgraded connection ['127.0.0.1', 59318] to WebSocket
+INFO 2024-11-08 18:16:58,540 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59320]
+DEBUG 2024-11-08 18:16:58,541 http_protocol Upgraded connection ['127.0.0.1', 59320] to WebSocket
+DEBUG 2024-11-08 18:16:58,543 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:16:58,544 ws_protocol WebSocket ['127.0.0.1', 59318] open and established
+INFO 2024-11-08 18:16:58,544 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59318]
+DEBUG 2024-11-08 18:16:58,544 ws_protocol WebSocket ['127.0.0.1', 59318] accepted by application
+DEBUG 2024-11-08 18:16:58,547 ws_protocol WebSocket ['127.0.0.1', 59320] open and established
+INFO 2024-11-08 18:16:58,547 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59320]
+DEBUG 2024-11-08 18:16:58,547 ws_protocol WebSocket ['127.0.0.1', 59320] accepted by application
+DEBUG 2024-11-08 18:16:58,548 ws_protocol WebSocket closed for ['127.0.0.1', 59318]
+INFO 2024-11-08 18:16:58,550 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59318]
+DEBUG 2024-11-08 18:16:58,551 ws_protocol WebSocket closed for ['127.0.0.1', 59320]
+INFO 2024-11-08 18:16:58,551 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59320]
+DEBUG 2024-11-08 18:16:58,551 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:58,552 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:58,552 pool Closed 1 connection(s)
+INFO 2024-11-08 18:16:59,553 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59331]
+DEBUG 2024-11-08 18:16:59,553 http_protocol Upgraded connection ['127.0.0.1', 59331] to WebSocket
+DEBUG 2024-11-08 18:16:59,556 ws_protocol WebSocket ['127.0.0.1', 59331] open and established
+INFO 2024-11-08 18:16:59,556 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59331]
+DEBUG 2024-11-08 18:16:59,556 ws_protocol WebSocket ['127.0.0.1', 59331] accepted by application
+DEBUG 2024-11-08 18:16:59,559 ws_protocol WebSocket closed for ['127.0.0.1', 59331]
+INFO 2024-11-08 18:16:59,559 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59331]
+DEBUG 2024-11-08 18:16:59,559 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:16:59,559 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:16:59,560 pool Closed 1 connection(s)
+INFO 2024-11-08 18:17:00,541 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59341]
+DEBUG 2024-11-08 18:17:00,541 http_protocol Upgraded connection ['127.0.0.1', 59341] to WebSocket
+DEBUG 2024-11-08 18:17:00,543 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:17:00,544 ws_protocol WebSocket ['127.0.0.1', 59341] open and established
+INFO 2024-11-08 18:17:00,544 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59341]
+DEBUG 2024-11-08 18:17:00,544 ws_protocol WebSocket ['127.0.0.1', 59341] accepted by application
+DEBUG 2024-11-08 18:17:00,547 ws_protocol WebSocket closed for ['127.0.0.1', 59341]
+INFO 2024-11-08 18:17:00,547 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59341]
+DEBUG 2024-11-08 18:17:00,548 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:17:00,549 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:17:00,549 pool Closed 1 connection(s)
+INFO 2024-11-08 18:17:00,566 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59344]
+DEBUG 2024-11-08 18:17:00,567 http_protocol Upgraded connection ['127.0.0.1', 59344] to WebSocket
+DEBUG 2024-11-08 18:17:00,569 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:17:00,570 ws_protocol WebSocket ['127.0.0.1', 59344] open and established
+INFO 2024-11-08 18:17:00,570 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59344]
+DEBUG 2024-11-08 18:17:00,570 ws_protocol WebSocket ['127.0.0.1', 59344] accepted by application
+DEBUG 2024-11-08 18:17:00,572 ws_protocol WebSocket closed for ['127.0.0.1', 59344]
+INFO 2024-11-08 18:17:00,572 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59344]
+DEBUG 2024-11-08 18:17:00,573 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:17:00,573 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:17:00,573 pool Closed 1 connection(s)
+INFO 2024-11-08 18:17:01,580 runserver WebSocket HANDSHAKING /ws/game/2/ [127.0.0.1:59355]
+DEBUG 2024-11-08 18:17:01,580 http_protocol Upgraded connection ['127.0.0.1', 59355] to WebSocket
+DEBUG 2024-11-08 18:17:01,582 connection Creating tcp connection to ('127.0.0.1', 6379)
+DEBUG 2024-11-08 18:17:01,583 ws_protocol WebSocket ['127.0.0.1', 59355] open and established
+INFO 2024-11-08 18:17:01,583 runserver WebSocket CONNECT /ws/game/2/ [127.0.0.1:59355]
+DEBUG 2024-11-08 18:17:01,584 ws_protocol WebSocket ['127.0.0.1', 59355] accepted by application
+DEBUG 2024-11-08 18:17:01,588 ws_protocol WebSocket closed for ['127.0.0.1', 59355]
+INFO 2024-11-08 18:17:01,588 runserver WebSocket DISCONNECT /ws/game/2/ [127.0.0.1:59355]
+DEBUG 2024-11-08 18:17:01,589 connection Cancelling waiter (<Future cancelled>, [None, None])
+DEBUG 2024-11-08 18:17:01,589 util Waiter future is already done <Future cancelled>
+DEBUG 2024-11-08 18:17:01,590 pool Closed 1 connection(s)

@@ -72,8 +72,6 @@ const LocalGame = () => {
 	const [showConfetti, setShowConfetti] = useState(false)
 	const [winner, setWinner] = useState(null)
 
-	const [powerups, setPowerups] = useState([])
-	const [attacks, setAttacks] = useState([])
 
 	const location = useLocation()
 	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize } =
@@ -143,7 +141,10 @@ const LocalGame = () => {
 	}
 	;``
 	return (
-		<>
+		// <>
+		<div
+			className={` backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}
+		>
 			<section className='flex'>
 				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
 					<GameScore
@@ -176,8 +177,6 @@ const LocalGame = () => {
 								ballColor={ballColor}
 								paddleSize={paddleSize}
 								ballSize={ballSize}
-								powerups={powerups}
-								attacks={attacks}
 							/>
 						</div>
 						<div className='justify-center items-center w-1/4'>
@@ -197,7 +196,8 @@ const LocalGame = () => {
 				<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
 			)}
 			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
-		</>
+		{/* </> */}
+		</div>
 	)
 }
 

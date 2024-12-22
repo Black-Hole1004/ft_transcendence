@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,7 +44,9 @@ INSTALLED_APPS = [
     'UserManagement',
     'social_django',
     'core',
+    'channels_redis',
     'rest_framework.authtoken',
+    'game',
     'Chat'
 ]
 
@@ -67,7 +70,10 @@ SOCIALACCOUNT_PROVIDERS = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+
+    # this ensures authentication errors are handled properly
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
 
 MIDDLEWARE = [
@@ -83,10 +89,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+# backend/core/settings.py
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # Add your template directories here
+            os.path.join(BASE_DIR, 'game', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,15 +112,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 ASGI_APPLICATION = 'core.asgi.application'
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -169,10 +171,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "profile_pictures/"
+# for  profile pictures
+STATIC_URL = "profile_pictures/" # URL prefix for your profile pictures
 
 STATICFILES_DIRS = [
-    BASE_DIR / "profile_pictures",
+    BASE_DIR / "profile_pictures", # Path to your profile pictures directory
+]
+
+# for badges
+BADGES_URL = "/badges/"  # Custom URL prefix for badges
+BADGES_DIR = BASE_DIR / "badges" # Path to your badges directory
+
+
+TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
+# Add a new setting for tables
+TABLES_STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/public/assets/images/tables'),
 ]
 
 # Default primary key field type
@@ -205,6 +219,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://api.intra.42.fr",
+    "http://10.12.2.9:5173",  # Frontend URL
 ] # todo: to be changed in production
 
 # Ensure secure cookies in production
@@ -212,7 +227,12 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '10.12.2.9',  # Backend IP
+]
 
 AUTHENTICATION_BACKENDS = (
     'core.GoogleOauth2.CustomGoogleOAuth2',  # Google OAuth
@@ -220,7 +240,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # Default authentication
 )
 
-LOGIN_REDIRECT_URL = 'http://localhost:5173/Dashboard'
+# LOGIN_REDIRECT_URL = 'http://localhost:5173/Dashboard'
 LOGOUT_REDIRECT_URL = 'http://localhost:5173/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
@@ -244,11 +264,46 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 #todo: Creds should be changed in production
 
 SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-cdcc23cff090940f13730afd65feb14fe10adba125685f2f6b47055c98256fd7'
-SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_SECRET = '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'
 SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'http://localhost:8000/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
+
+
+# Channel Layer Configuration (for WebSocket communication)
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+# Caching Configuration (for game state and other cache needs)
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',  # Using Redis database 1 for caching
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+
+# settings.py
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'prompt': 'consent',
+}
+
+# Add this if you're using social-auth-app-django
+SOCIAL_AUTH_ALLOWED_REDIRECT_HOSTS = [
+    'localhost:5173',
+    '10.12.2.9:5173',
+]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'email', 
