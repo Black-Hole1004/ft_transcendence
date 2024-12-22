@@ -1,1 +1,3 @@
 oauth_creds.json
+__pycache__/
+*.pyc
