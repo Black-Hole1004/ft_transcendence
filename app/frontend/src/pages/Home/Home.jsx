@@ -64,7 +64,7 @@ const Home = () => {
 					<Button
 						id='get-started'
 						onClick={handleClick}
-						className='lg:rounded-xl ms:rounded-lg my-[25px]'
+						className='rounded my-[20px]'
 					>
 						Get Started
 					</Button>

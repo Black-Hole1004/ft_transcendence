@@ -53,7 +53,7 @@ const Settings = () => {
 		if (!twoFactorAuthEnabled) {
 			setTwoFactorAuthEnabled(true)
 		} else {
-			console.log(twoFactorAuthEnabled)
+			// console.log(twoFactorAuthEnabled)
 			openDialog()
 		}
 	}
@@ -307,7 +307,7 @@ const Settings = () => {
 								/>
 								<Button
 									className={
-										'rounded-md border-border font-regular buttons-text update-button'
+										'rounded border border-border font-medium buttons-text update-button'
 									}
 									onClick={handleUploadClick}
 								>
@@ -315,7 +315,7 @@ const Settings = () => {
 								</Button>
 								<Button
 									className={
-										'rounded-md border-border font-regular buttons-text remove-button'
+										'rounded border border-border font-medium buttons-text remove-button'
 									}
 									onClick={handleRemoveImage}
 								>
@@ -474,7 +474,7 @@ const Settings = () => {
 							<div className='flex gap-4'>
 								<Button
 									className={
-										'rounded-md border-border font-regular buttons-text remove-button'
+										'rounded border border-border font-medium buttons-text remove-button'
 									}
 									type='submit'
 									onClick={enableDesable2FA}
@@ -495,7 +495,7 @@ const Settings = () => {
 						<Button
 							id={'resetButton'}
 							className={
-								'rounded-md border-border font-regular buttons-text remove-button'
+								'rounded border border-border font-medium buttons-text remove-button'
 							}
 							onClick={() => window.location.reload()}
 						>
@@ -503,7 +503,7 @@ const Settings = () => {
 						</Button>
 						<Button
 							className={
-								'rounded-md border-border font-regular buttons-text remove-button'
+								'rounded border border-border font-medium buttons-text remove-button'
 							}
 							type='submit'
 							onClick={update_user}

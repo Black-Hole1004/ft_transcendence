@@ -24,8 +24,8 @@ const NotFound = () => {
 				</h3>
 				<button
 					onClick={handleBackToHome}
-					className='w-[36%] lp:py-3 py-2 font-medium rounded-lg border border-primary text-primary
-						back-to-home transition-all hover:bg-primary hover:text-secondary duration-500'
+					className='w-[50%] lp:py-3 py-2 font-medium rounded border border-border text-primary
+						bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'
 				>
 					Back To Home
 				</button>

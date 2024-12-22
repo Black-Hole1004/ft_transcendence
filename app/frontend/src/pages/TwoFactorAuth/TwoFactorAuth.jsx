@@ -72,8 +72,8 @@ const TwoFactorAuth = () => {
 						Didn’t get a code? <a className='font-heavy'>Click to resend</a>
 					</p>
 					<button
-						className='verify border border-border transition duration-300 select-none py-2 px-10 my-10
-					self-center rounded-lg text-primary font-medium hover:bg-primary hover:text-secondary'
+						className='verify border border-border text-primary font-medium select-none py-2 px-10 my-10 self-center
+						rounded bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'
 					>
 						Verify
 					</button>
