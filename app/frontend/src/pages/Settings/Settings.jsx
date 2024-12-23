@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import useAuth from '../../context/AuthContext'
+import { useSocket } from '../../components/Layout/Layout'
 
 const USER_API = import.meta.env.VITE_USER_API
 const BASE_URL = import.meta.env.VITE_BASE_URL
@@ -32,6 +33,9 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 }
 
 const Settings = () => {
+
+	const { refreshUserData , fetchUser } = useSocket()
+
 	const dialogRef = useRef(null)
 	const [twoFactorAuthEnabled, setTwoFactorAuthEnabled] = useState(false)
 
@@ -44,6 +48,10 @@ const Settings = () => {
 	const closeDialog = () => {
 		dialogRef.current.close()
 	}
+
+	// const handle2FAModal = () => {
+	// 	openDialog()
+	// }
 
 	// const handle2FAModal = () => {
 	// 	openDialog()
@@ -102,26 +110,7 @@ const Settings = () => {
 	const { authTokens, logout, getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
 
-	const fetchUser = async () => {
-		try {
-			const response = await fetch(USER_API, {
-				method: 'GET',
-				headers: getAuthHeaders(),
-			})
-			const data = await response.json()
-			if (response.ok) {
-				return data
-			} else {
-				console.log('Failed to fetch user data')
-				// logout();
-				return null
-			}
-		} catch (error) {
-			console.log(error)
-			// logout();
-			return null
-		}
-	}
+	
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -173,7 +162,9 @@ const Settings = () => {
 		return userProfileData
 	}
 	const update_user = async () => {
+		console.log('--- update_user ---')
 		const userProfileData = create_form_data(user, selectedFile)
+		console.log('userProfileData ----->', userProfileData)
 		axios
 			.put(USER_API, userProfileData, {
 				headers: {
@@ -183,19 +174,21 @@ const Settings = () => {
 			})
 			.then((response) => {
 				if (response.status === 200) {
+					console.log('response ----->', response.data)
 					setUser(response.data)
 					setSelectedFile(null)
 					setPreview(null)
 					setRemoveImage(false)
 					console.log('User data updated successfully')
 					triggerAlert('success', 'User data updated successfully')
+					refreshUserData()
 				}
 			})
 			.catch((error) => {
 				if (error.response) {
-					// Server responded with a status other than 2xx
+					console.log('Error:', error.response.data)
 					const errorMessage =
-						error.response.data?.message || 'Failed to update user data'
+						error.response.data?.error || 'Failed to update user data'
 					triggerAlert('error', errorMessage)
 					console.error('Error:', errorMessage)
 				} else if (error.request) {
@@ -268,6 +261,8 @@ const Settings = () => {
 		setProfile_picture(DEFAULT_PROFILE_PICTURE)
 		setRemoveImage(true)
 	}
+
+	// console.log('user ----->', user)
 
 	return (
 		<>

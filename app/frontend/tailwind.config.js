@@ -30,9 +30,19 @@ export default {
 				primary: '#FBFBEE',
 				secondary: '#1B1611',
 				achievement: '#FFCE9D',
+				glow: "#ffffff",
 				'secondary-light': '#564636',
 				'backdrop-40': 'rgba(0, 0, 0, 0.4)',
 				'backdrop-80': 'rgba(0, 0, 0, 0.8)',
+			},
+			keyframes: {
+				glow: {
+				"0%, 100%": { textShadow: "0 0 10px #ffffasff" },
+				"50%": { textShadow: "0 0 20px #f39c12" },
+				},
+			},
+			animation: {
+				glow: "glow 1.5s infinite",
 			},
 			borderWidth: {
 				0.7: '0.7px',

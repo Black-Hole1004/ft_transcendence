@@ -50,7 +50,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         access_token = extract_access_token(headers)
         access_token = access_token.replace('%22', '')
         self.userid = decode_jwt_info(access_token)['user_id']
+        print('userid: ===>', self.userid)
         self.user = await database_sync_to_async(User.objects.get)(id=self.userid)
+        print('user: ===>', self.user)
         cache.set(f"user_{self.userid}_channel", self.channel_name)
         if self.user.is_authenticated:
             await self.accept()

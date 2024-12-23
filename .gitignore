@@ -1,1 +1,3 @@
 ./app/progres_data
+__pycache__/
+*.pyc

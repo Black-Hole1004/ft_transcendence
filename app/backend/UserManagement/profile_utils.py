@@ -2,6 +2,8 @@ import os
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 def remove_profile_picture(user):
     """Remove the profile picture of the user."""
@@ -19,7 +21,6 @@ def update_profile_picture(user, profile_picture):
             if os.path.isfile(user.profile_picture.path):
                 os.remove(user.profile_picture.path)
         user.profile_picture = profile_picture
-        # user.is_custom_profile_picture = True
         user.save()
         
 
@@ -38,10 +39,11 @@ def handle_password_change(user, user_data):
             user.save()
         else:
             return Response(
-                {'error': 'Please provide the new password and confirm password. The new password and confirm password must match and be different from the current password.'},
+                {'error': 'The new password and confirm password must match and be different from the current password.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
     elif any([password, new_password, confirm_password]):
+        print('User is not logged with OAuth')
         if not user.is_logged_with_oauth:
             if not all ([password, new_password, confirm_password]):
                 return Response(
@@ -75,3 +77,21 @@ def generate_new_tokens(user):
         'refresh': str(refresh),
         'access': str(refresh.access_token)
     }
+
+def notify_friends(user, friends):
+    """
+    Notify all friends of the user about the user's status.
+
+    Args:
+        user: The user whose status has changed.
+        friends: A list of friend IDs to notify.
+    """
+    channel_layer = get_channel_layer()
+    for friend_id in friends:
+        async_to_sync(channel_layer.group_send)(
+            f"user_{friend_id}",
+            {
+                "type": "notification_message",
+                "message": user.status,
+            }
+        )

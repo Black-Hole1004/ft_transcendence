@@ -7,7 +7,7 @@ function UserAvatarDropdown({ setIsDropdownOpen, user_data }) {
 	const closeDropdown = () => {
 		setIsDropdownOpen(false)
 	}
-	console.log(user_data)
+	
 
 	return (
 		<>

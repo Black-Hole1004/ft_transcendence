@@ -66,6 +66,7 @@ const Home = () => {
 					</Button>
 				</div>
 			</section>
+			
 			<React.Suspense fallback={<div>Loading...</div>}>
 				{/* <LazyCard */}
 				<Card

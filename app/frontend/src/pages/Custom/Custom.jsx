@@ -1,7 +1,8 @@
 import './Custom.css'
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Button from '../../components/Home/Buttons/Button'
+import { useNavigate, useLocation } from 'react-router-dom'
+
 
 const ModeCard = ({ mode, handleGameModeSelect }) => {
 	return (
@@ -43,10 +44,24 @@ const ModeCard = ({ mode, handleGameModeSelect }) => {
 
 const Custom = () => {
 	const [backgroundId, setBackgroundId] = useState(1)
+	const location = useLocation()
+	const mode = location.state?.mode; // Get the mode from the location state
+
 	const [step, setStep] = useState(1)
 	const xp = 6231
 	const navigate = useNavigate()
 
+    const handleStart = () => {
+        if (mode === 'training') {
+			console.log('Training mode selected');
+            // For AI mode, go directly to AI setup
+            navigate('/ai-game-setup', { state: { backgroundId } });
+        } else {
+            // For 1vs1 mode, show the local/remote choice
+            setStep(2);
+        }
+    };
+    
 	// Handle click for background selection
 	const handleClick = (id) => {
 		// Only allow click if background is unlocked
@@ -55,13 +70,35 @@ const Custom = () => {
 		}
 	}
 
-	const handleGameModeSelect = (mode) => {
-		if (mode === 'local') {
-			navigate('/local-game-setup', { state: { backgroundId } })
-		} else {
-			navigate('/searching', { state: { backgroundId } })
-		}
-	}
+    const handleGameModeSelect = (mode) => {
+        if (mode === 'local') {
+            navigate('/local-game-setup', { state: { backgroundId } })
+        } else {
+            // Get access token from cookies
+            const cookies = document.cookie.split(';');
+            const accessToken = cookies.find(cookie => cookie.trim().startsWith('access_token='))?.split('=')[1];
+
+            if (!accessToken) {
+                console.error('No access token found in cookies');
+                return;
+            }
+
+            // Decode JWT token to get user ID
+            try {
+                const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
+                const userId = decodedToken.user_id;
+                navigate('/matchmaking', { 
+                    state: { 
+                        backgroundId : backgroundId,
+                        currentUser : { id: userId }
+                    } 
+                });
+
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+            }
+        }
+    }
 
 	return (
 		<section className='flex flex-col'>
@@ -80,12 +117,7 @@ const Custom = () => {
 							<div className='w-full h-full flex justify-center items-center bg-backdrop-40'>
 								<div className='absolute left-3 paddles bg-primary rounded-full left-paddle'></div>
 								<div className='absolute right-3 paddles bg-primary rounded-full right-paddle'></div>
-								<button
-									onClick={() => setStep(2)}
-									className='font-dreamscape start-button'
-								>
-									Start
-								</button>
+								<button onClick={handleStart} className='font-dreamscape start-button'>Start</button>
 							</div>
 						</div>
 					</div>

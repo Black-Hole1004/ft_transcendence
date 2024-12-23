@@ -1,27 +1,23 @@
-import React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import  { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { WebSocketProvider } from './context/WebSocketContext';
 import OauthHandler from './utils/OauthHandler';
 import ComponentPath from './utils/ComponentPath';
 import { AlertProvider } from './components/AlertContext';
-import './context/WebSocketContext';
-
+import { TournamentProvider } from './context/TournamentContext';
 import Loader from './components/Loader/Loader'
-
-
 
 function App() {
 	return (
 		<Router>
 			<AlertProvider>
 				<AuthProvider>
-					<WebSocketProvider>
-							<React.Suspense fallback={<Loader />}>
-								<OauthHandler />
-								<ComponentPath />
-							</React.Suspense>
-					</WebSocketProvider>
+					<TournamentProvider>
+						<Suspense fallback={<Loader />}>
+							<OauthHandler />
+							<ComponentPath />
+						</Suspense>
+					</TournamentProvider>
 				</AuthProvider>
 			</AlertProvider>
 		</Router>

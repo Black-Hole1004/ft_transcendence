@@ -23,9 +23,7 @@ function GameModes() {
 				<Mode
 					image={'1vs1.webp'}
 					title={'right-[30%]'}
-					className={
-						'right-0 w-[53%] lg:bottom-2 lp:bottom-4 tb:bottom-3 ml:bottom-2 ms:bottom-1'
-					}
+					className={'right-0 w-[53%] lg:bottom-2 lp:bottom-4 tb:bottom-3 ml:bottom-2 ms:bottom-1'}
 					mode={'1 vs 1'}
 				></Mode>
 			</Link>

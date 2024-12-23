@@ -19,7 +19,6 @@ const PongTable = forwardRef(
 		ref
 	) => {
 		const [canvasHeight, setCanvasHeight] = useState(400) // Set this to your actual canvas height
-		const [originalPaddleHeight, setOriginalPaddleHeight] = useState(80) // Set this to your original paddle height
 
 		const canvasRef = useRef(null)
 		const containerRef = useRef(null)
@@ -106,6 +105,7 @@ const PongTable = forwardRef(
 			const canvasHeight = canvas.height
 
 			const drawPaddle = (paddle) => {
+				console.log('paddle:', paddle)
 				ctx.fillStyle = paddle.color
 				ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
 				ctx.beginPath()
@@ -133,7 +133,9 @@ const PongTable = forwardRef(
 			const draw = () => {
 				ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 				drawPaddle(player)
+				console.log('Drawing Ai paddle')
 				drawPaddle(ai)
+				console.log('Drawing Ball')
 				ballsRef.current.forEach(drawBall)
 			}
 
@@ -270,53 +272,6 @@ const PongTable = forwardRef(
 				if (event.key === 'ArrowDown') {
 					setIsRightPlayerMovingDown(true)
 				}
-				if (event.key === '1') {
-					console.log('Trying to use powerup from AI' + ai.powerups)
-					setAi((prev) => ({
-						...prev,
-						isPowerupActive: true,
-						powerups: prev.powerups - 1,
-					}))
-					stretchPaddleToFullHeight(setAi)
-					setTimeout(() => {
-						setAi((prev) => ({ ...prev, isPowerupActive: false }))
-						resetPaddleHeight(setAi)
-					}, 4500)
-				}
-
-				if (event.key === '2') {
-					console.log('Trying to use attack from AI')
-					setAi((prev) => ({ ...prev, isAttackActive: true, attacks: prev.attacks - 1 }))
-					createTripleBall()
-					setTimeout(() => setAi((prev) => ({ ...prev, isAttackActive: false })), 4500)
-				}
-				if (event.key === '3') {
-					console.log('Trying to use attack from player')
-					setPlayer((prev) => ({
-						...prev,
-						isAttackActive: true,
-						attacks: prev.attacks - 1,
-					}))
-					createTripleBall()
-					setTimeout(
-						() => setPlayer((prev) => ({ ...prev, isAttackActive: false })),
-						4500
-					)
-				}
-
-				if (event.key === '4') {
-					console.log('Trying to use powerup from player')
-					setPlayer((prev) => ({
-						...prev,
-						isPowerupActive: true,
-						powerups: prev.powerups - 1,
-					}))
-					stretchPaddleToFullHeight(setPlayer)
-					setTimeout(() => {
-						setPlayer((prev) => ({ ...prev, isPowerupActive: false }))
-						resetPaddleHeight(setPlayer)
-					}, 4500)
-				}
 			}
 
 			const handleKeyUp = (event) => {
@@ -343,41 +298,11 @@ const PongTable = forwardRef(
 			}
 		}, [player, ai])
 
+		// update game state : player and ai paddle positions
 		useEffect(() => {
 			setPlayer((prev) => ({ ...prev, y: playerY }))
 			setAi((prev) => ({ ...prev, y: aiY }))
-		}, [playerY, aiY, canvasHeight, originalPaddleHeight])
-
-		// Add this function to stretch the paddle to full height
-		const stretchPaddleToFullHeight = (setPaddle) => {
-			setPaddle((prev) => {
-				const newHeight = canvasHeight
-				const newY = 0 // Set to 0 to position at the top of the canvas
-				return { ...prev, height: newHeight, y: newY }
-			})
-		}
-
-		// Add this function to reset the paddle to its original height
-		const resetPaddleHeight = (setPaddle) => {
-			setPaddle((prev) => {
-				const newHeight = originalPaddleHeight
-				const newY = (canvasHeight - originalPaddleHeight) / 2 // Center the paddle vertically
-				return { ...prev, height: newHeight, y: newY }
-			})
-		}
-
-		const createTripleBall = () => {
-			const originalBall = ballsRef.current[0]
-			const newBalls = [
-				{ ...originalBall },
-				{ ...originalBall, angle: originalBall.angle - Math.PI / 6 },
-				{ ...originalBall, angle: originalBall.angle + Math.PI / 6 },
-			]
-			ballsRef.current = newBalls
-			setTimeout(() => {
-				ballsRef.current = [originalBall]
-			}, 5000)
-		}
+		}, [playerY, aiY, canvasHeight])
 
 		return (
 			<div
