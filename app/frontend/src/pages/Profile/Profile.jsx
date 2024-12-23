@@ -8,8 +8,8 @@ import AboutSection from '../../components/Profile/AboutSection'
 import UserStatsGraph from '../../components/Profile/UserStatsGraph'
 import useAuth from '../../context/AuthContext'
 
-const USER_API = import.meta.env.VITE_USER_API;
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const USER_API = import.meta.env.VITE_USER_API
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 const Profile = () => {
 	const containerRef = useRef(null)
@@ -79,7 +79,7 @@ const Profile = () => {
 	const [display_name, setDisplay_name] = useState('')
 	const [bio, setBio] = useState('')
 	const [profile_picture, setProfile_picture] = useState('')
-	const [preview, setPreview] = useState(null)
+
 
 	const [user, setUser] = useState({
 		first_name: '',
@@ -89,31 +89,29 @@ const Profile = () => {
 		username: '',
 		display_name: '',
 		bio: '',
-		profile_picture: ''
+		profile_picture: '',
 	})
-
 
 	const fetchUser = async () => {
 		try {
 			const response = await fetch(USER_API, {
 				method: 'GET',
-				headers: getAuthHeaders()
+				headers: getAuthHeaders(),
 			})
-			const data = await response.json();
+			const data = await response.json()
 			if (response.ok) {
-				return (data)
+				return data
 			} else {
-				console.log('Failed to fetch user data');
+				console.log('Failed to fetch user data')
 				// logout();
-				return (null)
+				return null
 			}
-		}
-		catch (error) {
-			console.log(error);
+		} catch (error) {
+			console.log(error)
 			// logout();
-			return (null);
+			return null
 		}
-	};
+	}
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -141,30 +139,28 @@ const Profile = () => {
 	/************************************************************************ */
 
 	return (
-		<div
-			ref={containerRef}
-			className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary'
-		>
-			<section className='flex justify-center'>
-				<div className='lp:mt-20 my-10 relative flex flex-col max-lp:gap-y-3
-					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'>
-					<div
-						className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
+		<section ref={containerRef} className='flex justify-center'>
+			<div
+				className='lp:mt-20 my-10 relative flex flex-col max-lp:gap-y-3
+					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'
+			>
+				<div
+					className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
 						lp:self-start max-ms:w-full flex flex-col`}
-					>
-						<div className='font-dreamscape text-primary cards-title text-center relative'>
-							<Link to={'/dashboard'}>
-								<img
-									src='./assets/images/icons/arrow.svg'
-									className='arrow absolute left-[4%]'
-									alt='arrow icon'
-								/>
-							</Link>
-							<h1>profile</h1>
-						</div>
-						<ProfileBio src={`${BASE_URL}${profile_picture}`} bio={bio} />
-						<div
-							className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
+				>
+					<div className='font-dreamscape text-primary cards-title text-center relative'>
+						<Link to={'/dashboard'}>
+							<img
+								src='./assets/images/icons/arrow.svg'
+								className='arrow absolute left-[4%]'
+								alt='arrow icon'
+							/>
+						</Link>
+						<h1>profile</h1>
+					</div>
+					<ProfileBio src={`${BASE_URL}${profile_picture}`} bio={bio} />
+					<div
+						className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
 						>
 							<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} />
@@ -178,7 +174,6 @@ const Profile = () => {
 								</div>
 							</div>
 						</div>
-						<UserStatsGraph />
 					</div>
 					{/* RANK: Achievement information and progress */}
 					<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'} bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}>
@@ -217,12 +212,12 @@ const Profile = () => {
 					<div
 						className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
 						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
-					>
-						<div className='font-dreamscape text-primary cards-title text-center'>
-							<h1 className='lg:pl-40 lp:pl-28'>match history</h1>
-						</div>
-						<div
-							className='match-history flex-1 flex mtb:flex-row flex-col
+				>
+					<div className='font-dreamscape text-primary cards-title text-center'>
+						<h1 className='lg:pl-40 lp:pl-28'>match history</h1>
+					</div>
+					<div
+						className='match-history flex-1 flex mtb:flex-row flex-col
 							justify-end max-lp:self-center mb-3'
 						>
 							<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
@@ -247,10 +242,8 @@ const Profile = () => {
 							</div>
 						</div>
 					</div>
-
-				</div>
-			</section>
-		</div>
+			</div>
+		</section>
 	)
 }
 

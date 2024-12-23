@@ -84,7 +84,8 @@ const Chat = () => {
 		const initializeWebSocket = () => {
 			if (!webSocketRef.current) {
 				// console.log(window.location.protocol)
-				const ws = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/`)
+				console.log('xxxxx===> ', window.location.hostname)
+				const ws = new WebSocket(`wss://${window.location.hostname}/ws/chat/`)
 				webSocketRef.current = ws
 
 				webSocketRef.current.addEventListener('open', onWebSocketOpen)

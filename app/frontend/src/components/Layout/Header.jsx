@@ -1,20 +1,18 @@
 import './Header.css'
 import UserAvatarDropdown from './UserAvatarDropdown'
 import NotificationDropdown from './NotificationDropdown'
-
 import { Link, useLocation } from 'react-router-dom'
 import React, { useState, useRef, useEffect } from 'react'
 
 import { useWebSocket } from '../../context/WebSocketContext'
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
-function Header({ user_data }) {
+function Header({ user_data, notifications, setNotifications }) {
 	const location = useLocation().pathname.split('/').slice(1, 2)
 
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
-	const { notifications } = useWebSocket()
 
 	const dropdownRef = useRef(null)
 	const avatarButtonRef = useRef(null)
@@ -105,7 +103,11 @@ function Header({ user_data }) {
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
 						h-[30%] absolute rounded-full right-0 top-0'
 						>
-							{notifications.length > 0 ? (<p className='font-heavy text-[10px] p-0.5'>{notifications.length > 99 ? '+99' : notifications.length}</p>) : null}
+							{
+								notifications?.length > 0 ? 
+								(<p className='font-heavy text-[10px] p-0.5'>{notifications.length > 99 ? '+99' : notifications.length}</p>)
+								: null
+							}
 						</div>
 					)}
 				</button>
@@ -115,7 +117,10 @@ function Header({ user_data }) {
 							top-full flex flex-col border border-primary rounded-xl bg-secondary
 							transition-opacity duration-300 ${!isNotificationOpen ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
 				>
-					<NotificationDropdown />
+					<NotificationDropdown 
+						notifications={notifications} 
+						setNotifications={setNotifications} 
+					/>
 				</div>
 				<button
 					ref={avatarButtonRef}

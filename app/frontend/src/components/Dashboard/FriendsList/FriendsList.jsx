@@ -1,72 +1,84 @@
 import { useEffect, useState } from 'react'
 import UserFriendsList from './UserFriendsList'
 import useAuth from '../../../context/AuthContext'
-import Cookies from 'js-cookie'
-
+import { useSocket } from '../../Layout/Layout'
+import { use } from 'react'
 
 
 function FriendsList() {
 	const [users, setUsers] = useState([])
-	const { getAuthHeaders, profile_picture } = useAuth()
-	
+	const [searchQuery, setSearchQuery] = useState('')
+	const { getAuthHeaders } = useAuth()
+	const { profile_picture } = useSocket()
+
+	const { socket_notify, socket_friends } = useSocket();
+
 	const get_all_users = async () => {
+		console.log('-----------------> get_all_users')
 		try {
-			const response = await fetch('http://127.0.0.1:8000/api/users/', {
+			const response = await fetch('https://localhost/api/users/', {
 				method: 'GET',
 				headers: getAuthHeaders(),
 			})
 			const data = await response.json()
+			console.log('data =====> []', data)
 			setUsers(data)
 		}
 		catch (error) {
+			console.log('data =====>error []')
 			console.error('Error:', error)
 		}
 	}
+
+
+
 	useEffect(() => {
+		console.log('-----------------> useEffect')
 		get_all_users()
 	}, [])
 
-	// this useEffect listens for login and logout events
-	useEffect(() => {
-		const access_token = Cookies.get('access_token');
-		const socket = new WebSocket(`ws://127.0.0.1:8000/ws/notification/?access_token=${access_token}`);
-
-		socket.onmessage = (event) => {
-			const data = JSON.parse(event.data);
-			console.log('data =========>', data);
-			if (data.message === 'offline' || data.message === 'online') {
-				console.log('notification received ==>');
-				get_all_users();
-				console.log('users ======>', users);
-			}
-		}
-
-		socket.onerror = (error) => {
-			console.error('WebSocket error:', error);
-		}
-		return () => socket.close();
-	}, []);
-
+	const filterUsers = users?.filter((user) => {
+		return user.username.toLowerCase().startsWith(searchQuery.toLowerCase()) || []
+	})
 
 	// this useEffect listens for friend request acceptances
 	useEffect(() => {
-		const access_token = Cookies.get('access_token');
-		const socket = new WebSocket(`ws://127.0.0.1:8000/ws/update_user_status/?access_token=${access_token}`);
-
-		socket.onmessage = (event) => {
+		if (!socket_friends)
+			return;
+		const original_onmessage = socket_friends.onmessage;
+		socket_friends.onmessage = (event) => {
 			const data = JSON.parse(event.data);
-			if (data.type === 'friend_request_accepted') {
+			if (data.type === 'friend_request_accepted' ) {
 				get_all_users();
 			}
-		};
+			if (original_onmessage) {
+				original_onmessage(event);
+			}
+		}
+		return () => {
+			socket_friends.onmessage = original_onmessage;
+		}
+	}, [socket_friends]);
 
-		socket.onerror = (error) => {
-			console.error('WebSocket error:', error);
-		};
-		return () => socket.close(); 
-	}, []);
+	useEffect(() => {
+		if (!socket_notify)
+			return;
+		const original_onmessage = socket_notify.onmessage;
+		socket_notify.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			if (data.message === 'online' || data.message === 'offline') {
+				get_all_users();
+			}
+			if (original_onmessage) {
+				original_onmessage(event);
+			}
+		}
+		return () => {
+			socket_notify.onmessage = original_onmessage;
+		}
+	}, [socket_notify])
 
-	console.log('users ======>', users);
+	console.log('users =====> ', users)
 
 	return (
 		<div
@@ -83,13 +95,16 @@ function FriendsList() {
 					name='search for friends'
 					placeholder='Search for friends...'
 					className='flex-1 font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border overflow-hidden'
+					value={searchQuery}
+					onChange={(e) => setSearchQuery(e.target.value)}
 				/>
 			</div>
 			<div className='w-[96%] overflow-y-auto users'>
-				{users.map((user) => {
-					return <UserFriendsList key={user.id} user={user} profile_picture={profile_picture} />
+				{
+					filterUsers.map((user) => {
+						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} />
+					})
 				}
-				)}
 			</div>
 		</div>
 	)

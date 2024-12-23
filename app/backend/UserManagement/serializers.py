@@ -15,6 +15,8 @@ from .profile_utils import (
 
 from .models import FriendShip
 from .models import FriendShipRequest
+from .models import Tournament
+from .models import Match
 
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
@@ -25,7 +27,6 @@ class UserSerializer(serializers.ModelSerializer):
     is_friend = serializers.SerializerMethodField()
     class Meta:
         model = User
-        
         fields = ['id', 'first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth', 'is_friend', 'status',
                 'username', 'display_name','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture'
             ]
@@ -68,3 +69,20 @@ class FriendRequestSerializer(serializers.ModelSerializer):
     #     if obj.user_to.profile_picture:
     #         return request.build_absolute_uri(obj.user_to.profile_picture.url) if request else obj.user_to.profile_picture.url
     #     return None
+
+class TournamentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tournament
+        fields = '__all__'
+
+class MatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Match
+        fields = '__all__'
+
+class HealthCheckSerializer(serializers.Serializer):
+    status = serializers.CharField()
+    timestamp = serializers.DateTimeField()
+    environment = serializers.CharField()
+    services = serializers.DictField()
+    system = serializers.DictField()

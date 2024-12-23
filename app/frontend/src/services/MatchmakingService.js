@@ -13,7 +13,7 @@ class MatchmakingService {
         this.currentUserId = userId;
 
         this.socket = new WebSocket(
-            `ws://localhost:8000/ws/matchmaking/?user_id=${userId}`
+            `wss://localhost/ws/matchmaking/?user_id=${userId}`
         );
         
         this.socket.onopen = () => {

@@ -23,7 +23,8 @@ const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
 const AiGameSetup = React.lazy(() => import('../pages/Game/AiGameSetup'))
 const SearchingAnimation = React.lazy(() => import('../components/Game/Remote/SearchingAnimation'))
 const MatchMaking = React.lazy(() => import('../components/Game/MatchMaking'))
-
+const CustomTournament = React.lazy(() => import('../pages/CustomTournament/CustomTournament'))
+const TournamentSetup = React.lazy(() => import('../pages/TournametSetup/TournametSetup'))
 
 const ComponentPath = () => {
 	const { authTokens } = useAuth();
@@ -32,33 +33,36 @@ const ComponentPath = () => {
 			<Routes>
 				{/* Redirect to /Dashboard if authenticated on the home path */}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
-				<Route path="/2fa" element={<TwoFactorAuth />} />
-
+				
 				{/* Layout wrapping all private routes */}
-				<Route element={<Layout />}>
-					<Route path="/Game" element={<PrivateRoute><Game /></PrivateRoute>} />
-					<Route path="/Chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
-					<Route path="/Profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-					<Route path="/Settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-					<Route path="/Dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-					<Route path='/local-game' element={<PrivateRoute><LocalGame /></PrivateRoute>} />
-					<Route path="/Tournament" element={<PrivateRoute><Tournament /></PrivateRoute>} />
-					<Route path="/chat/:conversation_key" element={<PrivateRoute><Chat /></PrivateRoute>} />
-					<Route path="/searching" element={<PrivateRoute><SearchingAnimation /></PrivateRoute>} />
-	
-					<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />
+				<Route element={<PrivateRoute><Layout /></PrivateRoute>}>
+					<Route path="/Game" element={<Game />} />
+					<Route path="/Chat" element={<Chat />} />
+					<Route path="/Profile" element={<Profile />} />
+					<Route path="/Settings" element={<Settings />} />
+					<Route path="/Dashboard" element={<Dashboard />} />
+					<Route path="/chat/:conversation_key" element={<Chat />} />
 					
-					<Route path="/Custom" element={<PrivateRoute><Custom /></PrivateRoute>} />
-					<Route path='/local-game' element={<PrivateRoute><LocalGame /></PrivateRoute>} />
-					<Route path='/ai-game' element={<PrivateRoute><AiGame /></PrivateRoute>} />
-					<Route path='/remote-game' element={<PrivateRoute><RemoteGame /></PrivateRoute>} />
-\					<Route path='/local-game-setup' element={<PrivateRoute><LocalGameSetup /></PrivateRoute>} />
-					<Route path='/ai-game-setup' element={<PrivateRoute><AiGameSetup /></PrivateRoute>} />
-					<Route path='/matchmaking' element={<PrivateRoute><MatchMaking /></PrivateRoute>} />
+					<Route path="/Tournament" element={<Tournament />} />
+					<Route path="/CustomTournament" element={<CustomTournament />} />
+					<Route path="/TournamentSetup" element={<TournamentSetup />} />
 
+
+					<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />
+
+					<Route path="/Custom" element={<Custom />} />
+					<Route path='/local-game' element={<LocalGame />} />
+					<Route path='/ai-game' element={<AiGame />} />
+					<Route path='/remote-game' element={<RemoteGame />} />
+\					<Route path='/local-game-setup' element={<LocalGameSetup />} />
+					<Route path='/ai-game-setup' element={<AiGameSetup />} />
+					<Route path='/matchmaking' element={<MatchMaking />} />
+
+
+					<Route path="/2fa" element={<TwoFactorAuth />} />
+					<Route path="*" element={<NotFound />} />
 				</Route>
-				{/* Catch-all route */}
-				<Route path="*" element={<NotFound />} />
+				
 			</Routes>
 
 	);

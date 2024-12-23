@@ -19,6 +19,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import parser_classes
 
 from django.http import HttpResponseRedirect
+from itertools import chain
 
 from django.core.files.uploadedfile import UploadedFile
 from rest_framework.views import APIView
@@ -42,10 +43,10 @@ from django.db.models import Count, Q
 from .models import Achievement
 from game.models import GameSessions
 
-from .models import UserSession
 from django.utils import timezone
 
 from django.contrib.auth import get_user_model
+from UserManagement.profile_utils import notify_friends
 
 from .profile_utils import (
     remove_profile_picture,
@@ -62,6 +63,25 @@ from .serializers import FriendRequestSerializer
 from django.db import IntegrityError
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from channels.db import database_sync_to_async
+
+
+from .models import Tournament, TournamentParticipant, Match
+from .serializers import TournamentSerializer, MatchSerializer
+from django.db import transaction
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.db import connections
+from django.conf import settings
+from datetime import datetime
+import redis
+from .serializers import HealthCheckSerializer
+import time
+import socket
+from rest_framework.exceptions import ValidationError
+
 
 
 
@@ -174,9 +194,6 @@ def check_user_password(request):
         return Response({'error': 'Incorrect password.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
 class LoginView(APIView):
     def post(self, request):
         if request.method == 'POST':
@@ -191,21 +208,8 @@ class LoginView(APIView):
                     user.save()
                     auth_login(request, user)
 
-
-                    # Notify friends about login
-                    channel_layer = get_channel_layer()
-                    friends = FriendShip.objects.filter(user_from=user) | FriendShip.objects.filter(user_to=user)
-                    print(f"Friends =====> {friends}")
-                    for friend in friends:
-                        friend_user = friend.user_to if friend.user_from == user else friend.user_from
-                        print(f"Friend User =====> {friend_user}")
-                        async_to_sync(channel_layer.group_send)(
-                            f"user_{friend_user.id}",
-                                {
-                                    "type": "notification_message",
-                                    "message": 'online',
-                                }
-                            )
+                    friends = async_to_sync(self.get_user_friends)(user)
+                    notify_friends(user, friends)
 
                     refresh = RefreshToken.for_user(user)
                     access_token = str(refresh.access_token)
@@ -215,13 +219,6 @@ class LoginView(APIView):
                         'refresh_token': refresh_token,
                         'message': 'User authenticated successfully'
                     })
-                    response.set_cookie(
-                        key='access_token',
-                        value=access_token,
-                        httponly=True,
-                        secure=True,
-                        samesite='Lax'
-                    )
                     return response
                 else:
                     return JsonResponse({'error': 'Invalid credentials'}, status=401)
@@ -229,6 +226,13 @@ class LoginView(APIView):
                 return JsonResponse({'error': 'Invalid JSON'}, status=400)
         else:
             return render(request, 'login.html')
+
+    @database_sync_to_async
+    def get_user_friends(self, user):
+        friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
+        friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
+        friends = list(set(friends_from + friends_to))
+        return friends
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
@@ -239,21 +243,46 @@ class LogoutView(APIView):
         if session:
             session.logout_time = timezone.now()
             session.save()
-        channel_layer = get_channel_layer()
-        friends = FriendShip.objects.filter(user_from=user) | FriendShip.objects.filter(user_to=user)
-        for friend in friends:
-            friend_user = friend.user_to if friend.user_from == user else friend.user_from
-            async_to_sync(channel_layer.group_send)(
-                f"user_{friend_user.id}",
-                {
-                    "type": "notification_message",
-                    "message": 'offline',
-                }
-            )
+        
         user.status = 'offline'
         user.save()
+
+        # Notify friends about login
+        friends = async_to_sync(self.get_user_friends)(user)
+        notify_friends(user, friends)
         django_logout(request)
         return Response({'message': 'User logged out successfully'})
+
+
+
+    @database_sync_to_async
+    def get_user_friends(self, user):
+        friends_from = list(FriendShip.objects.filter(user_from=user).values_list('user_to', flat=True))
+        friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
+        friends = list(set(friends_from + friends_to))
+        return friends
+
+class UserStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        return Response({'status': request.user.status})
+
+    def post(self, request):
+        print(f"Request data: {request.data}")
+        user = request.user
+        status = request.data.get('status', 'online')
+        
+        valid_statuses = ['online', 'offline', 'ingame']
+        if status not in valid_statuses:
+            return Response({'error': 'Invalid status'}, status=400)
+        
+        user.status = status
+        user.save()
+        return Response({'status': 'success'})
+
+
+
 
 
 @permission_classes([IsAuthenticated])
@@ -276,6 +305,10 @@ class UserProfileView(APIView):
             user_data = request.data.copy()
             profile_picture = request.FILES.get('profile_picture', None)
 
+            if 'username' in user_data:
+                user.has_custom_username = True
+            if 'profile_picture' in request.FILES:
+                user.has_custom_profile_picture = True
             # Handle profile picture removal if requested
             if request.data.get('remove_profile_picture') == 'true':
                 remove_profile_picture(user)
@@ -377,6 +410,14 @@ class UserListView(generics.ListAPIView):
         context['request'] = self.request
         return context
 
+class UsersListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
 class SendFriendRequestView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -425,6 +466,8 @@ class AcceptFriendRequestView(APIView):
             friend_request.save()
 
             try:
+                if FriendShip.objects.filter(user_from=friend_request.user_to, user_to=friend_request.user_from).exists() or FriendShip.objects.filter(user_from=friend_request.user_from, user_to=friend_request.user_to).exists():
+                    return Response({"message": "Friendship already exists"}, status=400)
                 FriendShip.objects.create(user_from=friend_request.user_from, user_to=friend_request.user_to)
             except IntegrityError:
                 return Response({"message": "Friendship already exists"}, status=400)
@@ -473,13 +516,6 @@ class CancelFriendRequestView(APIView):
         except FriendShipRequest.DoesNotExist:
             return Response({"message": "Friend request not found"}, status=404)
 
-class UserStatusView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        user_ids = request.query_params.getlist('user_ids', [])
-        status = {user_id: cache.get(f"user_online_{user_id}", False) for user_id in user_ids}
-        return Response(status)
 
 class FriendShipRequestListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -489,6 +525,228 @@ class FriendShipRequestListView(APIView):
         friend_requests = FriendShipRequest.objects.filter(user_to=user, status='pending')
         serializer = FriendRequestSerializer(friend_requests, many=True, context={'request': request})
         return Response(serializer.data, status=200)
+
+
+# Tournament views for creating and managing tournaments
+class TournamentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        tournaments = Tournament.objects.all()
+        serializer = TournamentSerializer(tournaments, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        print(f"Request data =====> {request.data}")
+        with transaction.atomic():
+            users = request.data.get('users', [])
+            print(f"Users =========> {users}")
+
+
+            if len(users) != 4:
+                return Response(
+                    {'error': 'Invalid number of users'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            tournament = Tournament.objects.create(
+                name = request.data.get('name', 'Tournament'),
+            )
+
+            for idx, user_id in enumerate(users, 1):
+                TournamentParticipant.objects.create(
+                    tournament=tournament,
+                    user_id=user_id,
+                    seed=idx
+                )
+            
+            Match.objects.create(
+                tournament=tournament,
+                player1_id=users[0],
+                player2_id=users[3],
+                round_number=1
+            )
+
+            Match.objects.create(
+                tournament=tournament,
+                player1_id=users[1],
+                player2_id=users[2],
+                round_number=1
+            )
+
+            tournament.status = 'IN_PROGRESS'
+            tournament.save()
+
+            serializer = TournamentSerializer(tournament)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class TournamentDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_objects(self, pk):
+        try:
+            return Tournament.objects.get(pk=pk)
+        except Tournament.DoesNotExist:
+            raise None
+    
+    def get(self, request, pk):
+        tournament = self.get_objects(pk)
+        if tournament is None:
+            return Response(
+                {'error': 'Tournament not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = TournamentSerializer(tournament)
+        return Response(serializer.data)
+    
+    def put(self, request, pk):
+        tournament = self.get_objects(pk)
+        if tournament is None:
+            return Response(
+                {'error': 'Tournament not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = TournamentSerializer(tournament, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        tournament = self.get_objects(pk)
+        if tournament is None:
+            return Response(
+                {'error': 'Tournament not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        tournament.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class HealthCheckView(APIView):
+    """
+    Enhanced health check endpoint that monitors various system components
+    """
+    permission_classes = []  # Allow unauthenticated access
+
+    def check_database(self):
+        start_time = time.time()
+        try:
+            for name in connections:
+                cursor = connections[name].cursor()
+                cursor.execute("SELECT 1")
+                cursor.fetchone()
+            latency = (time.time() - start_time) * 1000  # Convert to milliseconds
+            return {
+                "status": "healthy",
+                "message": "Database connection successful",
+                "latency": round(latency, 2)
+            }
+        except Exception as e:
+            return {
+                "status": "unhealthy",
+                "message": str(e)
+            }
+
+    def check_redis(self):
+        if not hasattr(settings, 'REDIS_URL'):
+            return {
+                "status": "unknown",
+                "message": "Redis not configured"
+            }
+
+        start_time = time.time()
+        try:
+            redis_client = redis.from_url(settings.REDIS_URL)
+            redis_client.ping()
+            latency = (time.time() - start_time) * 1000
+            return {
+                "status": "healthy",
+                "message": "Redis connection successful",
+                "latency": round(latency, 2)
+            }
+        except redis.RedisError as e:
+            return {
+                "status": "unhealthy",
+                "message": str(e)
+            }
+
+    def check_disk_usage(self):
+        try:
+            disk = psutil.disk_usage('/')
+            return {
+                "total": disk.total,
+                "used": disk.used,
+                "free": disk.free,
+                "percent": disk.percent
+            }
+        except Exception as e:
+            return {"error": str(e)}
+
+    def check_memory_usage(self):
+        try:
+            memory = psutil.virtual_memory()
+            return {
+                "total": memory.total,
+                "available": memory.available,
+                "percent": memory.percent,
+                "used": memory.used,
+                "free": memory.free
+            }
+        except Exception as e:
+            return {"error": str(e)}
+
+    def check_cpu_usage(self):
+        try:
+            cpu_percent = psutil.cpu_percent(interval=1)
+            cpu_count = psutil.cpu_count()
+            return {
+                "percent": cpu_percent,
+                "cpu_count": cpu_count
+            }
+        except Exception as e:
+            return {"error": str(e)}
+
+    def get(self, request, *args, **kwargs):
+
+        print(f"Request scheme: {request.scheme}")
+        print(f"Request path: {request.path}")
+        print(f"Request META: {request.META}")
+        services_status = {
+            "database": self.check_database(),
+            "redis": self.check_redis()
+        }
+
+        # System metrics
+        system_metrics = {
+            "hostname": socket.gethostname(),
+            "disk": self.check_disk_usage(),
+            "memory": self.check_memory_usage(),
+            "cpu": self.check_cpu_usage()
+        }
+
+        # Determine overall health
+        is_healthy = all(
+            service["status"] == "healthy"
+            for service in services_status.values()
+            if service["status"] != "unknown"
+        )
+
+        response_data = {
+            "status": "healthy" if is_healthy else "unhealthy",
+            "timestamp": datetime.now().isoformat(),
+            "environment": os.getenv("DJANGO_ENV", "development"),
+            "services": services_status,
+            "system": system_metrics
+        }
+
+        serializer = HealthCheckSerializer(response_data)
+        response_status = status.HTTP_200_OK if is_healthy else status.HTTP_503_SERVICE_UNAVAILABLE
+        
+        return Response(
+            serializer.data,
+            status=response_status
+        )
+
 
 # user profile statistics-------------------------------------------------------------
 
@@ -581,7 +839,7 @@ def get_profile_stats(request):
         return Response({
             'error': str(e)
         }, status=500)
-    
+
 # leaderboard-------------------------------------------------------------
 
 # views.py
@@ -710,4 +968,3 @@ def get_user_data(request):
         })
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-    
