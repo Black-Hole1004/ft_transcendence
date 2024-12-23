@@ -22,7 +22,7 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 				name={id}
 				type={type}
 				placeholder={placeholder}
-				className='inputs border border-border rounded-lg bg-[rgb(183,170,156,8%)] transition-all duration-300
+				className='inputs border border-border rounded bg-[rgb(183,170,156,8%)] transition-all duration-300
 				placeholder:text-border placeholder:font-regular placeholders outline-none max-ms:w-[80%]'
 				onChange={onChange}
 				value={value || ''}

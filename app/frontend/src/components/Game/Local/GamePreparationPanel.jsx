@@ -58,7 +58,7 @@ const GamePreparationPanel = ({
 					<button
 						type='submit'
 						className='font-dreamscape labels w-full p-2 bg-primary text-secondary rounded
-						hover:scale-[1.02] transition duration-200 ease-in'
+						hover:scale-[1.015] transition-all duration-300 ease-in'
 					>
 						Start Game
 					</button>

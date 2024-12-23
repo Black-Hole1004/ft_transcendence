@@ -3,7 +3,7 @@ const GamePreview = ({ players, gameConfig, backgroundId }) => {
 		<div className='flex flex-col gap-2'>
 			<h2 className='font-heavy labels text-primary'>Preview</h2>
 			<div
-				className={`relative self-center w-[88%] max-w-[500px] aspect-video border border-primary rounded-lg
+				className={`relative self-center w-[88%] max-w-[500px] aspect-video border border-primary rounded
 					overflow-hidden pointer-events-none ${gameConfig.isBackgroundVisible ? '' : 'bg-black'}`}
 			>
 				<img

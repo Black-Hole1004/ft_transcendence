@@ -106,8 +106,8 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			ref={dialogRef}
 			className={`max-ml:mb-0 ml:w-card-custom max-w-full w-screen
 			${isSigningIn ? 'h-[570px]' : 'h-[600px]'}
-			${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'}
-			ml:border-1.5 border border-b-0 border-primary rounded-xl bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
+			${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'} overflow-y-hidden
+			ml:border-1.5 border border-b-0 border-primary rounded bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
 
 			<div className='m-2'>
@@ -153,6 +153,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 												? password
 												: confirmPassword
 									}
+									type={index > 0 && 'password'}
 									onChange={(e) => {
 										if (index === 0) setEmail(e.target.value)
 										else if (index === 1) setPassword(e.target.value)
@@ -164,7 +165,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						}
 						<CardButton
 							className={
-								'text-primary font-heavy hover:bg-primary hover:text-secondary'
+								'text-primary font-heavy rounded hover:bg-[rgb(183,170,156,30%)] '
 							}
 						>
 							{isSigningIn ? <>Sign in</> : <>Sign up</>}
@@ -194,10 +195,9 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 							<CardButton
 								id={button.id}
 								key={index}
-								className={
-									'text-secondary bg-primary hover:bg-secondary-light hover:text-primary \
-										flex flex-row items-center justify-center gap-2'
-								}
+								className={`
+									text-secondary bg-primary flex flex-row items-center justify-center gap-2 rounded hover:scale-[1.03]
+								`}
 								onClick={() => handleOauth(button.id)}
 							>
 								<img
