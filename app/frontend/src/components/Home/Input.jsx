@@ -4,14 +4,13 @@ import { useState } from "react"
 const Input = ({ iconPath, type, placeholder, value, onChange }) => {
 	const [showPassword, setShowPassword] = useState(false)
 
-	console.log(`|${type}|`)
 	const handleShowPassword = (e) => {
-		e.stopPropagation()
+		// e.stopPropagation()
 		setShowPassword(!showPassword)
 
 	}
 	return (
-		<div className='flex flex-row items-center bg-[rgb(183,170,156,8%)] responsive-input border border-border rounded'>
+		<div className='flex flex-row items-center bg-secondary-light responsive-input border border-border rounded'>
 			<img
 				src={iconPath}
 				loading='lazy'
@@ -29,7 +28,7 @@ const Input = ({ iconPath, type, placeholder, value, onChange }) => {
 			{type && (
 					<button onClick={handleShowPassword}>
 						<img
-							src={`${showPassword ? '/assets/images/icons/hide.png' : '/assets/images/icons/view.png'}`}
+							src={showPassword ? '/assets/images/icons/hide.png' : '/assets/images/icons/view.png'}
 							loading='lazy'
 							className='responsive-icon select-none pointer-events-none padding-top-input'
 							alt='icon'

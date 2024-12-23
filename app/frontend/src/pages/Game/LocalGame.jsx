@@ -54,12 +54,12 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 
 		<div
 			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20 w-[40rem]
-			flex flex-col justify-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded text-center gameoverpopup'
+			flex flex-col justify-center rounded text-center gameoverpopup' //bg-secondary bg-opacity-60 border border-primary
 		>
 			{/* Result Banner */}
 
 			<h1
-				className={`font-dreamscape text-6xl tracking-wider ${
+				className={`font-dreamscape text-6xl drop-shadow-[0_2px_10px_rgba(255,206,158,0.5)] ${
 					winner ? 'text-online' : 'text-defeat'
 				}`}
 			>

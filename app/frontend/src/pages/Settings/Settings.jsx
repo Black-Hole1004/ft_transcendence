@@ -272,7 +272,7 @@ const Settings = () => {
 	return (
 		<>
 			<section className='flex justify-center'>
-				<div className='s max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
+				<div className='s max-tb:h-auto card-margin w-full border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
 						<h1 className='font-dreamscape-sans text-primary leading-[1]'>Settings</h1>
 					</div>

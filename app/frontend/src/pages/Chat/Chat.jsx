@@ -216,8 +216,8 @@ const Chat = () => {
 			${conversationKey ? 'lg:justify-between' : 'lg:justify-center'}`}
 		>
 			<div
-				className='flex tb:flex-row flex-col lg:border-2 tb:border-1.5 tb:items-center
-						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1 overflow-hidden'
+				className='flex tb:flex-row flex-col tb:border tb:items-center border-primary
+						lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1 overflow-hidden'
 			>
 				{/* Chat History Component */}
 				<ChatHistory
