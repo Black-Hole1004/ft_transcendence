@@ -42,7 +42,7 @@ urlpatterns = [
     path('api/display_text/', views.display_text, name='display-text'),
     path('api/user/', UserProfileView.as_view(), name='user-profile'),
     path('api/decode_jwt/', views.decode_jwt, name='decode_jwt'),
-    path('social-auth/', include('social_django.urls', namespace='social')),
+    path('api/social-auth/', include('social_django.urls', namespace='social')),
     # added by tabi3a : check user existence
     path('api/check-user/', views.check_user_exists, name='check-user'),
     
