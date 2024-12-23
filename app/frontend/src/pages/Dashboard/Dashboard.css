@@ -94,5 +94,5 @@
 /* Friends list */
 
 .user-container {
-	height: clamp(2.5rem, 0.885vw + 2.334rem, 3.75rem);
+	height: clamp(2.5rem, 1.239vw + 2.268rem, 4.25rem);
 }

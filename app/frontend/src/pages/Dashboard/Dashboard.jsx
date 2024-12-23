@@ -23,13 +23,13 @@ const Dashboard = () => {
 				// get current logged in user data --------------------------------------------------------------
 				const userDataUrl = `${baseUrl}/api/user/me/`;
 				const userResponse = await fetch(userDataUrl, {
-                    headers: getAuthHeaders()
-                });
-                if (!userResponse.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-                const userJson = await userResponse.json();
-                setUserData(userJson);
+					headers: getAuthHeaders()
+				});
+				if (!userResponse.ok) {
+					throw new Error('Failed to fetch user data');
+				}
+				const userJson = await userResponse.json();
+				setUserData(userJson);
 				console.log('user data:', userJson);
 				
 				// get leaderboard data --------------------------------------------------------------
@@ -79,25 +79,23 @@ const Dashboard = () => {
 
 	return (
 		<>
-		<section className='flex lg:flex-row flex-col lg:pl-section-lg
-		rightside-my lg:mr-modes-right-lg lg:ml-modes-left-lg ml:ml-modes-left-ms ml:mr-modes-right-ms'>
-			<div className='lg:w-5/12 flex flex-col justify-between max-lg:mb-8 max-mtb:mb-4 max-lg:mx-2 lg:pr-cards-lg'>
-				<CongratulatoryMessage />
-				<div className='flex mtb:flex-row flex-col max-mtb:gap-y-3 gap-x-1 lg:justify-between justify-around max-mtb:pr-0'>
-					<FriendsList />
-					<Leaderboard users={leaderboardData} />
+			<section className='flex lg:flex-row flex-col lg:pl-section-lg
+			rightside-my lg:mr-modes-right-lg lg:ml-modes-left-lg ml:ml-modes-left-ms ml:mr-modes-right-ms'>
+				<div className='lg:w-5/12 flex flex-col justify-between max-lg:mb-8 max-mtb:mb-4 max-lg:mx-2 lg:pr-cards-lg'>
+					<CongratulatoryMessage />
+					<div className='flex mtb:flex-row flex-col max-mtb:gap-y-3 gap-x-1 lg:justify-between justify-around max-mtb:pr-0'>
+						<FriendsList />
+						<Leaderboard users={leaderboardData} />
+					</div>
 				</div>
-			</div>
-			<div className='flex flex-col flex-1 rightside-my
-				lg:mr-modes-right-lg lg:ml-modes-left-lg
-				ml:ml-modes-left-ms ml:mr-modes-right-ms'>
-				<GameModes />
-				<Achievements 
-					achievements={achievements}
-					currentXp={userData?.xp || 0}
-				/>
-			</div>
-		</section>
+				<div className='flex flex-col flex-1 justify-between max-ml:p-1'>
+					<GameModes />
+					<Achievements 
+						achievements={achievements}
+						currentXp={userData?.xp || 0}
+					/>
+				</div>
+			</section>
 		</>
 	)
 }

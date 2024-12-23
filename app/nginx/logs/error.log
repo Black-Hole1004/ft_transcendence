@@ -7,3 +7,24 @@
 2024/12/23 16:43:46 [notice] 11#11: start worker process 12
 2024/12/23 16:43:46 [notice] 11#11: start worker process 13
 2024/12/23 16:46:10 [error] 12#12: *180 connect() failed (111: Connection refused) while connecting to upstream, client: 172.29.0.1, server: localhost, request: "GET /api/social-auth/login/intra42/ HTTP/1.1", upstream: "http://172.29.0.3:8000/api/social-auth/login/intra42/", host: "localhost", referrer: "https://localhost/"
+2024/12/23 19:02:02 [notice] 11#11: using the "epoll" event method
+2024/12/23 19:02:02 [notice] 11#11: nginx/1.27.3
+2024/12/23 19:02:02 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/23 19:02:02 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/23 19:02:02 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/23 19:02:02 [notice] 11#11: start worker processes
+2024/12/23 19:02:02 [notice] 11#11: start worker process 12
+2024/12/23 19:02:02 [notice] 11#11: start worker process 13
+2024/12/23 19:02:02 [notice] 11#11: start worker process 14
+2024/12/23 19:02:02 [notice] 11#11: start worker process 15
+2024/12/23 19:02:02 [notice] 11#11: start worker process 16
+2024/12/23 19:02:02 [notice] 11#11: start worker process 17
+2024/12/23 19:18:36 [alert] 13#13: *1564 write() to "/var/log/nginx/access.log" was incomplete: 228 of 284 while logging request, client: 172.26.0.1, server: localhost, request: "GET /src/utils/PrivateRoute.jsx HTTP/1.1", upstream: "http://172.26.0.4:5173/src/utils/PrivateRoute.jsx", host: "localhost", referrer: "https://localhost/src/utils/ComponentPath.jsx?t=1734981221726"
+2024/12/23 19:18:36 [alert] 14#14: *1570 write() to "/var/log/nginx/access.log" failed (5: Input/output error) while logging request, client: 172.26.0.1, server: localhost, request: "GET /src/components/Loader/Loader.css HTTP/1.1", upstream: "http://172.26.0.4:5173/src/components/Loader/Loader.css", host: "localhost", referrer: "https://localhost/src/components/Loader/Loader.jsx"
+2024/12/23 19:18:36 [alert] 12#12: *1526 write() to "/var/log/nginx/access.log" failed (5: Input/output error) while logging request, client: 172.26.0.1, server: localhost, request: "GET /api/users/ HTTP/1.1", upstream: "http://172.26.0.3:8000/api/users/", host: "localhost", referrer: "https://localhost/dashboard"
+2024/12/23 19:18:37 [error] 14#14: *1633 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.26.0.1, server: localhost, request: "GET /ws/game/1/ HTTP/1.1", upstream: "http://172.26.0.3:8000/ws/game/1/", host: "localhost"
+2024/12/23 19:20:31 [alert] 12#12: *750 write() to "/var/log/nginx/access.log" failed (5: Input/output error) while logging request, client: 172.26.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.26.0.4:5173/", host: "localhost"
+2024/12/23 19:20:31 [alert] 14#14: *1645 write() to "/var/log/nginx/access.log" failed (5: Input/output error) while logging request, client: 172.26.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.26.0.4:5173/", host: "localhost", referrer: "https://localhost/dashboard"
+2024/12/23 19:20:31 [alert] 16#16: *816 write() to "/var/log/nginx/access.log" failed (5: Input/output error) while logging request, client: 172.26.0.1, server: localhost, request: "GET /ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDEyNTUxLCJpYXQiOjE3MzQ5ODA1NTEsImp0aSI6ImM2MGRjOGIyNTVlYjRiMDVhYTYyNzcyNzc0MmI3ZTU5IiwidXNlcl9pZCI6MX0.9wzAM04AUB17t1jPSNHq1lok_q69yfcf-XmwlURsxNc%22 HTTP/1.1", upstream: "http://172.26.0.3:8000/ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDEyNTUxLCJpYX2024/12/23 19:22:58 [alert] 16#16: *1758 write() to "/var/log/nginx/access.log" failed (5: Input/output error) while logging request, client: 172.26.0.1, server: localhost, request: "GET /@vite/client HTTP/1.1", upstream: "http://172.26.0.4:5173/@vite/client", host: "localhost", referrer: "https://localhost/dashboard"
+2024/12/23 19:22:59 [error] 17#17: *1946 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.26.0.1, server: localhost, request: "GET /ws/game/1/ HTTP/1.1", upstream: "http://172.26.0.3:8000/ws/game/1/", host: "localhost"
+2024/12/23 20:26:14 [warn] 12#12: *3388 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000001, client: 172.26.0.1, server: localhost, request: "PUT /api/user/ HTTP/1.1", host: "localhost", referrer: "https://localhost/settings"

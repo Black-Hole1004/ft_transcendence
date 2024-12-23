@@ -30,7 +30,7 @@ const Input = ({ iconPath, type, placeholder, value, onChange }) => {
 						<img
 							src={showPassword ? '/assets/images/icons/hide.png' : '/assets/images/icons/view.png'}
 							loading='lazy'
-							className='responsive-icon select-none pointer-events-none padding-top-input'
+							className='responsive-icon select-none pointer-events-none padding-top-input outline-none'
 							alt='icon'
 						/>
 					</button>

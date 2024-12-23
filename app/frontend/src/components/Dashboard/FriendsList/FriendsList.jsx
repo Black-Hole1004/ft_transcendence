@@ -78,7 +78,6 @@ function FriendsList() {
 		}
 	}, [socket_notify])
 
-	console.log('users =====> ', users)
 
 	return (
 		<div

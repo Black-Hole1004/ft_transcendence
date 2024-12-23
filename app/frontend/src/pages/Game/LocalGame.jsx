@@ -388,8 +388,6 @@ const LocalGame = () => {
 								ballColor={ballColor}
 								paddleSize={paddleSize}
 								ballSize={ballSize}
-								powerups={powerups}
-								attacks={attacks}
 							/>
 						</div>
 						<div className='justify-center items-center w-1/4'>
@@ -404,7 +402,7 @@ const LocalGame = () => {
 						</div>
 					</div>
 				</div>
-				<div className='relative w-full flex justify-center font-dreamscape-sans'>
+				{/* <div className='relative w-full flex justify-center font-dreamscape-sans'>
 					<Player
 						id={1}
 						isPaused={isPaused}
@@ -453,7 +451,7 @@ const LocalGame = () => {
 						recycle={false}
 						numberOfPieces={500}
 					/>
-				)}
+				)} */}
 			</section>
 		</>
 	)
