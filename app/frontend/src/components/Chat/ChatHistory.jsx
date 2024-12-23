@@ -6,11 +6,12 @@ import useAuth from '../../context/AuthContext'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 function ChatHistory({
-	currentUserId,
-	setCurrentUserId,
-	chatMessages,
+	setBlockerId,
 	conversationKey,
 	setConversationKey,
+	conversationMessages,
+	currentLoggedInUserId,
+	setCurrentLoggedInUserId,
 }) {
 	const searchRef = useRef(null)
 	const [searchText, setSearchText] = useState('')
@@ -40,7 +41,7 @@ function ChatHistory({
 					},
 				})
 				if (response.data) {
-					setCurrentUserId(response.data.id)
+					setCurrentLoggedInUserId(response.data.id)
 					setConversations(response.data.conversations)
 				}
 			} catch (error) {
@@ -49,7 +50,7 @@ function ChatHistory({
 		}
 
 		getConversations()
-	}, [chatMessages])
+	}, [conversationMessages])
 
 	useEffect(() => {
 		const getUsers = async () => {
@@ -108,12 +109,13 @@ function ChatHistory({
 			>
 				{(searchResult ? searchResult : conversations).map((conversation) => (
 					<User
-						currentUserId={currentUserId}
-						key={conversation.id}
-						search={!!searchResult}
-						conversation={conversation}
-						conversationKey={conversationKey}
-						setConversationKey={setConversationKey}
+					key={conversation.id}
+					setBlockerId={setBlockerId}
+					search={!!searchResult}
+					conversation={conversation}
+					conversationKey={conversationKey}
+					setConversationKey={setConversationKey}
+					currentLoggedInUserId={currentLoggedInUserId}
 					/>
 				))}
 			</div>

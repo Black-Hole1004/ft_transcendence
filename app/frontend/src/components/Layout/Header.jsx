@@ -80,12 +80,12 @@ function Header({ user_data, notifications, setNotifications }) {
 							alt='chat icon'
 							className={`nav-icons select-none ${location[0] === 'chat' ? '' : 'hover:brightness-200 transition duration-300'}`}
 						/>
-						<div
+						{/* <div
 							className='flex justify-center items-center bg-red-600 border border-[#0B0B0B]
 						h-[30%] absolute z-10 rounded-full right-0 top-0'
 						>
 							<p className='font-heavy text-[10px] p-0.5'>+99</p>
-						</div>
+						</div> */}
 					</Link>
 				</div>
 				<button

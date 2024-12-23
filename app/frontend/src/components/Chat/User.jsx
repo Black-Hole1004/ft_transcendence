@@ -2,16 +2,16 @@ import { useNavigate } from 'react-router-dom'
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
-function User({ currentUserId, search, conversation, conversationKey, setConversationKey }) {
+function User({ setBlockerId, currentLoggedInUserId, search, conversation, conversationKey, setConversationKey }) {
 	const navigate = useNavigate()
 
-	// console.log(currentUserId)
+	// console.log(currentLoggedInUserId)
 	// console.log(conversationKey)
 	let user_id = search ? conversation.id : conversation.other_user.id
 	const ids = conversationKey?.split('_').map((id) => parseInt(id))
 	// console.log('ids: ', ids)
 	let selectedUserId = null
-	if (ids) selectedUserId = ids[0] === currentUserId ? ids[1] : ids[0]
+	if (ids) selectedUserId = ids[0] === currentLoggedInUserId ? ids[1] : ids[0]
 	// console.log(selectedUserId)
 
 	let username = search ? conversation.username : conversation.other_user.username
@@ -41,15 +41,15 @@ function User({ currentUserId, search, conversation, conversationKey, setConvers
 	}
 
 	const handleConversationSelect = () => {
-		let conversation_key = `${Math.min(currentUserId, user_id)}_${Math.max(currentUserId, user_id)}`
+		let conversation_key = `${Math.min(currentLoggedInUserId, user_id)}_${Math.max(currentLoggedInUserId, user_id)}`
 
+		setBlockerId(0)
 		setConversationKey((prev) => {
 			if (prev === conversation_key) return prev
 			return conversation_key
 		})
 		navigate(`/chat/${conversation_key}`)
 	}
-
 	return (
 		<div
 			id={user_id}
@@ -74,6 +74,7 @@ function User({ currentUserId, search, conversation, conversationKey, setConvers
 				{search ? (
 					<p className='text-level last-message max-tb:hidden'>celestial master</p>
 				) : (
+					conversation.last_message &&
 					<div className='flex text-light max-tb:hidden last-message'>
 						{user_id !== conversation?.last_message?.sender_id && (
 							<pre className='font-medium'>You: </pre>

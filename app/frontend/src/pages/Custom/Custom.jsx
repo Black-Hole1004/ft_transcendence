@@ -33,7 +33,7 @@ const ModeCard = ({ mode, handleGameModeSelect }) => {
 				</p>
 				<Button
 					onClick={() => handleGameModeSelect(mode)}
-					className='rounded-md border-border font-medium buttons-text start-battle'
+					className='rounded border-border font-medium buttons-text start-battle mode-description'
 				>
 					Start Battle
 				</Button>

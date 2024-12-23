@@ -1,7 +1,7 @@
 function UserInfos({ recipientInfo }) {
 	return (
 		<div
-			className='lg:border-2 border-[1px] border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
+			className='lg:border-2 border-1.5 border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
 		flex lg:flex-col mtb:flex-row flex-col items-center max-lg:justify-around lg:pt-user-info-t bg-[rgba(27,22,17,0.5)]
 		lg:h-chat-user-info-lg lg:px-user-info-x-lg px-user-info-x-ms ms:py-user-info-y-ms gap-y-4'
 		>

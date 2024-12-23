@@ -30,9 +30,9 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
 				method: 'POST',
 				body: JSON.stringify({ user_to: id }),
 				headers: getAuthHeaders(),
-			});
-			const data = await response.json();
-			console.log('Response =>', data);
+			})
+			const data = await response.json()
+			console.log('Response =>', data)
 			if (response.status === 201) {
 				console.log('response ->', data);
 				const from_user = data.from_user;
@@ -52,18 +52,18 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
 					handleSubmit('success', 'Friend request sent successfully');
 				};
 			} else {
-				handleSubmit('error', data.message);
+				handleSubmit('error', data.message)
 			}
 		} catch (error) {
-			console.error('Error:', error);
+			console.error('Error:', error)
 		}
-	};
-
-
+	}
 
 	return (
-		<div className='user-container flex items-center justify-between font-dreamscape-sans
-			rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
+		<div
+			className='user-container flex items-center justify-between font-dreamscape-sans
+			rounded-md hover:bg-[rgba(183,170,156,0.2)]'
+		>
 			<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[72%]'>
 				<img
 					src='/assets/images/Achievements/celestial-master.png'
@@ -97,7 +97,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
             {/* Add friend button for non-friends */}
             {!user_friend.is_friend && (
                 <Button 
-					className={'font-heavy add-friend-button lg:rounded-lg rounded'}
+					className={'font-medium add-friend-button rounded border border-border'}
                     onClick={() => handle_add_friend(user_friend.id)}
                 >
                     Add Friend

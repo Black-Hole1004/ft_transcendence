@@ -7,8 +7,8 @@ function CardButton({ className, children, onClick }) {
 			onClick={onClick}
 			type='submit'
 			className={`
-		border border-border transition duration-300 select-none
-		responsive-card-button padding-top-button ${className || ''}`}
+		border border-border select-none responsive-card-button padding-top-button ${className || ''}
+		bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out`}
 		>
 			{children}
 		</button>

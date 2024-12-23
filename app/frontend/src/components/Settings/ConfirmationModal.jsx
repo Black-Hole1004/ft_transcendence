@@ -22,8 +22,8 @@ const ConfirmationModal = ({ dialogRef, closeDialog, setTwoFactorAuthEnabled }) 
 				</div>
 				<button
 					onClick={handleDisable}
-					className='border border-border transition duration-300 select-none py-2 px-4 my-4 self-end
-			rounded-lg text-primary font-medium hover:bg-primary hover:text-secondary'
+					className='border border-border transition-all duration-300 select-none py-2 px-8 my-6 self-end paragraph
+						font-medium outline-none rounded bg-[rgb(183,170,156,12%)] ease-in-out hover:bg-[rgb(183,170,156,30%)]'
 				>
 					Disable
 				</button>

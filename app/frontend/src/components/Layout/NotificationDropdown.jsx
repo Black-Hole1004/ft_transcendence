@@ -1,5 +1,4 @@
 import Button from '../Home/Buttons/Button'
-import { useEffect, useState } from 'react'
 import React from 'react'
 import useAuth from '../../context/AuthContext'
 import { useAlert } from '../AlertContext'
@@ -134,7 +133,15 @@ function NotificationDropdown({ notifications, setNotifications }) {
                         </React.Fragment>
                     ))
                 ) : (
-                    <p>No notifications</p>
+                    <div className='flex-1 flex flex-col justify-center items-center'>
+						<img
+							src='/assets/images/emptyStates/notifications.svg'
+							className='w-[50%]'
+							alt='notification empty state'
+						/>
+						<h2 className=''>No notifications</h2>
+						<p className='font-regular bio'>Notification Inbox Empty</p>
+					</div>
                 )}
             </div>
         </>

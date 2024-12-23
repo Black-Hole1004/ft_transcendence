@@ -1,0 +1,59 @@
+.loader-paddles {
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+}
+
+.loader-left-paddle {
+	animation: left-paddle 2s ease-in-out infinite;
+}
+
+.loader-right-paddle {
+	animation: right-paddle 2s ease-in-out infinite;
+}
+
+.loader-container {
+	width: clamp(2.5rem, 1.77vw + 2.168rem, 5rem);
+	animation: container 2s ease-in-out infinite;
+	animation-delay: 1s;
+}
+
+@keyframes left-paddle {
+	0% {
+		top: 5%;
+	}
+	25% {
+		top: 70%;
+	}
+	50%,
+	100% {
+		top: 5%;
+	}
+}
+
+@keyframes right-paddle {
+	0% {
+		bottom: 5%;
+	}
+	25% {
+		bottom: 70%;
+	}
+	50%,
+	100% {
+		bottom: 5%;
+	}
+}
+
+
+@keyframes container {
+	0%,
+	25% {
+		transform: rotate(0deg);
+	}
+	50% {
+		transform: rotate(360deg);
+	}
+	75%,
+	100% {
+		transform: rotate(0deg);
+	}
+}

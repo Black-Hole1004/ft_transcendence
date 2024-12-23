@@ -15,6 +15,7 @@ const WP_NOTIFICATIONS = import.meta.env.VITE_WP_NOTIFICATIONS;
 const SocketContext = createContext()
 export const useSocket = () => useContext(SocketContext)
 
+
 function Layout() {
 
 	const { authTokens, getAuthHeaders } = useAuth()

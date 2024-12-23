@@ -1,11 +1,11 @@
-import React, { lazy, Suspense } from 'react';
+import  { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { WebSocketProvider } from './context/WebSocketContext';
 import OauthHandler from './utils/OauthHandler';
 import ComponentPath from './utils/ComponentPath';
 import { AlertProvider } from './components/AlertContext';
 import { TournamentProvider } from './context/TournamentContext';
+import Loader from './components/Loader/Loader'
 
 function App() {
 	return (
@@ -13,10 +13,10 @@ function App() {
 			<AlertProvider>
 				<AuthProvider>
 					<TournamentProvider>
-						<React.Suspense fallback={<div>Loading...</div>}>
+						<Suspense fallback={<Loader />}>
 							<OauthHandler />
 							<ComponentPath />
-						</React.Suspense>
+						</Suspense>
 					</TournamentProvider>
 				</AuthProvider>
 			</AlertProvider>

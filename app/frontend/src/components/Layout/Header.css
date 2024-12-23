@@ -61,7 +61,7 @@ li img {
 	padding-bottom: clamp(2.188rem, 0.664vw + 2.063rem, 3.125rem);
 }
 
-.notification img {
+.notification-img {
 	width: clamp(1.563rem, 0.664vw + 1.438rem, 2.5rem);
 }
 
