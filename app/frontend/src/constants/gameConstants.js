@@ -6,7 +6,7 @@ export const GAME_CONSTRAINTS = {
 	},
 	BALL: {
 		MIN_SIZE: 5,
-		MAX_SIZE: 50,
+		MAX_SIZE: 100,
 		DEFAULT_SIZE: 8,
 	},
 	COLORS: {

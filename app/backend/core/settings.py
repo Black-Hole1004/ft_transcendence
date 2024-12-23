@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import sys
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -44,7 +45,9 @@ INSTALLED_APPS = [
     'UserManagement',
     'social_django',
     'core',
+    'channels_redis',
     'rest_framework.authtoken',
+    'game',
     'Chat'
 ]
 
@@ -69,58 +72,15 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-print("DEBUG: ", DEBUG)
 
-
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'logstash': {
-#             'level': 'INFO',
-#             'class': 'logstash.TCPLogstashHandler',
-#             'host': 'logstash',  # Logstash container name or IP address
-#             'port': 5000,        # Port configured in Logstash for TCP input
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['logstash'],
-#             'level': 'INFO',
-#             'propagate': True,
-#         },
-#     },
-# }
-
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "formatters": {
-#         "json": {
-#             "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
-#         },
-#     },
-#     "handlers": {
-#         "logstash": {
-#             "class": "graypy.GELFUDPHandler",
-#             "host": "logstash", 
-#             "port": 5044,
-#         },
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["logstash"],
-#             "level": "INFO",
-#             "propagate": True,
-#         },
-#     },
-# }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+
+    # this ensures authentication errors are handled properly
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
 
 MIDDLEWARE = [
@@ -136,10 +96,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+# backend/core/settings.py
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # Add your template directories here
+            os.path.join(BASE_DIR, 'game', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -181,7 +146,7 @@ DATABASES = {
 
 
 
-# for sqlite
+#for sqlite
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -225,10 +190,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "profile_pictures/"
+# for  profile pictures
+STATIC_URL = "profile_pictures/" # URL prefix for your profile pictures
 
 STATICFILES_DIRS = [
-    BASE_DIR / "profile_pictures",
+    BASE_DIR / "profile_pictures", # Path to your profile pictures directory
+]
+
+# for badges
+BADGES_URL = "/badges/"  # Custom URL prefix for badges
+BADGES_DIR = BASE_DIR / "badges" # Path to your badges directory
+
+
+TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
+# Add a new setting for tables
+TABLES_STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/public/assets/images/tables'),
 ]
 
 # Default primary key field type
@@ -259,7 +236,12 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '10.12.2.9',  # Backend IP
+]
 
 AUTHENTICATION_BACKENDS = (
     'core.GoogleOauth2.CustomGoogleOAuth2',  # Google OAuth
@@ -301,6 +283,33 @@ SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'https://localhost/api/social-auth/complete/i
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
+
+
+
+
+# Caching Configuration (for game state and other cache needs)
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',  # Using Redis database 1 for caching
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+
+# settings.py
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'prompt': 'consent',
+}
+
+# Add this if you're using social-auth-app-django
+SOCIAL_AUTH_ALLOWED_REDIRECT_HOSTS = [
+    'localhost:5173',
+    '10.12.2.9:5173',
+]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'email', 

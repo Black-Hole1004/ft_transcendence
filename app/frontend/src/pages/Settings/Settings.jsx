@@ -35,6 +35,7 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 const Settings = () => {
 
 	const { refreshUserData , fetchUser } = useSocket()
+
 	const dialogRef = useRef(null)
 	const [twoFactorAuthEnabled, setTwoFactorAuthEnabled] = useState(false)
 
@@ -47,6 +48,10 @@ const Settings = () => {
 	const closeDialog = () => {
 		dialogRef.current.close()
 	}
+
+	// const handle2FAModal = () => {
+	// 	openDialog()
+	// }
 
 	// const handle2FAModal = () => {
 	// 	openDialog()

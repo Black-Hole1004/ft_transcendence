@@ -181,15 +181,6 @@ const LocalGame = () => {
 		setWinner(null)
 	}
 
-	// const gameOver = () => {
-	// 	setIsGameOver(true)
-	// 	setIsPaused(true)
-	// 	setShowRestartPopup(true)
-	// 	setWinner(getWinner())
-	// 	setShowConfetti(true)
-	// 	setTimeout(() => setShowConfetti(false), 5000) // Stop confetti after 5 seconds
-	// }
-
 	const gameOver = () => {
 		const winner = getWinner();
 

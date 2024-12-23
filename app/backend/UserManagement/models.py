@@ -31,6 +31,47 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+class Achievement:
+    LEVELS = [
+        {'name': 'NOVICE ASTRONAUT', 'xp': 0, 'image': '/badges/novice.png'},
+        {'name': 'COSMIC EXPLORER', 'xp': 2000, 'image': '/badges/cosmic.png'},
+        {'name': 'STELLAR VOYAGER', 'xp': 4000, 'image': '/badges/stellar.png'},
+        {'name': 'GALACTIC TRAILBLAZER', 'xp': 6000, 'image': '/badges/galactic.png'},
+        {'name': 'CELESTIAL MASTER', 'xp': 8000, 'image': '/badges/celestial.png'}
+    ]
+
+    @staticmethod
+    def get_badge(xp):
+        for level in reversed(Achievement.LEVELS):
+            if xp >= level['xp']:
+                return level
+        return Achievement.LEVELS[0]
+
+    @staticmethod
+    def get_badge_progress(xp):
+        # Get thresholds
+        thresholds = [0, 2000, 4000, 6000, 8000, 10000]
+        
+        # Find current level
+        current_threshold = 0
+        next_threshold = 2000
+        for i in range(len(thresholds)-1):
+            if thresholds[i] <= xp < thresholds[i+1]:
+                current_threshold = thresholds[i]
+                next_threshold = thresholds[i + 1]
+                break
+
+        # Calculate progress
+        progress = xp - current_threshold
+        total_range = next_threshold - current_threshold
+        progress_percentage = (progress / total_range) * 100
+
+        return {
+            'current_threshold': current_threshold,
+            'next_threshold': next_threshold,
+            'progress_percentage': min(progress_percentage, 100)
+        }
+
 class User(AbstractBaseUser, PermissionsMixin):
 
     status_choices = [
@@ -50,6 +91,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     display_name = models.CharField(max_length=30, default='', blank=True)
     bio = models.TextField(default='', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/avatar.jpg')
+
+    # added by tabi3a
+    xp = models.IntegerField(default=0)
+    
+    # Game statistics
+    won_games_count = models.IntegerField(default=0)    # Instead of games_won
+    lost_games_count = models.IntegerField(default=0)   # Instead of games_lost
+    total_games_count = models.IntegerField(default=0)  # Track total games
+    
     is_logged_with_oauth = models.BooleanField(default=False)
 
     has_custom_username = models.BooleanField(default=False)
