@@ -40,12 +40,12 @@ const RemotePlayer = (props) => {
 
 	return (
 		<div
-			className={`${props.id === 1 ? 'left-0' : 'right-0'} max-lg:-bottom-10
+			className={`${props.id === 1 ? 'left-0' : 'right-0'} max-lg:-bottom-10 max-lg:top-full
 			absolute flex flex-col items-center ${props.isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 		>
 			<img
 				src={profileImageUrl}
-				className='rounded-full border-2 border-primary user-photo'
+				className='rounded-full aspect-square object-cover ring-1 ring-primary user-photo'
 				alt='user photo'
 				onError={(e) => {
 					e.target.src = '/assets/images/default-avatar.png'
