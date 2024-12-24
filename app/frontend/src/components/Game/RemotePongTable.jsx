@@ -201,12 +201,12 @@ const RemotePongTable = ({
     }, [isPaused, isUpPressed, isDownPressed, onPaddleMove]);
 
     return (
-        <div ref={containerRef} className="flex flex-col items-center gap-7 max-lg:order-first max-lg:w-full">
+        <div ref={containerRef} className="relative flex flex-col items-center lp:gap-7 gap-3 max-lg:w-full">
             <canvas
                 ref={canvasRef}
                 width={canvasSize.width}
                 height={canvasSize.height}
-                className={`game-table border ${isPaused ? 'brightness-[80%]' : 'brightness-[1]'}`}
+                className={`game-table aspect-video border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
                 style={{ 
                     borderRadius: '25px', 
                     width: '100%', 
@@ -217,6 +217,16 @@ const RemotePongTable = ({
                     backgroundImage: `url('/assets/images/tables/table${backgroundId}.png')`,
                 }}
             />
+            {isPaused && (
+                <div>
+                    <p
+                        className='text-[100px] font-dreamscape text-center leading-[1.01] game-paused
+                    absolute transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+                    >
+                        GAME PAUSED
+                    </p>
+                </div>
+			)}
             {!isGameOver && (
                 <button
                     onClick={handlePause}
