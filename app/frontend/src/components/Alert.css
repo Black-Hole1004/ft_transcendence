@@ -1,7 +1,0 @@
-.alert button, span {
-	font-size: clamp(0.75rem, 0.265vw + 0.7rem, 1.125rem);
-}
-
-.alert-icon {
-	width: clamp(1.25rem, 0.221vw + 1.209rem, 1.563rem);
-}

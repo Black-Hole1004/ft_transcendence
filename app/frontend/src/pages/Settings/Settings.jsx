@@ -23,7 +23,7 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 				name={id}
 				type={type}
 				placeholder={placeholder}
-				className='inputs border border-border rounded-lg bg-[rgb(183,170,156,8%)]
+				className='inputs border border-border rounded bg-[rgb(183,170,156,8%)] transition-all duration-300
 				placeholder:text-border placeholder:font-regular placeholders outline-none max-ms:w-[80%]'
 				onChange={onChange}
 				value={value || ''}
@@ -61,7 +61,7 @@ const Settings = () => {
 		if (!twoFactorAuthEnabled) {
 			setTwoFactorAuthEnabled(true)
 		} else {
-			console.log(twoFactorAuthEnabled)
+			// console.log(twoFactorAuthEnabled)
 			openDialog()
 		}
 	}
@@ -267,7 +267,7 @@ const Settings = () => {
 	return (
 		<>
 			<section className='flex justify-center'>
-				<div className='s max-tb:h-auto card-margin w-full lg:border-2 border border-primary rounded-3xl'>
+				<div className='s max-tb:h-auto card-margin w-full border border-primary rounded-3xl'>
 					<div className='flex items-center card-header sections-ml'>
 						<h1 className='font-dreamscape-sans text-primary leading-[1]'>Settings</h1>
 					</div>
@@ -297,12 +297,12 @@ const Settings = () => {
 									type='file'
 									id='profile_picture'
 									name='profile_picture'
-									style={{ display: 'none' }}
+									className='hidden'
 									onChange={handleImageChange}
 								/>
 								<Button
 									className={
-										'rounded-md border-border font-regular buttons-text update-button'
+										'rounded border border-border font-medium buttons-text update-button'
 									}
 									onClick={handleUploadClick}
 								>
@@ -310,7 +310,7 @@ const Settings = () => {
 								</Button>
 								<Button
 									className={
-										'rounded-md border-border font-regular buttons-text remove-button'
+										'rounded border border-border font-medium buttons-text remove-button'
 									}
 									onClick={handleRemoveImage}
 								>
@@ -417,7 +417,7 @@ const Settings = () => {
 											placeholder={bio}
 											maxLength={'250'}
 											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
-										max-ms:w-full outline-none placeholders placeholder:text-border'
+										max-ms:w-full outline-none placeholders placeholder:text-border transition-all duration-300'
 											onChange={handleInputChange}
 											value={bio}
 										></textarea>
@@ -469,7 +469,7 @@ const Settings = () => {
 							<div className='flex gap-4'>
 								<Button
 									className={
-										'rounded-md border-border font-regular buttons-text remove-button'
+										'rounded border border-border font-medium buttons-text remove-button'
 									}
 									type='submit'
 									onClick={enableDesable2FA}
@@ -490,7 +490,7 @@ const Settings = () => {
 						<Button
 							id={'resetButton'}
 							className={
-								'rounded-md border-border font-regular buttons-text remove-button'
+								'rounded border border-border font-medium buttons-text remove-button'
 							}
 							onClick={() => window.location.reload()}
 						>
@@ -498,7 +498,7 @@ const Settings = () => {
 						</Button>
 						<Button
 							className={
-								'rounded-md border-border font-regular buttons-text remove-button'
+								'rounded border border-border font-medium buttons-text remove-button'
 							}
 							type='submit'
 							onClick={update_user}

@@ -2,8 +2,13 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { useEffect, useState, useRef } from 'react'
 
-const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationKey }) => {
-	const [width, setWidth] = useState(0)
+const Footer = ({
+	sendConversationMessage,
+	messageInputRef,
+	handleMessageKeyPress,
+	conversationKey,
+}) => {
+	const [width, setWidth] = useState(window.innerWidth)
 	const [showEmoji, setShowEmoji] = useState(false)
 	const emojiPickerRef = useRef(null)
 	const emojiButtonRef = useRef(null)
@@ -38,11 +43,11 @@ const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationK
 			arr.push('0x' + element)
 		})
 		let emoji = String.fromCodePoint(...arr)
-		currentMessage.current.value += emoji
+		messageInputRef.current.value += emoji
 	}
 
 	useEffect(() => {
-		currentMessage.current.focus()
+		messageInputRef.current.focus()
 	}, [conversationKey])
 
 	const toggleEmojiPicker = () => {
@@ -56,54 +61,46 @@ const Footer = ({ sendChatMessage, currentMessage, handleKeyPress, conversationK
 					className='flex justify-between w-[90%] max-lp:gap-1 chat-input-container 
 			border border-border border-chat rounded-[50px]'
 				>
-					<button>
-						<img
-							src='/assets/images/icons/paperclip.svg'
-							className='select-none'
-							alt='paperclip-icon'
-						/>
-					</button>
 					<input
 						type='text'
 						maxLength={1000}
 						name='chat-input'
 						autoComplete='off'
-						ref={currentMessage}
-						onKeyDown={handleKeyPress}
+						ref={messageInputRef}
+						onKeyDown={handleMessageKeyPress}
 						placeholder='Type your message here...'
 						className='myDiv w-[85%] chat-input bg-transparent placeholder:text-light outline-none text-[15px]'
 					/>
-					<button ref={emojiButtonRef} className='relative'>
-						<img
-							src='/assets/images/icons/emoji.svg'
-							onClick={toggleEmojiPicker}
-							className='select-none hover:brightness-125 hover:scale-110 duration-200 '
-							alt='emojies-icon'
-						/>
-						{showEmoji && (
-							<div ref={emojiPickerRef} className='absolute bottom-full right-0'>
-								<Picker
-									style={{
-										backgroundColor: '#fff',
-									}}
-									data={data}
-									theme={'dark'}
-									icons={'outline'}
-									onEmojiSelect={addEmoji}
-									previewPosition={'none'}
-									skinTonePosition={'search'}
-									perLine={`${width > 420 ? 9 : width > 380 ? 8 : 6}`}
-								/>
-							</div>
-						)}
-					</button>
-					<button type='submit' onClick={sendChatMessage}>
-						<img
-							src='/assets/images/icons/send-icon.svg'
-							className='select-none hover:brightness-125 hover:scale-110 hover:rotate-45 duration-200 '
-							alt='send-icon'
-						/>
-					</button>
+					<div className='flex justify-center items-center gap-4'>
+						<button ref={emojiButtonRef} className='relative'>
+							<img
+								src='/assets/images/icons/emoji.svg'
+								onClick={toggleEmojiPicker}
+								className='select-none hover:brightness-125 hover:scale-110 duration-200 '
+								alt='emojies-icon'
+							/>
+							{showEmoji && (
+								<div ref={emojiPickerRef} className='absolute bottom-full right-0'>
+									<Picker
+										data={data}
+										theme={'dark'}
+										icons={'outline'}
+										onEmojiSelect={addEmoji}
+										previewPosition={'none'}
+										skinTonePosition={'search'}
+										perLine={`${width > 420 ? 9 : width > 380 ? 8 : 6}`}
+									/>
+								</div>
+							)}
+						</button>
+						<button type='submit' onClick={sendConversationMessage}>
+							<img
+								src='/assets/images/icons/send-icon.svg'
+								className='select-none hover:brightness-125 hover:scale-110 hover:rotate-45 duration-200 '
+								alt='send-icon'
+							/>
+						</button>
+					</div>
 				</div>
 			</div>
 		</>

@@ -1,18 +1,25 @@
-
 const Button = ({ onClick, children }) => {
 	return (
 		<button
 			onClick={onClick}
 			className={`
-			border border-primary transition duration-300 select-none
-			hover:bg-primary hover:text-secondary rounded-md font-medium message-content block-button`}
+			border border-border select-none rounded font-medium message-content block-button
+			bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]`}
 		>
 			{children}
 		</button>
 	)
 }
 
-const ConversationHeader = ({ isBlocked, setIsBlocked, recipientInfo, recipientProfileImage }) => {
+const ConversationHeader = ({
+	blockerId,
+	setBlockerId,
+	areFriends,
+	recipientInfo,
+	currentLoggedInUserId,
+	recipientProfileImage,
+}) => {
+	// console.log(blockerId)
 	return (
 		<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-20'>
 			<div className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3'>
@@ -54,10 +61,14 @@ const ConversationHeader = ({ isBlocked, setIsBlocked, recipientInfo, recipientP
 				</div>
 			</div>
 			<div className='flex lp:gap-2 gap-1'>
-				<Button onClick={() => setIsBlocked(!isBlocked)}>
-					{isBlocked ? 'Unblock' : 'Block user'}
-				</Button>
-				<Button>Invite to Play</Button>
+				{blockerId === currentLoggedInUserId && (
+					<Button onClick={() => setBlockerId(0)}>Unblock</Button>
+				)}
+				{blockerId === 0 &&
+					(areFriends ? <Button>Invite to Play</Button> : <Button>Add Friend</Button>)}
+				{blockerId === 0 && (
+					<Button onClick={() => setBlockerId(currentLoggedInUserId)}>Block user</Button>
+				)}
 			</div>
 		</div>
 	)

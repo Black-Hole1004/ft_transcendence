@@ -1,7 +1,7 @@
 function UserInfos({ recipientInfo }) {
 	return (
 		<div
-			className='lg:border-2 border-[1px] border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
+			className='border border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
 		flex lg:flex-col mtb:flex-row flex-col items-center max-lg:justify-around lg:pt-user-info-t bg-[rgba(27,22,17,0.5)]
 		lg:h-chat-user-info-lg lg:px-user-info-x-lg px-user-info-x-ms ms:py-user-info-y-ms gap-y-4'
 		>
@@ -10,7 +10,7 @@ function UserInfos({ recipientInfo }) {
 					<div className="flex lg:flex-col gap-2 max-ml:flex-col text-start">
 						<img
 							src={`${recipientInfo.profile_picture}`}
-							className='rounded-full object-cover lg:border-2 ring-1 ring-primary user-info-image select-none self-center'
+							className='rounded-full object-cover ring-1 ring-primary user-info-image select-none self-center'
 							alt='User image'
 						/>
 						<div className='flex-1 flex flex-col font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>

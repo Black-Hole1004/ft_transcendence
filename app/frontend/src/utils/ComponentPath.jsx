@@ -4,6 +4,7 @@ import useAuth from "../context/AuthContext"
 //app/frontend/src/pages/Game/GameTester.jsx
 import PrivateRoute from './PrivateRoute';
 
+const Loader = React.lazy(() => import('../components/Loader/Loader'))
 const Home = React.lazy(() => import('../pages/Home/Home'))
 const Chat = React.lazy(() => import('../pages/Chat/Chat'))
 const Game = React.lazy(() => import('../pages/Game/Game'))

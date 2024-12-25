@@ -1,16 +1,11 @@
 import React, { useRef, useState } from 'react'
 import './Home.css'
-// const LazyCard = React.lazy(() => import('../../components/Home/Card/Card'))
-import Card from '../../components/Home/Card/Card'
+const Card = React.lazy(() => import('../../components/Home/Card/Card'))
+// import Card from '../../components/Home/Card/Card'
 import Header from '../../components/Home/Header/Header'
 import Button from '../../components/Home/Buttons/Button'
-import useAuth from '../../context/AuthContext'
-import Layout from '../../components/Layout/Layout'
-import { useEffect } from 'react'
+// import useAuth from '../../context/AuthContext'
 import {AlertWrapper} from '../../components/Layout/Layout'
-
-
-
 
 const Home = () => {
 
@@ -33,7 +28,8 @@ const Home = () => {
 		openDialog()
 	}
 
-
+	const body = document.getElementsByTagName('body')[0]
+	body.classList.toggle('overflow-y-hidden')
 
 	return (
 		<>
@@ -64,7 +60,7 @@ const Home = () => {
 					<Button
 						id='get-started'
 						onClick={handleClick}
-						className='lg:rounded-xl ms:rounded-lg my-[25px]'
+						className='rounded my-[20px]'
 					>
 						Get Started
 					</Button>

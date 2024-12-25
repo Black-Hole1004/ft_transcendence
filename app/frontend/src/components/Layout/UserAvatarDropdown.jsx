@@ -58,7 +58,7 @@ function UserAvatarDropdown({ setIsDropdownOpen, user_data }) {
 			</ul>
 			<div className='h-[1px] w-[80%] bg-border self-center'></div>
 			<ul>
-				<li onClick={logout} className='flex items-center gap-4 hover:brightness-150'>
+				<li onClick={logout} className='flex items-center gap-4 hover:brightness-150 cursor-pointer'>
 					<img src='/assets/images/icons/log-out.svg' alt='logout icon' />
 					Log Out
 				</li>

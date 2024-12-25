@@ -15,42 +15,42 @@ const Profile = () => {
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
 
-    const [stats, setStats] = useState({
-        total_games: 0,
-        games_won: 0,
-        win_rate: 0,
-        xp: 0
-    });	
+	const [stats, setStats] = useState({
+		total_games: 0,
+		games_won: 0,
+		win_rate: 0,
+		xp: 0
+	});	
 	const [matchHistory, setMatchHistory] = useState([]);
 	const [achievement, setAchievement] = useState({
-        current: {
-            name: '',
-            image: '',
-            current_threshold: 0,
-            next_threshold: 0,
-            progress_percentage: 0
-        },
-        overall_progress: 0
-    });
+		current: {
+			name: '',
+			image: '',
+			current_threshold: 0,
+			next_threshold: 0,
+			progress_percentage: 0
+		},
+		overall_progress: 0
+	});
 	const fetchProfileStats = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats/`, {
-                headers: getAuthHeaders()
-            });
-            
-            const data = await response.json();
-            
-            if (response.ok) {
-                setStats(data.stats);
-                setAchievement(data.achievement);
-                setMatchHistory(data.match_history);
-            } else {
-                setError(data.error || 'Failed to fetch profile stats');
-            }
-        } catch (error) {
-            console.error('Failed to fetch profile stats:', error);
-        }
-    };
+		try {
+			const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats/`, {
+				headers: getAuthHeaders()
+			});
+			
+			const data = await response.json();
+			
+			if (response.ok) {
+				setStats(data.stats);
+				setAchievement(data.achievement);
+				setMatchHistory(data.match_history);
+			} else {
+				setError(data.error || 'Failed to fetch profile stats');
+			}
+		} catch (error) {
+			console.error('Failed to fetch profile stats:', error);
+		}
+	};
 	
 	console.log(stats);
 	console.log(matchHistory);
@@ -160,8 +160,13 @@ const Profile = () => {
 					</div>
 					<ProfileBio src={`${BASE_URL}${profile_picture}`} bio={bio} />
 					<div
+<<<<<<< HEAD
 						className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
+=======
+						className='lp:ml-about-lp flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
+						xl:gap-20 lg:gap-10 gap-3 max-lp:ml-0 mt-2'
+>>>>>>> master
 						>
 							<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} />
 							<div className='flex flex-col items-center gap-2'>
@@ -176,7 +181,8 @@ const Profile = () => {
 						</div>
 					</div>
 					{/* RANK: Achievement information and progress */}
-					<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'} bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}>
+					<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
+						bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}>
 					<div className='font-dreamscape text-primary cards-title text-center'>
 						<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
 					</div>

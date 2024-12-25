@@ -78,10 +78,6 @@
 	width: clamp(1.125rem, 0.31vw + 1.067rem, 1.563rem);
 }
 
-.infos-chart {
-	margin-left: clamp(0.5rem, 0.872vw + 0.168rem, 1.563rem);
-}
-
 .CircularProgressbar .CircularProgressbar-text {
 	font-family: 'dreamscape-sans';
 	font-size: clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem);

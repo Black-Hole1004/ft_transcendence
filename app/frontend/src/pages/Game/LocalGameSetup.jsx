@@ -121,7 +121,7 @@ const LocalGameSetup = () => {
 		<section className='flex justify-center'>
 			<div
 				className='flex max-w-[96%] max-lp:flex-col max-lp:gap-3 p-4
-				border-1.5 border-primary rounded-lg game-customization-card aspect-video'
+				border border-primary rounded game-customization-card aspect-video'
 			>
 				<GameCustomizationPanel
 					players={players}

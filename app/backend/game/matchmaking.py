@@ -97,7 +97,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
         current_user_id = current_user.id
         
         # Set timeout duration
-        TIMEOUT_SECONDS = 90
+        TIMEOUT_SECONDS = 10
         start_time = time.time()
     
         while self.matchmaking_queue[self.channel_name]['searching']:

@@ -18,7 +18,7 @@ function Header({ handleClick }) {
 				<Button
 					id='sign-up'
 					onClick={handleClick}
-					className='rounded-lg header-buttons'
+					className='rounded header-buttons'
 				>
 					Sign up
 				</Button>

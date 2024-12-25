@@ -3,7 +3,7 @@ import { MuiColorInput } from 'mui-color-input'
 const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 	const onChange = id === 'Ball' ? (e) => setDuration(e.target.value) : (e) => setValue('name', e.target.value)
 	return (
-		<div className='flex flex-col gap-2'>
+		<div className='flex-1 flex flex-col gap-2'>
 			<h2 className='font-heavy labels text-primary'>{id}</h2>
 			<div className='flex justify-between max-ml:flex-col max-ml:gap-2'>
 				<div className='flex flex-col flex-1 ml-2'>
@@ -16,8 +16,8 @@ const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 						onChange={onChange}
 						value={`${id === 'Ball' ? duration : value.name}`}
 						placeholder={`${id === 'Ball' ? 'Game duration (seconds)' : 'Player Name'}`}
-						className='inputs border border-border rounded-lg bg-[rgb(183,170,156,8%)] placeholder:text-border
-						text-primary placeholder:font-regular placeholders outline-none w-[90%]'
+						className='inputs border border-border rounded bg-[rgb(183,170,156,8%)] placeholder:text-border
+						text-primary placeholder:font-regular placeholders outline-none w-[90%] transition-all duration-300'
 						required
 					/>
 				</div>
@@ -35,7 +35,8 @@ const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 						sx={{
 							// Border
 							border: 1,
-							borderRadius: 2,
+							outline: 'none',
+							borderRadius: 1,
 							borderColor: '#646464',
 
 							// Colors
@@ -69,7 +70,7 @@ const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 
 							'& .MuiColorInput-Button': {
 								padding: '0px',
-								borderRadius: '20%',
+								borderRadius: 1,
 								width: 'clamp(1.125rem, 0.265vw + 1.075rem, 1.5rem)',
 								height: 'clamp(1.125rem, 0.265vw + 1.075rem, 1.5rem)',
 							},

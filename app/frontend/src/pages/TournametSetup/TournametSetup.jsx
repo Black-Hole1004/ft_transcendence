@@ -3,8 +3,15 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { GAME_CONSTRAINTS } from '../../constants/gameConstants'
 
+<<<<<<< HEAD
 import GameCustomizationPanel from '../../components/Game/Local/GameCustomizationPanel'
 import GamePreparationPanelT from '../../components/Game/Local/GamePreparationPanelT'
+=======
+import Inputs from '../../components/Game/Local/Inputs'
+import Checkbox from '@mui/material/Checkbox'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import GamePreview from '../../components/Game/Local/GamePreview'
+>>>>>>> master
 
 const TournamentSetup = () => {
 	const navigate = useNavigate()
@@ -34,6 +41,7 @@ const TournamentSetup = () => {
 			name: '',
 			color: GAME_CONSTRAINTS.COLORS.DEFAULT,
 		},
+<<<<<<< HEAD
         player3: {
             name: '',
             color: GAME_CONSTRAINTS.COLORS.DEFAULT,
@@ -42,6 +50,16 @@ const TournamentSetup = () => {
             name: '',
             color: GAME_CONSTRAINTS.COLORS.DEFAULT,
         },
+=======
+		player3: {
+			name: '',
+			color: GAME_CONSTRAINTS.COLORS.DEFAULT,
+		},
+		player4: {
+			name: '',
+			color: GAME_CONSTRAINTS.COLORS.DEFAULT,
+		},
+>>>>>>> master
 	})
 
 	const { backgroundId } = location.state || {}
@@ -82,8 +100,13 @@ const TournamentSetup = () => {
 					backgroundId: gameConfig.isBackgroundVisible ? backgroundId : null,
 					player1: { name: players.player1.name, color: players.player1.color },
 					player2: { name: players.player2.name, color: players.player2.color },
+<<<<<<< HEAD
                     player3: { name: players.player3.name, color: players.player3.color },
                     player4: { name: players.player4.name, color: players.player4.color },
+=======
+					player3: { name: players.player3.name, color: players.player3.color },
+					player4: { name: players.player4.name, color: players.player4.color },
+>>>>>>> master
 				},
 			})
 		}
@@ -103,6 +126,7 @@ const TournamentSetup = () => {
 				name: generateRandomName(),
 				color: generateRandomColor(),
 			},
+<<<<<<< HEAD
             player3: {
                 name: generateRandomName(),
                 color: generateRandomColor(),
@@ -111,6 +135,16 @@ const TournamentSetup = () => {
                 name: generateRandomName(),
                 color: generateRandomColor(),
             },
+=======
+			player3: {
+				name: generateRandomName(),
+				color: generateRandomColor(),
+			},
+			player4: {
+				name: generateRandomName(),
+				color: generateRandomColor(),
+			},
+>>>>>>> master
 		})
 		updateGameConfig('ball', { ...gameConfig.ball, color: generateRandomColor() })
 	}
@@ -125,6 +159,7 @@ const TournamentSetup = () => {
 				name: '',
 				color: GAME_CONSTRAINTS.COLORS.DEFAULT,
 			},
+<<<<<<< HEAD
             player3: {
                 name: '',
                 color: GAME_CONSTRAINTS.COLORS.DEFAULT,
@@ -133,6 +168,16 @@ const TournamentSetup = () => {
                 name: '',
                 color: GAME_CONSTRAINTS.COLORS.DEFAULT,
             },
+=======
+			player3: {
+				name: '',
+				color: GAME_CONSTRAINTS.COLORS.DEFAULT,
+			},
+			player4: {
+				name: '',
+				color: GAME_CONSTRAINTS.COLORS.DEFAULT,
+			},
+>>>>>>> master
 		})
 		setGameConfig({
 			paddle: {
@@ -150,6 +195,7 @@ const TournamentSetup = () => {
 	return (
 		<section className='flex justify-center'>
 			<div
+<<<<<<< HEAD
 				className='flex max-w-[96%] max-lp:flex-col max-lp:gap-3 p-4
 				border-1.5 border-primary rounded-lg game-customization-card aspect-video'
 			>
@@ -169,6 +215,111 @@ const TournamentSetup = () => {
 					onGameConfigUpdate={updateGameConfig}
 					onRandomize={generateRandomConfigurations}
 				/>
+=======
+				className='flex max-w-[96%] flex-col tb:gap-4 gap-2 p-4
+				border border-primary rounded game-customization-card aspect-video'
+			>
+				<div className='flex-1 flex flex-col'>
+					<h3 className='title-size font-heavy text-2xl mt-5 mb-6'>Prepare for Battle</h3>
+					<div
+						onSubmit={handleSubmit}
+						className='flex-1 flex flex-col max-lp:gap-12 justify-between'
+					>
+						<div className='flex flex-col gap-4'>
+							<div className='flex justify-between max-tb:flex-col gap-2'>
+								<Inputs
+									id={'Player 1'}
+									value={players.player1}
+									setValue={(field, value) => updatePlayerConfig('player1', field, value)}
+									/>
+								<Inputs
+									id={'Player 2'}
+									value={players.player2}
+									setValue={(field, value) => updatePlayerConfig('player2', field, value)}
+									/>
+							</div>
+							<div className='flex justify-between max-tb:flex-col gap-2'>
+								<Inputs
+									id={'Player 3'}
+									value={players.player3}
+									setValue={(field, value) => updatePlayerConfig('player3', field, value)}
+								/>
+								<Inputs
+									id={'Player 4'}
+									value={players.player4}
+									setValue={(field, value) => updatePlayerConfig('player4', field, value)}
+									/>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div className='flex-1 flex flex-col justify-between max-lp:gap-7'>
+					<div className='flex max-tb:flex-col gap-2'>
+						<div className='flex-1 labels font-medium text-primary max-tb:order-2'>
+							<FormControlLabel
+								control={
+									<Checkbox
+										onChange={(e) =>
+											updateGameConfig('isBackgroundVisible', !e.target.checked)
+										}
+										sx={{
+											'& .MuiSvgIcon-root': {
+												fontSize: 'clamp(1rem, 0.177vw + 0.967rem, 1.25rem)',
+											},
+											color: '#FBFBEE',
+											'&.Mui-checked': {
+												color: '#FBFBEE',
+											},
+										}}
+									/>
+								}
+								label='Remove Background' // font-family
+							/>
+							<GamePreview players={players} gameConfig={gameConfig} backgroundId={backgroundId} />
+						</div>
+						<div className='flex-1 flex flex-col justify-between'>
+							<div className='max-tb:mb-10'>
+								<Inputs
+									id={'Ball'}
+									value={gameConfig.ball}
+									duration={gameConfig.duration}
+									setDuration={(duration) => updateGameConfig('duration', duration)}
+									setValue={(value) =>
+										updateGameConfig('ball', { ...gameConfig.ball, color: value })
+									}
+								/>
+							</div>
+							<div className='flex flex-col gap-2 ml-2'>
+								<button
+									type='button'
+									onClick={generateRandomConfigurations}
+									className='font-medium labels w-full p-2 border border-border text-primary rounded
+									bg-[rgb(183,170,156,8%)] transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]'
+									>
+									Generate Random Values
+								</button>
+								<button
+									type='button'
+									onClick={resetConfigurations}
+									className='font-medium labels w-full p-2 border border-border text-primary rounded
+									bg-[rgb(183,170,156,8%)] transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]'
+								>
+									Reset to Default
+								</button>
+
+								<button
+									type='submit'
+									className='font-dreamscape labels w-full p-2 bg-primary text-secondary rounded brightness-90
+									hover:scale-[1.02] hover:brightness-100 transition duration-200 ease-in'
+									>
+									Start Tournament
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+>>>>>>> master
 			</div>
 		</section>
 	)

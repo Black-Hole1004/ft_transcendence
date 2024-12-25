@@ -16,19 +16,20 @@ import useAuth from '../../context/AuthContext.jsx'
 const API_CHAT = import.meta.env.VITE_API_CHAT
 
 const Chat = () => {
-	const location = useLocation()
+	const currentLocation = useLocation()
 	const navigate = useNavigate()
 	const { getAuthHeaders } = useAuth()
 
 	const webSocketRef = useRef(null)
-	const currentMessage = useRef(null)
+	const messageInputRef = useRef(null)
 
-	const [isBlocked, setIsBlocked] = useState(false)
-	const [chatMessages, setChatMessages] = useState([])
-	const [currentUserId, setCurrentUserId] = useState(0)
+	const [blockerId, setBlockerId] = useState(null)
+	const [areFriends, setAreFriends] = useState(false)
 	const [recipientInfo, setRecipientInfo] = useState(null)
-	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [conversationKey, setConversationKey] = useState(null)
+	const [conversationMessages, setConversationMessages] = useState([])
+	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0)
+	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
 
 	// const { triggerAlert } = useAlert()
@@ -38,20 +39,60 @@ const Chat = () => {
 	// }
 
 	useEffect(() => {
+		console.log('here')
+		console.log('blocker id: ', blockerId)
+		const sendBlockMessage = () => {
+			webSocketRef.current?.send(
+				JSON.stringify({
+					message_type: 'block',
+					blocker_id: blockerId,
+					conversation_key: conversationKey,
+				})
+			)
+		}
+
+		sendBlockMessage()
+	}, [blockerId])
+
+	useEffect(() => {
+		const friendshipStatus = async () => {
+			try {
+				if (conversationKey) {
+					const response = await axios.get(`${API_CHAT}status/${conversationKey}/`, {
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: getAuthHeaders().Authorization,
+						},
+					})
+					setAreFriends(response.data.status)
+					setBlockerId(response.data.blocked_by)
+				}
+			} catch (error) {
+				console.error('Error fetching friendship status:', error)
+			}
+		}
+
+		if (conversationKey) {
+			friendshipStatus()
+		}
+	}, [conversationKey, blockerId])
+
+	useEffect(() => {
 		// Extract conversation key from URL
 		const uri = window.location.pathname.split('/').slice(2, 3)
 		if (uri.length === 1) {
-			setChatMessages([])
+			setConversationMessages([])
 			setConversationKey(uri[0])
+			setBlockerId(0)
 			setIsConversationLoaded(true)
 		} else {
 			setIsConversationLoaded(false)
 		}
-	}, [location.pathname])
+	}, [currentLocation.pathname])
 
 	useEffect(() => {
 		const onWebSocketOpen = () => {
-			console.log('WebSocket connected')
+			// console.log('WebSocket connected')
 			if (isConversationLoaded) {
 				webSocketRef.current?.send(
 					JSON.stringify({
@@ -63,7 +104,7 @@ const Chat = () => {
 		}
 
 		const onWebSocketClose = () => {
-			console.log('WebSocket disconnected')
+			// console.log('WebSocket disconnected')
 			webSocketRef.current = null
 			setTimeout(initializeWebSocket, 3000)
 		}
@@ -71,14 +112,20 @@ const Chat = () => {
 		const onWebSocketMessage = (e) => {
 			console.log('WebSocket message received')
 			const data = JSON.parse(e.data)
-			setChatMessages((prevMessages) => [
-				...prevMessages,
-				{
-					sender_id: data.sender,
-					content: data.message,
-					sent_datetime: data.timestamp,
-				},
-			])
+			// console.log(data.event)
+			if (data.event === 'message') {
+				setConversationMessages((prevMessages) => [
+					...prevMessages,
+					{
+						sender_id: data.sender,
+						content: data.message,
+						sent_datetime: data.timestamp,
+					},
+				])
+			} else if (data.event === 'block') {
+				console.log('socket: ', data.blocker_id)
+				setBlockerId(data.blocker_id)
+			}
 		}
 
 		const initializeWebSocket = () => {
@@ -98,7 +145,7 @@ const Chat = () => {
 
 		return () => {
 			if (webSocketRef.current) {
-				console.log('cleanup running')
+				// console.log('cleanup running')
 				const ws = webSocketRef.current
 
 				ws.removeEventListener('open', onWebSocketOpen)
@@ -123,7 +170,7 @@ const Chat = () => {
 					})
 					setRecipientInfo(response.data.user_infos[0])
 					const messages = response.data.messages ? response.data.messages : []
-					setChatMessages(messages)
+					setConversationMessages(messages)
 					setrecipientProfileImage(response.data.user_infos[0].profile_picture)
 				}
 			} catch (error) {
@@ -137,33 +184,32 @@ const Chat = () => {
 		}
 	}, [conversationKey, getAuthHeaders])
 
-	const handleKeyPress = (e) => {
+	const handleMessageKeyPress = (e) => {
 		if (e.key === 'Enter') {
-			sendChatMessage()
+			sendConversationMessage()
 		}
 	}
 
-	const sendChatMessage = () => {
+	const sendConversationMessage = () => {
 		let ws = webSocketRef.current
 
 		if (ws && ws.readyState === WebSocket.OPEN) {
-			const value = currentMessage.current.value.trim()
+			const value = messageInputRef.current.value.trim()
 
 			if (value !== '') {
 				ws.send(
 					JSON.stringify({
-						sender: currentUserId,
+						sender: currentLoggedInUserId,
 						message: value,
 						message_type: 'message',
 						conversation_key: conversationKey,
 					})
 				)
-				currentMessage.current.value = ''
+				messageInputRef.current.value = ''
 				// handleSubmit()
 			}
 		}
 	}
-	console.log('chat')
 
 	return (
 		<section
@@ -171,16 +217,17 @@ const Chat = () => {
 			${conversationKey ? 'lg:justify-between' : 'lg:justify-center'}`}
 		>
 			<div
-				className='flex tb:flex-row flex-col lg:border-2 tb:border tb:items-center
-						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1'
+				className='flex tb:flex-row flex-col tb:border tb:items-center border-primary
+						lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1 overflow-hidden'
 			>
 				{/* Chat History Component */}
 				<ChatHistory
-					currentUserId={currentUserId}
-					setCurrentUserId={setCurrentUserId}
-					chatMessages={chatMessages}
+					setBlockerId={setBlockerId}
 					conversationKey={conversationKey}
 					setConversationKey={setConversationKey}
+					conversationMessages={conversationMessages}
+					currentLoggedInUserId={currentLoggedInUserId}
+					setCurrentLoggedInUserId={setCurrentLoggedInUserId}
 				/>
 
 				{/* Separator */}
@@ -188,39 +235,47 @@ const Chat = () => {
 
 				{/* Chat Area */}
 				<div
-					className='tb:flex-1 flex flex-col items-center max-tb:border border-primary
-									lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
+					className='tb:w-[65.8%] flex flex-col items-center max-tb:border border-primary overflow-hidden
+						lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
 				>
 					{recipientInfo ? (
 						<>
 							{/* Chat Header */}
 							<ConversationHeader
-								isBlocked={isBlocked}
-								setIsBlocked={setIsBlocked}
+								blockerId={blockerId}
+								areFriends={areFriends}
+								setBlockerId={setBlockerId}
 								recipientInfo={recipientInfo}
+								currentLoggedInUserId={currentLoggedInUserId}
 								recipientProfileImage={recipientProfileImage}
 							/>
 
 							{/* Chat Messages */}
 							<Messages
-								isBlocked={isBlocked}
-								currentUserId={currentUserId}
-								chatMessages={chatMessages}
+								conversationMessages={conversationMessages}
 								recipientProfileImage={recipientProfileImage}
+								currentLoggedInUserId={currentLoggedInUserId}
 							/>
 
 							{/* Chat Footer */}
-							{isBlocked ? (
-								<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
-									You have blocked this user. Unblock them to resume the
-									conversation.
-								</p>
+							{blockerId ? (
+								blockerId === currentLoggedInUserId ? (
+									<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
+										You have blocked this user. Unblock them to resume the
+										conversation.
+									</p>
+								) : (
+									<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
+										You have been blocked by this user. You cannot send messages
+										until you are unblocked.
+									</p>
+								)
 							) : (
 								<Footer
-									currentMessage={currentMessage}
-									handleKeyPress={handleKeyPress}
-									sendChatMessage={sendChatMessage}
+									messageInputRef={messageInputRef}
 									conversationKey={conversationKey}
+									handleMessageKeyPress={handleMessageKeyPress}
+									sendConversationMessage={sendConversationMessage}
 								/>
 							)}
 						</>

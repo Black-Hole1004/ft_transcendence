@@ -54,6 +54,11 @@
 	padding: clamp(0.375rem, 0.177vw + 0.342rem, 0.625rem) clamp(0.438rem, 0.221vw + 0.396rem, 0.75rem);
 }
 
+.inputs:focus, .bio-input:focus {
+	outline: 1px solid #fbfbee;
+	outline-offset: 2px;
+}
+
 .placeholders {
 	font-size: clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem);
 }
@@ -72,7 +77,6 @@
 .save-button {
 	margin-right: clamp(0.75rem, 2.124vw + 0.352rem, 3.75rem);
 }
-
 
 
 

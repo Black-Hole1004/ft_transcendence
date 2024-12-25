@@ -33,7 +33,6 @@
 
 .responsive-card-button {
 	font-size: clamp(1rem, 0.182vw + 0.966rem, 1.25rem);
-	border-radius: clamp(0.75rem, 0.136vw + 0.724rem, 0.938rem);
 }
 
 .welcome-message, .create-account {
@@ -42,7 +41,6 @@
 
 .responsive-input {
 	font-size: clamp(1rem, 0.182vw + 0.966rem, 1.25rem);
-	border-radius: clamp(0.75rem, 0.136vw + 0.724rem, 0.938rem);
 	padding: 0px clamp(1.125rem, 0.182vw + 1.091rem, 1.375rem);
 }
 

@@ -839,6 +839,7 @@ def get_profile_stats(request):
         return Response({
             'error': str(e)
         }, status=500)
+<<<<<<< HEAD
 
 # leaderboard-------------------------------------------------------------
 
@@ -850,7 +851,10 @@ from django.contrib.auth import get_user_model
 from .models import Achievement
 
 User = get_user_model()
+=======
+>>>>>>> master
 
+# leaderboard-------------------------------------------------------------
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_leaderboard(request):

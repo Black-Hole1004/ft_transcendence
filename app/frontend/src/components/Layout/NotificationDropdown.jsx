@@ -1,6 +1,10 @@
 import Button from '../Home/Buttons/Button'
+<<<<<<< HEAD
 import { useEffect, useState } from 'react'
 import React from 'react'
+=======
+import React, {useEffect} from 'react'
+>>>>>>> master
 import useAuth from '../../context/AuthContext'
 import { useAlert } from '../AlertContext'
 
@@ -105,7 +109,7 @@ function NotificationDropdown({ notifications, setNotifications }) {
                                 <div className='flex items-center gap-2'>
                                     <img
                                         src={notification.profile_picture}
-                                        className='mtb:border border-0.7 border-primary rounded-full'
+                                        className='mtb:border border-0.7 border-primary rounded-full notification-img'
                                         alt='User Avatar'
                                     />
                                     {
@@ -134,7 +138,15 @@ function NotificationDropdown({ notifications, setNotifications }) {
                         </React.Fragment>
                     ))
                 ) : (
-                    <p>No notifications</p>
+                    <div className='flex-1 flex flex-col justify-center items-center'>
+						<img
+							src='/assets/images/emptyStates/notifications.svg'
+							className='w-[50%]'
+							alt='notification empty state'
+						/>
+						<h2 className=''>No notifications</h2>
+						<p className='font-regular bio'>Notification Inbox Empty</p>
+					</div>
                 )}
             </div>
         </>

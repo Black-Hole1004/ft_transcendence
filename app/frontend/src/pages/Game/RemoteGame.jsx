@@ -206,13 +206,11 @@ const RemoteGame = () => {
 	};
 
 	return (
-		<div
-			className={`backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-35' : 'bg-backdrop-40'}`}
-		>
-			<section className='flex'>
-				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
+		<>
+			<section className={`relative flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}>
+				<div className='flex flex-col'>
 					{/* Game controls */}
-					<div className='flex gap-4'>
+					{/* <div className='flex justify-center gap-4'>
 						{!isGameOver && (
 							<>
 								<button onClick={handleReady} className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-2 px-6 rounded-full transition duration-300'>
@@ -223,7 +221,7 @@ const RemoteGame = () => {
 								</button>
 							</>
 						)}
-					</div>
+					</div> */}
 
 					{/* Score and Timer */}
 					<GameScore
@@ -232,18 +230,27 @@ const RemoteGame = () => {
 						isPaused={isPaused}
 					/>
 					<Timer isPaused={isPaused} timeRemaining={timeRemaining} />
+				</div>
 
 					{/* Main game area */}
-					<div className='flex-1 w-full flex max-lg:flex-wrap max-lg:justify-around justify-between font-dreamscape-sans'>
+					<div className='relative w-full flex justify-center font-dreamscape-sans'>
 						{/* Left side - Always opponent */}
 						<RemotePlayer
+							id={1}
 							isPaused={isPaused}
 							PlayerName={leftPlayer.username}
 							BadgeName={leftPlayer.badge?.name}
 							playerImage={leftPlayer.profile_picture}
 							badgeImage={leftPlayer.badge?.image}
 						/>
-
+						<RemotePlayer
+							id={2}
+							isPaused={isPaused}
+							PlayerName={rightPlayer.username}
+							BadgeName={rightPlayer.badge?.name}
+							playerImage={rightPlayer.profile_picture}
+							badgeImage={rightPlayer.badge?.image}
+						/>
 						<RemotePongTable
 							gameState={gameState}  // gameState is an object with keys: ball, player1, player2, time_remaining
 							onPaddleMove={handlePaddleMove}
@@ -256,15 +263,7 @@ const RemoteGame = () => {
 							pausingPlayer={pausingPlayer}
 						/>
 						{/* Right side - Always current player */}
-						<RemotePlayer
-							isPaused={isPaused}
-							PlayerName={rightPlayer.username}
-							BadgeName={rightPlayer.badge?.name}
-							playerImage={rightPlayer.profile_picture}
-							badgeImage={rightPlayer.badge?.image}
-						/>
 					</div>
-				</div>
 			</section>
 
 			{showRestartPopup && (
@@ -277,7 +276,7 @@ const RemoteGame = () => {
 				/>
 			)}
 			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
-		</div>
+		</>
 	)
 }
 
