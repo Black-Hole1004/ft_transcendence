@@ -6,9 +6,10 @@ const Leaderboard = ({ users }) => {
 	const navigate = useNavigate();
 	if (!users) return <div>Loading...</div>;
 
-	const handleUserClick = (username) => {
-		navigate('/profile', { state: { username } });
+	const handleUserClick = (profile_name) => {
+		navigate(`/users/${profile_name}`);
 	};
+
 
 	return (
 		<div className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border-1.5
@@ -17,9 +18,12 @@ const Leaderboard = ({ users }) => {
 			<h1 className='font-dreamscape-sans card-title'>LEADERBOARD</h1>
 			<div className='w-[96%] overflow-y-auto users'>
 				{users.map((user, index) => (
-					<div onClick={() => handleUserClick(user.username)} className="cursor-pointer" key={user.id}>
+					<div
+						key={user.id}
+						onClick={() => handleUserClick(user.username)}
+						className="cursor-pointer"
+					>
 						<UserLeaderboard
-							key={user.id}
 							rank={index + 1}
 							nickname={user.username}
 							achievement={user.achievement.name.toLowerCase()}

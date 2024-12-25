@@ -1,22 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
-import './Profile.css'
+import './UserProfile.css'
 import { Link } from 'react-router-dom'
-import MatchStats from '../../components/Profile/MatchStats'
-import ProfileBio from '../../components/Profile/ProfileBio'
-import ProgressBar from '../../components/Profile/ProgressBar'
-import AboutSection from '../../components/Profile/AboutSection'
-import UserStatsGraph from '../../components/Profile/UserStatsGraph'
+import MatchStats from '../../components/UserProfile/MatchStats'
+import ProfileBio from '../../components/UserProfile/ProfileBio'
+import ProgressBar from '../../components/UserProfile/ProgressBar'
+import AboutSection from '../../components/UserProfile/AboutSection'
+import UserStatsGraph from '../../components/UserProfile/UserStatsGraph'
 import useAuth from '../../context/AuthContext'
-import { useLocation } from 'react-router-dom'
+
 
 const USER_API = import.meta.env.VITE_USER_API
 const BASE_URL = import.meta.env.VITE_BASE_URL
+const GET_USER_PROFILE_BY_USERNAME = import.meta.env.VITE_GET_USER_PROFILE_BY_USERNAME
 import { useParams } from 'react-router-dom'
 
 
-const Profile = () => {
-	const { username_fetched } = useParams();
-	console.log(username_fetched);
+const UserProfile = () => {
+	const { profile_name } = useParams();
+	
 	const { authTokens, logout, getAuthHeaders } = useAuth()
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
@@ -56,9 +57,6 @@ const Profile = () => {
 		}
 	};
 
-	console.log(stats);
-	console.log(matchHistory);
-	console.log(achievement);
 
 	
 	useEffect(() => {
@@ -96,9 +94,9 @@ const Profile = () => {
 		profile_picture: '',
 	})
 
-	const fetchUser = async () => {
+	const fetchUserByUserName = async (profile_name) => {
 		try {
-			const response = await fetch(USER_API, {
+			const response = await fetch(`${GET_USER_PROFILE_BY_USERNAME}${profile_name}/`, {
 				method: 'GET',
 				headers: getAuthHeaders(),
 			})
@@ -118,13 +116,13 @@ const Profile = () => {
 	}
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const fetchedData = await fetchUser();
-			if (fetchedData)
-				setUser(fetchedData);
-		};
-		fetchData();
-		fetchProfileStats();
+		fetchUserByUserName(profile_name).then((data) => {
+            if (data) {
+                setUser(data)
+            }
+        })
+
+        // fetchProfileStats()
 	}, []);
 
 	useEffect(() => {
@@ -139,6 +137,10 @@ const Profile = () => {
 		setBio(user.bio);
 		setProfile_picture(user.profile_picture);
 	}, [user]);
+
+    console.log('user ----------->', user)
+
+    // import '../../../dist/assets/images/icons/arrow.svg'
 
 	/************************************************************************ */
 
@@ -155,7 +157,7 @@ const Profile = () => {
 					<div className='font-dreamscape text-primary cards-title text-center relative'>
 						<Link to={'/dashboard'}>
 							<img
-								src='./assets/images/icons/arrow.svg'
+								src='../../../dist/assets/images/icons/arrow.svg'
 								className='arrow absolute left-[4%]'
 								alt='arrow icon'
 							/>
@@ -178,7 +180,10 @@ const Profile = () => {
 							</div>
 						</div>
 					</div>
-					<UserStatsGraph />
+                    {
+                        console.log('username ----------->', user.username || 'No username')
+                    }
+					<UserStatsGraph profile_name={ user.username} />
 				</div>
 				{/* RANK: Achievement information and progress */}
 				<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
@@ -253,4 +258,5 @@ const Profile = () => {
 	)
 }
 
-export default Profile
+
+export default UserProfile

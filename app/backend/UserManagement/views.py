@@ -962,13 +962,19 @@ def get_user_data(request):
 class GetUserByUserName(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, username):
+    def get(self, request, profile_name):
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(username=profile_name)
             data = {
                 'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
                 'username': user.username,
                 'email': user.email,
+                'bio': user.bio,
+                'mobile_number': user.mobile_number,
+                'profile_picture': user.profile_picture.url if hasattr(user, 'profile_picture') and user.profile_picture else None,
+
                 # 'xp': user.xp,
                 # 'profile_picture': user.profile_picture.url if user.profile_picture else None,
                 # 'achievement': Achievement.get_badge(user.xp)
@@ -977,21 +983,15 @@ class GetUserByUserName(APIView):
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
+class GetTimeSpentByUserName(APIView):
+    permission_classes = [IsAuthenticated]
 
-# class GetUserProfileView(APIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def get(self, request, username):
-#         try:
-#             user = User.objects.get(username=username)
-#             data = {
-#                 'id': user.id,
-#                 'username': user.username,
-#                 'email': user.email,
-#                 # 'xp': user.xp,
-#                 # 'profile_picture': user.profile_picture.url if user.profile_picture else None,
-#                 # 'achievement': Achievement.get_badge(user.xp)
-#             }
-#             return Response(data)
-#         except User.DoesNotExist:
-#             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    def get(self, request, profile_name):
+        try:
+            user = User.objects.get(username=profile_name)
+            sessions = UserSession.objects.filter(user=user)
+            return JsonResponse({
+                'data': list(sessions)
+            })
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)

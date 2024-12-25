@@ -3,22 +3,29 @@ import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { useState } from 'react'
 import useAuth from '../../context/AuthContext'
 const API_TIME_SPENT = import.meta.env.VITE_API_TIME_SPENT
-function UserStatsGraph() {
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
+
+function UserStatsGraph({ profile_name }) {
+	console.log('p------------------->', profile_name)
 	const [userData, setUserData] = useState([])
 	const { getAuthHeaders } = useAuth()
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				console.log(API_TIME_SPENT)
-				const response = await fetch(API_TIME_SPENT, {
+				// console.log('-->', `${BASE_URL}/users/${profile_name}/time-spent/`)
+				const response = await fetch(`${BASE_URL}/users/tabi3a/time-spent/`, {
 					method: 'GET',
 					headers: getAuthHeaders(),
 				})
 				const result = await response.json()
 
+				console.log(result)
+
 				if (response.ok && Array.isArray(result.data)) {
 					// Default data for all days of the week
+					console.log('result.data ------->', result.data)
 					const allDays = [
 						{ name: 'Mon', min: 0 },
 						{ name: 'Tue', min: 0 },
