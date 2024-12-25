@@ -1,10 +1,5 @@
 import Button from '../Home/Buttons/Button'
-<<<<<<< HEAD
-import { useEffect, useState } from 'react'
-import React from 'react'
-=======
 import React, {useEffect} from 'react'
->>>>>>> master
 import useAuth from '../../context/AuthContext'
 import { useAlert } from '../AlertContext'
 

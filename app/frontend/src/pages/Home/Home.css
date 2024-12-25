@@ -1,0 +1,15 @@
+.responsive-text h1 {
+	font-size: clamp(3.125rem, 2.017rem + 5.9091vw, 11.25rem);
+}
+
+.responsive-text span, .responsive-text button {
+	font-size: clamp(0.6875rem, 0.6108rem + 0.4091vw, 1.25rem);
+}
+
+.responsive-text p {
+	font-size: clamp(0.6875rem, 0.5256rem + 0.8636vw, 1.875rem);
+}
+
+.gradient-border {
+	border-image: linear-gradient(to right, rgba(251, 251, 238, 0), rgba(251, 251, 238, 0.2), rgba(251, 251, 238, 0)) 1;
+}

@@ -1,10 +1,6 @@
 import Button from '../../Home/Buttons/Button'
 import useAuth from '../../../context/AuthContext'
 import { useAlert } from '../../AlertContext'
-<<<<<<< HEAD
-import Cookies from 'js-cookie'
-=======
->>>>>>> master
 import { useSocket } from '../../Layout/Layout'
 
 
@@ -44,16 +40,6 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
 				const receiver_id = data.receiver_id;
 
 				if (socket_notification?.readyState === WebSocket.OPEN) {
-<<<<<<< HEAD
-                    socket_notification.send(JSON.stringify({
-                        sender_id: sender_id,
-                        receiver_id: receiver_id,
-                        message: `User ${from_user} sent you a friend request`,
-                        id: friend_request_id,
-                        from_user: from_user,
-                        profile_picture: BASE_URL + user_profile_picture,
-                    }));
-=======
 					socket_notification.send(JSON.stringify({
 						sender_id: sender_id,
 						receiver_id: receiver_id,
@@ -62,7 +48,6 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
 						from_user: from_user,
 						profile_picture: BASE_URL + user_profile_picture,
 					}));
->>>>>>> master
 					handleSubmit('success', 'Friend request sent successfully');
 				};
 			} else {
@@ -87,11 +72,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
 				/>
 				<img
 					src={user_friend.profile_picture}
-<<<<<<< HEAD
-					className='h-[80%] rounded-full ring-1 ring-primary select-none'
-=======
 					className='h-[76%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
->>>>>>> master
 					alt='user-image'
 					loading='eager'
 				/>
@@ -103,26 +84,6 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
 			<div className='mx-1'>
 
 				{user_friend.is_friend && (
-<<<<<<< HEAD
-                <p className={`
-                    ${user_friend.status === 'online' ? 'text-online' : 
-                    user_friend.status === 'offline' ? 'text-offline' : 
-                    'text-defeat'} status`}
-                >
-                    {user_friend.status}
-                </p>
-            )}
-            
-            {/* Add friend button for non-friends */}
-            {!user_friend.is_friend && (
-                <Button 
-					className={'font-heavy add-friend-button lg:rounded-lg rounded'}
-                    onClick={() => handle_add_friend(user_friend.id)}
-                >
-                    Add Friend
-                </Button>
-            )}
-=======
 				<p className={`
 					${user_friend.status === 'online' ? 'text-online' : 
 					user_friend.status === 'offline' ? 'text-offline' : 
@@ -141,7 +102,6 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
 					Add Friend
 				</Button>
 			)}
->>>>>>> master
 			</div>
 		</div>
 	)

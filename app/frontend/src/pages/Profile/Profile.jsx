@@ -160,13 +160,8 @@ const Profile = () => {
 					</div>
 					<ProfileBio src={`${BASE_URL}${profile_picture}`} bio={bio} />
 					<div
-<<<<<<< HEAD
-						className='infos-chart flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
-							xl:gap-20 lg:gap-10 gap-3 max-mtb:ml-0 mt-2'
-=======
 						className='lp:ml-about-lp flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 						xl:gap-20 lg:gap-10 gap-3 max-lp:ml-0 mt-2'
->>>>>>> master
 						>
 							<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} />
 							<div className='flex flex-col items-center gap-2'>
@@ -179,6 +174,7 @@ const Profile = () => {
 								</div>
 							</div>
 						</div>
+						<UserStatsGraph />
 					</div>
 					{/* RANK: Achievement information and progress */}
 					<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}

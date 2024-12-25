@@ -3,15 +3,10 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { GAME_CONSTRAINTS } from '../../constants/gameConstants'
 
-<<<<<<< HEAD
-import GameCustomizationPanel from '../../components/Game/Local/GameCustomizationPanel'
-import GamePreparationPanelT from '../../components/Game/Local/GamePreparationPanelT'
-=======
 import Inputs from '../../components/Game/Local/Inputs'
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import GamePreview from '../../components/Game/Local/GamePreview'
->>>>>>> master
 
 const TournamentSetup = () => {
 	const navigate = useNavigate()
@@ -41,16 +36,6 @@ const TournamentSetup = () => {
 			name: '',
 			color: GAME_CONSTRAINTS.COLORS.DEFAULT,
 		},
-<<<<<<< HEAD
-        player3: {
-            name: '',
-            color: GAME_CONSTRAINTS.COLORS.DEFAULT,
-        },
-        player4: {
-            name: '',
-            color: GAME_CONSTRAINTS.COLORS.DEFAULT,
-        },
-=======
 		player3: {
 			name: '',
 			color: GAME_CONSTRAINTS.COLORS.DEFAULT,
@@ -59,7 +44,6 @@ const TournamentSetup = () => {
 			name: '',
 			color: GAME_CONSTRAINTS.COLORS.DEFAULT,
 		},
->>>>>>> master
 	})
 
 	const { backgroundId } = location.state || {}
@@ -100,13 +84,8 @@ const TournamentSetup = () => {
 					backgroundId: gameConfig.isBackgroundVisible ? backgroundId : null,
 					player1: { name: players.player1.name, color: players.player1.color },
 					player2: { name: players.player2.name, color: players.player2.color },
-<<<<<<< HEAD
-                    player3: { name: players.player3.name, color: players.player3.color },
-                    player4: { name: players.player4.name, color: players.player4.color },
-=======
 					player3: { name: players.player3.name, color: players.player3.color },
 					player4: { name: players.player4.name, color: players.player4.color },
->>>>>>> master
 				},
 			})
 		}
@@ -126,16 +105,6 @@ const TournamentSetup = () => {
 				name: generateRandomName(),
 				color: generateRandomColor(),
 			},
-<<<<<<< HEAD
-            player3: {
-                name: generateRandomName(),
-                color: generateRandomColor(),
-            },
-            player4: {
-                name: generateRandomName(),
-                color: generateRandomColor(),
-            },
-=======
 			player3: {
 				name: generateRandomName(),
 				color: generateRandomColor(),
@@ -144,7 +113,6 @@ const TournamentSetup = () => {
 				name: generateRandomName(),
 				color: generateRandomColor(),
 			},
->>>>>>> master
 		})
 		updateGameConfig('ball', { ...gameConfig.ball, color: generateRandomColor() })
 	}
@@ -159,16 +127,6 @@ const TournamentSetup = () => {
 				name: '',
 				color: GAME_CONSTRAINTS.COLORS.DEFAULT,
 			},
-<<<<<<< HEAD
-            player3: {
-                name: '',
-                color: GAME_CONSTRAINTS.COLORS.DEFAULT,
-            },
-            player4: {
-                name: '',
-                color: GAME_CONSTRAINTS.COLORS.DEFAULT,
-            },
-=======
 			player3: {
 				name: '',
 				color: GAME_CONSTRAINTS.COLORS.DEFAULT,
@@ -177,7 +135,6 @@ const TournamentSetup = () => {
 				name: '',
 				color: GAME_CONSTRAINTS.COLORS.DEFAULT,
 			},
->>>>>>> master
 		})
 		setGameConfig({
 			paddle: {
@@ -192,30 +149,11 @@ const TournamentSetup = () => {
 		})
 	}
 
+	console.log('players: ==========>', players)
+
 	return (
 		<section className='flex justify-center'>
 			<div
-<<<<<<< HEAD
-				className='flex max-w-[96%] max-lp:flex-col max-lp:gap-3 p-4
-				border-1.5 border-primary rounded-lg game-customization-card aspect-video'
-			>
-				<GameCustomizationPanel
-					players={players}
-					gameConfig={gameConfig}
-					backgroundId={backgroundId}
-					onGameConfigUpdate={updateGameConfig}
-				/>
-
-				<GamePreparationPanelT
-					players={players}
-					gameConfig={gameConfig}
-					onSubmit={handleSubmit}
-					onReset={resetConfigurations}
-					onPlayerUpdate={updatePlayerConfig}
-					onGameConfigUpdate={updateGameConfig}
-					onRandomize={generateRandomConfigurations}
-				/>
-=======
 				className='flex max-w-[96%] flex-col tb:gap-4 gap-2 p-4
 				border border-primary rounded game-customization-card aspect-video'
 			>
@@ -312,6 +250,7 @@ const TournamentSetup = () => {
 									type='submit'
 									className='font-dreamscape labels w-full p-2 bg-primary text-secondary rounded brightness-90
 									hover:scale-[1.02] hover:brightness-100 transition duration-200 ease-in'
+									onClick={handleSubmit}
 									>
 									Start Tournament
 								</button>
@@ -319,7 +258,6 @@ const TournamentSetup = () => {
 						</div>
 					</div>
 				</div>
->>>>>>> master
 			</div>
 		</section>
 	)

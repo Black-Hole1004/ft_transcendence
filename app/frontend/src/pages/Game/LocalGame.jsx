@@ -17,15 +17,6 @@ const SuddenDeathMessage = () => (
 	</div>
 );
 
-import { useTournament } from '../../context/TournamentContext'
-
-const SuddenDeathMessage = () => (
-	<div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse">
-		<span className="font-bold">SUDDEN DEATH!</span>
-		<span className="ml-2">First point wins!</span>
-	</div>
-);
-
 //--smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<>
@@ -96,12 +87,6 @@ const LocalGame = () => {
 	const [showConfetti, setShowConfetti] = useState(false)
 	const [winner, setWinner] = useState(null)
 
-<<<<<<< HEAD
-	const [powerups, setPowerups] = useState([])
-	const [attacks, setAttacks] = useState([])
-
-=======
->>>>>>> master
 	const location = useLocation()
 	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize, tournamentRound } = location.state || {}
 
@@ -201,11 +186,7 @@ const LocalGame = () => {
 
 		// Normal game over flow
 		setIsGameOver(true);
-<<<<<<< HEAD
-		setIsPaused(true);
-=======
 		setIsPaused(false); // changed to false
->>>>>>> master
 		setShowRestartPopup(true);
 		setWinner(winner);
 
@@ -227,18 +208,11 @@ const LocalGame = () => {
 			}
 		}
 	};
-<<<<<<< HEAD
-	useEffect(() => {
-		if (isSuddenDeath && timeRemaining === 0) {
-			// If sudden death time expires, use a tiebreaker (e.g., higher XP)
-			const tiebreakerWinner = player1.xp > player2.xp ? player1 : player2;
-=======
 
 	useEffect(() => {
 		if (isSuddenDeath && timeRemaining === 0) {
 			// If sudden death time expires, use a tiebreaker (e.g., higher XP)
 			const tiebreakerWinner = (player1.xp > player2.xp) ? player1 : player2; // should be changed.
->>>>>>> master
 			setIsGameOver(true);
 			setIsPaused(true);
 			setShowRestartPopup(true);
@@ -264,12 +238,6 @@ const LocalGame = () => {
 			}
 		}
 	}, [timeRemaining, isSuddenDeath]);
-<<<<<<< HEAD
-	return (
-		<>
-			<section className='flex'>
-				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
-=======
 	
 	return (
 		<>
@@ -277,7 +245,6 @@ const LocalGame = () => {
 				className={`relative flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}
 			>
 				<div className='flex flex-col'>
->>>>>>> master
 					<GameScore
 						player1Score={player1Score}
 						player2Score={player2Score}
@@ -290,47 +257,6 @@ const LocalGame = () => {
 					/>
 					{/* Add the sudden death message here */}
 					{isSuddenDeath && <SuddenDeathMessage />}
-<<<<<<< HEAD
-					<div className='flex-1 w-full flex max-lg:flex-wrap max-lg:justify-around justify-between font-dreamscape-sans'>
-						<div className='justify-center items-center w-1/4'>
-							<Player
-								isPaused={isPaused}
-								PlayerName={player1.name}
-								BadgeName={player1.badge}
-								playerImage={player1.image}
-								badgeImage={player1.badgeImage}
-								GameMode={mode}
-							/>
-						</div>
-						<div className='justify-center items-center w-1/2'>
-							<PongTable
-								isPaused={isPaused}
-								handlePause={handlePause}
-								backgroundId={backgroundId}
-								updateScore={updateScore}
-								isGameOver={isGameOver}
-								resetParameters={resetParameters}
-								player1Color={player1.color}
-								player2Color={player2.color}
-								ballColor={ballColor}
-								paddleSize={paddleSize}
-								ballSize={ballSize}
-								powerups={powerups}
-								attacks={attacks}
-							/>
-						</div>
-						<div className='justify-center items-center w-1/4'>
-							<Player
-								isPaused={isPaused}
-								PlayerName={player2.name}
-								BadgeName={player2.badge}
-								playerImage={player2.image}
-								badgeImage={player2.badgeImage}
-								GameMode={mode}
-							/>
-						</div>
-					</div>
-=======
 				</div>
 				<div className='relative w-full flex justify-center font-dreamscape-sans'>
 					<Player
@@ -364,7 +290,6 @@ const LocalGame = () => {
 						paddleSize={paddleSize}
 						ballSize={ballSize}
 					/>
->>>>>>> master
 				</div>
 				{showRestartPopup && (
 					<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
@@ -384,13 +309,6 @@ const LocalGame = () => {
 					/>
 				)}
 			</section>
-<<<<<<< HEAD
-			{showRestartPopup && (
-				<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
-			)}
-			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
-=======
->>>>>>> master
 		</>
 	)
 }

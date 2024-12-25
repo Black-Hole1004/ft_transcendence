@@ -14,10 +14,7 @@ const WP_FRINEDS = import.meta.env.VITE_WP_FRINEDS;
 const WP_NOTIFICATIONS = import.meta.env.VITE_WP_NOTIFICATIONS;
 const SocketContext = createContext()
 export const useSocket = () => useContext(SocketContext)
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 
 function Layout() {
 

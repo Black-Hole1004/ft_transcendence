@@ -5,10 +5,7 @@ import OauthHandler from './utils/OauthHandler';
 import ComponentPath from './utils/ComponentPath';
 import { AlertProvider } from './components/AlertContext';
 import { TournamentProvider } from './context/TournamentContext';
-<<<<<<< HEAD
-=======
 import Loader from './components/Loader/Loader'
->>>>>>> master
 
 function App() {
 	return (
@@ -16,17 +13,10 @@ function App() {
 			<AlertProvider>
 				<AuthProvider>
 					<TournamentProvider>
-<<<<<<< HEAD
-						<React.Suspense fallback={<div>Loading...</div>}>
-							<OauthHandler />
-							<ComponentPath />
-						</React.Suspense>
-=======
 						<Suspense fallback={<Loader />}>
 							<OauthHandler />
 							<ComponentPath />
 						</Suspense>
->>>>>>> master
 					</TournamentProvider>
 				</AuthProvider>
 			</AlertProvider>
