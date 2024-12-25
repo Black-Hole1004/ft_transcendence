@@ -52,7 +52,7 @@ const Chat = () => {
 		}
 
 		sendBlockMessage()
-	}, [blockerId])
+	}, [conversationKey, blockerId])
 
 	useEffect(() => {
 		const friendshipStatus = async () => {
@@ -75,7 +75,7 @@ const Chat = () => {
 		if (conversationKey) {
 			friendshipStatus()
 		}
-	}, [conversationKey, blockerId])
+	}, [conversationKey])
 
 	useEffect(() => {
 		// Extract conversation key from URL

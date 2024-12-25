@@ -19,7 +19,8 @@ const ConversationHeader = ({
 	currentLoggedInUserId,
 	recipientProfileImage,
 }) => {
-	// console.log(blockerId)
+
+	console.log(blockerId)
 	return (
 		<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-20'>
 			<div className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3'>

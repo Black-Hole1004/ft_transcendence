@@ -47,8 +47,7 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 				<button
 					onClick={onRestart}
 					className='font-dreamscape bg-primary text-secondary py-3 flex-1 rounded
-					hover:scale-[1.01] hover:brightness-100 transition-all duration-300 ease-in-out
-					hover:outline hover:outline-offset-2 hover:outline-2 hover:outline-primary'
+					hover:scale-[1.03] hover:brightness-100 transition-all duration-300 ease-in-out'
 				>
 					Play Again
 				</button>

@@ -129,3 +129,89 @@
 2024/12/24 15:51:13 [error] 13#13: *6983 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMzg4LCJpYXQiOjE3MzUwNTEzODgsImp0aSI6ImRhNjAzYWU5Y2M5YjQyYmRiYTg4Mzc0YjFiNmMzNWIzIiwidXNlcl9pZCI6Mn0.RQR4xWgWy3G9-xYX3zkLOnuS5s2DJewmFo7_9UbYUSk%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMzg4LCJpYXQiOjE3MzUwNTEzODgsImp0aSI6ImRhNjAzYWU5Y2M5YjQyYmRiYTg4Mzc0YjFiNmMzNWIzIiwidXNlcl9pZCI6Mn0.RQR4xWgWy3G9-xYX3zkLOnuS5s2DJewmFo7_9UbYUSk%22", host: "localhost"
 2024/12/24 15:51:13 [error] 13#13: *6985 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /ws/notifications/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMzg4LCJpYXQiOjE3MzUwNTEzODgsImp0aSI6ImRhNjAzYWU5Y2M5YjQyYmRiYTg4Mzc0YjFiNmMzNWIzIiwidXNlcl9pZCI6Mn0.RQR4xWgWy3G9-xYX3zkLOnuS5s2DJewmFo7_9UbYUSk%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/notifications/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMzg4LCJpYXQiOjE3MzUwNTEzODgsImp0aSI6ImRhNjAzYWU5Y2M5YjQyYmRiYTg4Mzc0YjFiNmMzNWIzIiwidXNlcl9pZCI6Mn0.RQR4xWgWy3G9-xYX3zkLOnuS5s2DJewmFo7_9UbYUSk%22", host: "localhost"
 2024/12/24 15:51:13 [error] 13#13: *6981 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMzg4LCJpYXQiOjE3MzUwNTEzODgsImp0aSI6ImRhNjAzYWU5Y2M5YjQyYmRiYTg4Mzc0YjFiNmMzNWIzIiwidXNlcl9pZCI6Mn0.RQR4xWgWy3G9-xYX3zkLOnuS5s2DJewmFo7_9UbYUSk%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMzg4LCJpYXQiOjE3MzUwNTEzODgsImp0aSI6ImRhNjAzYWU5Y2M5YjQyYmRiYTg4Mzc0YjFiNmMzNWIzIiwidXNlcl9pZCI6Mn0.RQR4xWgWy3G9-xYX3zkLOnuS5s2DJewmFo7_9UbYUSk%22", host: "localhost"
+2024/12/24 19:30:21 [notice] 11#11: using the "epoll" event method
+2024/12/24 19:30:21 [notice] 11#11: nginx/1.27.3
+2024/12/24 19:30:21 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/24 19:30:21 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/24 19:30:21 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/24 19:30:21 [notice] 11#11: start worker processes
+2024/12/24 19:30:21 [notice] 11#11: start worker process 12
+2024/12/24 19:30:21 [notice] 11#11: start worker process 13
+2024/12/24 19:30:21 [notice] 11#11: start worker process 14
+2024/12/24 19:30:21 [notice] 11#11: start worker process 15
+2024/12/24 19:30:21 [notice] 11#11: start worker process 16
+2024/12/24 19:30:21 [notice] 11#11: start worker process 17
+2024/12/24 20:48:00 [error] 15#15: *1879 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/notifications/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMTI3LCJpYXQiOjE3MzUwNTExMjcsImp0aSI6ImFhMWEyN2IwOWE0YzQxMDM5MGZiNWFlNjYxN2I3NGRhIiwidXNlcl9pZCI6MX0.GMBrTFpVJiwa9XXsCCtMBktd1r5pix1emf_6hnGPtT0%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/notifications/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMTI3LCJpYXQiOjE3MzUwNTExMjcsImp0aSI6ImFhMWEyN2IwOWE0YzQxMDM5MGZiNWFlNjYxN2I3NGRhIiwidXNlcl9pZCI6MX0.GMBrTFpVJiwa9XXsCCtMBktd1r5pix1emf_6hnGPtT0%22", host: "localhost"
+2024/12/24 20:48:00 [error] 15#15: *1869 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMTI3LCJpYXQiOjE3MzUwNTExMjcsImp0aSI6ImFhMWEyN2IwOWE0YzQxMDM5MGZiNWFlNjYxN2I3NGRhIiwidXNlcl9pZCI6MX0.GMBrTFpVJiwa9XXsCCtMBktd1r5pix1emf_6hnGPtT0%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMTI3LCJpYXQiOjE3MzUwNTExMjcsImp0aSI6ImFhMWEyN2IwOWE0YzQxMDM5MGZiNWFlNjYxN2I3NGRhIiwidXNlcl9pZCI6MX0.GMBrTFpVJiwa9XXsCCtMBktd1r5pix1emf_6hnGPtT0%22", host: "localhost"
+2024/12/24 20:48:00 [error] 15#15: *1877 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMTI3LCJpYXQiOjE3MzUwNTExMjcsImp0aSI6ImFhMWEyN2IwOWE0YzQxMDM5MGZiNWFlNjYxN2I3NGRhIiwidXNlcl9pZCI6MX0.GMBrTFpVJiwa9XXsCCtMBktd1r5pix1emf_6hnGPtT0%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NDgzMTI3LCJpYXQiOjE3MzUwNTExMjcsImp0aSI6ImFhMWEyN2IwOWE0YzQxMDM5MGZiNWFlNjYxN2I3NGRhIiwidXNlcl9pZCI6MX0.GMBrTFpVJiwa9XXsCCtMBktd1r5pix1emf_6hnGPtT0%22", host: "localhost"
+2024/12/25 13:59:06 [notice] 11#11: using the "epoll" event method
+2024/12/25 13:59:06 [notice] 11#11: nginx/1.27.3
+2024/12/25 13:59:06 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/25 13:59:06 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/25 13:59:06 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/25 13:59:06 [notice] 11#11: start worker processes
+2024/12/25 13:59:06 [notice] 11#11: start worker process 12
+2024/12/25 13:59:06 [notice] 11#11: start worker process 13
+2024/12/25 13:59:06 [notice] 11#11: start worker process 14
+2024/12/25 13:59:06 [notice] 11#11: start worker process 15
+2024/12/25 13:59:06 [notice] 11#11: start worker process 16
+2024/12/25 13:59:06 [notice] 11#11: start worker process 17
+2024/12/25 14:00:44 [notice] 11#11: using the "epoll" event method
+2024/12/25 14:00:44 [notice] 11#11: nginx/1.27.3
+2024/12/25 14:00:44 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/25 14:00:44 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/25 14:00:44 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/25 14:00:44 [notice] 11#11: start worker processes
+2024/12/25 14:00:44 [notice] 11#11: start worker process 12
+2024/12/25 14:00:44 [notice] 11#11: start worker process 13
+2024/12/25 14:00:44 [notice] 11#11: start worker process 14
+2024/12/25 14:00:44 [notice] 11#11: start worker process 15
+2024/12/25 14:00:44 [notice] 11#11: start worker process 16
+2024/12/25 14:00:44 [notice] 11#11: start worker process 17
+2024/12/25 16:38:18 [error] 15#15: *25891 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:5173/", host: "localhost", referrer: "https://localhost/profile"
+2024/12/25 16:38:18 [error] 16#16: *26943 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:5173/", host: "localhost", referrer: "https://localhost/dashboard"
+2024/12/25 16:38:18 [error] 15#15: *25891 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /profile HTTP/1.1", upstream: "http://172.18.0.4:5173/profile", host: "localhost", referrer: "https://localhost/profile"
+2024/12/25 16:38:18 [error] 16#16: *26943 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /dashboard HTTP/1.1", upstream: "http://172.18.0.4:5173/dashboard", host: "localhost", referrer: "https://localhost/dashboard"
+2024/12/25 16:54:40 [notice] 12#12: signal 15 (SIGTERM) received, exiting
+2024/12/25 16:54:40 [notice] 12#12: exiting
+2024/12/25 16:54:40 [notice] 16#16: signal 15 (SIGTERM) received, exiting
+2024/12/25 16:54:40 [notice] 16#16: exiting
+2024/12/25 16:54:40 [notice] 15#15: signal 15 (SIGTERM) received, exiting
+2024/12/25 16:54:40 [notice] 15#15: exiting
+2024/12/25 16:54:40 [notice] 17#17: signal 15 (SIGTERM) received, exiting
+2024/12/25 16:54:40 [notice] 17#17: exiting
+2024/12/25 16:54:40 [notice] 14#14: signal 15 (SIGTERM) received, exiting
+2024/12/25 16:54:40 [notice] 14#14: exiting
+2024/12/25 16:54:40 [notice] 13#13: signal 15 (SIGTERM) received, exiting
+2024/12/25 16:54:40 [notice] 13#13: exiting
+2024/12/25 16:54:40 [notice] 13#13: exit
+2024/12/25 16:54:40 [notice] 11#11: signal 15 (SIGTERM) received, exiting
+2024/12/25 16:54:40 [notice] 12#12: exit
+2024/12/25 16:54:40 [notice] 16#16: exit
+2024/12/25 16:54:40 [notice] 15#15: exit
+2024/12/25 16:54:40 [notice] 17#17: exit
+2024/12/25 16:54:40 [notice] 14#14: exit
+2024/12/25 16:54:40 [notice] 11#11: signal 14 (SIGALRM) received
+2024/12/25 16:54:41 [notice] 11#11: signal 17 (SIGCHLD) received from 17
+2024/12/25 16:54:41 [notice] 11#11: worker process 17 exited with code 0
+2024/12/25 16:54:41 [notice] 11#11: signal 14 (SIGALRM) received
+2024/12/25 16:54:41 [notice] 11#11: signal 29 (SIGIO) received
+2024/12/25 16:54:41 [notice] 11#11: signal 17 (SIGCHLD) received from 14
+2024/12/25 16:54:41 [notice] 11#11: worker process 12 exited with code 0
+2024/12/25 16:54:41 [notice] 11#11: worker process 13 exited with code 0
+2024/12/25 16:54:41 [notice] 11#11: worker process 14 exited with code 0
+2024/12/25 16:54:41 [notice] 11#11: worker process 15 exited with code 0
+2024/12/25 16:54:41 [notice] 11#11: worker process 16 exited with code 0
+2024/12/25 16:54:41 [notice] 11#11: exit
+2024/12/25 17:32:13 [notice] 11#11: using the "epoll" event method
+2024/12/25 17:32:13 [notice] 11#11: nginx/1.27.3
+2024/12/25 17:32:13 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/25 17:32:13 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/25 17:32:13 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/25 17:32:13 [notice] 11#11: start worker processes
+2024/12/25 17:32:13 [notice] 11#11: start worker process 12
+2024/12/25 17:32:13 [notice] 11#11: start worker process 13
+2024/12/25 17:32:13 [notice] 11#11: start worker process 14
+2024/12/25 17:32:13 [notice] 11#11: start worker process 15
+2024/12/25 17:32:13 [notice] 11#11: start worker process 16
+2024/12/25 17:32:13 [notice] 11#11: start worker process 17
