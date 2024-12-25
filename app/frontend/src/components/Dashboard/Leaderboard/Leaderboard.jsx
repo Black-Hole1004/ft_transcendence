@@ -1,7 +1,14 @@
 import UserLeaderboard from './UserLeaderboard';
+import { useNavigate } from 'react-router-dom';
+const GET_USER_PROFILE = import.meta.env.VITE_GET_USER_PROFILE
 
 const Leaderboard = ({ users }) => {
+	const navigate = useNavigate();
 	if (!users) return <div>Loading...</div>;
+
+	const handleUserClick = (username) => {
+		navigate('/profile', { state: { username } });
+	};
 
 	return (
 		<div className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border-1.5
@@ -10,14 +17,16 @@ const Leaderboard = ({ users }) => {
 			<h1 className='font-dreamscape-sans card-title'>LEADERBOARD</h1>
 			<div className='w-[96%] overflow-y-auto users'>
 				{users.map((user, index) => (
-					<UserLeaderboard 
-						key={user.id}
-						rank={index + 1}
-						nickname={user.username}
-						achievement={user.achievement.name.toLowerCase()}
-						xp={user.xp}
-						profilePicture={user.profile_picture}
-					/>
+					<div onClick={() => handleUserClick(user.username)} className="cursor-pointer" key={user.id}>
+						<UserLeaderboard
+							key={user.id}
+							rank={index + 1}
+							nickname={user.username}
+							achievement={user.achievement.name.toLowerCase()}
+							xp={user.xp}
+							profilePicture={user.profile_picture}
+						/>
+					</div>
 				))}
 			</div>
 		</div>

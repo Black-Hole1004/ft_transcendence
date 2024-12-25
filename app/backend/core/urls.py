@@ -16,6 +16,7 @@ from UserManagement.views import TournamentView
 from UserManagement.views import TournamentDetailView
 from UserManagement.views import UsersListView
 from UserManagement.views import HealthCheckView
+from UserManagement.views import GetUserByUserName
 
 from django.contrib import admin
 from django.urls import path, include
@@ -63,7 +64,8 @@ urlpatterns = [
     path('api/friend_ship_request/', FriendShipRequestListView.as_view(), name='friend_ship_request'),
     path('api/tournament/', TournamentView.as_view(), name='tournament-list'),
     path('api/tournament/<int:id>/', TournamentDetailView.as_view(), name='tournament-detail'),
-    path('api/health/', HealthCheckView.as_view(), name='healthCheck'),    
+    path('api/health/', HealthCheckView.as_view(), name='healthCheck'),
+    path('api/users/<str:username>/', GetUserByUserName.as_view(), name='get-user-by-username'),
 ]
 
 # Add this to serve badges specifically

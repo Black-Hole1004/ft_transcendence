@@ -12,8 +12,8 @@ from channels.db import database_sync_to_async
 from itertools import chain
 from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.dispatch import Signal
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth import logout as django_logout
+from django.contrib.auth.signals import user_logged_out
+from django.contrib.auth.signals import user_logged_in
 
 
 User = get_user_model()
@@ -179,41 +179,70 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
 #------------------------------------------------------------------------------------
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        # Add debug logging
+        print("Starting connection attempt...")
+        
         query_string = self.scope['query_string'].decode()
         query_params = parse_qs(query_string)
         access_token = query_params.get('access_token', [None])[0]
         
         if not access_token:
+            print("No access token found")
             await self.close()
             return
         
-        access_token = access_token.strip('"')
         try:
+            access_token = access_token.strip('"')
             decoded_data = jwt_decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
             self.user = await database_sync_to_async(User.objects.get)(id=decoded_data['user_id'])
+            print(f"User authenticated: {self.user.username}")
         except Exception as e:
             print(f"Authentication error: {e}")
             await self.close()
             return
-        
-        if self.user.is_authenticated:
 
-            auth_login(request, user)
-            await self.set_user_status('online')
-            await self.notify_friends('online')
+        if self.user.is_authenticated:
+            print(f"Setting up connection for user: {self.user.username}")
+            try:
+                # Store group name before triggering signals
+                self.group_name = f'user_{self.user.id}'
+                
+                # Add to group first
+                await self.channel_layer.group_add(
+                    self.group_name,
+                    self.channel_name
+                )
+                
+                # Accept connection before triggering signals
+                await self.accept()
+                
+                # Then trigger signals and status updates
+                await database_sync_to_async(user_logged_in.send)(
+                    sender=self.user.__class__,
+                    request=self.scope.get('request', None),
+                    user=self.user
+                )
+                
+                await self.set_user_status('online')
+                await self.notify_friends('online')
+                
+            except Exception as e:
+                print(f"Error during connection setup: {e}")
+                await self.close()
             
-            self.group_name = f'user_{self.user.id}'
-            await self.channel_layer.group_add(
-                self.group_name,
-                self.channel_name
-            )
-            await self.accept()
 
     async def disconnect(self, close_code):
         print('----- disconnect from NotificationConsumer -----')
 
         if hasattr(self, 'user') and self.user:
             try:
+
+                # Trigger the user_logged_out signal
+                await database_sync_to_async(user_logged_out.send)(
+                    sender=self.__class__, 
+                    request=self.scope.get('request', None),
+                    user=self.user
+                )
                 await self.set_user_status('offline')
                 await self.notify_friends('offline')
             except Exception as e:
@@ -226,7 +255,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 self.group_name,
                 self.channel_name
             )
-    
+
     async def notify_friends(self, status):
         """Notify friends about user's status change (online/offline)"""
         if hasattr(self, 'user'):

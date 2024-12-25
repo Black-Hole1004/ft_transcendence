@@ -206,7 +206,6 @@ class LoginView(APIView):
                 if user is not None:
                     user.status = 'online'
                     user.save()
-                    auth_login(request, user)
 
                     friends = async_to_sync(self.get_user_friends)(user)
                     notify_friends(user, friends)
@@ -251,7 +250,6 @@ class LogoutView(APIView):
         # Notify friends about login
         friends = async_to_sync(self.get_user_friends)(user)
         notify_friends(user, friends)
-        django_logout(request)
         return Response({'message': 'User logged out successfully'})
 
 
@@ -959,3 +957,41 @@ def get_user_data(request):
         })
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+class GetUserByUserName(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username)
+            data = {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                # 'xp': user.xp,
+                # 'profile_picture': user.profile_picture.url if user.profile_picture else None,
+                # 'achievement': Achievement.get_badge(user.xp)
+            }
+            return Response(data)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+# class GetUserProfileView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request, username):
+#         try:
+#             user = User.objects.get(username=username)
+#             data = {
+#                 'id': user.id,
+#                 'username': user.username,
+#                 'email': user.email,
+#                 # 'xp': user.xp,
+#                 # 'profile_picture': user.profile_picture.url if user.profile_picture else None,
+#                 # 'achievement': Achievement.get_badge(user.xp)
+#             }
+#             return Response(data)
+#         except User.DoesNotExist:
+#             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
