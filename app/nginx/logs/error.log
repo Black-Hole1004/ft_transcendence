@@ -148,3 +148,6 @@
 2024/12/24 23:00:39 [notice] 10#10: start worker processes
 2024/12/24 23:00:39 [notice] 10#10: start worker process 11
 2024/12/24 23:00:39 [notice] 10#10: start worker process 12
+2024/12/25 00:32:13 [notice] 12#12: signal 15 (SIGTERM) received, exiting
+2024/12/25 00:32:13 [notice] 10#10: signal 15 (SIGTERM) received, exiting
+2024/12/25 00:32:13 [notice] 11#11: signal 15 (SIGTERM) received, exiting
