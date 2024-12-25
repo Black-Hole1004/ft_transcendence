@@ -3,7 +3,7 @@ import { MuiColorInput } from 'mui-color-input'
 const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 	const onChange = id === 'Ball' ? (e) => setDuration(e.target.value) : (e) => setValue('name', e.target.value)
 	return (
-		<div className='flex flex-col gap-2'>
+		<div className='flex-1 flex flex-col gap-2'>
 			<h2 className='font-heavy labels text-primary'>{id}</h2>
 			<div className='flex justify-between max-ml:flex-col max-ml:gap-2'>
 				<div className='flex flex-col flex-1 ml-2'>

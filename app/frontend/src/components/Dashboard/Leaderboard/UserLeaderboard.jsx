@@ -48,7 +48,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture }) {
 						e.target.style.display = 'none';
 					}}
 				/>
-				<span className='nickname-size'>{`${xp.toLocaleString()}XP`}</span>
+				<span className='achievements-titles-font'>{`${xp.toLocaleString()}XP`}</span>
 			</div>
 		</div>
 	);
