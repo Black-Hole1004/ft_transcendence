@@ -33,11 +33,46 @@ class CustomUserManager(BaseUserManager):
 
 class Achievement:
     LEVELS = [
-        {'name': 'NOVICE ASTRONAUT', 'xp': 0, 'image': '/badges/novice.png'},
-        {'name': 'COSMIC EXPLORER', 'xp': 2000, 'image': '/badges/cosmic.png'},
-        {'name': 'STELLAR VOYAGER', 'xp': 4000, 'image': '/badges/stellar.png'},
-        {'name': 'GALACTIC TRAILBLAZER', 'xp': 6000, 'image': '/badges/galactic.png'},
-        {'name': 'CELESTIAL MASTER', 'xp': 8000, 'image': '/badges/celestial.png'}
+        {
+            'name': 'NOVICE ASTRONAUT',
+            'xp': 0,
+            'image': '/badges/novice-astronaut.png',
+            'description': 'Begin your cosmic journey',
+            'title': 'Welcome aboard, Novice Astronaut!',
+            'body': 'Your journey begins on Venus, where the cosmos eagerly awaits your exploration. Strap in and prepare for an adventure beyond the stars!',
+        },
+        {
+            'name': 'COSMIC EXPLORER',
+            'xp': 2000,
+            'image': '/badges/cosmic-explorer.png',
+            'description': 'Venture beyond the familiar',
+            'title': 'Greetings, Cosmic Explorer!',
+            'body': 'Level 2 brings you to Jupiter, the king of planets, where vast storms and boundless mysteries await your exploration. Blaze a trail through the cosmos and leave your mark among the stars.',
+        },
+        {
+            'name': 'STELLAR VOYAGER',
+            'xp': 4000,
+            'image': '/badges/stellar-voyager.png',
+            'description': 'Navigate through stellar challenges',
+            'title': 'Ahoy, Stellar Voyager!',
+            'body': 'As you ascend to Level 3, Saturn\'s majestic rings beckon you to new realms of discovery. Navigate the cosmos with grace and curiosity, for the stars themselves await your presence.',
+        },
+        {
+            'name': 'GALACTIC TRAILBLAZER',
+            'xp': 6000,
+            'image': '/badges/galactic-trailblazer.png',
+            'description': 'Forge new paths in the galaxy',
+            'title': 'Salutations, Galactic Trailblazer!',
+            'body': 'Here on Earth, the universe unfolds before your eyes, offering endless wonders to discover. Embrace the journey ahead as you chart new territories and unlock the secrets of our celestial home.',
+        },
+        {
+            'name': 'CELESTIAL MASTER',
+            'xp': 8000,
+            'image': '/badges/celestial-master.png',
+            'description': 'Achieve cosmic mastery',
+            'title': 'Congratulations, Celestial Master!',
+            'body': 'You\'ve ascended to the highest echelons of cosmic mastery, basking in the brilliance of the Sun itself. As a true luminary of the cosmos, your journey knows no bounds. Shine on, and may your light guide others to new celestial heights!',
+        }
     ]
 
     @staticmethod

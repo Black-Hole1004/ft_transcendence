@@ -285,18 +285,16 @@ SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'https://localhost/api/social-auth/complete/i
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
 
 
-
-
 # Caching Configuration (for game state and other cache needs)
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://redis:6379/1',  # Using Redis database 1 for caching
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://redis:6379/1',  # Using Redis database 1 for caching
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
 
 
 # settings.py

@@ -14,6 +14,9 @@ const Dashboard = () => {
 	const [achievements, setAchievements] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [userData, setUserData] = useState(null);
+	const [currentAchievements, setCurrentAchievements] = useState([]);
+	const [title, setTitle] = useState('Dashboard');
+	const [description, setDescription] = useState('Welcome to your dashboard!');
 
 
 	useEffect(() => {
@@ -31,9 +34,12 @@ const Dashboard = () => {
 				const userJson = await userResponse.json();
 				setUserData(userJson);
 				console.log('user data:', userJson);
-				
+				setCurrentAchievements(userJson.badge);
+				setTitle(currentAchievements.title);
+				setDescription(currentAchievements.body);
+
+
 				// get leaderboard data --------------------------------------------------------------
-				// Use absolute URL with VITE_BASE_URL
 				const leaderboardUrl = `${baseUrl}/api/user/leaderboard/`;
 				const leaderboardResponse = await fetch(leaderboardUrl, {
 					method: 'GET',
@@ -48,6 +54,7 @@ const Dashboard = () => {
 				const leaderboardData = JSON.parse(responseText);
 				setLeaderboardData(leaderboardData.users);
 				
+
 				// get achievements data --------------------------------------------------------------
 				const achievementsUrl = `${baseUrl}/api/user/achievements/`;
 				const achievementsResponse = await fetch(achievementsUrl, {
@@ -82,7 +89,7 @@ const Dashboard = () => {
 			<section className='flex lg:flex-row flex-col lg:pl-section-lg
 			rightside-my lg:mr-modes-right-lg lg:ml-modes-left-lg ml:ml-modes-left-ms ml:mr-modes-right-ms'>
 				<div className='lg:w-5/12 flex flex-col justify-between max-lg:mb-8 max-mtb:mb-4 max-lg:mx-2 lg:pr-cards-lg'>
-					<CongratulatoryMessage />
+					<CongratulatoryMessage title={title} description={description} />
 					<div className='flex mtb:flex-row flex-col max-mtb:gap-y-3 gap-x-1 lg:justify-between justify-around max-mtb:pr-0'>
 						<FriendsList />
 						<Leaderboard users={leaderboardData} />
