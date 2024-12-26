@@ -31,6 +31,9 @@ const Chat = () => {
 	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0)
 	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
+	const [reciver_id, setReciver_id] = useState(null)
+
+	
 
 	// const { triggerAlert } = useAlert()
 
@@ -38,21 +41,21 @@ const Chat = () => {
 	// 	triggerAlert('success', 'Message sent successfuly!')
 	// }
 
-	useEffect(() => {
-		console.log('here')
-		console.log('blocker id: ', blockerId)
-		const sendBlockMessage = () => {
-			webSocketRef.current?.send(
-				JSON.stringify({
-					message_type: 'block',
-					blocker_id: blockerId,
-					conversation_key: conversationKey,
-				})
-			)
-		}
+	// useEffect(() => {
+	// 	console.log('here')
+	// 	console.log('blocker id: ', blockerId)
+	// 	const sendBlockMessage = () => {
+	// 		webSocketRef.current?.send(
+	// 			JSON.stringify({
+	// 				message_type: 'block',
+	// 				blocker_id: blockerId,
+	// 				conversation_key: conversationKey,
+	// 			})
+	// 		)
+	// 	}
 
-		sendBlockMessage()
-	}, [blockerId])
+	// 	sendBlockMessage()
+	// }, [blockerId])
 
 	useEffect(() => {
 		const friendshipStatus = async () => {
@@ -168,6 +171,7 @@ const Chat = () => {
 							Authorization: getAuthHeaders().Authorization,
 						},
 					})
+					setReciver_id(response.data.user_infos[0].id)
 					setRecipientInfo(response.data.user_infos[0])
 					const messages = response.data.messages ? response.data.messages : []
 					setConversationMessages(messages)
@@ -228,6 +232,7 @@ const Chat = () => {
 					conversationMessages={conversationMessages}
 					currentLoggedInUserId={currentLoggedInUserId}
 					setCurrentLoggedInUserId={setCurrentLoggedInUserId}
+					
 				/>
 
 				{/* Separator */}
@@ -238,6 +243,9 @@ const Chat = () => {
 					className='tb:w-[65.8%] flex flex-col items-center max-tb:border border-primary overflow-hidden
 						lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
 				>
+					{
+						console.log('reciver_id -----> ', reciver_id)
+					}
 					{recipientInfo ? (
 						<>
 							{/* Chat Header */}
@@ -248,6 +256,7 @@ const Chat = () => {
 								recipientInfo={recipientInfo}
 								currentLoggedInUserId={currentLoggedInUserId}
 								recipientProfileImage={recipientProfileImage}
+								reciver_id={reciver_id}
 							/>
 
 							{/* Chat Messages */}

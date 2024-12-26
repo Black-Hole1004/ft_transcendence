@@ -91,7 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     display_name = models.CharField(max_length=30, default='', blank=True)
     bio = models.TextField(default='', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/avatar.jpg')
-    date_joined = models.DateField() 
+    date_joined = models.DateField(auto_now_add=True)
     # added by tabi3a
     xp = models.IntegerField(default=0)
     
