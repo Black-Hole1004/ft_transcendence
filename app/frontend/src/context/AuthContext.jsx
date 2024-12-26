@@ -93,6 +93,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async () => {
         try {
+            console.log('api register:', API_REGISTER)
             const response = await fetch(API_REGISTER, {
                 method: 'POST',
                 credentials: 'include',

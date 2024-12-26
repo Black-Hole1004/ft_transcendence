@@ -8,32 +8,28 @@ from django.utils.timezone import now
 
 @receiver(user_logged_in)
 def log_user_login(sender, request, user, **kwargs):
-    """
-    Log user login details when a user logs in.
-    """
-    # print(f"User logged in via OAuth: {user.email}")
+    print(f"User logged in: {user.email}")
+    print(" ---------------> from signal of user_logged_in <------------------")
     if user.is_authenticated:
         print('------ User logged in --------')
-        update_user_session_login(user, login_time=now())
-
-@sync_to_async
-def update_user_session_login(user):
-    # Create or update the user session
-    print('----------------------------------------')
-    UserSession.objects.create(user=user)
+        try:
+            print(f"Creating session for {user.email}")
+            session = UserSession.objects.create(user=user, login_time=now())
+            print(f"Session successfully created: {session}")
+        except Exception as e:
+            print(f"Failed to create session: {e}")
 
 @receiver(user_logged_out)
 def log_user_logout(sender, request, user, **kwargs):
-    """
-    Log user logout details when a user logs out.
-    """
-    # print(f"User logged out: {user.email}")
+    print(f"User logged out: {user.email}")
+    print(" ---------------> from signal of user_logged_out <------------------")
     if user.is_authenticated:
         print('------ User logged out --------')
-        update_user_session(user)
-
-@sync_to_async
-def update_user_session(user):
-    user_session = UserSession.objects.filter(user=user).latest('login_time')
-    user_session.logout_time = now()
-    user_session.save()
+        try:
+            user_session = UserSession.objects.filter(user=user).latest('login_time')
+            user_session.logout_time = now()
+            user_session.save()
+        except UserSession.DoesNotExist:
+            print(f"No active session found for user {user}")
+        except Exception as e:
+            print(f"Error updating session: {e}")

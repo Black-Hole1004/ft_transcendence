@@ -7,11 +7,17 @@ import ProgressBar from '../../components/Profile/ProgressBar'
 import AboutSection from '../../components/Profile/AboutSection'
 import UserStatsGraph from '../../components/Profile/UserStatsGraph'
 import useAuth from '../../context/AuthContext'
+import { useLocation } from 'react-router-dom'
 
 const USER_API = import.meta.env.VITE_USER_API
 const BASE_URL = import.meta.env.VITE_BASE_URL
+import { useParams } from 'react-router-dom'
+
 
 const Profile = () => {
+	const { username_fetched } = useParams();
+	console.log(username_fetched);
+	const { authTokens, logout, getAuthHeaders } = useAuth()
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
 
@@ -20,7 +26,7 @@ const Profile = () => {
 		games_won: 0,
 		win_rate: 0,
 		xp: 0
-	});	
+	});
 	const [matchHistory, setMatchHistory] = useState([]);
 	const [achievement, setAchievement] = useState({
 		current: {
@@ -37,9 +43,7 @@ const Profile = () => {
 			const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats`, {
 				headers: getAuthHeaders()
 			});
-			
 			const data = await response.json();
-			
 			if (response.ok) {
 				setStats(data.stats);
 				setAchievement(data.achievement);
@@ -51,12 +55,12 @@ const Profile = () => {
 			console.error('Failed to fetch profile stats:', error);
 		}
 	};
-	
+
 	console.log(stats);
 	console.log(matchHistory);
 	console.log(achievement);
 
-	const { authTokens, logout, getAuthHeaders } = useAuth()
+	
 	useEffect(() => {
 		const calculateWidth = () => {
 			if (containerRef.current) {
@@ -124,7 +128,7 @@ const Profile = () => {
 	}, []);
 
 	useEffect(() => {
-		if (!user) 
+		if (!user)
 			return;
 		setFirst_name(user.first_name);
 		setLast_name(user.last_name);
@@ -134,7 +138,7 @@ const Profile = () => {
 		setDisplay_name(user.display_name);
 		setBio(user.bio);
 		setProfile_picture(user.profile_picture);
-	} , [user]);
+	}, [user]);
 
 	/************************************************************************ */
 
@@ -162,22 +166,22 @@ const Profile = () => {
 					<div
 						className='lp:ml-about-lp flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 						xl:gap-20 lg:gap-10 gap-3 max-lp:ml-0 mt-2'
-						>
-							<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} />
-							<div className='flex flex-col items-center gap-2'>
-								<p className='titles max-mtb:self-start max-mtb:ml-3'>
-									Overall Progression
-								</p>
-								<div className='progressbar justify-self-center'>
-									<ProgressBar value={achievement.overall_progress} />
-									{/* <AnimatedProgressBar targetProgress={achievement.current.progress_percentage} /> */}
-								</div>
+					>
+						<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} />
+						<div className='flex flex-col items-center gap-2'>
+							<p className='titles max-mtb:self-start max-mtb:ml-3'>
+								Overall Progression
+							</p>
+							<div className='progressbar justify-self-center'>
+								<ProgressBar value={achievement.overall_progress} />
+								{/* <AnimatedProgressBar targetProgress={achievement.current.progress_percentage} /> */}
 							</div>
 						</div>
-						<UserStatsGraph />
 					</div>
-					{/* RANK: Achievement information and progress */}
-					<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
+					<UserStatsGraph />
+				</div>
+				{/* RANK: Achievement information and progress */}
+				<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
 						bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}>
 					<div className='font-dreamscape text-primary cards-title text-center'>
 						<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
@@ -208,11 +212,11 @@ const Profile = () => {
 							</div>
 						</div>
 					</div>
-					</div>
-					
-					{/* MATCH HISTORY : 5 recent matches */}
-					<div
-						className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
+				</div>
+
+				{/* MATCH HISTORY : 5 recent matches */}
+				<div
+					className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
 						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
 				>
 					<div className='font-dreamscape text-primary cards-title text-center'>
@@ -221,29 +225,29 @@ const Profile = () => {
 					<div
 						className='match-history flex-1 flex mtb:flex-row flex-col
 							justify-end max-lp:self-center mb-3'
-						>
-							<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
-								<p className='titles lp:self-center self-start font-medium'>
-									Win Rate
-								</p>
-								<div className='win-rate justify-self-center'>
-									<ProgressBar value={stats.win_rate}/>
-								</div>
-							</div>
-							
-							
-							<div className='flex flex-col gap-1'>
-								{matchHistory.map((match, index) => (
-									<MatchStats 
-										key={index}
-										currentPlayer={match.current_player}
-										opponent={match.opponent}
-										result={match.result}
-									/>
-								))}
+					>
+						<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
+							<p className='titles lp:self-center self-start font-medium'>
+								Win Rate
+							</p>
+							<div className='win-rate justify-self-center'>
+								<ProgressBar value={stats.win_rate} />
 							</div>
 						</div>
+
+
+						<div className='flex flex-col gap-1'>
+							{matchHistory.map((match, index) => (
+								<MatchStats
+									key={index}
+									currentPlayer={match.current_player}
+									opponent={match.opponent}
+									result={match.result}
+								/>
+							))}
+						</div>
 					</div>
+				</div>
 			</div>
 		</section>
 	)
