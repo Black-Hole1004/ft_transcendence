@@ -755,6 +755,9 @@ class HealthCheckView(APIView):
 def get_profile_stats(request):
     try:
         user = request.user
+        
+        
+        
         games = GameSessions.objects.filter(
             Q(player1=user) | Q(player2=user),
             status='FINISHED'

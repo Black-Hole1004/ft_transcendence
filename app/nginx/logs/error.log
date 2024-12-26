@@ -201,3 +201,23 @@
 2024/12/26 00:08:09 [notice] 10#10: start worker processes
 2024/12/26 00:08:09 [notice] 10#10: start worker process 11
 2024/12/26 00:08:09 [notice] 10#10: start worker process 12
+2024/12/26 00:17:25 [notice] 11#11: using the "epoll" event method
+2024/12/26 00:17:25 [notice] 11#11: nginx/1.27.3
+2024/12/26 00:17:25 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/26 00:17:25 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/26 00:17:25 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/26 00:17:25 [notice] 11#11: start worker processes
+2024/12/26 00:17:25 [notice] 11#11: start worker process 12
+2024/12/26 00:17:25 [notice] 11#11: start worker process 13
+2024/12/26 00:33:04 [notice] 11#11: signal 15 (SIGTERM) received, exiting
+2024/12/26 00:33:04 [notice] 13#13: signal 15 (SIGTERM) received, exiting
+2024/12/26 00:33:04 [notice] 13#13: exiting
+2024/12/26 00:33:04 [notice] 12#12: signal 15 (SIGTERM) received, exiting
+2024/12/26 14:30:26 [notice] 10#10: using the "epoll" event method
+2024/12/26 14:30:26 [notice] 10#10: nginx/1.27.3
+2024/12/26 14:30:26 [notice] 10#10: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/26 14:30:26 [notice] 10#10: OS: Linux 5.15.49-linuxkit
+2024/12/26 14:30:26 [notice] 10#10: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/26 14:30:26 [notice] 10#10: start worker processes
+2024/12/26 14:30:26 [notice] 10#10: start worker process 11
+2024/12/26 14:30:26 [notice] 10#10: start worker process 12
