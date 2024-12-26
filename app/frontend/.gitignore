@@ -1,6 +1,5 @@
 node_modules/
 .DS_Store
-.env
 todo.txt
 
 # Ignore Python cache files

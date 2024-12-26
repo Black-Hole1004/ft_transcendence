@@ -1,9 +1,9 @@
 .PHONY: all up build updetached down prune scan
 
-all: ssl up
+all: up
 
 up:
-	docker-compose up 
+	docker-compose up --build 
 
 ssl:
 	bash app/nginx/tools/generate_ssl.sh

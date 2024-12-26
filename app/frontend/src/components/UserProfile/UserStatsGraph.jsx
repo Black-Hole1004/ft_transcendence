@@ -7,15 +7,14 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 
 
 function UserStatsGraph({ profile_name }) {
-	console.log('p------------------->', profile_name)
 	const [userData, setUserData] = useState([])
 	const { getAuthHeaders } = useAuth()
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				// console.log('-->', `${BASE_URL}/users/${profile_name}/time-spent/`)
-				const response = await fetch(`${BASE_URL}/users/tabi3a/time-spent/`, {
+				console.log('API URL:', `${BASE_URL}/api/users/${profile_name}/time-spent/`);
+				const response = await fetch(`${BASE_URL}/api/users/${profile_name}/time-spent/`, {
 					method: 'GET',
 					headers: getAuthHeaders(),
 				})
@@ -42,6 +41,8 @@ function UserStatsGraph({ profile_name }) {
 						const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }) // "Mon", "Tue", etc.
 						const minutes = item.total_time_spent_seconds ? Math.round(item.total_time_spent_seconds / 60) : 0
 
+						console.log('dayName:', dayName)
+						console.log('minutes:', minutes)
 						return {
 							name: dayName,
 							min: minutes
@@ -56,7 +57,7 @@ function UserStatsGraph({ profile_name }) {
 							min: dayData ? dayData.min : day.min
 						}
 					})
-
+					console.log('mergedData ------->', mergedData)
 					setUserData(mergedData)
 				} else {
 					console.log('Failed to fetch user data')

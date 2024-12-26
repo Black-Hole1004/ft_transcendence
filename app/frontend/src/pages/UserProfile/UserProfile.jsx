@@ -41,7 +41,7 @@ const UserProfile = () => {
 	});
 	const fetchProfileStats = async () => {
 		try {
-			const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats/`, {
+			const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats/${profile_name}/`, {
 				headers: getAuthHeaders()
 			});
 			const data = await response.json();
@@ -122,7 +122,7 @@ const UserProfile = () => {
             }
         })
 
-        // fetchProfileStats()
+        fetchProfileStats()
 	}, []);
 
 	useEffect(() => {
@@ -138,7 +138,6 @@ const UserProfile = () => {
 		setProfile_picture(user.profile_picture);
 	}, [user]);
 
-    console.log('user ----------->', user)
 
     // import '../../../dist/assets/images/icons/arrow.svg'
 
@@ -180,10 +179,7 @@ const UserProfile = () => {
 							</div>
 						</div>
 					</div>
-                    {
-                        console.log('username ----------->', user.username || 'No username')
-                    }
-					<UserStatsGraph profile_name={ user.username} />
+					<UserStatsGraph profile_name={ profile_name } />
 				</div>
 				{/* RANK: Achievement information and progress */}
 				<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
