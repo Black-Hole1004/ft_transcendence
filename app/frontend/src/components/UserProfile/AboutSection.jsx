@@ -1,4 +1,4 @@
-function AboutSection({ first_name, last_name, email, mobile_number, username }) {
+function AboutSection({ first_name, last_name, email, mobile_number, username, date_joined_formatted }) {
 
 	return (
 		<div className='flex flex-col items-center gap-2'>
@@ -45,7 +45,7 @@ function AboutSection({ first_name, last_name, email, mobile_number, username })
 						<p>Joined</p>
 					</div>
 					<div>
-						<p>April 2024</p>
+						<p>{date_joined_formatted}</p>
 					</div>
 				</div>
 				<div className='line5 flex justify-between items-center'>

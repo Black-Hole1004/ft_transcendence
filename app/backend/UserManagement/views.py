@@ -994,7 +994,8 @@ class GetUserByUserName(APIView):
                 'bio': user.bio,
                 'mobile_number': user.mobile_number,
                 'profile_picture': user.profile_picture.url if hasattr(user, 'profile_picture') and user.profile_picture else None,
-
+                'date_joined': user.date_joined,
+                'date_joined_formatted': user.date_joined.strftime('%B %Y')
                 # 'xp': user.xp,
                 # 'profile_picture': user.profile_picture.url if user.profile_picture else None,
                 # 'achievement': Achievement.get_badge(user.xp)

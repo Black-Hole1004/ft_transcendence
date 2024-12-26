@@ -81,6 +81,7 @@ const UserProfile = () => {
 	const [display_name, setDisplay_name] = useState('')
 	const [bio, setBio] = useState('')
 	const [profile_picture, setProfile_picture] = useState('')
+	const [date_joined_formatted, setDate_joined_formatted] = useState('')
 
 
 	const [user, setUser] = useState({
@@ -92,6 +93,7 @@ const UserProfile = () => {
 		display_name: '',
 		bio: '',
 		profile_picture: '',
+		date_joined_formatted: ''
 	})
 
 	const fetchUserByUserName = async (profile_name) => {
@@ -136,10 +138,11 @@ const UserProfile = () => {
 		setDisplay_name(user.display_name);
 		setBio(user.bio);
 		setProfile_picture(user.profile_picture);
+		setDate_joined_formatted(user.date_joined_formatted);
 	}, [user]);
 
 
-    // import '../../../dist/assets/images/icons/arrow.svg'
+    console.log('user ---------------->[', user, ']');
 
 	/************************************************************************ */
 
@@ -168,7 +171,7 @@ const UserProfile = () => {
 						className='lp:ml-about-lp flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 						xl:gap-20 lg:gap-10 gap-3 max-lp:ml-0 mt-2'
 					>
-						<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} />
+						<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio}  date_joined_formatted={date_joined_formatted} />
 						<div className='flex flex-col items-center gap-2'>
 							<p className='titles max-mtb:self-start max-mtb:ml-3'>
 								Overall Progression
