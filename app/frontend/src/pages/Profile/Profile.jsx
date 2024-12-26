@@ -34,7 +34,7 @@ const Profile = () => {
 	});
 	const fetchProfileStats = async () => {
 		try {
-			const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats/`, {
+			const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats`, {
 				headers: getAuthHeaders()
 			});
 			

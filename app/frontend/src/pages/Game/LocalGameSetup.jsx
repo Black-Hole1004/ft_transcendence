@@ -80,7 +80,7 @@ const LocalGameSetup = () => {
 			navigate('/local-game', {
 				state: {
 					mode: 'local',
-					duration: gameConfig.duration,
+					duration: gameConfig.duration ? gameConfig.duration : GAME_CONSTRAINTS.DURATION.DEFAULT,
 					// Convert percentage values to pixels values for the actual game
 					paddleSize: calculatePaddleHeight(gameConfig.paddle.size),
 					ballSize: calculateBallRadius(gameConfig.ball.size),

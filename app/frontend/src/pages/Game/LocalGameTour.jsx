@@ -11,14 +11,14 @@ import PongTable from '../../components/Game/PongTable'
 import { useTournament } from '../../context/TournamentContext'
 
 const SuddenDeathMessage = () => (
-	<div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse">
-		<span className="font-bold">SUDDEN DEATH!</span>
-		<span className="ml-2">First point wins!</span>
+	<div className='fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse'>
+		<span className='font-bold'>SUDDEN DEATH!</span>
+		<span className='ml-2'>First PLayer To Score Wins !!</span>
 	</div>
-);
+)
 
-//--smoky-black: #0E0B0Aff;
-const GameOverPopup = ({ winner, onRestart, onClose }) => (
+// --smoky-black: #0E0B0Aff;
+const GameOverPopup = ({ winner, onQuit, onProceed }) => (
 	<>
 		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
 		<div
@@ -41,44 +41,37 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 					</p>
 				</div>
 			) : (
-				<p className='text-2xl font-medium mb-20'>A cosmic deadlock! The match ends in a tie.</p>
+				<p className='text-2xl font-medium mb-20'>
+					A cosmic deadlock! The match ends in a tie.
+				</p>
 			)}
 			<div className='w-full flex justify-between my-10 lg:gap-10 gap-6'>
 				<button
-					onClick={onRestart}
+					onClick={onQuit}
 					className='font-dreamscape bg-primary text-secondary py-3 flex-1 rounded
 					hover:scale-[1.01] hover:brightness-100 transition-all duration-300 ease-in-out
 					hover:outline hover:outline-offset-2 hover:outline-2 hover:outline-primary'
 				>
-					Play Again
+					Quit The Tournament
 				</button>
 				<button
-					onClick={onClose}
+					onClick={onProceed}
 					className='font-heavy text-primary py-3 border border-border rounded flex-1
 					bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'
 				>
-					Personalize Game
+					Proceed To The Next Round
 				</button>
 			</div>
 		</div>
-
-
 	</>
 )
 
 const LocalGame = () => {
-
-
 	const navigate = useNavigate()
-
 	// code ahaloui added
-	const {
-		setSemiFinal1winner,
-		setSemiFinal2winner,
-		setFinalWinner,
-		setTournamentState
-	} = useTournament();
-	const [isSuddenDeath, setIsSuddenDeath] = useState(false);
+	const { setSemiFinal1winner, setSemiFinal2winner, setFinalWinner, setTournamentState, resetTournament, setTournamentData } =
+		useTournament()
+	const [isSuddenDeath, setIsSuddenDeath] = useState(false)
 
 	const [isPaused, setIsPaused] = useState(false)
 	const [isGameOver, setIsGameOver] = useState(false)
@@ -88,11 +81,23 @@ const LocalGame = () => {
 	const [winner, setWinner] = useState(null)
 
 	const location = useLocation()
-	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize, tournamentRound } = location.state || {}
+	const {
+		mode,
+		player1,
+		player2,
+		ballColor,
+		duration,
+		backgroundId,
+		paddleSize,
+		ballSize,
+		tournamentRound,
+	} = location.state || {}
 
 	const [timeRemaining, setTimeRemaining] = useState(duration || 60)
-	const [showRestartPopup, setShowRestartPopup] = useState(false)
+	const [showRestartPopup, setShowProceedPopup] = useState(false)
 	const [resetParameters, setResetParameters] = useState(false)
+
+	const [firstPlayerToScore, setFirstPlayerToScore] = useState(null)
 
 	const handlePause = () => {
 		if (!isGameOver) {
@@ -101,6 +106,15 @@ const LocalGame = () => {
 	}
 
 	const updateScore = (player) => {
+		// During sudden death, immediately end game on score
+		if (isSuddenDeath) {
+			const scoringPlayer = player === 1 ? player1 : player2
+			setFirstPlayerToScore(scoringPlayer)
+			handleTournamentWinner(scoringPlayer) // Directly handle winner
+			return
+		}
+
+		// Normal game scoring
 		if (player === 2) {
 			setPlayer2Score((prevScore) => prevScore + 1)
 		} else if (player === 1) {
@@ -122,123 +136,83 @@ const LocalGame = () => {
 		}
 	}, [timeRemaining, isPaused, isGameOver])
 
-	// const getWinner = () => {
-	// 	if (player1Score > player2Score) return player1
-	// 	if (player2Score > player1Score) return player2
-	// 	return null
-	// }
-
 	const getWinner = () => {
 		if (player1Score > player2Score) {
-			return player1;
+			return player1
 		} else if (player2Score > player1Score) {
-			return player2;
+			return player2
 		} else {
-			// If scores are equal
-			if (tournamentRound) { // If this is a tournament match
-				setIsSuddenDeath(true);
-				setIsGameOver(false);
-				setTimeRemaining(30); // Set 30 seconds for sudden death
-				return null;
+			if (tournamentRound) {
+				if (isSuddenDeath && firstPlayerToScore) {
+					return firstPlayerToScore
+				}
+				setIsSuddenDeath(true)
+				setIsGameOver(false)
+				setTimeRemaining(30)
+				return null
 			}
-			return null; // For non-tournament games, just return null for a tie
+			return null
 		}
-	};
+	}
 
-	// const handleClose = () => {
-	// 	setShowRestartPopup(false)
-	// 	navigate('/local-game-setup')
-	// }
-	// Update handleClose for tournament flow
-	const handleClose = () => {
-		setShowRestartPopup(false);
-		if (tournamentRound) {
-			navigate('/tournament', { replace: true });
-		} else {
-			navigate('/local-game-setup');
-		}
-	};
+	// Update handleProceed for tournament flow
+	const handleProceed = () => {
+		setShowProceedPopup(false)
+		navigate('/tournament', {
+			replace: true,
+			isFromGame: true,
+		})
+	}
 
+	const quitTournament = () => {
+		resetTournament() // ADDED
+		setTournamentData(null) // ADDED
 
-
-	const restartGame = () => {
-		setPlayer1Score(0)
-		setPlayer2Score(0)
-		setTimeRemaining(duration || 60)
-		setIsGameOver(false)
-		setIsPaused(false)
-		setShowRestartPopup(false)
-		setResetParameters((prev) => !prev) // Toggle this to reset the game
-		setWinner(null)
+		setShowProceedPopup(false)
+		navigate('/dashboard')
 	}
 
 	const gameOver = () => {
-		const winner = getWinner();
+		const winner = getWinner()
 
-		// If there's a tie in tournament mode
 		if (!winner && tournamentRound) {
-			setIsSuddenDeath(true);
-			setTimeRemaining(30); // 30 seconds sudden death round
-			setIsGameOver(false);
-			setIsPaused(false);
-			return; // Don't proceed with normal game over
+			setIsSuddenDeath(true)
+			setTimeRemaining(30)
+			setIsGameOver(false)
+			setIsPaused(false)
+			setFirstPlayerToScore(null)
+			return
 		}
 
-		// Normal game over flow
-		setIsGameOver(true);
-		setIsPaused(false); // changed to false
-		setShowRestartPopup(true);
-		setWinner(winner);
+		handleTournamentWinner(winner)
+	}
 
-		// Handle tournament progression
-		if (tournamentRound && winner) {
-			switch (tournamentRound) {
-				case 'semifinal1':
-					setSemiFinal1winner(winner);
-					setTournamentState('semifinal2');
-					break;
-				case 'semifinal2':
-					setSemiFinal2winner(winner);
-					setTournamentState('final');
-					break;
-				case 'final':
-					setFinalWinner(winner);
-					setTournamentState('completed');
-					break;
-			}
+	// Helper function for tournament progression
+	const handleTournamentWinner = (winner) => {
+		setIsGameOver(true)
+		setIsPaused(false)
+		setShowProceedPopup(true)
+		setWinner(winner)
+		setIsSuddenDeath(false)
+
+		if (!tournamentRound) return
+
+		switch (tournamentRound) {
+			case 'semifinal1':
+				setSemiFinal1winner(winner)
+				setTournamentState('semifinal2')
+				break
+			case 'semifinal2':
+				setSemiFinal2winner(winner)
+				setTournamentState('final')
+				break
+			case 'final':
+				setFinalWinner(winner)
+				setTournamentState('completed')
+				break
 		}
-	};
+	}
 
-	useEffect(() => {
-		if (isSuddenDeath && timeRemaining === 0) {
-			// If sudden death time expires, use a tiebreaker (e.g., higher XP)
-			const tiebreakerWinner = (player1.xp > player2.xp) ? player1 : player2; // should be changed.
-			setIsGameOver(true);
-			setIsPaused(true);
-			setShowRestartPopup(true);
-			setWinner(tiebreakerWinner);
-			setIsSuddenDeath(false);
-
-			// Handle tournament progression
-			if (tournamentRound) {
-				switch (tournamentRound) {
-					case 'semifinal1':
-						setSemiFinal1winner(tiebreakerWinner);
-						setTournamentState('semifinal2');
-						break;
-					case 'semifinal2':
-						setSemiFinal2winner(tiebreakerWinner);
-						setTournamentState('final');
-						break;
-					case 'final':
-						setFinalWinner(tiebreakerWinner);
-						setTournamentState('completed');
-						break;
-				}
-			}
-		}
-	}, [timeRemaining, isSuddenDeath]);
-	
 	return (
 		<>
 			<section
@@ -267,7 +241,7 @@ const LocalGame = () => {
 						playerImage={player1.image}
 						badgeImage={player1.badgeImage}
 						GameMode={mode}
-						/>
+					/>
 					<Player
 						id={2}
 						isPaused={isPaused}
@@ -292,7 +266,11 @@ const LocalGame = () => {
 					/>
 				</div>
 				{showRestartPopup && (
-					<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
+					<GameOverPopup
+						winner={winner}
+						onQuit={quitTournament}
+						onProceed={handleProceed}
+					/>
 				)}
 				{winner && showConfetti && (
 					<Confetti
@@ -314,14 +292,3 @@ const LocalGame = () => {
 }
 
 export default LocalGame
-
-
-
-
-
-
-
-
-
-
-
