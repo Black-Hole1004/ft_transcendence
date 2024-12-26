@@ -101,7 +101,7 @@ class GamePhysics:
         ball['y'] = self.canvas_height / 2
         
         # Reset to initial speed
-        ball['speed'] = 8  # Match initial speed
+        ball['speed'] = 10  # Match initial speed
         
         # Generate random angle between -45 and 45 degrees
         angle = random.uniform(-45, 45) * math.pi / 180
@@ -112,9 +112,9 @@ class GamePhysics:
         ball['velocityY'] = math.sin(angle) * speed
         
         # Add slight randomization to initial speed
-        speed_variation = random.uniform(0.9, 1.1)
-        ball['velocityX'] *= speed_variation
-        ball['velocityY'] *= speed_variation
+        # speed_variation = random.uniform(0.9, 1.1)
+        # ball['velocityX'] *= speed_variation
+        # ball['velocityY'] *= speed_variation
 
 class GameState:
     def __init__(self, game_id, canvas_width=800, canvas_height=400):
@@ -142,17 +142,17 @@ class GameState:
         # Game status
         self.connected_players = 0
         self.players_ready = set()
-        self.time_remaining = 60  # 1 minute and a half
+        self.time_remaining = 45 # 1 minute and a half
         
         # Ball properties
         self.ball = {
             'x': canvas_width / 2,
             'y': canvas_height / 2,
             'radius': 20,
-            'speed': 8,
-            'velocityX': 8,
-            'velocityY': 8,
-            'speedIncrement': 1.1,
+            'speed': 10,
+            'velocityX': 10,
+            'velocityY': 10,
+            'speedIncrement': 1.9,
             'maxSpeed': 18
         }
         
@@ -288,7 +288,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                     self.channel_name
                 )
 
-            # Handle game over if one player disconnects
+            # Handle game over if one player disconnects to always consider the disconnected player as the loser with 0 score and the other player as the winner with 3 score
             if self.game_state and self.game_state.connected_players <= 1:
                 self.game_state.game_over = True
                 self.game_state.winner = 1 if self.player_number == 2 else 2
@@ -744,7 +744,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             self.game_state.player2_paddle['score'] += 1
 
         # Reset ball
-        self.game_state.ball['speed'] = 8
+        self.game_state.ball['speed'] = 10
         self.physics.reset_ball(self.game_state.ball, direction=-1 if scorer == 1 else 1)
         
         # Instead of separate score update, broadcast full game state

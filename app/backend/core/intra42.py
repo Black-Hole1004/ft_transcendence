@@ -126,7 +126,7 @@ class Intra42OAuth2(BaseOAuth2):
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
             refresh_token = str(refresh)
-            redirect_url = f"https://localhost/dashboard?access_token={access_token}&refresh_token={refresh_token}"
+            redirect_url = f"https://10.12.4.12/dashboard?access_token={access_token}&refresh_token={refresh_token}"
             return HttpResponseRedirect(redirect_url)
 
         else:

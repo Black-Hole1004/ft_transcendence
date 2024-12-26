@@ -17,7 +17,7 @@ const SearchingAnimation = () => {
 				<marquee
 					key={index}
 					direction='down'
-					scrollamount={20 + Math.ceil((Math.random() * 10) % 10)}
+					scrollamount={30 + Math.ceil((Math.random() * 10) % 10)}
 					style={{
 						transitionDelay: `${index * 50}ms`,
 					}}

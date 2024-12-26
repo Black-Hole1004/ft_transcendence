@@ -901,41 +901,31 @@ def get_achievements(request):
                 'name': 'Novice Astronaut',
                 'image': 'novice-astronaut',
                 'xp_required': 0,
-                'description': 'Begin your cosmic journey',
-                'title': 'Welcome aboard, Novice Astronaut!',
-			    'body': 'Your journey begins on Venus, where the cosmos eagerly awaits your exploration. Strap in and prepare for an adventure beyond the stars!',
+                'description': 'Begin your cosmic journey'
             },
             {
                 'name': 'Cosmic Explorer',
                 'image': 'cosmic-explorer',
                 'xp_required': 2000,
-                'description': 'Venture beyond the familiar',
-                'title': 'Greetings, Cosmic Explorer!',
-			    'body': 'Level 2 brings you to Jupiter, the king of planets, where vast storms and boundless mysteries await your exploration. Blaze a trail through the cosmos and leave your mark among the stars.',
+                'description': 'Venture beyond the familiar'
             },
             {
                 'name': 'Stellar Voyager',
                 'image': 'stellar-voyager',
                 'xp_required': 4000,
-                'description': 'Navigate through stellar challenges',
-                'title': 'Ahoy, Stellar Voyager!',
-			    'body': 'As you ascend to Level 3, Saturn\'s majestic rings beckon you to new realms of discovery. Navigate the cosmos with grace and curiosity, for the stars themselves await your presence.',
+                'description': 'Navigate through stellar challenges'
             },
             {
                 'name': 'Galactic Trailblazer',
                 'image': 'galactic-trailblazer',
                 'xp_required': 6000,
-                'description': 'Forge new paths in the galaxy',
-                'title': 'Salutations, Galactic Trailblazer!',
-			    'body': 'Here on Earth, the universe unfolds before your eyes, offering endless wonders to discover. Embrace the journey ahead as you chart new territories and unlock the secrets of our celestial home.',
+                'description': 'Forge new paths in the galaxy'
             },
             {
                 'name': 'Celestial Master',
                 'image': 'celestial-master',
                 'xp_required': 8000,
-                'description': 'Achieve cosmic mastery',
-                'title': 'Congratulations, Celestial Master!',
-			    'body': 'You\'ve ascended to the highest echelons of cosmic mastery, basking in the brilliance of the Sun itself. As a true luminary of the cosmos, your journey knows no bounds. Shine on, and may your light guide others to new celestial heights!',
+                'description': 'Achieve cosmic mastery'
             }
         ]
         

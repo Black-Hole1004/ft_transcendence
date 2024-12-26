@@ -51,7 +51,9 @@ const Chat = () => {
 			)
 		}
 
-		sendBlockMessage()
+		if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
+			sendBlockMessage()
+		}
 	}, [blockerId])
 
 	useEffect(() => {

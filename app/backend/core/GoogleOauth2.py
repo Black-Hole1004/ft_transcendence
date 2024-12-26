@@ -82,7 +82,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 access_token = str(refresh.access_token)
                 refresh_token = str(refresh)
                 redirect_url = (
-                    f"https://localhost/dashboard?"
+                    f"https://10.12.4.12/dashboard?"
                     f"access_token={access_token}&"
                     f"refresh_token={refresh_token}"
                 )

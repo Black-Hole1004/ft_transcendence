@@ -1,5 +1,8 @@
 import './Dashboard.css'
 import GameModes from '../../components/Dashboard/GameModes'
+
+import Loader from '../../components/Loader/Loader'
+
 import Achievements from '../../components/Dashboard/Achievements'
 import FriendsList from '../../components/Dashboard/FriendsList/FriendsList'
 import Leaderboard from '../../components/Dashboard/Leaderboard/Leaderboard'
@@ -14,9 +17,10 @@ const Dashboard = () => {
 	const [achievements, setAchievements] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [userData, setUserData] = useState(null);
-	const [currentAchievements, setCurrentAchievements] = useState([]);
+	const [currentAchievement, setCurrentAchievement] = useState([]);
 	const [title, setTitle] = useState('Dashboard');
 	const [description, setDescription] = useState('Welcome to your dashboard!');
+	const [body, setBody] = useState('You have no new achievements to claim.');
 
 
 	useEffect(() => {
@@ -34,9 +38,11 @@ const Dashboard = () => {
 				const userJson = await userResponse.json();
 				setUserData(userJson);
 				console.log('user data:', userJson);
-				setCurrentAchievements(userJson.badge);
-				setTitle(currentAchievements.title);
-				setDescription(currentAchievements.body);
+
+				setCurrentAchievement(userJson.badge)
+				setTitle(userJson.badge.title);
+				setBody(userJson.badge.body);
+				setDescription(userJson.badge.description);
 
 
 				// get leaderboard data --------------------------------------------------------------
@@ -82,14 +88,14 @@ const Dashboard = () => {
 		fetchData();
 	}, []);
 	/************************************************************************ */
-	if (loading) return <div>Loading...</div>;
-
+	// if (loading) return <Loader />;
+// 
 	return (
 		<>
 			<section className='flex lg:flex-row flex-col lg:pl-section-lg
 			rightside-my lg:mr-modes-right-lg lg:ml-modes-left-lg ml:ml-modes-left-ms ml:mr-modes-right-ms'>
 				<div className='lg:w-5/12 flex flex-col justify-between max-lg:mb-8 max-mtb:mb-4 max-lg:mx-2 lg:pr-cards-lg'>
-					<CongratulatoryMessage title={title} description={description} />
+					<CongratulatoryMessage title={title} description={description} body={body} />
 					<div className='flex mtb:flex-row flex-col max-mtb:gap-y-3 gap-x-1 lg:justify-between justify-around max-mtb:pr-0'>
 						<FriendsList />
 						<Leaderboard users={leaderboardData} />
