@@ -13,6 +13,20 @@ const TournamentSetup = () => {
 	const location = useLocation()
 	const defaultBackgroundId = 1
 
+	const CANVAS_HEIGHT = 400 // my actual game canvas height
+	const CANVAS_WIDTH = 800 // my actual game canvas width
+
+	const calculatePaddleHeight = (percentage) => {
+		// Convert percentage to actual pixels
+		return Math.round((percentage / 100) * CANVAS_HEIGHT)
+	}
+
+	const calculateBallRadius = (percentage) => {
+		// Convert percentage to a reasonable ball size
+		// Using smaller divisor to keep ball from getting too big
+		return Math.round((percentage / 100) * (CANVAS_HEIGHT) / 2)
+	}
+
 	// Game configuration state
 	const [gameConfig, setGameConfig] = useState({
 		paddle: {
@@ -77,16 +91,18 @@ const TournamentSetup = () => {
 					mode: 'local',
 
 					duration: gameConfig.duration ? gameConfig.duration : GAME_CONSTRAINTS.DURATION.DEFAULT,
-					ballSize: gameConfig.ball.size ? gameConfig.ball.size : GAME_CONSTRAINTS.BALL.DEFAULT_SIZE,
+					paddleSize: calculatePaddleHeight(GAME_CONSTRAINTS.PADDLE.DEFAULT_SIZE - 10),
+					ballSize: calculateBallRadius(GAME_CONSTRAINTS.BALL.DEFAULT_SIZE - 1),
 					ballColor: gameConfig.ball.color ? gameConfig.ball.color : GAME_CONSTRAINTS.COLORS.DEFAULT,
-					paddleSize: gameConfig.paddle.size ? gameConfig.paddle.size : GAME_CONSTRAINTS.PADDLE.DEFAULT_SIZE,
 
 					backgroundId: gameConfig.isBackgroundVisible ? backgroundId : null,
 					player1: { name: players.player1.name, color: players.player1.color },
 					player2: { name: players.player2.name, color: players.player2.color },
 					player3: { name: players.player3.name, color: players.player3.color },
 					player4: { name: players.player4.name, color: players.player4.color },
+
 				},
+				isFromGame : false
 			})
 		}
 	}
@@ -248,6 +264,7 @@ const TournamentSetup = () => {
 
 								<button
 									type='submit'
+									onClick={handleSubmit}
 									className='font-dreamscape labels w-full p-2 bg-primary text-secondary rounded brightness-90
 									hover:scale-[1.02] hover:brightness-100 transition duration-200 ease-in'
 									onClick={handleSubmit}

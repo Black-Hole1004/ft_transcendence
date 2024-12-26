@@ -1,94 +1,93 @@
-import React from 'react';
-import Button from '../../components/Home/Buttons/Button';
+import React from 'react'
+import Button from '../../components/Home/Buttons/Button'
 import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
-import { useTournament } from '../../context/TournamentContext';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useCallback } from 'react';
-import Confetti from 'react-confetti';
-import ChampionCelebration from '../../components/Tournament/ChampionCelebration';
-import MatchWarning from '../../components/Tournament/MatchWarning';
-
+import { useTournament } from '../../context/TournamentContext'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import { useCallback } from 'react'
+import Confetti from 'react-confetti'
+import ChampionCelebration from '../../components/Tournament/ChampionCelebration'
+import MatchWarning from '../../components/Tournament/MatchWarning'
 
 const players = [
 	{
-		id: "1",
-		nickname: "MOUAD55",
-		achievement: "CELESTIAL MASTER",
-		rankClass: "text-orange-400",
+		id: '1',
+		nickname: 'MOUAD55',
+		achievement: 'CELESTIAL MASTER',
+		rankClass: 'text-orange-400',
 		xp: 12456,
 		avatar: '../../../dist/assets/images/moudrib.jpeg',
-		icon: '../../../dist/assets/images/Achievements/celestial-master.png'
+		icon: '../../../dist/assets/images/Achievements/celestial-master.png',
 	},
 	{
-		id: "2",
-		nickname: "ARABIAI",
-		achievement: "CELESTIAL MASTER",
-		rankClass: "text-orange-400",
+		id: '2',
+		nickname: 'ARABIAI',
+		achievement: 'CELESTIAL MASTER',
+		rankClass: 'text-orange-400',
 		xp: 11648,
 		avatar: '../../../dist/assets/images/tabi3a.jpeg',
-		icon: '../../../dist/assets/images/Achievements/galactic-trailblazer.png'
+		icon: '../../../dist/assets/images/Achievements/galactic-trailblazer.png',
 	},
 	{
-		id: "3",
-		nickname: "AHMAYMOU",
-		achievement: "CELESTIAL MASTER",
-		rankClass: "text-orange-400",
+		id: '3',
+		nickname: 'AHMAYMOU',
+		achievement: 'CELESTIAL MASTER',
+		rankClass: 'text-orange-400',
 		xp: 10231,
 		avatar: '../../../dist/assets/images/lmoudir.jpg',
-		icon: '../../../dist/assets/images/Achievements/stellar-voyager.png'
+		icon: '../../../dist/assets/images/Achievements/stellar-voyager.png',
 	},
 	{
-		id: "4",
-		nickname: "PLAYER1",
-		achievement: "GALACTIC TRAILBLAZER",
-		rankClass: "text-cyan-400",
+		id: '4',
+		nickname: 'PLAYER1',
+		achievement: 'GALACTIC TRAILBLAZER',
+		rankClass: 'text-cyan-400',
 		xp: 9153,
 		avatar: '../../../dist/assets/images/ahaloui.jpeg',
-		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png'
+		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png',
 	},
 	{
-		id: "1",
-		nickname: "MOUAD55",
-		achievement: "CELESTIAL MASTER",
-		rankClass: "text-orange-400",
+		id: '1',
+		nickname: 'MOUAD55',
+		achievement: 'CELESTIAL MASTER',
+		rankClass: 'text-orange-400',
 		xp: 12456,
 		avatar: '../../../dist/assets/images/moudrib.jpeg',
-		icon: '../../../dist/assets/images/Achievements/celestial-master.png'
+		icon: '../../../dist/assets/images/Achievements/celestial-master.png',
 	},
 	{
-		id: "2",
-		nickname: "ARABIAI",
-		achievement: "CELESTIAL MASTER",
-		rankClass: "text-orange-400",
+		id: '2',
+		nickname: 'ARABIAI',
+		achievement: 'CELESTIAL MASTER',
+		rankClass: 'text-orange-400',
 		xp: 11648,
 		avatar: '../../../dist/assets/images/tabi3a.jpeg',
-		icon: '../../../dist/assets/images/Achievements/galactic-trailblazer.png'
+		icon: '../../../dist/assets/images/Achievements/galactic-trailblazer.png',
 	},
 	{
-		id: "3",
-		nickname: "AHMAYMOU",
-		achievement: "CELESTIAL MASTER",
-		rankClass: "text-orange-400",
+		id: '3',
+		nickname: 'AHMAYMOU',
+		achievement: 'CELESTIAL MASTER',
+		rankClass: 'text-orange-400',
 		xp: 10231,
 		avatar: '../../../dist/assets/images/lmoudir.jpg',
-		icon: '../../../dist/assets/images/Achievements/stellar-voyager.png'
+		icon: '../../../dist/assets/images/Achievements/stellar-voyager.png',
 	},
 	{
-		id: "4",
-		nickname: "PLAYER1",
-		achievement: "GALACTIC TRAILBLAZER",
-		rankClass: "text-cyan-400",
+		id: '4',
+		nickname: 'PLAYER1',
+		achievement: 'GALACTIC TRAILBLAZER',
+		rankClass: 'text-cyan-400',
 		xp: 9153,
 		avatar: '../../../dist/assets/images/ahaloui.jpeg',
-		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png'
+		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png',
 	},
-
 ]
 
 const Tournament = () => {
-	const navigate = useNavigate();
-	const location = useLocation();
+	const navigate = useNavigate()
+	const location = useLocation()
+
 	const {
 		semiFinal1winner,
 		setSemiFinal1winner,
@@ -100,27 +99,32 @@ const Tournament = () => {
 		setTournamentState,
 		tournamentData,
 		setTournamentData,
-		resetTournament
-	} = useTournament();
+		resetTournament,
+	} = useTournament()
 
-	const [showChampionCelebration, setShowChampionCelebration] = useState(false);
+	// Destructure data only if it exists
+	const [showChampionCelebration, setShowChampionCelebration] = useState(false)
 
+	const {
+		mode,
+		player1,
+		player2,
+		player3,
+		player4,
+		backgroundId,
+		duration,
+		ballSize,
+		ballColor,
+		paddleSize,
+	} = tournamentData || {}
 
-	const { mode, player1, player2, player3, player4, backgroundId, duration, ballSize, ballColor, paddleSize }
-		= tournamentData || {};
-
-
-	const [showWarning, setShowWarning] = useState(false);
-
-
-
-
+	const [showWarning, setShowWarning] = useState(false)
 
 	const startSemiFinal1 = () => {
-		setShowWarning(true);
+		setShowWarning(true)
 		setTimeout(() => {
-			setShowWarning(false);
-			navigate('/local-game', {
+			setShowWarning(false)
+			navigate('/local-game-tour', {
 				state: {
 					mode,
 					player1,
@@ -130,18 +134,18 @@ const Tournament = () => {
 					ballSize,
 					ballColor,
 					paddleSize,
-					tournamentRound: 'semifinal1'
-				}
-			});
-			setTournamentState('semifinal1');
-		}, 3000); // 3 seconds delay
-	};
+					tournamentRound: 'semifinal1',
+				},
+			})
+			setTournamentState('semifinal1')
+		}, 3000) // 3 seconds delay
+	}
 
 	const startSemiFinal2 = () => {
-		setShowWarning(true);
+		setShowWarning(true)
 		setTimeout(() => {
-			setShowWarning(false);
-			navigate('/local-game', {
+			setShowWarning(false)
+			navigate('/local-game-tour', {
 				state: {
 					mode,
 					player1: player3,
@@ -151,21 +155,20 @@ const Tournament = () => {
 					ballSize,
 					ballColor,
 					paddleSize,
-					tournamentRound: 'semifinal2'
-				}
-			});
-			setTournamentState('semifinal2');
-		}, 3000);
-	};
-
+					tournamentRound: 'semifinal2',
+				},
+			})
+			setTournamentState('semifinal2')
+		}, 3000)
+	}
 
 	const startFinal = () => {
-		if (!semiFinal1winner || !semiFinal2winner) return;
+		if (!semiFinal1winner || !semiFinal2winner) return
 
-		setShowWarning(true);
+		setShowWarning(true)
 		setTimeout(() => {
-			setShowWarning(false);
-			navigate('/local-game', {
+			setShowWarning(false)
+			navigate('/local-game-tour', {
 				state: {
 					mode,
 					player1: semiFinal1winner,
@@ -175,104 +178,91 @@ const Tournament = () => {
 					ballSize,
 					ballColor,
 					paddleSize,
-					tournamentRound: 'final'
-				}
-			});
-		}, 3000);
-	};
+					tournamentRound: 'final',
+				},
+			})
+		}, 3000)
+	}
 
 	useEffect(() => {
 		if (finalWinner && tournamentState === 'completed') {
-			setShowChampionCelebration(true);
+			setShowChampionCelebration(true)
 			setTimeout(() => {
-				setShowChampionCelebration(false);
-			}, 5000);
+				setShowChampionCelebration(false)
+			}, 5000)
 		}
-	}, [finalWinner, tournamentState]);
+	}, [finalWinner, tournamentState])
 
 	const handleTournamentAction = () => {
 		switch (tournamentState) {
 			case 'not_started':
-				startSemiFinal1();
-				break;
+				startSemiFinal1()
+				break
 			case 'semifinal1':
 				// Wait for game to complete
-				break;
+				break
 			case 'semifinal2':
-				startSemiFinal2();
-				break;
+				startSemiFinal2()
+				break
 			case 'final':
-				startFinal();
-				break;
+				startFinal()
+				break
 			case 'completed':
-				resetTournament();
-				navigate('/dashboard'); // Or wherever you want to go after tournament
-				break;
+				resetTournament()
+				navigate('/dashboard')
+				break
 			default:
-				break;
+				break
 		}
-	};
+	}
 
 	const getButtonText = () => {
 		switch (tournamentState) {
 			case 'not_started':
-				return 'Start Tournament';
+				return 'Start Tournament'
 			case 'semifinal1':
-				return 'Playing Semifinal 1...';
+				return 'Playing Semifinal 1...'
 			case 'semifinal2':
-				return 'Start Semifinal 2';
+				return 'Start Semifinal 2'
 			case 'final':
-				return 'Start Final Match';
+				return 'Start Final Match'
 			case 'completed':
-				return 'Tournament Complete';
+				return 'Tournament Complete'
 			default:
-				return 'Start Tournament';
+				return 'Start Tournament'
 		}
-	};
-
-	const handlePopState = useCallback(() => {
-		if (tournamentState !== 'not_started' && tournamentState !== 'completed') {
-			const confirmed = window.confirm('Tournament is in progress. Are you sure you want to leave?');
-			if (confirmed) {
-				resetTournament();
-				navigate('/tournament-setup');
-			} else {
-				window.history.pushState(null, '', window.location.pathname);
-			}
-		}
-	}, [tournamentState, resetTournament, navigate]);
+	}
 
 	useEffect(() => {
-		window.addEventListener('popstate', handlePopState);
+		// Cleanup only when exiting tournament completely
 		return () => {
-			window.removeEventListener('popstate', handlePopState);
-		};
-	}, [handlePopState]);
-
-
+			// Check if navigating to game or truly exiting
+			if (!window.location.pathname.includes('local-game-tour')) {
+				resetTournament()
+				setTournamentData(null)
+			}
+		}
+	}, [])
 
 	useEffect(() => {
 		// Check and store tournament data
 		if (location.state && !tournamentData) {
-			console.log('Setting tournament data from location state...');
-			setTournamentData(location.state);
+			console.log('Setting tournament data from location state...')
+			setTournamentData(location.state)
 		}
 		// Handle navigation if no data is available
 		else if (!location.state && !tournamentData && tournamentState === 'not_started') {
-			console.log('location state =>', location.state);
-			console.log('tournament data =>', tournamentData);
-			console.log('No tournament data found, navigating to setup...');
-			navigate('/CustomTournament');
+			console.log('No tournament data found, navigating to setup...')
+			navigate('/CustomTournament')
 		}
-	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState]);
+	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState])
 
 	if (!tournamentData) {
-		return <div>Loading...</div>;
+		return <div>Loading...</div>
 	}
 
 	return (
-		<div className="flex flex-row items-start justify-center min-h-screen overflow-hidden" >
-
+		<div className='flex flex-row items-start justify-center min-h-screen overflow-hidden'>
 			{/* Champion celebration */}
 			{showChampionCelebration && finalWinner && (
 				<>
@@ -288,115 +278,124 @@ const Tournament = () => {
 			)}
 
 			{/* start missing part */}
-			<div className="w-[35%] flex flex-col overflow-hidden  p-8">
+			<div className='w-[35%] flex flex-col overflow-hidden  p-8'>
 				<div className=''>
-					<h1 className='text-6xl font-dreamscape'
+					<h1
+						className='text-6xl font-dreamscape'
 						style={{
-							textShadow: '0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)',
+							textShadow:
+								'0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)',
 						}}
 					>
 						CELESTIAL PONG CLASH
 					</h1>
 					<div className='flex flex-col justify-center'>
 						<p className='text-gray-300 text-base font-medium text-justify pr-40'>
-							The Celestial Pong Clash invites players from across the galaxy to compete in
-							intense interstellar battles, where victory depends on mastering precision and
-							strategy in the vast cosmic realm.
+							The Celestial Pong Clash invites players from across the galaxy to
+							compete in intense interstellar battles, where victory depends on
+							mastering precision and strategy in the vast cosmic realm.
 						</p>
 					</div>
 				</div>
 
 				<div className='justify-center rounded-3xl mt-20 w-[60%] border border-white border-b-opacity-20'>
-					<h2 className='text-2xl font-semibold flex items-center justify-center'>PLAYERS</h2>
-					<div className="space-y-4 p-4 ">
-						{
-							players.map((player, index) => {
-								return (
-									<div
-										key={index}
-										className='user-container flex items-center justify-between font-dreamscape-sans
-									rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
-										<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[68%]'>
-											<img
-												src={player.avatar}
-												className='h-16 rounded-full ring-1 ring-primary select-none'
-												alt='user-image'
-												loading='eager'
-											/>
-											<div className='flex flex-wrap items-center overflow-hidden'>
-												<p className='text-primary nickname-size leading-[1] truncate mr-1'>
-													{player.nickname}
-												</p>
-												<p className='text-achievement text-xs '> {player.achievement}</p>
-											</div>
-										</div>
-										<div>
-
-										</div>
-										<div className='h-full mx-1 flex items-center'>
-											<img
-												src={player.icon}
-												className='h-16 select-none'
-												alt='achievement-icon'
-												loading='eager'
-											/>
-											<p className={`xp text-primary leading-[1]`}>{`${player.xp}` + 'xp'}</p>
+					<h2 className='text-2xl font-semibold flex items-center justify-center'>
+						PLAYERS
+					</h2>
+					<div className='space-y-4 p-4 '>
+						{players.map((player, index) => {
+							return (
+								<div
+									key={index}
+									className='user-container flex items-center justify-between font-dreamscape-sans
+									rounded-md hover:bg-[rgba(183,170,156,0.2)]'
+								>
+									<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[68%]'>
+										<img
+											src={player.avatar}
+											className='h-16 rounded-full ring-1 ring-primary select-none'
+											alt='user-image'
+											loading='eager'
+										/>
+										<div className='flex flex-wrap items-center overflow-hidden'>
+											<p className='text-primary nickname-size leading-[1] truncate mr-1'>
+												{player.nickname}
+											</p>
+											<p className='text-achievement text-xs '>
+												{' '}
+												{player.achievement}
+											</p>
 										</div>
 									</div>
-								)
-							}
+									<div></div>
+									<div className='h-full mx-1 flex items-center'>
+										<img
+											src={player.icon}
+											className='h-16 select-none'
+											alt='achievement-icon'
+											loading='eager'
+										/>
+										<p className={`xp text-primary leading-[1]`}>
+											{`${player.xp}` + 'xp'}
+										</p>
+									</div>
+								</div>
 							)
-						}
+						})}
 					</div>
 				</div>
 			</div>
 			{/* end missing part */}
 
-
-
 			{/* Warning Message */}
 			{showWarning && (
 				<MatchWarning
 					player1Name={
-						tournamentState === 'not_started' ? player1?.name :
-							tournamentState === 'semifinal2' ? player3?.name :
-								semiFinal1winner?.name
+						tournamentState === 'not_started'
+							? player1?.name
+							: tournamentState === 'semifinal2'
+								? player3?.name
+								: semiFinal1winner?.name
 					}
 					player2Name={
-						tournamentState === 'not_started' ? player2?.name :
-							tournamentState === 'semifinal2' ? player4?.name :
-								semiFinal2winner?.name
+						tournamentState === 'not_started'
+							? player2?.name
+							: tournamentState === 'semifinal2'
+								? player4?.name
+								: semiFinal2winner?.name
 					}
 				/>
 			)}
 
-			<div className="flex flex-col border rounded-3xl mt-20 pb-8 pl-16 w-[800px] h-[1100px]">
+			<div className='flex flex-col border rounded-3xl mt-20 pb-8 pl-16 w-[800px] h-[1100px]'>
 				{/* first partie of tournament */}
 				<div className=' flex-1 flex flex-row relative'>
 					{/* first column */}
 					<div className=' flex flex-col justify-around'>
 						<div className=''>
 							<img
-								className={`w-24 h-24 rounded-full border-2 ${tournamentState === 'semifinal1' ? 'border-yellow-400' : 'border-white'
-									}`}
+								className={`w-24 h-24 rounded-full border-2 ${
+									tournamentState === 'semifinal1'
+										? 'border-yellow-400'
+										: 'border-white'
+								}`}
 								src='../../../dist/assets/images/avatar.jpg'
-								alt="avatar"
+								alt='avatar'
 							/>
-							<p className='text-white text-center'>
-								{player1.name}
-							</p>
+							<p className='text-white text-center'>{player1.name}</p>
 						</div>
 
 						<div className=''>
 							<img
-								className={`w-24 h-24 rounded-full border-2 ${tournamentState === 'semifinal1' ? 'border-yellow-400' : 'border-white'
-									}`}
+								className={`w-24 h-24 rounded-full border-2 ${
+									tournamentState === 'semifinal1'
+										? 'border-yellow-400'
+										: 'border-white'
+								}`}
 								src='../../../dist/assets/images/avatar.jpg'
-								alt="avatar"
+								alt='avatar'
 							/>
-							<p className='text-white text-center'>
-								{player2.name}
-							</p>
+							<p className='text-white text-center'>{player2.name}</p>
 						</div>
 					</div>
 					{/* second column */}
@@ -420,9 +419,13 @@ const Tournament = () => {
 						<div className=' flex-1'></div>
 						<div className='flex-1 flex flex-col justify-center items-center'>
 							<img
-								className="w-24 h-24 rounded-full border-2 border-white"
-								src={semiFinal1winner ? '../../../dist/assets/images/avatar.jpg' : '../../../dist/assets/images/question_mark.jpeg'}
-								alt="avatar"
+								className='w-24 h-24 rounded-full border-2 border-white'
+								src={
+									semiFinal1winner
+										? '../../../dist/assets/images/avatar.jpg'
+										: '../../../dist/assets/images/question_mark.jpeg'
+								}
+								alt='avatar'
 							/>
 							<p className='text-white text-center'>
 								{semiFinal1winner ? semiFinal1winner.name : 'unknown'}
@@ -445,9 +448,13 @@ const Tournament = () => {
 					{/* seventh column */}
 					<div className='w-24 h-full flex flex-col absolute top-1/2 right-24 justify-center '>
 						<img
-							className="w-24 h-24 rounded-full border-2 border-white"
-							src={finalWinner ? '../../../dist/assets/images/avatar.jpg' : '../../../dist/assets/images/question_mark.jpeg'}
-							alt="avatar"
+							className='w-24 h-24 rounded-full border-2 border-white'
+							src={
+								finalWinner
+									? '../../../dist/assets/images/avatar.jpg'
+									: '../../../dist/assets/images/question_mark.jpeg'
+							}
+							alt='avatar'
 						/>
 						<p className='text-white text-center'>
 							{finalWinner ? finalWinner.name : 'unknown'}
@@ -455,33 +462,34 @@ const Tournament = () => {
 					</div>
 				</div>
 
-
 				{/* second partie of tournament */}
 				<div className=' flex-1 flex flex-row'>
 					{/* first column */}
 					<div className=' flex flex-col justify-around'>
 						<div className=''>
 							<img
-								className={`w-24 h-24 rounded-full border-2 ${tournamentState === 'semifinal1' ? 'border-yellow-400' : 'border-white'
-									}`}
+								className={`w-24 h-24 rounded-full border-2 ${
+									tournamentState === 'semifinal1'
+										? 'border-yellow-400'
+										: 'border-white'
+								}`}
 								src='../../../dist/assets/images/avatar.jpg'
-								alt="avatar"
+								alt='avatar'
 							/>
-							<p className='text-white text-center'>
-								{player3.name}
-							</p>
+							<p className='text-white text-center'>{player3.name}</p>
 						</div>
 
 						<div className=''>
 							<img
-								className={`w-24 h-24 rounded-full border-2 ${tournamentState === 'semifinal1' ? 'border-yellow-400' : 'border-white'
-									}`}
+								className={`w-24 h-24 rounded-full border-2 ${
+									tournamentState === 'semifinal1'
+										? 'border-yellow-400'
+										: 'border-white'
+								}`}
 								src='../../../dist/assets/images/avatar.jpg'
-								alt="avatar"
+								alt='avatar'
 							/>
-							<p className='text-white text-center'>
-								{player4.name}
-							</p>
+							<p className='text-white text-center'>{player4.name}</p>
 						</div>
 					</div>
 					{/* second column */}
@@ -505,9 +513,13 @@ const Tournament = () => {
 						<div className=' flex-1'></div>
 						<div className='mt-10 flex-1 flex-col justify-center items-center'>
 							<img
-								className="w-24 h-24 rounded-full border-2 border-white"
-								src={semiFinal2winner ? '../../../dist/assets/images/avatar.jpg' : '../../../dist/assets/images/question_mark.jpeg'}
-								alt="avatar"
+								className='w-24 h-24 rounded-full border-2 border-white'
+								src={
+									semiFinal2winner
+										? '../../../dist/assets/images/avatar.jpg'
+										: '../../../dist/assets/images/question_mark.jpeg'
+								}
+								alt='avatar'
 							/>
 							<p className='text-white text-center'>
 								{semiFinal2winner ? semiFinal2winner.name : 'unknown'}
@@ -525,22 +537,20 @@ const Tournament = () => {
 					</div>
 
 					{/* sixth column */}
-					<div className='border-t border-white w-24 h-full flex flex-col'>
-					</div>
+					<div className='border-t border-white w-24 h-full flex flex-col'></div>
 				</div>
 
 				<div className='flex justify-center'>
-					<Button className={
-						'rounded-md  w-1/2 h-12 font-regular buttons-text remove-button'
-					}
+					<Button
+						className={'rounded-md  w-1/2 h-12 font-regular buttons-text remove-button'}
 						onClick={handleTournamentAction}
-						type='submit' >
+						type='submit'
+					>
 						{getButtonText()}
 					</Button>
 				</div>
 			</div>
-
-		</div >
+		</div>
 	)
 }
-export default Tournament;
+export default Tournament

@@ -22,7 +22,8 @@ prune:
 	docker system prune -af --volumes --force
 	@rm -rf ./app/data
 	@rm -rf ./app/nginx/ssl_certificates
-	@> ./app/nginx/logs/access.log
+	@rm -rf ./app/nginx/logs/access.log
+	@rm -rf ./app/nginx/logs/error.log
 
 scan: build
 	docker scan ft_transcendence-pingpong

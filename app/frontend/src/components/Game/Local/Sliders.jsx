@@ -1,10 +1,30 @@
 import Slider from '@mui/material/Slider'
 
 const Sliders = ({ id, size, minSize, maxSize, setSize }) => {
+
+	const CANVAS_HEIGHT = 400 // my actual game canvas height
+	const CANVAS_WIDTH = 800 // my actual game canvas width
+	
+	const calculatePaddleHeight = (percentage) => {
+		// Convert percentage to actual pixels
+		return Math.round((percentage / 100) * CANVAS_HEIGHT)
+	}
+
+	const calculateBallRadius = (percentage) => {
+		// Convert percentage to a reasonable ball size
+		// Using smaller divisor to keep ball from getting too big
+		return Math.round((percentage / 100) * (CANVAS_HEIGHT / 8))
+	}
+
+	const actualSize = id === 'paddle' 
+    ? calculatePaddleHeight(size)
+    : calculateBallRadius(size);
+
+
 	return (
 		<div className='flex flex-col gap-5 max-w-[80%]'>
 			<label className='font-regular text-light labels' htmlFor={id}>
-				Paddle Size: {size}%
+				{id === 'paddle' ? 'Paddle' : 'Ball'} Size: {size}% ({actualSize}px)
 			</label>
 			<div className='pl-8'>
 				<Slider
