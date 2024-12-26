@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom'
 function GameModes() {
 	return (
 		<div className='relative w-full lg:h-shapes-lg ms:h-shapes-ms font-dreamscape-sans text-primary select-none modes'>
-			<Link to={'/tournament'}>
+			<Link to={'/CustomTournament'}>
+			{/* <Link to={'/tournament'}> */}
 				<Mode
 					image={'tournaments.webp'}
 					title={'lg:left-[5%] lp:left-[15%] left-[12%]'}
