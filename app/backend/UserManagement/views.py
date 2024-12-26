@@ -81,8 +81,28 @@ from .serializers import HealthCheckSerializer
 import time
 import socket
 from rest_framework.exceptions import ValidationError
+from django.db.models import Sum
+from django.db.models.functions import TruncDate, ExtractHour, ExtractMinute, ExtractSecond
 
+{
+    "data": [
+        {
+            "date": "2024-12-26",
+            "total_time_spent": "P0DT00H14M35.466212S",
+            "total_time_spent_seconds": 875.466212,
+            "total_time_spent_minutes": 14.591103533333333
+        }
+    ]
+}
 
+{
+    "data": [
+        {
+            "date": "2024-12-26",
+            "total_time_spent_minutes": 7.166666666666667
+        }
+    ]
+}
 
 
 User = get_user_model()
@@ -206,11 +226,11 @@ class LoginView(APIView):
                 if user is not None:
                     user.status = 'online'
                     user.save()
-                    auth_login(request, user)
 
                     friends = async_to_sync(self.get_user_friends)(user)
                     notify_friends(user, friends)
 
+                    print(f"User logged in ------> {user.email}")
                     refresh = RefreshToken.for_user(user)
                     access_token = str(refresh.access_token)
                     refresh_token = str(refresh)
@@ -250,7 +270,6 @@ class LogoutView(APIView):
         # Notify friends about login
         friends = async_to_sync(self.get_user_friends)(user)
         notify_friends(user, friends)
-        django_logout(request)
         return Response({'message': 'User logged out successfully'})
 
 
@@ -752,7 +771,7 @@ class HealthCheckView(APIView):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_profile_stats(request):
+def get_current_profile_stats(request):
     try:
         user = request.user
         
@@ -961,3 +980,154 @@ def get_user_data(request):
         })
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+class GetUserByUserName(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, profile_name):
+        try:
+            user = User.objects.get(username=profile_name)
+            data = {
+                'id': user.id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'username': user.username,
+                'email': user.email,
+                'bio': user.bio,
+                'mobile_number': user.mobile_number,
+                'profile_picture': user.profile_picture.url if hasattr(user, 'profile_picture') and user.profile_picture else None,
+
+                # 'xp': user.xp,
+                # 'profile_picture': user.profile_picture.url if user.profile_picture else None,
+                # 'achievement': Achievement.get_badge(user.xp)
+            }
+            return Response(data)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class GetTimeSpentByUserName(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, profile_name):
+        try:
+            user = User.objects.get(username=profile_name)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
+
+        # Aggregate time spent
+        sessions = (
+            UserSession.objects.filter(user=user)
+            .annotate(date=TruncDate('login_time'))  # Group by date
+            .values('date')  # Select date
+            .annotate(
+                total_seconds=Sum(
+                    ExtractHour('duration') * 3600
+                    + ExtractMinute('duration') * 60
+                    + ExtractSecond('duration')
+                )
+            )
+        )
+
+        # Format response
+        formatted_sessions = []
+        for session in sessions:
+            total_seconds = session['total_seconds'] or 0
+
+            formatted_sessions.append({
+                "date": session['date'],
+                "total_time_spent_seconds": total_seconds,
+            })
+
+        return JsonResponse({'data': formatted_sessions})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile_stats(request, username):
+    try:
+        user = User.objects.get(username=username)
+        games = GameSessions.objects.filter(
+            Q(player1=user) | Q(player2=user),
+            status='FINISHED'
+        )
+        
+        total_games = games.count()
+        wins = games.filter(winner=user).count()
+        win_rate = (wins / total_games * 100) if total_games > 0 else 0
+        
+        recent_matches = []
+        for game in games.order_by('-start_time')[:5]:
+            is_player1 = (game.player1 == user)
+            
+            current_player = game.player1 if is_player1 else game.player2
+            opponent = game.player2 if is_player1 else game.player1
+            
+            # Get badge data
+            current_badge = Achievement.get_badge(current_player.xp)
+            opponent_badge = Achievement.get_badge(opponent.xp)
+            
+            # Get profile pictures
+            current_profile_picture = current_player.profile_picture.url if current_player.profile_picture else None
+            opponent_profile_picture = opponent.profile_picture.url if opponent.profile_picture else None
+            
+            # Get scores
+            current_score = game.score_player1 if is_player1 else game.score_player2
+            opponent_score = game.score_player2 if is_player1 else game.score_player1
+            
+            # XP gain logic
+            current_xp_gain = game.player1_xp_gain if is_player1 else game.player2_xp_gain
+            opponent_xp_gain = game.player2_xp_gain if is_player1 else game.player1_xp_gain
+            
+            # Improved result determination
+            if game.score_player1 == game.score_player2:
+                result = 'DRAW'
+            else:
+                if (is_player1 and game.winner == game.player1) or (not is_player1 and game.winner == game.player2):
+                    result = 'VICTORY'
+                else:
+                    result = 'DEFEAT'
+            
+            match_data = {
+                'current_player': {
+                    'profile_picture': current_profile_picture,
+                    'badge_image': current_badge['image'],
+                    'xp_gain': current_xp_gain,
+                    'score': current_score
+                },
+                'opponent': {
+                    'profile_picture': opponent_profile_picture,
+                    'badge_image': opponent_badge['image'],
+                    'xp_gain': opponent_xp_gain,
+                    'score': opponent_score
+                },
+                'result': result,
+            }
+            recent_matches.append(match_data)
+
+        # Rest of the code remains the same...
+        user_badge = Achievement.get_badge(user.xp)
+        progress_data = Achievement.get_badge_progress(user.xp)
+        user_badge.update(progress_data)
+        
+        overall_progress = (user.xp / 10000 * 100) if user.xp < 10000 else 100
+        
+        return Response({
+            'stats': {
+                'total_games': total_games,
+                'games_won': wins,
+                'win_rate': round(win_rate, 2),
+                'xp': user.xp
+            },
+            'achievement': {
+                'current': user_badge,
+                'overall_progress': round(overall_progress, 2)
+            },
+            'match_history': recent_matches
+        })
+        
+    except Exception as e:
+        print(f"Error in get_profile_stats: {str(e)}")
+        return Response({
+            'error': str(e)
+        }, status=500)

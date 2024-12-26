@@ -150,6 +150,7 @@ class UserSession(models.Model):
         # Calculate duration when logout_time is set
         if self.logout_time:
             self.duration = self.logout_time - self.login_time
+        print(f"Saving UserSession: {self}")
         super().save(*args, **kwargs)
 
     def __str__(self):
