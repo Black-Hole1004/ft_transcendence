@@ -230,27 +230,24 @@ const Profile = () => {
 					<div
 						className='match-history flex-1 flex mtb:flex-row flex-col
 							lp:justify-end mtb:justify-around justify-center  mb-3'
-						>
-							<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
-								<p className='titles lp:self-center self-start font-medium'>
-									Win Rate
-								</p>
-								<div className='win-rate justify-self-center'>
-									<ProgressBar value={stats.win_rate}/>
-								</div>
+					>
+						<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
+							<p className='titles lp:self-center self-start font-medium'>
+								Win Rate
+							</p>
+							<div className='win-rate justify-self-center'>
+								<ProgressBar value={stats.win_rate}/>
 							</div>
-							
-							
-							<div className='flex flex-col gap-1 max-mtb:self-center'>
-								{matchHistory.map((match, index) => (
-									<MatchStats 
-										key={index}
-										currentPlayer={match.current_player}
-										opponent={match.opponent}
-										result={match.result}
-									/>
-								))}
-							</div>
+						</div>
+						<div className='flex flex-col gap-1 max-mtb:self-center'>
+							{matchHistory.map((match, index) => (
+								<MatchStats 
+									key={index}
+									currentPlayer={match.current_player}
+									opponent={match.opponent}
+									result={match.result}
+								/>
+							))}
 						</div>
 
 

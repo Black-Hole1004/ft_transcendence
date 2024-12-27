@@ -22,12 +22,19 @@ const ConversationHeader = ({
 	blockerId,
 	setBlockerId,
 	areFriends,
+	setAreFriends,
 	recipientInfo,
 	currentLoggedInUserId,
 	recipientProfileImage,
 	reciver_id,
 }) => {
-	// console.log(blockerId)
+	console.log('header blockerId: ', blockerId)
+	console.log('areFriends: ', areFriends)
+
+	const handleBlock = () => {
+		setBlockerId(currentLoggedInUserId)
+		setAreFriends(false)
+	}
 
 
 	// add by ahaloui -----------------
@@ -41,7 +48,7 @@ const ConversationHeader = ({
 		triggerAlert(type, message)
 	}
 	useEffect(() => {
-		console.log('Receiver ID has changed:', reciver_id);
+		// console.log('Receiver ID has changed:', reciver_id);
 		if (reciver_id) {
 			console.log('Receiver ID has changed:', reciver_id);
 		}
@@ -87,7 +94,7 @@ const ConversationHeader = ({
 // ------------------------------
 
 return (
-	<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-20'>
+	<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-30'>
 		<div className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3'>
 			<img
 				src={`${recipientProfileImage}`}
@@ -125,20 +132,17 @@ return (
 			</div>
 		</div>
 		<div className='flex lp:gap-2 gap-1'>
-			{/* {blockerId === currentLoggedInUserId && (
+			{blockerId === currentLoggedInUserId && (
 					<Button onClick={() => setBlockerId(0)}>Unblock</Button>
-				)}
-				{blockerId === 0 &&
-					(areFriends ? <Button>Invite to Play</Button> : <Button>Add Friend</Button>)}
-				{blockerId === 0 && (
-					<Button onClick={() => setBlockerId(currentLoggedInUserId)}>Block user</Button>
-				)} */}
-			<Button
-				onClick={() => handle_add_friend(reciver_id)}
-			>
-				Add Friend
-			</Button>
-
+			)}
+			{(blockerId === 0 || blockerId === null) &&
+				(areFriends
+				? <Button>Invite to Play</Button>
+				: <Button onClick={() => handle_add_friend(reciver_id)}>Add Friend</Button>
+			)}
+			{(blockerId === 0 || blockerId === null) && (
+				<Button onClick={handleBlock}>Block user</Button>
+			)}
 		</div>
 	</div>
 )

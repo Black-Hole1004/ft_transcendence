@@ -38,6 +38,7 @@ const ComponentPath = () => {
 				{/* Redirect to /Dashboard if authenticated on the home path */}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
 				
+					<Route path="/searching" element={<SearchingAnimation />} />
 				{/* Layout wrapping all private routes */}
 				<Route element={<PrivateRoute><Layout /></PrivateRoute>}>
 					<Route path="/Game" element={<Game />} />

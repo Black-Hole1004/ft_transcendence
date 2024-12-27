@@ -69,6 +69,7 @@ const Chat = () => {
 							Authorization: getAuthHeaders().Authorization,
 						},
 					})
+					const blocker = response.data.blocked_by === null ? 0 : response.data.blocked_by
 					setAreFriends(response.data.status)
 					setBlockerId(response.data.blocked_by)
 				}
@@ -254,6 +255,7 @@ const Chat = () => {
 							<ConversationHeader
 								blockerId={blockerId}
 								areFriends={areFriends}
+								setAreFriends={setAreFriends}
 								setBlockerId={setBlockerId}
 								recipientInfo={recipientInfo}
 								currentLoggedInUserId={currentLoggedInUserId}
