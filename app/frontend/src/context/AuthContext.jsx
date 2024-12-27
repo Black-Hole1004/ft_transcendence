@@ -206,12 +206,17 @@ export const AuthProvider = ({ children }) => {
         if (authTokens) {
             try {
                 const accessTokenExpirationTime = get_expiration_time(authTokens.access_token)
+                const refreshTokenExpirationTime = get_expiration_time(authTokens.refresh_token)
                 if (accessTokenExpirationTime) {
                     const accesTokenTimeout = setTimeout(() => {
                         refres_token()
                     }, accessTokenExpirationTime - Date.now() - 1000);
+                    const refreshTokenTimeout = setTimeout(() => {
+                        logout()
+                    }, refreshTokenExpirationTime - Date.now() - 1000);
                     return (() => {
                         clearTimeout(accesTokenTimeout);
+                        clearTimeout(refreshTokenTimeout);
                     })
                 } else {
                     logout()
