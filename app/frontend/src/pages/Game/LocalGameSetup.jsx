@@ -7,9 +7,23 @@ import GameCustomizationPanel from '../../components/Game/Local/GameCustomizatio
 import GamePreparationPanel from '../../components/Game/Local/GamePreparationPanel'
 
 const LocalGameSetup = () => {
+	const CANVAS_HEIGHT = 400 // my actual game canvas height
+	const CANVAS_WIDTH = 800 // my actual game canvas width
+
 	const navigate = useNavigate()
 	const location = useLocation()
 	const defaultBackgroundId = 1
+
+	const calculatePaddleHeight = (percentage) => {
+		// Convert percentage to actual pixels
+		return Math.round((percentage / 100) * CANVAS_HEIGHT)
+	}
+
+	const calculateBallRadius = (percentage) => {
+		// Convert percentage to a reasonable ball size
+		// Using smaller divisor to keep ball from getting too big
+		return Math.round((percentage / 100) * (CANVAS_HEIGHT) / 2)
+	}
 
 	// Game configuration state
 	const [gameConfig, setGameConfig] = useState({
@@ -55,18 +69,22 @@ const LocalGameSetup = () => {
 			[field]: value,
 		}))
 	}
+	console.log('paddle height: ', calculatePaddleHeight(gameConfig.paddle.size))
+	console.log('paddle height BEFORE: ', gameConfig.paddle.size)
+	console.log('ball radius: ', calculateBallRadius(gameConfig.ball.size))
+	console.log('ball radius BEFORE: ', gameConfig.ball.size)
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log('ballColor: ', gameConfig.ball.color)
 		if (players.player1.name && players.player2.name) {
 			navigate('/local-game', {
 				state: {
 					mode: 'local',
-					duration: gameConfig.duration,
-					ballSize: gameConfig.ball.size,
+					duration: gameConfig.duration ? gameConfig.duration : GAME_CONSTRAINTS.DURATION.DEFAULT,
+					// Convert percentage values to pixels values for the actual game
+					paddleSize: calculatePaddleHeight(gameConfig.paddle.size),
+					ballSize: calculateBallRadius(gameConfig.ball.size),
 					ballColor: gameConfig.ball.color,
-					paddleSize: gameConfig.paddle.size,
 					backgroundId: gameConfig.isBackgroundVisible ? backgroundId : null,
 					player1: { name: players.player1.name, color: players.player1.color },
 					player2: { name: players.player2.name, color: players.player2.color },

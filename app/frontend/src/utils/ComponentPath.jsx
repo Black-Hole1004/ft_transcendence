@@ -23,9 +23,12 @@ const AiGame = React.lazy(() => import('../pages/Game/AiGame'))
 const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
 const AiGameSetup = React.lazy(() => import('../pages/Game/AiGameSetup'))
 const SearchingAnimation = React.lazy(() => import('../components/Game/Remote/SearchingAnimation'))
+
 const MatchMaking = React.lazy(() => import('../components/Game/MatchMaking'))
 const CustomTournament = React.lazy(() => import('../pages/CustomTournament/CustomTournament'))
 const TournamentSetup = React.lazy(() => import('../pages/TournametSetup/TournametSetup'))
+const LocalGameTour = React.lazy(() => import('../pages/Game/LocalGameTour'))
+const UserProfile = React.lazy(() => import('../pages/UserProfile/UserProfile'))
 
 const ComponentPath = () => {
 	const { authTokens } = useAuth();
@@ -43,10 +46,13 @@ const ComponentPath = () => {
 					<Route path="/Settings" element={<Settings />} />
 					<Route path="/Dashboard" element={<Dashboard />} />
 					<Route path="/chat/:conversation_key" element={<Chat />} />
+
+					<Route path="/users/:profile_name" element={<UserProfile />} />
 					
 					<Route path="/Tournament" element={<Tournament />} />
 					<Route path="/CustomTournament" element={<CustomTournament />} />
 					<Route path="/TournamentSetup" element={<TournamentSetup />} />
+					<Route path='/local-game-tour' element={<LocalGameTour />} />
 
 
 					<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />

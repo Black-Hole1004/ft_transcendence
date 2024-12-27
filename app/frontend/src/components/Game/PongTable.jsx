@@ -28,9 +28,9 @@ const PongTable = forwardRef(
 		const paddleWidth = 20
 		const paddleX = 5
 		const BallInitialSpeed = 0.5
-		const BallAcceleration = 0.1
+		const BallAcceleration = 0.1 // it was 0.1
 		const paddleSpeed = 300
-		const MAX_BALL_SPEED = 8
+		const MAX_BALL_SPEED = 10 // it was 8
 
 		const [playerY, setPlayerY] = useState(200 - paddleSize / 2)
 		const [aiY, setAiY] = useState(200 - paddleSize / 2)
@@ -321,7 +321,8 @@ const PongTable = forwardRef(
 						maxWidth: `${MAX_CANVAS_WIDTH}px`,
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
-						backgroundImage: `url('/assets/images/tables/table${backgroundId}.webp')`,
+						backgroundImage: `url('/assets/images/tables/table${backgroundId}.png')`,
+						aspectRatio: '2/1', // Maintain aspect ratio
 					}}
 				/>
 				{isPaused && (

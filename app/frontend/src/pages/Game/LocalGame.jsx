@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-
 import './Game.css'
 import Confetti from 'react-confetti'
 import Timer from '../../components/Game/Timer'
@@ -8,16 +7,6 @@ import Player from '../../components/Game/Player'
 import GameScore from '../../components/Game/GameScore'
 import PongTable from '../../components/Game/PongTable'
 
-import { useTournament } from '../../context/TournamentContext'
-
-const SuddenDeathMessage = () => (
-	<div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse">
-		<span className="font-bold">SUDDEN DEATH!</span>
-		<span className="ml-2">First point wins!</span>
-	</div>
-);
-
-//--smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<>
 		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
@@ -66,261 +55,147 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 )
 
 const LocalGame = () => {
+    const navigate = useNavigate()
+    const [isPaused, setIsPaused] = useState(false)
+    const [isGameOver, setIsGameOver] = useState(false)
+    const [player1Score, setPlayer1Score] = useState(0)
+    const [player2Score, setPlayer2Score] = useState(0)
+    const [showConfetti, setShowConfetti] = useState(false)
+    const [winner, setWinner] = useState(null)
 
+    const location = useLocation()
+    const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize } = location.state || {}
 
-	const navigate = useNavigate()
+    const [timeRemaining, setTimeRemaining] = useState(duration || 60)
+    const [showRestartPopup, setShowRestartPopup] = useState(false)
+    const [resetParameters, setResetParameters] = useState(false)
 
-	// code ahaloui added
-	const {
-		setSemiFinal1winner,
-		setSemiFinal2winner,
-		setFinalWinner,
-		setTournamentState
-	} = useTournament();
-	const [isSuddenDeath, setIsSuddenDeath] = useState(false);
+    const handlePause = () => {
+        if (!isGameOver) {
+            setIsPaused(!isPaused)
+        }
+    }
 
-	const [isPaused, setIsPaused] = useState(false)
-	const [isGameOver, setIsGameOver] = useState(false)
-	const [player1Score, setPlayer1Score] = useState(0)
-	const [player2Score, setPlayer2Score] = useState(0)
-	const [showConfetti, setShowConfetti] = useState(false)
-	const [winner, setWinner] = useState(null)
+    const updateScore = (player) => {
+        if (player === 2) {
+            setPlayer2Score((prevScore) => prevScore + 1)
+        } else if (player === 1) {
+            setPlayer1Score((prevScore) => prevScore + 1)
+        }
+    }
 
-	const location = useLocation()
-	const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize, tournamentRound } = location.state || {}
+    useEffect(() => {
+        if (isPaused || isGameOver) {
+            return
+        }
+        if (timeRemaining > 0) {
+            const timerId = setInterval(() => {
+                setTimeRemaining((prevTime) => prevTime - 1)
+            }, 1000)
+            return () => clearInterval(timerId)
+        } else if (timeRemaining === 0) {
+            gameOver()
+        }
+    }, [timeRemaining, isPaused, isGameOver])
 
-	const [timeRemaining, setTimeRemaining] = useState(duration || 60)
-	const [showRestartPopup, setShowRestartPopup] = useState(false)
-	const [resetParameters, setResetParameters] = useState(false)
+    const getWinner = () => {
+        if (player1Score > player2Score) return player1
+        if (player2Score > player1Score) return player2
+        return null
+    }
 
-	const handlePause = () => {
-		if (!isGameOver) {
-			setIsPaused(!isPaused)
-		}
-	}
+    const handleClose = () => {
+        setShowRestartPopup(false)
+        navigate('/local-game-setup')
+    }
 
-	const updateScore = (player) => {
-		if (player === 2) {
-			setPlayer2Score((prevScore) => prevScore + 1)
-		} else if (player === 1) {
-			setPlayer1Score((prevScore) => prevScore + 1)
-		}
-	}
+    const restartGame = () => {
+        setPlayer1Score(0)
+        setPlayer2Score(0)
+        setTimeRemaining(duration || 60)
+        setIsGameOver(false)
+        setIsPaused(false)
+        setShowRestartPopup(false)
+        setResetParameters((prev) => !prev)
+        setWinner(null)
+    }
 
-	useEffect(() => {
-		if (isPaused || isGameOver) {
-			return
-		}
-		if (timeRemaining > 0) {
-			const timerId = setInterval(() => {
-				setTimeRemaining((prevTime) => prevTime - 1)
-			}, 1000)
-			return () => clearInterval(timerId)
-		} else if (timeRemaining === 0) {
-			gameOver()
-		}
-	}, [timeRemaining, isPaused, isGameOver])
+    const gameOver = () => {
+        setIsGameOver(true)
+        setIsPaused(false)
+        setShowRestartPopup(true)
+        setWinner(getWinner())
+        setShowConfetti(true)
+        setTimeout(() => setShowConfetti(false), 5000)
+    }
 
-	// const getWinner = () => {
-	// 	if (player1Score > player2Score) return player1
-	// 	if (player2Score > player1Score) return player2
-	// 	return null
-	// }
-
-	const getWinner = () => {
-		if (player1Score > player2Score) {
-			return player1;
-		} else if (player2Score > player1Score) {
-			return player2;
-		} else {
-			// If scores are equal
-			if (tournamentRound) { // If this is a tournament match
-				setIsSuddenDeath(true);
-				setIsGameOver(false);
-				setTimeRemaining(30); // Set 30 seconds for sudden death
-				return null;
-			}
-			return null; // For non-tournament games, just return null for a tie
-		}
-	};
-
-	// const handleClose = () => {
-	// 	setShowRestartPopup(false)
-	// 	navigate('/local-game-setup')
-	// }
-	// Update handleClose for tournament flow
-	const handleClose = () => {
-		setShowRestartPopup(false);
-		if (tournamentRound) {
-			navigate('/tournament', { replace: true });
-		} else {
-			navigate('/local-game-setup');
-		}
-	};
-
-
-
-	const restartGame = () => {
-		setPlayer1Score(0)
-		setPlayer2Score(0)
-		setTimeRemaining(duration || 60)
-		setIsGameOver(false)
-		setIsPaused(false)
-		setShowRestartPopup(false)
-		setResetParameters((prev) => !prev) // Toggle this to reset the game
-		setWinner(null)
-	}
-
-	const gameOver = () => {
-		const winner = getWinner();
-
-		// If there's a tie in tournament mode
-		if (!winner && tournamentRound) {
-			setIsSuddenDeath(true);
-			setTimeRemaining(30); // 30 seconds sudden death round
-			setIsGameOver(false);
-			setIsPaused(false);
-			return; // Don't proceed with normal game over
-		}
-
-		// Normal game over flow
-		setIsGameOver(true);
-		setIsPaused(false); // changed to false
-		setShowRestartPopup(true);
-		setWinner(winner);
-
-		// Handle tournament progression
-		if (tournamentRound && winner) {
-			switch (tournamentRound) {
-				case 'semifinal1':
-					setSemiFinal1winner(winner);
-					setTournamentState('semifinal2');
-					break;
-				case 'semifinal2':
-					setSemiFinal2winner(winner);
-					setTournamentState('final');
-					break;
-				case 'final':
-					setFinalWinner(winner);
-					setTournamentState('completed');
-					break;
-			}
-		}
-	};
-
-	useEffect(() => {
-		if (isSuddenDeath && timeRemaining === 0) {
-			// If sudden death time expires, use a tiebreaker (e.g., higher XP)
-			const tiebreakerWinner = (player1.xp > player2.xp) ? player1 : player2; // should be changed.
-			setIsGameOver(true);
-			setIsPaused(true);
-			setShowRestartPopup(true);
-			setWinner(tiebreakerWinner);
-			setIsSuddenDeath(false);
-
-			// Handle tournament progression
-			if (tournamentRound) {
-				switch (tournamentRound) {
-					case 'semifinal1':
-						setSemiFinal1winner(tiebreakerWinner);
-						setTournamentState('semifinal2');
-						break;
-					case 'semifinal2':
-						setSemiFinal2winner(tiebreakerWinner);
-						setTournamentState('final');
-						break;
-					case 'final':
-						setFinalWinner(tiebreakerWinner);
-						setTournamentState('completed');
-						break;
-				}
-			}
-		}
-	}, [timeRemaining, isSuddenDeath]);
-	
-	return (
-		<>
-			<section
-				className={`relative flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}
-			>
-				<div className='flex flex-col'>
-					<GameScore
-						player1Score={player1Score}
-						player2Score={player2Score}
-						isPaused={isPaused}
-					/>
-					<Timer
-						isPaused={isPaused}
-						timeRemaining={timeRemaining}
-						isSuddenDeath={isSuddenDeath}
-					/>
-					{/* Add the sudden death message here */}
-					{isSuddenDeath && <SuddenDeathMessage />}
-				</div>
-				<div className='relative w-full flex justify-center font-dreamscape-sans'>
-					<Player
-						id={1}
-						isPaused={isPaused}
-						PlayerName={player1.name}
-						BadgeName={player1.badge}
-						playerImage={player1.image}
-						badgeImage={player1.badgeImage}
-						GameMode={mode}
-						/>
-					<Player
-						id={2}
-						isPaused={isPaused}
-						PlayerName={player2.name}
-						BadgeName={player2.badge}
-						playerImage={player2.image}
-						badgeImage={player2.badgeImage}
-						GameMode={mode}
-					/>
-					<PongTable
-						isPaused={isPaused}
-						handlePause={handlePause}
-						backgroundId={backgroundId}
-						updateScore={updateScore}
-						isGameOver={isGameOver}
-						resetParameters={resetParameters}
-						player1Color={player1.color}
-						player2Color={player2.color}
-						ballColor={ballColor}
-						paddleSize={paddleSize}
-						ballSize={ballSize}
-					/>
-				</div>
-				{showRestartPopup && (
-					<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
-				)}
-				{winner && showConfetti && (
-					<Confetti
-						style={{
-							position: 'fixed',
-							top: 0,
-							left: 0,
-							width: '100vw',
-							height: '100vh',
-							zIndex: 20,
-						}}
-						recycle={false}
-						numberOfPieces={500}
-					/>
-				)}
-			</section>
-		</>
-	)
+    return (
+        <>
+            <section className={`relative flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}>
+                <div className='flex flex-col'>
+                    <GameScore
+                        player1Score={player1Score}
+                        player2Score={player2Score}
+                        isPaused={isPaused}
+                    />
+                    <Timer
+                        isPaused={isPaused}
+                        timeRemaining={timeRemaining}
+                    />
+                </div>
+                <div className='relative w-full flex justify-center font-dreamscape-sans'>
+                    <Player
+                        id={1}
+                        isPaused={isPaused}
+                        PlayerName={player1.name}
+                        BadgeName={player1.badge}
+                        playerImage={player1.image}
+                        badgeImage={player1.badgeImage}
+                        GameMode={mode}
+                    />
+                    <Player
+                        id={2}
+                        isPaused={isPaused}
+                        PlayerName={player2.name}
+                        BadgeName={player2.badge}
+                        playerImage={player2.image}
+                        badgeImage={player2.badgeImage}
+                        GameMode={mode}
+                    />
+                    <PongTable
+                        isPaused={isPaused}
+                        handlePause={handlePause}
+                        backgroundId={backgroundId}
+                        updateScore={updateScore}
+                        isGameOver={isGameOver}
+                        resetParameters={resetParameters}
+                        player1Color={player1.color}
+                        player2Color={player2.color}
+                        ballColor={ballColor}
+                        paddleSize={paddleSize}
+                        ballSize={ballSize}
+                    />
+                </div>
+                {showRestartPopup && (
+                    <GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
+                )}
+                {winner && showConfetti && (
+                    <Confetti
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100vw',
+                            height: '100vh',
+                            zIndex: 20,
+                        }}
+                        recycle={false}
+                        numberOfPieces={500}
+                    />
+                )}
+            </section>
+        </>
+    )
 }
 
 export default LocalGame
-
-
-
-
-
-
-
-
-
-
-

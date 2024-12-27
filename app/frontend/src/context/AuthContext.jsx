@@ -70,20 +70,13 @@ export const AuthProvider = ({ children }) => {
                 
                 const access_token = JSON.stringify(data.access_token)
                 const refresh_token = JSON.stringify(data.refresh_token)
-
-                
                 Cookies.set('refresh_token', refresh_token, { sameSite: 'None', secure: true });
                 Cookies.set('access_token', access_token, { sameSite: 'None', secure: true });
-                Cookies.set('access', access_token, { sameSite: 'None', secure: true });
-                console.log("access....: ", Cookies.get('access'))
-                console.log('Cookies set:', Cookies.get('refresh_token'), Cookies.get('access_token'));
-                
-                // window.location.href = FRONTEND_URL + 'dashboard'
                 navigate('/dashboard')
             }
             else {
                 console.log('Login failed', data)
-                handleSubmit('error', 'Login failed')
+                handleSubmit('error', data.error)
             }
         } catch (error) {
             console.error('error', error)
@@ -93,6 +86,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async () => {
         try {
+            console.log('api register:', API_REGISTER)
             const response = await fetch(API_REGISTER, {
                 method: 'POST',
                 credentials: 'include',
@@ -111,7 +105,7 @@ export const AuthProvider = ({ children }) => {
                 handleSubmit('success', 'Registration successful')
             } else {
                 console.log('registartion failed', data)
-                handleSubmit('error', 'Registration failed')
+                handleSubmit('error', data.password2)
             }
         } catch (error) {
             console.error('error', error)
@@ -162,7 +156,7 @@ export const AuthProvider = ({ children }) => {
                 console.log('--> Logout failed', data)
             }
         } catch (error) {
-            console.error('error', error)
+            console.error('error', 'error')
         }
     };
 
@@ -212,12 +206,17 @@ export const AuthProvider = ({ children }) => {
         if (authTokens) {
             try {
                 const accessTokenExpirationTime = get_expiration_time(authTokens.access_token)
+                const refreshTokenExpirationTime = get_expiration_time(authTokens.refresh_token)
                 if (accessTokenExpirationTime) {
                     const accesTokenTimeout = setTimeout(() => {
                         refres_token()
                     }, accessTokenExpirationTime - Date.now() - 1000);
+                    const refreshTokenTimeout = setTimeout(() => {
+                        logout()
+                    }, refreshTokenExpirationTime - Date.now() - 1000);
                     return (() => {
                         clearTimeout(accesTokenTimeout);
+                        clearTimeout(refreshTokenTimeout);
                     })
                 } else {
                     logout()
