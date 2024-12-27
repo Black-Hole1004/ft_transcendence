@@ -215,3 +215,93 @@
 2024/12/25 17:32:13 [notice] 11#11: start worker process 15
 2024/12/25 17:32:13 [notice] 11#11: start worker process 16
 2024/12/25 17:32:13 [notice] 11#11: start worker process 17
+2024/12/25 18:33:44 [notice] 13#13: signal 15 (SIGTERM) received, exiting
+2024/12/26 21:54:52 [notice] 11#11: using the "epoll" event method
+2024/12/26 21:54:52 [notice] 11#11: nginx/1.27.3
+2024/12/26 21:54:52 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/26 21:54:52 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/26 21:54:52 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/26 21:54:52 [notice] 11#11: start worker processes
+2024/12/26 21:54:52 [notice] 11#11: start worker process 12
+2024/12/26 21:54:52 [notice] 11#11: start worker process 13
+2024/12/26 21:54:52 [notice] 11#11: start worker process 14
+2024/12/26 21:54:52 [notice] 11#11: start worker process 15
+2024/12/26 21:54:52 [notice] 11#11: start worker process 16
+2024/12/26 21:54:52 [notice] 11#11: start worker process 17
+2024/12/26 22:22:38 [error] 13#13: *942 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22", host: "localhost"
+2024/12/26 22:22:38 [error] 13#13: *951 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/notifications/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/notifications/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22", host: "localhost"
+2024/12/26 22:22:38 [error] 13#13: *931 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22", host: "localhost"
+2024/12/26 22:23:16 [notice] 11#11: using the "epoll" event method
+2024/12/26 22:23:16 [notice] 11#11: nginx/1.27.3
+2024/12/26 22:23:16 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/26 22:23:16 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/26 22:23:16 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/26 22:23:16 [notice] 11#11: start worker processes
+2024/12/26 22:23:16 [notice] 11#11: start worker process 12
+2024/12/26 22:23:16 [notice] 11#11: start worker process 13
+2024/12/26 22:23:16 [notice] 11#11: start worker process 14
+2024/12/26 22:23:16 [notice] 11#11: start worker process 15
+2024/12/26 22:23:16 [notice] 11#11: start worker process 16
+2024/12/26 22:23:16 [notice] 11#11: start worker process 17
+2024/12/26 23:37:03 [error] 17#17: *3555 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/friends/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22", host: "localhost"
+2024/12/26 23:37:03 [error] 17#17: *3544 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/notify/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22", host: "localhost"
+2024/12/26 23:37:03 [error] 17#17: *3558 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.18.0.1, server: localhost, request: "GET /ws/notifications/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22 HTTP/1.1", upstream: "http://172.18.0.3:8000/ws/notifications/?access_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NjgyOTc4LCJpYXQiOjE3MzUyNTA5NzgsImp0aSI6ImRhOTRjNTFjNTBmYTRiMTI5MDI4NmQyOTU1MWI1NDMyIiwidXNlcl9pZCI6MX0.X3eKRcxXZWxLyO-uq0E9jmDO0FRQ_IBPT9sqCvJKqO8%22", host: "localhost"
+2024/12/26 23:39:09 [notice] 11#11: using the "epoll" event method
+2024/12/26 23:39:09 [notice] 11#11: nginx/1.27.3
+2024/12/26 23:39:09 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/26 23:39:09 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/26 23:39:09 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/26 23:39:09 [notice] 11#11: start worker processes
+2024/12/26 23:39:09 [notice] 11#11: start worker process 12
+2024/12/26 23:39:09 [notice] 11#11: start worker process 13
+2024/12/26 23:39:09 [notice] 11#11: start worker process 14
+2024/12/26 23:39:09 [notice] 11#11: start worker process 15
+2024/12/26 23:39:09 [notice] 11#11: start worker process 16
+2024/12/26 23:39:09 [notice] 11#11: start worker process 17
+2024/12/27 00:01:36 [notice] 13#13: signal 15 (SIGTERM) received, exiting
+2024/12/27 00:01:36 [notice] 13#13: exiting
+2024/12/27 00:01:36 [notice] 15#15: signal 15 (SIGTERM) received, exiting
+2024/12/27 00:01:36 [notice] 15#15: exiting
+2024/12/27 00:01:36 [notice] 15#15: exit
+2024/12/27 00:01:36 [notice] 12#12: signal 15 (SIGTERM) received, exiting
+2024/12/27 00:01:36 [notice] 12#12: exiting
+2024/12/27 00:01:36 [notice] 11#11: signal 15 (SIGTERM) received, exiting
+2024/12/27 00:01:36 [notice] 17#17: signal 15 (SIGTERM) received, exiting
+2024/12/27 00:01:37 [notice] 17#17: exiting
+2024/12/27 00:01:36 [notice] 16#16: signal 15 (SIGTERM) received, exiting
+2024/12/27 00:01:37 [notice] 16#16: exiting
+2024/12/27 00:01:36 [notice] 14#14: signal 15 (SIGTERM) received, exiting
+2024/12/27 00:01:37 [notice] 14#14: exiting
+2024/12/27 00:01:36 [notice] 13#13: exit
+2024/12/27 00:01:36 [notice] 12#12: exit
+2024/12/27 00:01:37 [notice] 17#17: exit
+2024/12/27 00:01:37 [notice] 16#16: exit
+2024/12/27 00:01:37 [notice] 14#14: exit
+2024/12/27 00:01:37 [notice] 11#11: signal 17 (SIGCHLD) received from 15
+2024/12/27 00:01:37 [notice] 11#11: worker process 15 exited with code 0
+2024/12/27 00:01:37 [notice] 11#11: signal 29 (SIGIO) received
+2024/12/27 00:01:37 [notice] 11#11: signal 14 (SIGALRM) received
+2024/12/27 00:01:37 [notice] 11#11: signal 17 (SIGCHLD) received from 14
+2024/12/27 00:01:37 [notice] 11#11: worker process 14 exited with code 0
+2024/12/27 00:01:37 [notice] 11#11: signal 29 (SIGIO) received
+2024/12/27 00:01:37 [notice] 11#11: signal 17 (SIGCHLD) received from 17
+2024/12/27 00:01:37 [notice] 11#11: worker process 16 exited with code 0
+2024/12/27 00:01:37 [notice] 11#11: worker process 17 exited with code 0
+2024/12/27 00:01:37 [notice] 11#11: signal 29 (SIGIO) received
+2024/12/27 00:01:37 [notice] 11#11: signal 17 (SIGCHLD) received from 13
+2024/12/27 00:01:37 [notice] 11#11: worker process 13 exited with code 0
+2024/12/27 00:01:37 [notice] 11#11: signal 17 (SIGCHLD) received from 12
+2024/12/27 00:01:37 [notice] 11#11: worker process 12 exited with code 0
+2024/12/27 00:01:37 [notice] 11#11: exit
+2024/12/27 20:46:09 [notice] 10#10: using the "epoll" event method
+2024/12/27 20:46:09 [notice] 10#10: nginx/1.27.3
+2024/12/27 20:46:09 [notice] 10#10: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/27 20:46:09 [notice] 10#10: OS: Linux 5.15.49-linuxkit
+2024/12/27 20:46:09 [notice] 10#10: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/27 20:46:09 [notice] 10#10: start worker processes
+2024/12/27 20:46:09 [notice] 10#10: start worker process 11
+2024/12/27 20:46:09 [notice] 10#10: start worker process 12
+2024/12/27 20:46:09 [notice] 10#10: start worker process 13
+2024/12/27 20:46:09 [notice] 10#10: start worker process 14
+2024/12/27 20:46:09 [notice] 10#10: start worker process 15
+2024/12/27 20:46:09 [notice] 10#10: start worker process 16

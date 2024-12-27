@@ -64,6 +64,7 @@ const Custom = () => {
 
 	// Handle click for background selection
 	const handleClick = (id) => {
+		console.log('id: ', id)
 		// Only allow click if background is unlocked
 		if (xp / 1000 >= id || id === 1) {
 			setBackgroundId(id)
@@ -110,7 +111,7 @@ const Custom = () => {
 							key={backgroundId}
 							className='lp:border-2 border border-primary overflow-hidden selected-table mtb:w-select-table w-full rounded-2xl relative'
 							style={{
-								background: `url('/assets/images/tables/table${backgroundId}.webp')`,
+								background: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
 								backgroundSize: 'cover',
 							}}
 						>
@@ -133,20 +134,21 @@ const Custom = () => {
 								key={id}
 								onClick={() => handleClick(id)}
 								className={`border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500 aspect-video`}
-								style={{
-									background: `url('/assets/images/tables/table${id}.webp')`,
-									backgroundSize: 'cover',
-								}}
+								// style={{
+								// 	background: `url('/assets/images/tables/table${id}.${id > 6 ? 'gif' : 'webp'}`,
+								// 	backgroundSize: 'cover',
+								// }}
 								disabled={xp / 1000 < id && id > 1 ? true : false}
 							>
+								<img src={`/assets/images/tables/table${id}.${id > 6 ? 'gif' : 'webp'}`} className='object-cover' alt="" />
 								{/* Overlay to show locked backgrounds */}
-								<div
+								{/* <div
 									className={`h-full w-full flex justify-center items-center ${xp / 1000 < id && id > 1 ? 'bg-backdrop-80' : ''}`}
 								>
 									{xp / 1000 < id && id > 1 && (
 										<img src='/assets/images/icons/Lock.svg' alt='Locked' />
 									)}
-								</div>
+								</div> */}
 							</button>
 						))}
 					</div>
