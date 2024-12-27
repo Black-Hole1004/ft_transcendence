@@ -6,15 +6,15 @@ const API_TIME_SPENT = import.meta.env.VITE_API_TIME_SPENT
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 
-function UserStatsGraph({ profile_name }) {
+function UserStatsGraph(user) {
 	const [userData, setUserData] = useState([])
 	const { getAuthHeaders } = useAuth()
 
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				console.log('API URL:', `${BASE_URL}/api/users/${profile_name}/time-spent/`);
-				const response = await fetch(`${BASE_URL}/api/users/${profile_name}/time-spent/`, {
+				console.log('API URL:', `${BASE_URL}/api/users/${user.profile_name}/time-spent/`);
+				const response = await fetch(`${BASE_URL}/api/users/${user.profile_name}/time-spent/`, {
 					method: 'GET',
 					headers: getAuthHeaders(),
 				})
