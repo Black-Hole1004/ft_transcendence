@@ -182,7 +182,7 @@ const AIPongTable = ({
         const canvasHeight = canvas.height;
     
         const background = new Image();
-        background.src = `/assets/images/tables/table${backgroundId}.png`;
+        background.src = `/assets/images/tables/table${backgroundId}.webp`;
     
         // Drawing functions stay the same
         const drawPaddle = (paddle) => {
@@ -400,7 +400,7 @@ const AIPongTable = ({
 					maxWidth: `${MAX_CANVAS_WIDTH}px`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
-					backgroundImage: `url('/assets/images/tables/table${backgroundId}.png')`,
+					backgroundImage: `url('/assets/images/tables/table${backgroundId}.webp')`,
 				}}
 			/>
 			{!isGameOver && (

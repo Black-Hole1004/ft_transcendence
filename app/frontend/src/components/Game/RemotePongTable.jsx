@@ -214,7 +214,7 @@ const RemotePongTable = ({
 					maxWidth: `${MAX_CANVAS_WIDTH}px`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
-					backgroundImage: `url('/assets/images/tables/table${backgroundId}.png')`,
+					backgroundImage: `url('/assets/images/tables/table${backgroundId}.webp')`,
 				}}
 			/>
 			{isPaused && (
