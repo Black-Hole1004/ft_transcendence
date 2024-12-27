@@ -41,21 +41,23 @@ const Chat = () => {
 	// 	triggerAlert('success', 'Message sent successfuly!')
 	// }
 
-	// useEffect(() => {
-	// 	console.log('here')
-	// 	console.log('blocker id: ', blockerId)
-	// 	const sendBlockMessage = () => {
-	// 		webSocketRef.current?.send(
-	// 			JSON.stringify({
-	// 				message_type: 'block',
-	// 				blocker_id: blockerId,
-	// 				conversation_key: conversationKey,
-	// 			})
-	// 		)
-	// 	}
+	useEffect(() => {
+		console.log('here')
+		console.log('blocker id: ', blockerId)
+		const sendBlockMessage = () => {
+			webSocketRef.current?.send(
+				JSON.stringify({
+					message_type: 'block',
+					blocker_id: blockerId,
+					conversation_key: conversationKey,
+				})
+			)
+		}
 
-	// 	sendBlockMessage()
-	// }, [blockerId])
+		if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
+			sendBlockMessage()
+		}
+	}, [conversationKey, blockerId])
 
 	useEffect(() => {
 		const friendshipStatus = async () => {
@@ -78,7 +80,7 @@ const Chat = () => {
 		if (conversationKey) {
 			friendshipStatus()
 		}
-	}, [conversationKey, blockerId])
+	}, [conversationKey])
 
 	useEffect(() => {
 		// Extract conversation key from URL

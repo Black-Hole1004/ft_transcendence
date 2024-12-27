@@ -51,54 +51,55 @@ const Custom = () => {
 	const xp = 6231
 	const navigate = useNavigate()
 
-    const handleStart = () => {
-        if (mode === 'training') {
+	const handleStart = () => {
+		if (mode === 'training') {
 			console.log('Training mode selected');
-            // For AI mode, go directly to AI setup
-            navigate('/ai-game-setup', { state: { backgroundId } });
-        } else {
-            // For 1vs1 mode, show the local/remote choice
-            setStep(2);
-        }
-    };
-    
+			// For AI mode, go directly to AI setup
+			navigate('/ai-game-setup', { state: { backgroundId } });
+		} else {
+			// For 1vs1 mode, show the local/remote choice
+			setStep(2);
+		}
+	};
+
 	// Handle click for background selection
 	const handleClick = (id) => {
+		console.log('id: ', id)
 		// Only allow click if background is unlocked
 		if (xp / 1000 >= id || id === 1) {
 			setBackgroundId(id)
 		}
 	}
 
-    const handleGameModeSelect = (mode) => {
-        if (mode === 'local') {
-            navigate('/local-game-setup', { state: { backgroundId } })
-        } else {
-            // Get access token from cookies
-            const cookies = document.cookie.split(';');
-            const accessToken = cookies.find(cookie => cookie.trim().startsWith('access_token='))?.split('=')[1];
+	const handleGameModeSelect = (mode) => {
+		if (mode === 'local') {
+			navigate('/local-game-setup', { state: { backgroundId } })
+		} else {
+			// Get access token from cookies
+			const cookies = document.cookie.split(';');
+			const accessToken = cookies.find(cookie => cookie.trim().startsWith('access_token='))?.split('=')[1];
 
-            if (!accessToken) {
-                console.error('No access token found in cookies');
-                return;
-            }
+			if (!accessToken) {
+				console.error('No access token found in cookies');
+				return;
+			}
 
-            // Decode JWT token to get user ID
-            try {
-                const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
-                const userId = decodedToken.user_id;
-                navigate('/matchmaking', { 
-                    state: { 
-                        backgroundId : backgroundId,
-                        currentUser : { id: userId }
-                    } 
-                });
+			// Decode JWT token to get user ID
+			try {
+				const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
+				const userId = decodedToken.user_id;
+				navigate('/matchmaking', { 
+					state: { 
+						backgroundId : backgroundId,
+						currentUser : { id: userId }
+					} 
+				});
 
-            } catch (error) {
-                console.error('Error decoding JWT token:', error);
-            }
-        }
-    }
+			} catch (error) {
+				console.error('Error decoding JWT token:', error);
+			}
+		}
+	}
 
 	return (
 		<section className='flex flex-col'>
@@ -110,7 +111,7 @@ const Custom = () => {
 							key={backgroundId}
 							className='lp:border-2 border border-primary overflow-hidden selected-table mtb:w-select-table w-full rounded-2xl relative'
 							style={{
-								background: `url('/assets/images/tables/table${backgroundId}.png')`,
+								background: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
 								backgroundSize: 'cover',
 							}}
 						>
@@ -133,20 +134,21 @@ const Custom = () => {
 								key={id}
 								onClick={() => handleClick(id)}
 								className={`border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500 aspect-video`}
-								style={{
-									background: `url('/assets/images/tables/table${id}.png')`,
-									backgroundSize: 'cover',
-								}}
+								// style={{
+								// 	background: `url('/assets/images/tables/table${id}.${id > 6 ? 'gif' : 'webp'}`,
+								// 	backgroundSize: 'cover',
+								// }}
 								disabled={xp / 1000 < id && id > 1 ? true : false}
 							>
+								<img src={`/assets/images/tables/table${id}.${id > 6 ? 'gif' : 'webp'}`} className='object-cover' alt="" />
 								{/* Overlay to show locked backgrounds */}
-								<div
+								{/* <div
 									className={`h-full w-full flex justify-center items-center ${xp / 1000 < id && id > 1 ? 'bg-backdrop-80' : ''}`}
 								>
 									{xp / 1000 < id && id > 1 && (
 										<img src='/assets/images/icons/Lock.svg' alt='Locked' />
 									)}
-								</div>
+								</div> */}
 							</button>
 						))}
 					</div>
