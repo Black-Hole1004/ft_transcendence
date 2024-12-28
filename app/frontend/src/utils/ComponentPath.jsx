@@ -68,8 +68,8 @@ const ComponentPath = () => {
 
 
 					<Route path="/2fa" element={<TwoFactorAuth />} />
-					<Route path="*" element={<NotFound />} />
 				</Route>
+				<Route path="*" element={<NotFound />} />
 				
 			</Routes>
 

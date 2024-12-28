@@ -111,7 +111,7 @@ const Custom = () => {
 							key={backgroundId}
 							className='lp:border-2 border border-primary overflow-hidden selected-table mtb:w-select-table w-full rounded-2xl relative'
 							style={{
-								background: `url('/assets/images/tables/table${backgroundId}.webp)`,
+								background: `url('/assets/images/tables/table${backgroundId}.webp')`,
 								backgroundSize: 'cover',
 							}}
 						>

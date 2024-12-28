@@ -131,13 +131,15 @@ const Chat = () => {
 			} else if (data.event === 'block') {
 				console.log('socket: ', data.blocker_id)
 				setBlockerId(data.blocker_id)
+				if (data.blocker_id)
+					setAreFriends(false)
 			}
 		}
 
 		const initializeWebSocket = () => {
 			if (!webSocketRef.current) {
 				// console.log(window.location.protocol)
-				console.log('xxxxx===> ', window.location.hostname)
+				// console.log('xxxxx===> ', window.location.hostname)
 				const ws = new WebSocket(`wss://${window.location.hostname}/ws/chat/`)
 				webSocketRef.current = ws
 
