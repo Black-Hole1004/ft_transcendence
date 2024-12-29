@@ -357,6 +357,9 @@ class UserProfileView(APIView):
             # Serialize the data and update the user instance
             serializer = UserSerializer(user, data=user_data, partial=True)
             if not serializer.is_valid():
+                if 'mobile_number' in serializer.errors:
+                    print(f"Mobile number error ------> {serializer.errors['mobile_number']}")
+                    return Response({'error': 'Invalid mobile number'}, status=status.HTTP_400_BAD_REQUEST)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
             updated_user = serializer.save()
