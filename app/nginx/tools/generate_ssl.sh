@@ -9,4 +9,4 @@ echo "Generate SSL certificates in $path"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout  $path/certif.key \
     -out $path/certif.crt \
-    -subj "/C=Ma/ST=Khouribga/L=Khouribga/O=Organization/CN=10.12.4.12"
+    -subj "/C=Ma/ST=Khouribga/L=Khouribga/O=Organization/CN=localhost"

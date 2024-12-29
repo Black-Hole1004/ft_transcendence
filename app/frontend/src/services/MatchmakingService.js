@@ -9,11 +9,17 @@ class MatchmakingService {
         this.currentUserId = null;
     }
 
+    close() {
+        if (this.socket?.readyState === WebSocket.OPEN) {
+            this.socket.close(1000, "Normal closure");
+        }
+    }
+
     connect(userId) {
         this.currentUserId = userId;
 
         this.socket = new WebSocket(
-            `wss://10.12.4.12/ws/matchmaking/?user_id=${userId}`
+            `wss://localhost/ws/matchmaking/?user_id=${userId}`
         );
         
         this.socket.onopen = () => {
@@ -34,7 +40,7 @@ class MatchmakingService {
     handleMessage(event) {
         try {
             const data = JSON.parse(event.data);
-            console.log('Received message:', data); // Debug log
+            console.log('Received message:', data);
             
             switch (data.type) {
                 case 'status':
@@ -53,7 +59,14 @@ class MatchmakingService {
                     this.callbacks.onTimeout?.(data);
                     break;
                 case 'error':
-                    this.callbacks.onError?.(data);
+                    // Handle specific error messages
+                    if (data.message.includes('already in a game')) {
+                        this.callbacks.onInGame?.(data);
+                    } else if (data.message.includes('Already searching')) {
+                        this.callbacks.onAlreadySearching?.(data);
+                    } else {
+                        this.callbacks.onError?.(data);
+                    }
                     break;
             }
         } catch (error) {
@@ -113,6 +126,12 @@ class MatchmakingService {
                 break;
             case 'status':
                 this.callbacks.onStatus = callback;
+                break;
+            case 'inGame':
+                this.callbacks.onInGame = callback;
+                break;
+            case 'alreadySearching':
+                this.callbacks.onAlreadySearching = callback;
                 break;
         }
     }

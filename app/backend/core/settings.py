@@ -238,7 +238,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = [
-    '10.12.4.12',
+    'localhost',
     '127.0.0.1',
     'localhost',
 ]
@@ -252,8 +252,8 @@ AUTHENTICATION_BACKENDS = (
 
 
 
-LOGIN_REDIRECT_URL = 'https://10.12.4.12/Dashboard'
-LOGOUT_REDIRECT_URL = 'https://10.12.4.12/'
+LOGIN_REDIRECT_URL = 'https://localhost/Dashboard'
+LOGOUT_REDIRECT_URL = 'https://localhost/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
@@ -276,13 +276,13 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 #todo: Creds should be changed in production
 
 
-# SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
-# SOCIAL_AUTH_INTRA42_SECRET = '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'
-# SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'https://10.12.4.12/api/social-auth/complete/intra42/'
+SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
+SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'https://localhost/api/social-auth/complete/intra42/'
 
-SOCIAL_AUTH_INTRA42_KEY='u-s4t2ud-872f8a9cf89c265c8218ceaaa21de65f3b6b1cadf6d0e816c010c02d3aadc711'
-SOCIAL_AUTH_INTRA42_SECRET='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'
-SOCIAL_AUTH_INTRA42_REDIRECT_URI='https://10.12.4.12/api/social-auth/complete/intra42/'
+# SOCIAL_AUTH_INTRA42_KEY='u-s4t2ud-872f8a9cf89c265c8218ceaaa21de65f3b6b1cadf6d0e816c010c02d3aadc711'
+# SOCIAL_AUTH_INTRA42_SECRET='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'
+# SOCIAL_AUTH_INTRA42_REDIRECT_URI='https://localhost/api/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
@@ -308,7 +308,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
 
 # Add this if you're using social-auth-app-django
 SOCIAL_AUTH_ALLOWED_REDIRECT_HOSTS = [
-    '10.12.4.12:5173',
+    'localhost:5173',
     '10.12.2.9:5173',
 ]
 
@@ -320,10 +320,10 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 
 CORS_ALLOW_ALL_ORIGINS = False  # Don't use this in production
 CORS_ALLOWED_ORIGINS = [
-    "https://10.12.4.12",
-    "http://10.12.4.12",
-    "http://10.12.4.12:5173",
-    "https://10.12.4.12:5173",
+    "https://localhost",
+    "http://localhost",
+    "http://localhost:5173",
+    "https://localhost:5173",
     "https://api.intra.42.fr",
 ] # todo: to be changed in production
 CORS_ALLOW_CREDENTIALS = True

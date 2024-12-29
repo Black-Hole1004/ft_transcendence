@@ -15,8 +15,13 @@ from django.dispatch import Signal
 from django.contrib.auth.signals import user_logged_out
 from django.contrib.auth.signals import user_logged_in
 
+from collections import defaultdict
 
 User = get_user_model()
+
+# keep a list of all connected users (online users)
+connected_users = {} # connected_users[<user_id>] = <channel_name>
+
 class FriendRequestConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
@@ -178,9 +183,11 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
 
 #------------------------------------------------------------------------------------
 class NotificationConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
         # Add debug logging
         print("Starting connection attempt...")
+        #add the user to the connected users list when they connect
         
         query_string = self.scope['query_string'].decode()
         query_params = parse_qs(query_string)
@@ -206,6 +213,8 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             try:
                 # Store group name before triggering signals
                 self.group_name = f'user_{self.user.id}'
+                # Add user to connected users list
+                # connected_users[self.user.id] = self.channel_name
                 
                 # Add to group first
                 await self.channel_layer.group_add(
@@ -230,13 +239,23 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 print(f"Error during connection setup: {e}")
                 await self.close()
             
+    async def receive(self, text_data):
+        print('----- receive from NotificationConsumer -----')
+        data = json.loads(text_data)
+        message = data.get('message')
+        print('message =>', message)
 
+    
     async def disconnect(self, close_code):
         print('----- disconnect from NotificationConsumer -----')
+        # remove the user from the connected users list when they disconnect
 
         if hasattr(self, 'user') and self.user:
             try:
-
+                # Remove user from connected users list
+                # if self.user.id in connected_users:
+                #     del connected_users[self.user.id]\
+    
                 # Trigger the user_logged_out signal
                 await database_sync_to_async(user_logged_out.send)(
                     sender=self.__class__, 

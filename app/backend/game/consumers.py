@@ -142,7 +142,7 @@ class GameState:
         # Game status
         self.connected_players = 0
         self.players_ready = set()
-        self.time_remaining = 45 # 1 minute and a half
+        self.time_remaining = 200 # 1 minute and a half
         
         # Ball properties
         self.ball = {
@@ -596,7 +596,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 len(self.game_state.players_ready) == 2 and 
                 not self.game_state.game_over):
                 
-                            # Update both players' status to 'ingame'
+                # Update both players' status to 'ingame'
                 await self.update_user_status(self.game_state.player1_id, 'ingame')
                 await self.update_user_status(self.game_state.player2_id, 'ingame')
                 self.game_state.is_paused = False

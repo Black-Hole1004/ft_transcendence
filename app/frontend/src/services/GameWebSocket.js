@@ -29,7 +29,7 @@ class GameWebSocket {
         }
 
         try {
-            const wsUrl = `wss://10.12.4.12/ws/game/${gameId}/`;
+            const wsUrl = `wss://localhost/ws/game/${gameId}/`;
             console.log('Attempting to connect to:', wsUrl);
 
             if (this.socket) {

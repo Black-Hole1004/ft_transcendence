@@ -12,6 +12,7 @@ const USER_API = import.meta.env.VITE_USER_API;
 const WP_NOTIFY = import.meta.env.VITE_WP_NOTIFY;
 const WP_FRINEDS = import.meta.env.VITE_WP_FRINEDS;
 const WP_NOTIFICATIONS = import.meta.env.VITE_WP_NOTIFICATIONS;
+
 const SocketContext = createContext()
 export const useSocket = () => useContext(SocketContext)
 
@@ -118,6 +119,13 @@ function Layout() {
 		newSocket.onmessage = (event) => {
 			const data = JSON.parse(event.data);
 			console.log('WebSocket data:', data);
+			// here listen for invite notifications
+			// - invite_accepted
+				// - initialize matchmaking data (received from the server NOTIFICATION CONSUMER)
+				// - intialize the global state (game_invite_boolean) to true
+			// - invite_rejected 
+				// - display the toast with a rejection message
+			// - invite_sent // SHOULD BE IN CHAT
 		};
 
 		newSocket.onclose = (event) => {
@@ -162,6 +170,8 @@ function Layout() {
 	}, [authTokens?.access_token]);
 
 	useEffect(() => {
+		// here we are connecting to the notifications websocket
+		// here will handle invite notifications 
 		const newSocket = new WebSocket(WP_NOTIFICATIONS+'?access_token='+access_token);
 
 		newSocket.onopen = () => {
@@ -184,6 +194,9 @@ function Layout() {
 			]);
 		};
 
+		// listen here for the invite accepted or rejected
+		// if accedpted set the global state true and if rejected set the global state false
+		// in the app useffect we will check if the global state is true then we will show the alert
 
 		newSocket.onclose = (event) => {
 			console.log('WebSocket Closed form Notifications Consumer:', event);
@@ -208,6 +221,7 @@ function Layout() {
 		refreshUserData: refreshUserData,
 		fetchUser: fetchUser,
 		profile_picture: profile_picture,
+		// here i'm gonna a send function to send the notification invite to the user
 	}
 
 	return (

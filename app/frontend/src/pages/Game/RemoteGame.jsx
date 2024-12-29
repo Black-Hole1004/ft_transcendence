@@ -189,20 +189,21 @@ const RemoteGame = () => {
 		socketRef.current.send({
 			type: 'quit_game',
 			player: playerNumber
-		})
-		
-		// Navigate back to setup
+		})		
+		// Navigate back to custom and search for new game
 		navigate('/custom')
 	}
 
 	const handleClose = () => {
 		setShowRestartPopup(false)
-		navigate('/custom')
+		navigate('/dashboard')
 	}
 	
 	const restartGame = () => {
 		if (!socketRef.current || !playerNumber) return;
 		setShowRestartPopup(false);
+		// navgate back to match making
+		navigate('/custom')
 	};
 
 	return (

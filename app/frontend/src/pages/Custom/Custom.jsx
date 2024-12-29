@@ -91,7 +91,7 @@ const Custom = () => {
                     state: { 
                         backgroundId : backgroundId,
                         currentUser : { id: userId }
-                    } 
+                    }
                 });
 
             } catch (error) {
