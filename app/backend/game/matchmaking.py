@@ -9,6 +9,7 @@ import time
 
 class MatchmakingConsumer(AsyncWebsocketConsumer):
     matchmaking_queue = {}
+    direct_match_pairs = {}  # Store invitation_id -> first_user_data mapping
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -74,7 +75,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                         'message': 'Already searching for a match'
                     }))
                     return
-
+                
                 player_status = await self.check_player_status(self.user_id)
                 if player_status == 'ingame':
                     await self.send(json.dumps({
@@ -92,7 +93,13 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                 self.matchmaking_queue[self.channel_name]['searching'] = True
                 self.search_task = asyncio.create_task(self.find_opponent())
                 # await self.find_opponent()
-                
+            
+            elif data['type'] == 'direct_match':
+                # Handle direct match
+                await self.handle_direct_match(
+                    invitation_id=data['invitation_id'],
+                    user_id=data['current_user_id'],
+                )
             elif data['type'] == 'cancel_search':
                 if self.search_task:
                     self.search_task.cancel()  # Cancel the search task
@@ -268,6 +275,87 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
         )
         return game
 
+    async def handle_direct_match(self, invitation_id, user_id):
+        """Handle direct match from game invitation"""
+        try:
+            current_user = await self.get_user_data(user_id)
+            
+            # Check if this invitation already has a waiting player
+            if invitation_id in self.direct_match_pairs:
+                # Second player arrived - create the game
+                first_player = self.direct_match_pairs[invitation_id]['user']
+                first_channel = self.direct_match_pairs[invitation_id]['channel']
+                
+                # Create game session
+                game = await self.create_game_session(first_player, current_user)
+                
+                # Get badges
+                first_player_badge = Achievement.get_badge(first_player.xp)
+                second_player_badge = Achievement.get_badge(current_user.xp)
+                
+                # Create match data for both players
+                match_data_player1 = {
+                    'type': 'match_found',
+                    'game_id': game.game_id,
+                    'invitation_id': invitation_id,
+                    'player_number': 1,
+                    'current_user': {
+                        'id': first_player.id,
+                        'username': first_player.username,
+                        'profile_picture': first_player.profile_picture.url if first_player.profile_picture else None,
+                        'badge': first_player_badge
+                    },
+                    'opponent': {
+                        'id': current_user.id,
+                        'username': current_user.username,
+                        'profile_picture': current_user.profile_picture.url if current_user.profile_picture else None,
+                        'badge': second_player_badge
+                    }
+                }
+                
+                match_data_player2 = {
+                    'type': 'match_found',
+                    'game_id': game.game_id,
+                    'invitation_id': invitation_id,
+                    'player_number': 2,
+                    'current_user': match_data_player1['opponent'],
+                    'opponent': match_data_player1['current_user']
+                }
+                
+                # Send to first player
+                await self.channel_layer.send(
+                    first_channel,
+                    {
+                        'type': 'match_notification',
+                        'data': match_data_player1
+                    }
+                )
+                
+                # Send to second player
+                await self.send(json.dumps(match_data_player2))
+                
+                # Clean up
+                del self.direct_match_pairs[invitation_id]
+                
+            else:
+                # First player - store and wait
+                self.direct_match_pairs[invitation_id] = {
+                    'user': current_user,
+                    'channel': self.channel_name
+                }
+                
+                await self.send(json.dumps({
+                    'type': 'waiting',
+                    'message': 'Waiting for opponent to connect...'
+                }))
+
+        except Exception as e:
+            print(f"Error in handle_direct_match: {e}")
+            await self.send(json.dumps({
+                'type': 'error',
+                'message': 'Failed to create direct match'
+            }))
+        
     async def match_notification(self, event):
         """Handle match notification"""
         await self.send(text_data=json.dumps(event['data']))

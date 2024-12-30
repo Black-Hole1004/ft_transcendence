@@ -1,36 +1,36 @@
 import Alert from '../Alert'
 import Header from './Header'
-import { useEffect , useState} from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { useAlert } from '../AlertContext'
 import useAuth from '../../context/AuthContext'
 import Cookies from 'js-cookie'
 import { createContext, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-
-const USER_API = import.meta.env.VITE_USER_API;
-const WP_NOTIFY = import.meta.env.VITE_WP_NOTIFY;
-const WP_FRINEDS = import.meta.env.VITE_WP_FRINEDS;
-const WP_NOTIFICATIONS = import.meta.env.VITE_WP_NOTIFICATIONS;
+const USER_API = import.meta.env.VITE_USER_API
+const WP_NOTIFY = import.meta.env.VITE_WP_NOTIFY
+const WP_FRINEDS = import.meta.env.VITE_WP_FRINEDS
+const WP_NOTIFICATIONS = import.meta.env.VITE_WP_NOTIFICATIONS
 
 const SocketContext = createContext()
 export const useSocket = () => useContext(SocketContext)
 
-
 function Layout() {
-
 	const { authTokens, getAuthHeaders } = useAuth()
-	const [refreshData, setRefreshData] = useState(0);
-	const [socket_notify, setSocketNotify] = useState(null);
-	const [socket_friends, setSocketFriends] = useState(null);
-	const [socket_notification, setSocketNotification] = useState(null);
-	const [notifications, setNotifications] = useState([]);
+	const [refreshData, setRefreshData] = useState(0)
+	const [socket_notify, setSocketNotify] = useState(null)
+	const [socket_friends, setSocketFriends] = useState(null)
+	const [socket_notification, setSocketNotification] = useState(null)
+	const [notifications, setNotifications] = useState([])
 
+	const { triggerAlert } = useAlert()
+	const navigate = useNavigate()
 
 	const refreshUserData = () => {
-		console.log('------- Refreshing user data -------');
-		setRefreshData((prev) => prev + 1);
-	};
+		console.log('------- Refreshing user data -------')
+		setRefreshData((prev) => prev + 1)
+	}
 
 	const [user_data, setuser_data] = useState({
 		first_name: '',
@@ -55,164 +55,246 @@ function Layout() {
 	const [bio, setBio] = useState('')
 	const [profile_picture, setProfile_picture] = useState('')
 
-
 	const fetchUser = async () => {
 		try {
 			const response = await fetch(USER_API, {
 				method: 'GET',
-				headers: getAuthHeaders()
+				headers: getAuthHeaders(),
 			})
-			const data = await response.json();
+			const data = await response.json()
 			if (response.ok) {
-				console.log('Successfully fetched user data');
-				return (data)
+				console.log('Successfully fetched user data')
+				return data
 			} else {
-				console.log('Failed to fetch user data');
-				return (null)
+				console.log('Failed to fetch user data')
+				return null
 			}
+		} catch (error) {
+			console.log(error)
+			return null
 		}
-		catch (error) {
-			console.log(error);
-			return (null);
-		}
-	};
+	}
 
 	useEffect(() => {
-
 		if (!authTokens?.access_token) {
-			logout();  // Redirect to login
-			return;
+			logout() // Redirect to login
+			return
 		}
 		const fetchData = async () => {
-			const fetchedData = await fetchUser();
-			if (fetchedData)
-				setuser_data(fetchedData);
-			else
-				console.log('-- Failed to fetch user data --');
-		};
-		fetchData();
-	}, [authTokens, refreshData]);
+			const fetchedData = await fetchUser()
+			if (fetchedData) setuser_data(fetchedData)
+			else console.log('-- Failed to fetch user data --')
+		}
+		fetchData()
+	}, [authTokens, refreshData])
 
 	useEffect(() => {
-		if (!user_data)
-			return;
-		setFirst_name(user_data.first_name);
-		setLast_name(user_data.last_name);
-		setEmail_(user_data.email);
-		setMobile_number(user_data.mobile_number);
-		setUsername(user_data.username);
-		setDisplay_name(user_data.display_name);
-		setBio(user_data.bio);
-		setProfile_picture(user_data.profile_picture);
-	}, [user_data]);
+		if (!user_data) return
+		setFirst_name(user_data.first_name)
+		setLast_name(user_data.last_name)
+		setEmail_(user_data.email)
+		setMobile_number(user_data.mobile_number)
+		setUsername(user_data.username)
+		setDisplay_name(user_data.display_name)
+		setBio(user_data.bio)
+		setProfile_picture(user_data.profile_picture)
+	}, [user_data])
 
-	const access_token = Cookies.get('access_token');
-	if (!access_token)
-		return;
+	const access_token = Cookies.get('access_token')
+	if (!access_token) return
 
 	useEffect(() => {
-		const newSocket = new WebSocket(WP_NOTIFY+'?access_token='+access_token);
+		const newSocket = new WebSocket(WP_NOTIFY + '?access_token=' + access_token)
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from Notify Consumer ----');
-		};
+			console.log('---- WebSocket Connected from Notify Consumer ----')
+		}
 		newSocket.onmessage = (event) => {
-			const data = JSON.parse(event.data);
-			console.log('WebSocket data:', data);
-			// here listen for invite notifications
-			// - invite_accepted
-				// - initialize matchmaking data (received from the server NOTIFICATION CONSUMER)
-				// - intialize the global state (game_invite_boolean) to true
-			// - invite_rejected 
-				// - display the toast with a rejection message
-			// - invite_sent // SHOULD BE IN CHAT
-		};
+			const data = JSON.parse(event.data)
+			console.log('WebSocket data:', data)
+		}
 
 		newSocket.onclose = (event) => {
-			console.log('WebSocket Closed form Notify Consumer:', event);
-		};
+			console.log('WebSocket Closed form Notify Consumer:', event)
+		}
 
 		newSocket.onerror = (error) => {
-			console.error('WebSocket Error:', error);
-		};
+			console.error('WebSocket Error:', error)
+		}
 
-		setSocketNotify(newSocket);
+		setSocketNotify(newSocket)
 
 		return () => {
-			newSocket.close();
-		};
-	}, [authTokens?.access_token]);
+			newSocket.close()
+		}
+	}, [authTokens?.access_token])
 
 	useEffect(() => {
-		const newSocket = new WebSocket(WP_FRINEDS+'?access_token='+access_token);
+		const newSocket = new WebSocket(WP_FRINEDS + '?access_token=' + access_token)
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from AcceptFriendsRequest Consumer ----');
-		};
+			console.log('---- WebSocket Connected from AcceptFriendsRequest Consumer ----')
+		}
 		newSocket.onmessage = (event) => {
-			const data = JSON.parse(event.data);
-			console.log('WebSocket data:', data);
-		};
+			const data = JSON.parse(event.data)
+			console.log('WebSocket data:', data)
+		}
 
 		newSocket.onclose = (event) => {
-			console.log('WebSocket Closed form AcceptFriendsRequest Consumer:', event);
-		};
+			console.log('WebSocket Closed form AcceptFriendsRequest Consumer:', event)
+		}
 
 		newSocket.onerror = (error) => {
-			console.error('WebSocket Error:', error);
-		};
+			console.error('WebSocket Error:', error)
+		}
 
-		setSocketFriends(newSocket);
+		setSocketFriends(newSocket)
 
 		return () => {
-			newSocket.close();
-		};
-	}, [authTokens?.access_token]);
+			newSocket.close()
+		}
+	}, [authTokens?.access_token])
 
 	useEffect(() => {
 		// here we are connecting to the notifications websocket
-		// here will handle invite notifications 
-		const newSocket = new WebSocket(WP_NOTIFICATIONS+'?access_token='+access_token);
+		// here will handle invite notifications
+		const newSocket = new WebSocket(WP_NOTIFICATIONS + '?access_token=' + access_token)
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from Notifications Consumer ----');
-		};
+			console.log('---- WebSocket Connected from Notifications Consumer ----')
+		}
 
 		newSocket.onmessage = (event) => {
-			console.log('WebSocket message received:', event.data);
-			const data = JSON.parse(event.data);
-			console.log('Notification for current user:', data);
-			setNotifications((prevNotifications) => [
-				...prevNotifications,
-				{
-					id: data.id,
-					message: data.message,
-					type: 'friend_request',
-					from_user: data.from_user,
-					profile_picture: data.profile_picture,
-				},
-			]);
-		};
+			console.log('WebSocket message received:x', event.data)
+			const data = JSON.parse(event.data)
 
-		// listen here for the invite accepted or rejected
-		// if accedpted set the global state true and if rejected set the global state false
-		// in the app useffect we will check if the global state is true then we will show the alert
+			// Add new handling for game invites
+			switch (data.type) {
+				case 'game_invite':
+					// Add invite to notifications
+					setNotifications((prevNotifications) => [
+						...prevNotifications,
+						{
+							id: data.invitation_id,
+							type: 'game_invite',
+							from_user: data.sender.username,
+							profile_picture: data.sender.profile_picture,
+							sender_id: data.sender.id,
+							invitation_id: data.invitation_id,
+						},
+					])
+					break
+
+				case 'game_invite_accepted':
+					    // check if the sneder is online or not beofe sending the notification and navigate to the game
+						
+						triggerAlert(
+							'success',
+							`${data.receiver.username} accepted your game invitation!`
+						)
+
+
+						if (data.sender.is_online === false) {
+							triggerAlert(
+								'info',
+								`${data.sender.username} is offline, you will be notified when they come online`
+							)
+							return
+						}
+
+						navigate('/matchmaking', {
+							state: { 
+								backgroundId: 1,
+								currentUser: data.user, // The current user (sender or receiver)
+								// opponent: data.sender.id === data.user.id ? data.receiver : data.sender, // The other party
+								isDirectMatch: true,
+								invitationId: data.invitation_id,
+							},
+						});
+						break;
+						
+				case 'game_invite_declined':
+					// Show decline notification
+					triggerAlert(
+						'info', 
+						`${data.receiver.username} declined your game invitation`
+					)
+					break
+
+				case 'match_found': // i will send 'match found' when the user accepts the invite from the consumer of the notification
+					// Navigate to game setup
+					navigate('/remote-game', {
+						state: {
+							playerNumber: data.player_number,
+							gameId: data.game_id,
+							opponent: data.opponent,
+							currentUser: data.current_user,
+							backgroundId: 1, // default background
+						},
+					})
+					break
+
+				default:
+					// Your existing notification handling
+					console.log('Other notification:', data)
+					setNotifications((prevNotifications) => [
+						...prevNotifications,
+						{
+							id: data.id,
+							message: data.message,
+							type: 'friend_request',
+							from_user: data.from_user,
+							profile_picture: data.profile_picture,
+						},
+					])
+			}
+		}
 
 		newSocket.onclose = (event) => {
-			console.log('WebSocket Closed form Notifications Consumer:', event);
+			console.log('WebSocket Closed form Notifications Consumer:', event)
 		}
 
 		newSocket.onerror = (error) => {
-			console.error('WebSocket Error:', error);
+			console.error('WebSocket Error:', error)
 		}
 
-		setSocketNotification(newSocket);
+		setSocketNotification(newSocket)
 
 		return () => {
-			newSocket.close();
+			newSocket.close()
+		}
+	}, [authTokens?.access_token])
+
+	// Add function to handle invitation responses
+	const handleGameInviteResponse = (invitationId, response) => {
+		if (socket_notification?.readyState === WebSocket.OPEN) {
+			socket_notification.send(
+				JSON.stringify({
+					type: 'game_invite_response',
+					invitation_id: invitationId,
+					response: response,
+				})
+			);
+		}
+		// remove the notification after accepting or declining the invite
+		setNotifications((prevNotifications) =>
+			prevNotifications.filter((notification) => notification.id !== invitationId)
+		);
+	}
+
+	// Add function to send game invites from anywhere in the app (e.g. chat)
+	const sendGameInvite = (receiverId) => {
+		if (socket_notification?.readyState === WebSocket.OPEN) {
+			socket_notification.send(
+				JSON.stringify({
+					type: 'game_invite',
+					receiver_id: receiverId,
+				})
+			)
+		} else {
+			console.error('Socket not connected')
 		}
 	}
-		, [authTokens?.access_token]);
 
 	const sockets = {
 		socket_notify: socket_notify,
@@ -222,6 +304,8 @@ function Layout() {
 		fetchUser: fetchUser,
 		profile_picture: profile_picture,
 		// here i'm gonna a send function to send the notification invite to the user
+		handleGameInviteResponse: handleGameInviteResponse,
+		sendGameInvite: sendGameInvite,
 	}
 
 	return (

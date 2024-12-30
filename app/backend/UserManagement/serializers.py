@@ -15,8 +15,6 @@ from .profile_utils import (
 
 from .models import FriendShip
 from .models import FriendShipRequest
-from .models import Tournament
-from .models import Match
 
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
@@ -63,22 +61,6 @@ class FriendRequestSerializer(serializers.ModelSerializer):
         if obj.user_from.profile_picture:
             return request.build_absolute_uri(obj.user_from.profile_picture.url) if request else obj.user_from.profile_picture.url
         return None
-
-    # def get_user_to_profile_picture(self, obj):
-    #     request = self.context.get('request')
-    #     if obj.user_to.profile_picture:
-    #         return request.build_absolute_uri(obj.user_to.profile_picture.url) if request else obj.user_to.profile_picture.url
-    #     return None
-
-class TournamentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tournament
-        fields = '__all__'
-
-class MatchSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Match
-        fields = '__all__'
 
 class HealthCheckSerializer(serializers.Serializer):
     status = serializers.CharField()

@@ -93,3 +93,39 @@ class GameSessions(models.Model):
             self.loser = self.player1
                 
         self.save()
+        
+
+
+class GameInvitations(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'PENDING', 'Waiting for response'
+        ACCEPTED = 'ACCEPTED', 'Invitation accepted'
+        DECLINED = 'DECLINED', 'Invitation declined'
+        EXPIRED = 'EXPIRED', 'Invitation expired'
+
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='sent_game_invites',
+        on_delete=models.CASCADE
+    )
+    
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='received_game_invites',
+        on_delete=models.CASCADE
+    )
+    
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Game invite from {self.sender.username} to {self.receiver.username}"

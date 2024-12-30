@@ -1,13 +1,11 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth import get_user_model
-from channels.db import database_sync_to_async
 import json
 from django.core.cache import cache
 from django.conf import settings
 from jwt import decode as jwt_decode
 from urllib.parse import parse_qs
 from asgiref.sync import sync_to_async
-from .models import FriendShip
 from channels.db import database_sync_to_async
 from itertools import chain
 from django.contrib.auth.signals import user_logged_out, user_logged_in
@@ -15,6 +13,8 @@ from django.dispatch import Signal
 from django.contrib.auth.signals import user_logged_out
 from django.contrib.auth.signals import user_logged_in
 
+from .models import FriendShip
+from game.models import GameInvitations
 from collections import defaultdict
 
 User = get_user_model()
@@ -60,8 +60,35 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
 
     
     async def receive(self, text_data):
-        print('----- receive -----')
-        data = json.loads(text_data)
+        """Handle incoming WebSocket messages"""
+        print('----- receive from FriendRequestConsumer -----')
+        try:
+            data = json.loads(text_data)
+            message_type = data.get('type')
+            
+            if message_type == 'game_invite':
+                # Handle game invite
+                print(f"XGame invite from: {self.user.username} | {data.get('receiver_id')}")
+                await self.handle_game_invite(data)
+                
+            elif message_type == 'game_invite_response':
+                # Handle invite response
+                print(f"XGame invite response from {self.user.username}: {data.get('response')}")
+                await self.handle_game_invite_response(data)
+                
+            else:
+                # Handle regular friend request messages
+                await self.handle_friend_request(data)
+
+        except Exception as e:
+            print(f"Error in receive: {str(e)}")
+            await self.send(text_data=json.dumps({
+                'type': 'error',
+                'message': str(e)
+            }))
+
+    async def handle_friend_request(self, data):
+        """Handle regular friend request messages"""
         message = data.get('message')
         friend_request_id = data.get('id')
         from_user = data.get('from_user')
@@ -84,6 +111,202 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                 'receiver_id': receiver_id,
             }
         )
+                
+    async def handle_game_invite(self, data):
+        """Handle new game invitation"""
+        try:
+            # Create game invitation record
+            receiver_id = data.get('receiver_id')
+            print(f"XPGame invite from: {self.user.username} to {receiver_id}")
+            invitation = await self.create_game_invitation(
+                sender=self.user,
+                receiver_id=data.get('receiver_id')
+            )
+            
+            receiver_room_group_name = f'friend_request_{receiver_id}'
+            # Send notification to receiver if he's online
+            await self.channel_layer.group_send(
+                receiver_room_group_name,
+                {
+                    'type': 'game_invite_notification',
+                    'data': {
+                        'type': 'game_invite',
+                        'invitation_id': invitation.id,
+                        'sender': {
+                            'id': self.user.id,
+                            'username': self.user.username,
+                            'profile_picture': self.user.profile_picture.url if self.user.profile_picture else None
+                        }
+                    }
+                }
+            )
+        except Exception as e:
+            print(f"Error handling game invite in NotificationConsumer: {e}")
+            
+    async def handle_game_invite_response(self, data):
+        """Handle response to game invitation"""
+        invitation_id = data.get('invitation_id')
+        response = data.get('response')
+        
+        invitation = await self.get_game_invitation(invitation_id)
+        if response == 'accept':
+            await self.handle_invitation_acceptance(invitation)
+        else:
+            await self.handle_invitation_decline(invitation)
+            
+    @database_sync_to_async
+    def create_game_invitation(self, sender, receiver_id):
+        """Create game invitation record"""
+        receiver = User.objects.get(id=receiver_id)
+        
+        return GameInvitations.objects.create(
+            sender=sender,
+            receiver=receiver
+        )
+        
+    async def game_invite_notification(self, event):
+        """Send game invite notification to websocket"""
+        await self.send(text_data=json.dumps(event['data']))
+        
+
+    # database_sync_to_async related methods -------------------------------------------------------------
+    @database_sync_to_async
+    def get_game_invitation(self, invitation_id):
+        """Fetch game invitation from database"""
+        return GameInvitations.objects.get(id=invitation_id)
+
+
+    @database_sync_to_async
+    def accept_game_invite(self, invitation):
+        """Handle invitation acceptance"""
+        # Update invitation status
+        invitation.status = GameInvitations.Status.ACCEPTED
+        invitation.save()
+        # get the status of the sender (online or offline)
+        try:
+            sender_user = User.objects.get(id=invitation.sender.id)
+            flag = (sender_user.status == 'online')
+        except Exception as e:
+            print(f"Error getting user {user_id}: {e}")
+            return None
+            
+        
+        # Prepare the notification data
+        notification_data = {
+            'type': 'game_invite_accepted',
+            'invitation_id': invitation.id,
+            'sender': {  # Details of the person who sent the invite
+                'is_online' : flag,
+                'id': invitation.sender.id,
+                'username': invitation.sender.username,
+                'profile_picture': invitation.sender.profile_picture.url if invitation.sender.profile_picture else None
+            },
+            'receiver': {  # Details of the person who accepted the invite
+                'id': self.user.id,
+                'username': self.user.username,
+                'profile_picture': self.user.profile_picture.url if self.user.profile_picture else None
+            }
+        }
+
+        return {
+            "room_groups": {
+                "sender": f'friend_request_{invitation.sender.id}',
+                "receiver": f'friend_request_{self.user.id}'
+            },
+            "data": notification_data
+        }
+
+    async def handle_invitation_acceptance(self, invitation):
+        """Asynchronous wrapper to handle game invitation acceptance"""
+        try:
+            # Call the sync-to-async wrapped function
+            result = await self.accept_game_invite(invitation)
+
+            # Notify the sender
+            await self.channel_layer.group_send(
+                result["room_groups"]["sender"],
+                {
+                    'type': 'game_invite_notification',
+                    'data': {
+                        **result["data"],
+                        'user': result["data"]["sender"],  # The sender is the current user
+                    }
+                }
+            )
+
+            # Notify the receiver
+            await self.channel_layer.group_send(
+                result["room_groups"]["receiver"],
+                {
+                    'type': 'game_invite_notification',
+                    'data': {
+                        **result["data"],
+                        'user': result["data"]["receiver"],  # The receiver is the current user
+                    }
+                }
+            )
+        except Exception as e:
+            print(f"Error accepting game invite: {e}")
+            print(f"Error details: {str(e)}")  # More detailed error logging
+
+
+
+
+    @database_sync_to_async
+    def decline_game_invite(self, invitation):
+        """Handle invitation decline"""
+        # Update invitation status
+        invitation.status = GameInvitations.Status.DECLINED
+        invitation.save()
+
+        # Notify sender that their invitation was declined
+        sender_room_group_name = f'friend_request_{invitation.sender.id}'
+        return {
+            "sender_room_group_name": sender_room_group_name,
+            "data": {
+                'type': 'game_invite_declined',
+                'invitation_id': invitation.id,
+                'receiver': {
+                    'id': self.user.id,
+                    'username': self.user.username,
+                    'profile_picture': self.user.profile_picture.url if self.user.profile_picture else None
+                }
+            }
+        }
+        
+    async def handle_invitation_decline(self, invitation):
+        """Asynchronous wrapper to handle game invitation decline"""
+        try:
+            # Call the sync-to-async wrapped function
+            result = await self.decline_game_invite(invitation)
+            
+            # Send notification to the sender
+            await self.channel_layer.group_send(
+                result["sender_room_group_name"],
+                result["data"]
+            )
+        except Exception as e:
+            print(f"Error declining game invite in NotificationConsumer: {e}")
+    
+    # handers for game invite accept and decline
+    async def game_invite_accepted(self, event):
+        """Handle the 'game_invite_accepted' message type"""
+        await self.send(text_data=json.dumps({
+            "type": "game_invite_accepted",
+            "invitation_id": event.get("invitation_id"),
+            "receiver": event.get("receiver"),
+            "sender": event.get("sender")
+        }))
+
+    async def game_invite_declined(self, event):
+        """Handle the 'game_invite_declined' message type"""
+        await self.send(text_data=json.dumps({
+            "type": "game_invite_declined",
+            "invitation_id": event.get("invitation_id"),
+            "receiver": event.get("receiver")
+        }))
+
+#--------------------------------------------------------------------------------------------------------------------
     
     async def friend_request_message(self, event):
         print('----- friend_request_message -----')
@@ -115,7 +338,6 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
     
     async def friend_request_accepted(self, event):
         pass
-    
 
 class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -239,12 +461,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 print(f"Error during connection setup: {e}")
                 await self.close()
             
-    async def receive(self, text_data):
-        print('----- receive from NotificationConsumer -----')
-        data = json.loads(text_data)
-        message = data.get('message')
-        print('message =>', message)
-
     
     async def disconnect(self, close_code):
         print('----- disconnect from NotificationConsumer -----')
@@ -317,113 +533,3 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         friends_to = list(FriendShip.objects.filter(user_to=user).values_list('user_from', flat=True))
         friends = list(set(friends_from + friends_to))
         return friends
-
-
-#------------------------------------------------------------------------------------
-
-class TournamentConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.tournament_id = self.scope['url_route']['kwargs']['tournament_id']
-        self.tournament_group_name = f'tournament_{self.tournament_id}'
-
-        # Join tournament group
-        await self.channel_layer.group_add(
-            self.tournament_group_name,
-            self.channel_name
-        )
-        await self.accept()
-        tournament_data = await self.get_tournament_data()
-        await self.send(text_data=json.dumps({
-            tournament_data
-        }))
-
-    async def disconnect(self, close_code):
-        # Leave tournament group
-        await self.channel_layer.group_discard(
-            self.tournament_group_name,
-            self.channel_name
-        )
-    
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        action = data.get('action')
-        if action == 'update_match':
-            match_data = data.get('match_data')
-            updated_data = await self.update_match(match_data)
-
-            # Broadcast the updated match data to the group
-            await self.channel_layer.group_send(
-                self.tournament_group_name,
-                {
-                    'type': 'match_update',
-                    'updated_data': updated_data
-                }
-            )
-    
-    async def tournament_update(self, event):
-        await self.send(text_data=json.dumps(event['data']))
-    
-    @database_sync_to_async
-    def get_tournament_data(self):
-        tournament = Tournament.objects.get(id=self.tournament_id)
-        matches = Match.objects.filter(tournament_id=self.tournament_id)
-        return {
-            'tournament': {
-                'id': tournament.id,
-                'name': tournament.name,
-                'status': tournament.status,
-                'winner': tournament.winner.username if tournament.winner else None
-            },
-            'matches': [
-                {
-                    'id': match.id,
-                    'player1': match.player1.username,
-                    'player2': match.player2.username,
-                    'player1_score': match.player1_score,
-                    'player2_score': match.player2_score,
-                    'round_number': match.round_number,
-                    'status': match.status,
-                    'winner': match.winner.username if match.winner else None
-                } for match in matches
-            ]
-        }
-    
-    @database_sync_to_async
-    def update_match(self, match_data):
-        match_id = match_data.get('match_id')
-        match = Match.objects.get(id=match_id)
-
-        match.player1_score = match_data.get('player1_score', match.player1_score)
-        match.player2_score = match_data.get('player2_score', match.player2_score)
-
-        if match_data.get('complete', False):
-            match.status = 'COMPLETED'
-            winner = match.player1 if match.player1_score > match.player2_score else match.player2
-            match.winner = winner
-            match.save()
-
-            #Handle tournament progressions
-            if match.round_number == 1:
-                # Check if both semi-finals are complete
-                other_semi = Match.objects.filter(
-                    tournament_id=match.tournament_id, 
-                    round_number=1
-                ).exclude(id=match_id).first()
-            
-            if other_semi.status == 'COMPLETED':
-                # Create finals match
-                Match.objects.create(
-                    tournament=match.tournament,
-                    player1=match.winner,
-                    player2=other_semi.winner,
-                    round_number=2
-                )
-            elif match.round_number == 2:
-                # Tournament is complete
-                tournament = match.tournament
-                tournament.status = 'COMPLETED'
-                tournament.winner = match.winner
-                tournament.save()
-        
-        match.save()
-        return self.get_tournament_data()

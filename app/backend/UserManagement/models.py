@@ -225,44 +225,4 @@ class Notification(models.Model):
         return f"Notification from {self.sender.username} to {self.receiver.username}: {self.message}"
 
 
-class Tournament(models.Model):
-    STATUS_CHOICES = [
-        ('PENDIND', 'Pending'),
-        ('IN_PROGRESS', 'In Progress'),
-        ('COMPLETED', 'Completed'),
-    ]
-    name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='PENDING')
-    winner = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='tournament_winner')
 
-    def __str__(self):
-        return self.name
-
-class TournamentParticipant(models.Model):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='participants')
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='tournament_participant')
-    seed = models.IntegerField()
-    eliminated = models.BooleanField(default=False)
-
-    class Meta:
-        unique_together = ('tournament', 'user')
-
-    def __str__(self):
-        return f"{self.user.username} in {self.tournament.name}"
-
-class Match(models.Model):
-    STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('IN_PROGRESS', 'In Progress'),
-        ('COMPLETED', 'Completed'),
-    ]
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='matches')
-    player1 = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='matches_as_player1')
-    player2 = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='matches_as_player2')
-    winner = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='match_winner')
-    round_number = models.IntegerField()
-    status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='PENDING')
-    created_at = models.DateTimeField(auto_now_add=True)
-    player1_score = models.IntegerField(default=0)
-    player2_score = models.IntegerField(default=0)
