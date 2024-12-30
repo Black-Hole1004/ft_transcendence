@@ -83,7 +83,7 @@ const AIGameSetup = () => {
 
             if (!removeBackground) {
                 const backgroundImage = new Image();
-                backgroundImage.src = `/assets/images/tables/table${backgroundId}.webp`;
+                backgroundImage.src = `/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}`;
                 backgroundImage.onload = () => {
                     ctx.drawImage(backgroundImage, 0, 0, scaledWidth, scaledHeight);
                     drawGameElements();

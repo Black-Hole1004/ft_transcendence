@@ -7,7 +7,7 @@ const GamePreview = ({ players, gameConfig, backgroundId }) => {
 					overflow-hidden pointer-events-none ${gameConfig.isBackgroundVisible ? '' : 'bg-black'}`}
 			>
 				<img
-					src={`/assets/images/tables/table${backgroundId}.webp`}
+					src={`/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}`}
 					className={`${gameConfig.isBackgroundVisible ? '' : 'hidden'} select-none brightness-[50%]`}
 					alt='table image'
 				/>

@@ -321,8 +321,7 @@ const PongTable = forwardRef(
 						maxWidth: `${MAX_CANVAS_WIDTH}px`,
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
-						backgroundImage: `url('/assets/images/tables/table${backgroundId}.webp')`,
-						aspectRatio: '2/1', // Maintain aspect ratio
+						backgroundImage: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
 					}}
 				/>
 				{isPaused && (
