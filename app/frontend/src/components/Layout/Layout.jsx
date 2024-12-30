@@ -185,46 +185,47 @@ function Layout() {
 					])
 					break
 
+				case 'invite_failed':
+					// Handle notification when receiver is offline/in game
+					triggerAlert('error', data.message)
+					break
+
 				case 'game_invite_accepted':
-					    // check if the sneder is online or not beofe sending the notification and navigate to the game
-						
+					// check if the sneder is online or not beofe sending the notification and navigate to the game
+
+					triggerAlert(
+						'success',
+						`${data.receiver.username} accepted your game invitation!`
+					)
+
+					if (data.sender.status === 'offline') {
 						triggerAlert(
-							'success',
-							`${data.receiver.username} accepted your game invitation!`
+							'info',
+							`${data.sender.username} is offline, you cannot play with them now`
 						)
+						return
+					}
+					if (data.sender.status == 'ingame') {
+						triggerAlert(
+							'info',
+							`${data.sender.username} is in a game, try again later`
+						)
+						return
+					}
 
+					navigate('/matchmaking', {
+						state: {
+							backgroundId: 1,
+							currentUser: data.user, // The current user (sender or receiver)
+							isDirectMatch: true,
+							invitationId: data.invitation_id,
+						},
+					})
+					break
 
-						if (data.sender.status === 'offline') {
-							triggerAlert(
-								'info',
-								`${data.sender.username} is offline, you cannot play with them now`
-							)
-							return
-						}
-						if (data.sender.status == 'ingame') {
-							triggerAlert(
-								'info',
-								`${data.sender.username} is in a game, you cannot play with them now`
-							)	
-							return
-						}
-
-						navigate('/matchmaking', {
-							state: { 
-								backgroundId: 1,
-								currentUser: data.user, // The current user (sender or receiver)
-								isDirectMatch: true,
-								invitationId: data.invitation_id,
-							},
-						});
-						break;
-						
 				case 'game_invite_declined':
 					// Show decline notification
-					triggerAlert(
-						'info', 
-						`${data.receiver.username} declined your game invitation`
-					)
+					triggerAlert('info', `${data.receiver.username} declined your game invitation`)
 					break
 
 				default:
@@ -267,12 +268,12 @@ function Layout() {
 					invitation_id: invitationId,
 					response: response,
 				})
-			);
+			)
 		}
 		// remove the notification after accepting or declining the invite
 		setNotifications((prevNotifications) =>
 			prevNotifications.filter((notification) => notification.id !== invitationId)
-		);
+		)
 	}
 
 	// Add function to send game invites from anywhere in the app (e.g. chat)

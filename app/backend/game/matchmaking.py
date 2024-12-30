@@ -5,11 +5,8 @@ from channels.db import database_sync_to_async
 from .models import GameSessions
 from UserManagement.models import Achievement
 from django.core.cache import cache
-from django.contrib.auth import get_user_model
 import time
 
-
-User = get_user_model()
 class MatchmakingConsumer(AsyncWebsocketConsumer):
     matchmaking_queue = {}
     direct_match_pairs = {}  # Store invitation_id -> first_user_data mapping
@@ -57,6 +54,8 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def check_player_status(self, user_id):
         """Check if player is currently in a game"""
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
         try:
             user = User.objects.get(id=user_id)
             return user.status
@@ -96,18 +95,24 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                 # await self.find_opponent()
             
             elif data['type'] == 'direct_match':
-                # Handle direct match
+                # Check if user is searching in queue
+                if any(q['user_id'] == self.user_id and q['searching'] 
+                    for q in self.matchmaking_queue.values()):
+                    print(f"Found user {self.username} in random search queue - cancelling search")
+                    self.matchmaking_queue[self.channel_name]['searching'] = False
+
                 await self.handle_direct_match(
                     invitation_id=data['invitation_id'],
                     user_id=data['current_user_id'],
                 )
+                
             elif data['type'] == 'cancel_search':
                 if self.search_task:
                     self.search_task.cancel()  # Cancel the search task
                 self.matchmaking_queue[self.channel_name]['searching'] = False
                 await self.send(json.dumps({
                     'type': 'cancelled',
-                    'message': 'Search cancelled'
+                    'message': 'Random Search cancelled'
                 }))
 
         except json.JSONDecodeError:
@@ -145,6 +150,8 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_user_data(self, user_id):
         """Get fresh user data from database"""
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
         user = User.objects.get(id=user_id)
         return user
 
@@ -165,7 +172,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                         self.matchmaking_queue[self.channel_name]['searching'] = False
                         await self.send(json.dumps({
                             'type': 'error',
-                            'message': 'Match search cancelled - you are already in a game'
+                            'message': 'Match Random search cancelled - you are already in a game'
                         }))
                         return
                     
@@ -251,7 +258,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                     await asyncio.sleep(1)
                     
                 except asyncio.CancelledError:
-                    print("Search cancelled")
+                    print("Random Search cancelled")
                     raise
                 except Exception as e:
                     print(f"Error in find_opponent loop: {e}")
@@ -294,7 +301,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                 
                 # Create match data for both players
                 match_data_player1 = {
-                    'type': 'match_found',
+                    'type': 'direct_match',
                     'game_id': game.game_id,
                     'invitation_id': invitation_id,
                     'player_number': 1,
@@ -313,7 +320,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                 }
                 
                 match_data_player2 = {
-                    'type': 'match_found',
+                    'type': 'direct_match',
                     'game_id': game.game_id,
                     'invitation_id': invitation_id,
                     'player_number': 2,

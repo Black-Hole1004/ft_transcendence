@@ -109,6 +109,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                                 Invite
                             </Button>
                         )}
+                        
                     </>
                 )}
 

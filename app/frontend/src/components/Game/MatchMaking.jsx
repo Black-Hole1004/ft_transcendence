@@ -34,6 +34,11 @@ const Matchmaking = () => {
             return
         }
 
+        // Cancel any ongoing matchmaking before starting new one
+        matchmakingService.cancelSearch()
+        setMatchData(null)  // Reset match data state
+        setStatus('connecting')
+
         matchmakingService.connect(currentUserId)
 
         matchmakingService.on('connect', () => {
@@ -41,7 +46,7 @@ const Matchmaking = () => {
             
             if (isDirectMatch) {
                 console.log('Starting direct match CURRENT USER:', currentUser)
-                matchmakingService.initiateDirectMatch(
+                matchmakingService.initiateDirectMatch (
                     invitationId,
                     currentUserId
                 );
@@ -145,7 +150,7 @@ const Matchmaking = () => {
         return () => {
             matchmakingService.disconnect()
         }
-    }, [])
+    }, [location.state])  // Trigger the effect whenever the location state changes
 
     const handleCancel = () => {
         console.log('Cancelling search')

@@ -113,20 +113,30 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         )
                 
     async def handle_game_invite(self, data):
-        """Handle new game invitation"""
         try:
-            # Create game invitation record
             receiver_id = data.get('receiver_id')
-            print(f"XPGame invite from: {self.user.username} to {receiver_id}")
+            receiver_status = await self.get_receiver_status(receiver_id)
+
+            if receiver_status != 'online':
+                await self.channel_layer.group_send(
+                    f'friend_request_{self.user.id}',
+                    {
+                        'type': 'game_invite_notification',
+                        'data': {
+                            'type': 'invite_failed',
+                            'message': f'Cannot send game invite - user is {receiver_status}'
+                        }
+                    }
+                )
+                return
+
             invitation = await self.create_game_invitation(
                 sender=self.user,
-                receiver_id=data.get('receiver_id')
+                receiver_id=receiver_id
             )
             
-            receiver_room_group_name = f'friend_request_{receiver_id}'
-            # Send notification to receiver if he's online
             await self.channel_layer.group_send(
-                receiver_room_group_name,
+                f'friend_request_{receiver_id}',
                 {
                     'type': 'game_invite_notification',
                     'data': {
@@ -140,8 +150,25 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                     }
                 }
             )
+
         except Exception as e:
-            print(f"Error handling game invite in NotificationConsumer: {e}")
+            print(f"Error handling game invite: {e}")
+
+    @database_sync_to_async
+    def get_receiver_status(self, receiver_id):
+        try:
+            receiver = User.objects.get(id=receiver_id)
+            return receiver.status
+        except User.DoesNotExist:
+            return 'offline'
+
+    @database_sync_to_async
+    def get_user_status(self, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            return user.status
+        except User.DoesNotExist:
+            return 'offline'
             
     async def handle_game_invite_response(self, data):
         """Handle response to game invitation"""
