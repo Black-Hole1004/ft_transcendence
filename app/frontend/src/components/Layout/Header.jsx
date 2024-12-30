@@ -4,6 +4,8 @@ import NotificationDropdown from './NotificationDropdown'
 import { Link, useLocation } from 'react-router-dom'
 import React, { useState, useRef, useEffect } from 'react'
 
+import { AlertWrapper } from './Layout'
+
 import { useWebSocket } from '../../context/WebSocketContext'
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
@@ -60,6 +62,7 @@ function Header({ user_data, notifications, setNotifications }) {
 			className='relative flex items-center justify-between text-primary header-margin font-medium
 			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end z-50'
 		>
+			<AlertWrapper />
 			<Link to={'/dashboard'} aria-label='Go to Dashboard'>
 				<img
 					alt='logo'

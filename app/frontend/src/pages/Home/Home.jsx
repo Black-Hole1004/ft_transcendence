@@ -7,6 +7,8 @@ import Button from '../../components/Home/Buttons/Button'
 // import useAuth from '../../context/AuthContext'
 import {AlertWrapper} from '../../components/Layout/Layout'
 
+import Loader from '../../components/Loader/Loader'
+
 const Home = () => {
 
 	const dialogRef = useRef(null)
@@ -67,7 +69,7 @@ const Home = () => {
 				</div>
 			</section>
 			
-			<React.Suspense fallback={<div>Loading...</div>}>
+			<React.Suspense fallback={<Loader />}>
 				{/* <LazyCard */}
 				<Card
 					dialogRef={dialogRef}

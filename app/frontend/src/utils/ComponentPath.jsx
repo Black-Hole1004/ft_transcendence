@@ -42,6 +42,7 @@ const ComponentPath = () => {
 				{/* Layout wrapping all private routes */}
 				<Route element={<PrivateRoute><Layout /></PrivateRoute>}>
 					<Route path="/Game" element={<Game />} />
+					<Route path="/loader" element={<Loader />} />
 					<Route path="/Chat" element={<Chat />} />
 					<Route path="/Profile" element={<Profile />} />
 					<Route path="/Settings" element={<Settings />} />

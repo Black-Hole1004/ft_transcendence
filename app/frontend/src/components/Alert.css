@@ -5,3 +5,7 @@
 .alert-icon {
 	width: clamp(1.25rem, 0.221vw + 1.209rem, 1.563rem);
 }
+
+.alert {
+	width: clamp(18.125rem, 13.717vw + 15.553rem, 37.5rem);
+}

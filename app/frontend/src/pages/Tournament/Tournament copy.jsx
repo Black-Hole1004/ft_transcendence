@@ -259,7 +259,7 @@ const Tournament = () => {
 	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState])
 
 	if (!tournamentData) {
-		return <div>Loading...</div>
+		return <Loader />
 	}
 
 	return (

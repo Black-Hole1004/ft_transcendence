@@ -8,6 +8,7 @@ import ChampionCelebration from '../../components/Tournament/ChampionCelebration
 
 import { useEffect, useCallback, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
+import Loader from '../../components/Loader/Loader'
 
 const players = [
 	{
@@ -259,7 +260,7 @@ const Tournament = () => {
 	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState])
 
 	if (!tournamentData) {
-		return <div>Loading...</div>
+		return <Loader />
 	}
 
 	return (

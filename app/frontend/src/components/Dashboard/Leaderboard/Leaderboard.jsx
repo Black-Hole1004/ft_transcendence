@@ -1,10 +1,12 @@
 import UserLeaderboard from './UserLeaderboard';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../Loader/Loader'
+
 const GET_USER_PROFILE = import.meta.env.VITE_GET_USER_PROFILE
 
 const Leaderboard = ({ users }) => {
 	const navigate = useNavigate();
-	if (!users) return <div>Loading...</div>;
+	if (!users) return <Loader />;
 
 	const handleUserClick = (profile_name) => {
 		navigate(`/users/${profile_name}`);
