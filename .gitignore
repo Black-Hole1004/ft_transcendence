@@ -1,3 +1,5 @@
 ./app/progres_data
 __pycache__/
 *.pyc
+app/nginx/logs/
+app/nginx/ssl_certificates/
