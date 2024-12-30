@@ -1,26 +1,8 @@
-2024/12/27 21:39:42 [notice] 11#11: using the "epoll" event method
-2024/12/27 21:39:42 [notice] 11#11: nginx/1.27.3
-2024/12/27 21:39:42 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
-2024/12/27 21:39:42 [notice] 11#11: OS: Linux 5.15.49-linuxkit
-2024/12/27 21:39:42 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
-2024/12/27 21:39:42 [notice] 11#11: start worker processes
-2024/12/27 21:39:42 [notice] 11#11: start worker process 12
-2024/12/27 21:39:42 [notice] 11#11: start worker process 13
-2024/12/27 21:39:42 [notice] 11#11: start worker process 14
-2024/12/27 21:39:42 [notice] 11#11: start worker process 15
-2024/12/27 21:39:42 [notice] 11#11: start worker process 16
-2024/12/27 21:39:42 [notice] 11#11: start worker process 17
-2024/12/27 21:44:18 [notice] 11#11: using the "epoll" event method
-2024/12/27 21:44:18 [notice] 11#11: nginx/1.27.3
-2024/12/27 21:44:18 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
-2024/12/27 21:44:18 [notice] 11#11: OS: Linux 5.15.49-linuxkit
-2024/12/27 21:44:18 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
-2024/12/27 21:44:18 [notice] 11#11: start worker processes
-2024/12/27 21:44:18 [notice] 11#11: start worker process 12
-2024/12/27 21:44:18 [notice] 11#11: start worker process 13
-2024/12/27 21:44:18 [notice] 11#11: start worker process 14
-2024/12/27 21:44:18 [notice] 11#11: start worker process 15
-2024/12/27 21:44:18 [notice] 11#11: start worker process 16
-2024/12/27 21:44:18 [notice] 11#11: start worker process 17
-2024/12/27 21:49:54 [warn] 17#17: *776 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000001, client: 172.20.0.1, server: localhost, request: "PUT /api/user/ HTTP/1.1", host: "localhost", referrer: "https://localhost/settings"
-2024/12/27 22:54:12 [error] 15#15: *10495 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.20.0.1, server: localhost, request: "GET /ws/game/1/ HTTP/1.1", upstream: "http://172.20.0.3:8000/ws/game/1/", host: "localhost"
+2024/12/30 16:38:40 [notice] 11#11: using the "epoll" event method
+2024/12/30 16:38:40 [notice] 11#11: nginx/1.27.3
+2024/12/30 16:38:40 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/30 16:38:40 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/30 16:38:40 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/30 16:38:40 [notice] 11#11: start worker processes
+2024/12/30 16:38:40 [notice] 11#11: start worker process 12
+2024/12/30 16:38:40 [notice] 11#11: start worker process 13

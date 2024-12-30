@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 app/nginx/logs/
 app/nginx/ssl_certificates/
+app/data
