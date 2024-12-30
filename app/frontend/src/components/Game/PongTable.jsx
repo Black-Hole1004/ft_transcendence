@@ -309,21 +309,32 @@ const PongTable = forwardRef(
 				ref={containerRef}
 				className='relative flex flex-col items-center lp:gap-7 gap-3 max-lg:w-full'
 			>
-				<canvas
-					ref={canvasRef}
-					width={canvasSize.width}
-					height={canvasSize.height}
-					className={`game-table aspect-video border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+				<div
+					className={`relative aspect-video bg-cover bg-center border rounded
+					${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 					style={{
-						width: '100%',
-						height: 'auto',
-						borderRadius: '25px',
-						maxWidth: `${MAX_CANVAS_WIDTH}px`,
-						backgroundSize: 'cover',
-						backgroundPosition: 'center',
-						backgroundImage: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
+					width: 'clamp(18.125rem, 40.265vw + 10.575rem, 75rem)',
+					maxWidth: `${MAX_CANVAS_WIDTH}px`,
 					}}
-				/>
+				>
+					<div
+						className="absolute inset-0 bg-cover bg-center rounded brightness-50"
+						style={{
+							backgroundImage: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
+						}}
+					/>
+
+					<canvas
+						ref={canvasRef}
+						width={canvasSize.width}
+						height={canvasSize.height}
+						className='absolute top-0 left-0 rounded'
+						style={{
+							width: '100%',
+							height: '100%',
+						}}
+					/>
+				</div>
 				{isPaused && (
 					<div>
 						<p
