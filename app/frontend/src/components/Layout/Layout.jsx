@@ -192,12 +192,6 @@ function Layout() {
 
 				case 'game_invite_accepted':
 					// check if the sneder is online or not beofe sending the notification and navigate to the game
-
-					triggerAlert(
-						'success',
-						`${data.receiver.username} accepted your game invitation!`
-					)
-
 					if (data.sender.status === 'offline') {
 						triggerAlert(
 							'info',
@@ -212,6 +206,12 @@ function Layout() {
 						)
 						return
 					}
+
+					triggerAlert(
+						'success',
+						`${data.receiver.username} accepted your game invitation!`
+					)
+
 
 					navigate('/matchmaking', {
 						state: {
@@ -270,10 +270,6 @@ function Layout() {
 				})
 			)
 		}
-		// remove the notification after accepting or declining the invite
-		setNotifications((prevNotifications) =>
-			prevNotifications.filter((notification) => notification.id !== invitationId)
-		)
 	}
 
 	// Add function to send game invites from anywhere in the app (e.g. chat)
@@ -285,8 +281,9 @@ function Layout() {
 					receiver_id: receiverId,
 				})
 			)
+			triggerAlert('success', 'Game invitation sent successfullyy')
 		} else {
-			console.error('Socket not connected')
+			triggerAlert('error', 'Cannot send invite - connection error')
 		}
 	}
 

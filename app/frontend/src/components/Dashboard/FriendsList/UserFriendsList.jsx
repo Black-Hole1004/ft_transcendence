@@ -57,7 +57,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
     const handleInviteToGame = (userId) => {
         if (socket_notification?.readyState === WebSocket.OPEN) {
             sendGameInvite(userId);
-            handleSubmit('success', 'Game invitation sent');
+            // handleSubmit('success', 'Game invitation sent');
         } else {
             handleSubmit('error', 'Cannot send invite - connection error');
         }

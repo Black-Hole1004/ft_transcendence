@@ -48,7 +48,7 @@ const ConversationHeader = ({
 	const handleInviteToGame = (userId) => {
         if (socket_notification?.readyState === WebSocket.OPEN) {
             sendGameInvite(userId);
-            handleSubmit('success', 'Game invitation sent');
+			// handleSubmit('success', 'Game Invitation Sent')
         } else {
             handleSubmit('error', 'Cannot send invite - connection error');
         }

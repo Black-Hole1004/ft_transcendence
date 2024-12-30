@@ -137,7 +137,6 @@ const Chat = () => {
 		const initializeWebSocket = () => {
 			if (!webSocketRef.current) {
 				// console.log(window.location.protocol)
-				console.log('xxxxx===> ', window.location.hostname)
 				const ws = new WebSocket(`wss://${window.location.hostname}/ws/chat/`)
 				webSocketRef.current = ws
 
