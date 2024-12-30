@@ -185,7 +185,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         # get the status of the sender (online or offline)
         try:
             sender_user = User.objects.get(id=invitation.sender.id)
-            flag = (sender_user.status == 'online')
+            status = sender_user.status
         except Exception as e:
             print(f"Error getting user {user_id}: {e}")
             return None
@@ -196,7 +196,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             'type': 'game_invite_accepted',
             'invitation_id': invitation.id,
             'sender': {  # Details of the person who sent the invite
-                'is_online' : flag,
+                'status' : status,
                 'id': invitation.sender.id,
                 'username': invitation.sender.username,
                 'profile_picture': invitation.sender.profile_picture.url if invitation.sender.profile_picture else None

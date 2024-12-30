@@ -5,8 +5,11 @@ from channels.db import database_sync_to_async
 from .models import GameSessions
 from UserManagement.models import Achievement
 from django.core.cache import cache
+from django.contrib.auth import get_user_model
 import time
 
+
+User = get_user_model()
 class MatchmakingConsumer(AsyncWebsocketConsumer):
     matchmaking_queue = {}
     direct_match_pairs = {}  # Store invitation_id -> first_user_data mapping
@@ -54,8 +57,6 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def check_player_status(self, user_id):
         """Check if player is currently in a game"""
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
         try:
             user = User.objects.get(id=user_id)
             return user.status
@@ -144,8 +145,6 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_user_data(self, user_id):
         """Get fresh user data from database"""
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
         user = User.objects.get(id=user_id)
         return user
 

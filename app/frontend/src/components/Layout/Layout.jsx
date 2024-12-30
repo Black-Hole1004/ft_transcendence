@@ -194,11 +194,18 @@ function Layout() {
 						)
 
 
-						if (data.sender.is_online === false) {
+						if (data.sender.status === 'offline') {
 							triggerAlert(
 								'info',
-								`${data.sender.username} is offline, you will be notified when they come online`
+								`${data.sender.username} is offline, you cannot play with them now`
 							)
+							return
+						}
+						if (data.sender.status == 'ingame') {
+							triggerAlert(
+								'info',
+								`${data.sender.username} is in a game, you cannot play with them now`
+							)	
 							return
 						}
 
@@ -206,7 +213,6 @@ function Layout() {
 							state: { 
 								backgroundId: 1,
 								currentUser: data.user, // The current user (sender or receiver)
-								// opponent: data.sender.id === data.user.id ? data.receiver : data.sender, // The other party
 								isDirectMatch: true,
 								invitationId: data.invitation_id,
 							},
@@ -219,19 +225,6 @@ function Layout() {
 						'info', 
 						`${data.receiver.username} declined your game invitation`
 					)
-					break
-
-				case 'match_found': // i will send 'match found' when the user accepts the invite from the consumer of the notification
-					// Navigate to game setup
-					navigate('/remote-game', {
-						state: {
-							playerNumber: data.player_number,
-							gameId: data.game_id,
-							opponent: data.opponent,
-							currentUser: data.current_user,
-							backgroundId: 1, // default background
-						},
-					})
 					break
 
 				default:
