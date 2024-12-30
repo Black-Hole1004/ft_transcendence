@@ -65,9 +65,6 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 
-
-from .models import Tournament, TournamentParticipant, Match
-from .serializers import TournamentSerializer, MatchSerializer
 from django.db import transaction
 
 from rest_framework.views import APIView

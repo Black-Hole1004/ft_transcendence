@@ -1,11 +1,9 @@
-# game/admin.py
 from django.contrib import admin
-from .models import GameSessions
+from .models import GameSessions, GameInvitations
 
-admin.site.register(GameSessions)
-
-# @admin.register(GameSessions)
+@admin.register(GameSessions)
 class GameSessionAdmin(admin.ModelAdmin):
+    """Admin configuration for GameSessions model."""
     list_display = ('game_id', 'status', 'player1', 'player2', 'start_time', 'is_paused')
     list_filter = ('status', 'is_paused', 'start_time')
     search_fields = ('game_id', 'player1__username', 'player2__username')
@@ -25,3 +23,14 @@ class GameSessionAdmin(admin.ModelAdmin):
             'fields': ('start_time', 'end_time')
         }),
     )
+
+@admin.register(GameInvitations)
+class GameInvitationsAdmin(admin.ModelAdmin):
+    """Admin configuration for GameInvitations model."""
+    list_display = ['sender', 'receiver', 'status', 'created_at', 'updated_at']
+    list_filter = ['status', 'created_at', 'updated_at']
+    search_fields = ['sender__username', 'receiver__username']
+    ordering = ['-created_at']
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('sender', 'receiver')

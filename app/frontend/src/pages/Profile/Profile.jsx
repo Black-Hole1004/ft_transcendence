@@ -215,6 +215,9 @@ const Profile = () => {
 									}}
 								></div>
 							</div>
+							<div className='flex justify-center text-primary font-medium progresstitles lp:self-center self-start font-medium'>
+								<p>{stats.xp} xp</p>
+							</div>
 						</div>
 					</div>
 				</div>
