@@ -96,9 +96,33 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
 	}, []);
 
 
+    // Function to handle game invite response with timeout
+    const handleGameInviteResponseWithTimeout = (invitationId, response) => {
+        handleGameInviteResponse(invitationId, response);
+
+        // Remove the notification immediately after a response (accept/decline)
+        setNotifications((prevNotifications) =>
+            prevNotifications.filter((notification) => notification.invitation_id !== invitationId)
+        );
+    };
+
+    // Function to automatically clear notification after 10 seconds if no response
+    const setNotificationTimeout = (invitationId) => {
+        const timerId = setTimeout(() => {
+            // Remove the notification after 10 seconds if no response
+            setNotifications((prevNotifications) =>
+                prevNotifications.filter((notification) => notification.invitation_id !== invitationId)
+            );
+        }, 30000); // 60 seconds
+
+        return timerId;
+    };
+
     const renderNotification = (notification, index) => {
         // Based on notification type, render different content
         if (notification.type === 'game_invite') {
+            // Set the timer when the notification is displayed
+            const timerId = setNotificationTimeout(notification.invitation_id);
             return (
                 <React.Fragment key={index}>
                     <div className='flex items-center justify-between'>
@@ -113,13 +137,17 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
                         <div className='flex gap-1 mr-1'>
                             <Button
                                 className={'notification-buttons rounded-md'}
-                                onClick={() => handleGameInviteResponse(notification.invitation_id, 'accept')}
+                                onClick={() => {handleGameInviteResponseWithTimeout(notification.invitation_id, 'accept')
+                                clearTimeout(timerId);
+                                }}
                             >
                                 Accept
                             </Button>
                             <Button
                                 className={'notification-buttons rounded-md'}
-                                onClick={() => handleGameInviteResponse(notification.invitation_id, 'decline')}
+                                onClick={() => {handleGameInviteResponseWithTimeout(notification.invitation_id, 'decline');
+                                clearTimeout(timerId);
+                                }}
                             >
                                 Decline
                             </Button>
