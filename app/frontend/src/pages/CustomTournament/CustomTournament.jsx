@@ -73,7 +73,7 @@ const CustomTournament = () => {
 							key={backgroundId}
 							className='lp:border-2 border border-primary overflow-hidden selected-table mtb:w-select-table w-full rounded-2xl relative'
 							style={{
-								background: `url('/assets/images/tables/table${backgroundId}.png')`,
+								background: `url('/assets/images/tables/table${backgroundId}.webp')`,
 								backgroundSize: 'cover',
 							}}
 						>
@@ -102,7 +102,7 @@ const CustomTournament = () => {
 								onClick={() => handleClick(id)}
 								className={`border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500 aspect-video`}
 								style={{
-									background: `url('/assets/images/tables/table${id}.png')`,
+									background: `url('/assets/images/tables/table${id}.webp')`,
 									backgroundSize: 'cover',
 								}}
 								disabled={xp / 1000 < id && id > 1 ? true : false}

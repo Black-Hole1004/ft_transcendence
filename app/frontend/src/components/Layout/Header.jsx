@@ -113,13 +113,14 @@ function Header({ user_data, notifications, setNotifications }) {
 				</button>
 				<div
 					ref={notificationRef}
-					className={`notification max-ms:w-full absolute z-10 ml:right-1/3 right-0
+					className={`notification max-ms:w-full absolute z-50 ml:right-1/3 right-0
 							top-full flex flex-col border border-primary rounded-xl bg-secondary
 							transition-opacity duration-300 ${!isNotificationOpen ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
 				>
-					<NotificationDropdown 
-						notifications={notifications} 
-						setNotifications={setNotifications} 
+					<NotificationDropdown
+						notifications={notifications}
+						setNotifications={setNotifications}
+						setIsNotificationOpen={setIsNotificationOpen}
 					/>
 				</div>
 				<button

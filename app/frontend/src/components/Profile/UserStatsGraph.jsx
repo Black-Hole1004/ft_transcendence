@@ -19,6 +19,7 @@ function UserStatsGraph() {
 
 				if (response.ok && Array.isArray(result.data)) {
 					// Default data for all days of the week
+					console.log('result.data ------->', result.data)
 					const allDays = [
 						{ name: 'Mon', min: 0 },
 						{ name: 'Tue', min: 0 },
@@ -62,19 +63,8 @@ function UserStatsGraph() {
 		fetchUserData()
 	}, [])
 
-	// console.log('userData ===> ', userData)
 
 
-
-	// const data = [
-	// 	{ name: 'Mon', min: 0 },
-	// 	{ name: 'Tue', min: 10 },
-	// 	{ name: 'Wed', min: 0 },
-	// 	{ name: 'Thu', min: 0 },
-	// 	{ name: 'Fri', min: 1},
-	// 	{ name: 'Sat', min: 0 },
-	// 	{ name: 'Sun', min: 1 },
-	// ]
 	return (
 		<div className="font-medium rounded-xl mt-2 lp:ml-2 chart-card max-lp:self-center flex flex-col lp:h-chart-lp h-chart-ms lp:w-chart-lp w-chart-ms">
 			<p className="text-primary chart-title m-2">Weekly User Engagement: Time Spent on Platform</p>

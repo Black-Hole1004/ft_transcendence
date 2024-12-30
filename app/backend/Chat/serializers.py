@@ -36,7 +36,7 @@ class UserInfosSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'bio', 'status', 'profile_picture']
+        fields = ['id', 'first_name', 'last_name', 'username', 'bio', 'status', 'profile_picture']
 
 
 class SearchResultSerializer(serializers.ModelSerializer):

@@ -91,7 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     display_name = models.CharField(max_length=30, default='', blank=True)
     bio = models.TextField(default='', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/avatar.jpg')
-
+    date_joined = models.DateField(auto_now_add=True)
     # added by tabi3a
     xp = models.IntegerField(default=0)
     
@@ -150,6 +150,7 @@ class UserSession(models.Model):
         # Calculate duration when logout_time is set
         if self.logout_time:
             self.duration = self.logout_time - self.login_time
+        print(f"Saving UserSession: {self}")
         super().save(*args, **kwargs)
 
     def __str__(self):

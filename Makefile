@@ -1,9 +1,9 @@
 .PHONY: all up build updetached down prune scan
 
-all: ssl up
+all: up
 
 up:
-	docker-compose up 
+	docker-compose up --build 
 
 ssl:
 	bash app/nginx/tools/generate_ssl.sh
@@ -20,9 +20,10 @@ down:
 
 prune:
 	docker system prune -af --volumes --force
-	@rm -rf ./app/data/*
+	@rm -rf ./app/data
 	@rm -rf ./app/nginx/ssl_certificates
-	@> ./app/nginx/logs/access.log
+	@rm -rf ./app/nginx/logs/access.log
+	@rm -rf ./app/nginx/logs/error.log
 
 scan: build
 	docker scan ft_transcendence-pingpong

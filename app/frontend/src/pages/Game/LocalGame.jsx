@@ -8,43 +8,50 @@ import GameScore from '../../components/Game/GameScore'
 import PongTable from '../../components/Game/PongTable'
 
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
-    <>
-        <div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20
-            flex flex-col justify-center items-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded-xl gameoverpopup'>
-            {winner ? (
-                <h1 className='font-dreamscape'>VICTORY ACHIEVED</h1>
-            ) : (
-                <h1 className='font-dreamscape'>GAME OVER</h1>
-            )}
-            {winner ? (
-                <div className='font-heavy mb-20'>
-                    <p className='text-left text-2xl'>Cosmic Champion:</p>
-                    <h3 className='players-usernames font-dreamscape-sans pt-3 pb-7 text-center glow drop-shadow-[0_2px_10px_rgba(255,206,158,0.5)]'>
-                        {winner.name}
-                    </h3>
-                    <p className='text-lg text-center'>
-                        Your stellar skills have conquered the arena!
-                    </p>
-                </div>
-            ) : (
-                <p className='text-2xl font-medium mb-20'>A cosmic deadlock! The match ends in a tie.</p>
-            )}
-            <div className='w-full flex justify-between my-10 lg:gap-10 gap-6'>
-                <button onClick={onRestart}
-                    className='font-dreamscape bg-primary text-secondary py-3 flex-1 rounded
-                    hover:scale-[1.01] hover:brightness-100 transition-all duration-300 ease-in-out
-                    hover:outline hover:outline-offset-2 hover:outline-2 hover:outline-primary'>
-                    Play Again
-                </button>
-                <button onClick={onClose}
-                    className='font-heavy text-primary py-3 border border-border rounded flex-1
-                    bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'>
-                    Personalize Game
-                </button>
-            </div>
-        </div>
-    </>
+	<>
+		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
+		<div
+			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20
+			flex flex-col justify-center items-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded-xl gameoverpopup'
+		>
+			{winner ? (
+				<h1 className='font-dreamscape'>VICTORY ACHIEVED</h1>
+			) : (
+				<h1 className='font-dreamscape'>GAME OVER</h1>
+			)}
+			{winner ? (
+				<div className='font-heavy mb-20'>
+					<p className='text-left text-2xl'>Cosmic Champion:</p>
+					<h3 className='players-usernames font-dreamscape-sans pt-3 pb-7 text-center glow drop-shadow-[0_2px_10px_rgba(255,206,158,0.5)]'>
+						{winner.name}
+					</h3>
+					<p className='text-lg text-center'>
+						Your stellar skills have conquered the arena!
+					</p>
+				</div>
+			) : (
+				<p className='text-2xl font-medium mb-20'>A cosmic deadlock! The match ends in a tie.</p>
+			)}
+			<div className='w-full flex justify-between my-10 lg:gap-10 gap-6'>
+				<button
+					onClick={onRestart}
+					className='font-dreamscape bg-primary text-secondary py-3 flex-1 rounded
+					hover:scale-[1.03] hover:brightness-100 transition-all duration-300 ease-in-out'
+				>
+					Play Again
+				</button>
+				<button
+					onClick={onClose}
+					className='font-heavy text-primary py-3 border border-border rounded flex-1
+					bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'
+				>
+					Personalize Game
+				</button>
+			</div>
+		</div>
+
+
+	</>
 )
 
 const LocalGame = () => {

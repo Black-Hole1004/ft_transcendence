@@ -21,7 +21,7 @@ function UserInfos({ recipientInfo }) {
 								<p className='text-light nickname'>@{`${recipientInfo.username}`}</p>
 							</div>
 							<div className='max-w-[500px]'>
-								<p className='font-medium text-primary bio'>{`${recipientInfo.bio}`}</p>
+								<p className='font-medium text-primary bio break-words'>{`${recipientInfo.bio}`}</p>
 							</div>
 						</div>
 					</div>

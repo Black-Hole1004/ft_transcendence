@@ -37,9 +37,9 @@ function FriendsList() {
 		get_all_users()
 	}, [])
 
-	const filterUsers = users?.filter((user) => {
-		return user.username.toLowerCase().startsWith(searchQuery.toLowerCase()) || []
-	})
+	const filterUsers = users?.filter((user) => 
+		user.username.toLowerCase().startsWith(searchQuery.toLowerCase())
+	) || [];
 
 	// this useEffect listens for friend request acceptances
 	useEffect(() => {

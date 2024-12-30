@@ -246,6 +246,7 @@ const Tournament = () => {
 
 	useEffect(() => {
 		// Check and store tournament data
+		console.log(location.state)
 		if (location.state && !tournamentData) {
 			console.log('Setting tournament data from location state...')
 			setTournamentData(location.state)

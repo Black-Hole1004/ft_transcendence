@@ -275,11 +275,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 
 #todo: Creds should be changed in production
 
-# SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-cdcc23cff090940f13730afd65feb14fe10adba125685f2f6b47055c98256fd7'
-# SOCIAL_AUTH_INTRA42_SECRET = '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'
-SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
-SOCIAL_AUTH_INTRA42_SECRET = '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'
-SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'https://localhost/api/social-auth/complete/intra42/'
+SOCIAL_AUTH_INTRA42_KEY='u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
+SOCIAL_AUTH_INTRA42_SECRET='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'
+SOCIAL_AUTH_INTRA42_REDIRECT_URI='https://localhost/api/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']

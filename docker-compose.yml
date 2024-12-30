@@ -39,6 +39,7 @@ services:
     env_file:
       - app/backend/.env
     environment:
+      - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=core.settings
     depends_on:
       ft_transcendence_db:
