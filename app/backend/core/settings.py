@@ -240,7 +240,7 @@ CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '10.12.2.9',  # Backend IP
+    'localhost',
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -275,14 +275,17 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 
 #todo: Creds should be changed in production
 
-SOCIAL_AUTH_INTRA42_KEY='u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
-SOCIAL_AUTH_INTRA42_SECRET='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'
-SOCIAL_AUTH_INTRA42_REDIRECT_URI='https://localhost/api/social-auth/complete/intra42/'
+
+SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
+SOCIAL_AUTH_INTRA42_SECRET = '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'
+SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'https://localhost/api/social-auth/complete/intra42/'
+
+# SOCIAL_AUTH_INTRA42_KEY='u-s4t2ud-872f8a9cf89c265c8218ceaaa21de65f3b6b1cadf6d0e816c010c02d3aadc711'
+# SOCIAL_AUTH_INTRA42_SECRET='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'
+# SOCIAL_AUTH_INTRA42_REDIRECT_URI='https://localhost/api/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
-
-
 
 
 # Caching Configuration (for game state and other cache needs)

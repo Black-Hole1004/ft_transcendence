@@ -2,7 +2,7 @@ import './Remote.css'
 import { useState } from 'react'
 import Button from '../../Home/Buttons/Button'
 
-const SearchingAnimation = () => {
+const SearchingAnimation = ({ handleCancel }) => {
 	const [opponentFound, setOpponentFound] = useState(false)
 
 	const delay = setTimeout(() => {
@@ -42,6 +42,7 @@ const SearchingAnimation = () => {
 						absolute left-1/2 top-full mt-10 transform -translate-x-1/2`
 					}
 					type='submit'
+					onClick={handleCancel}
 				>
 					Cancel
 				</Button>

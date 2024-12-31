@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MatchFoundDisplay = ({ matchData, countdown }) => {
+const MatchFoundDisplay = ({ matchData, countdown, statement }) => {
     const [showDebug, setShowDebug] = useState(false);
 
     if (!matchData?.current_user || !matchData?.opponent) {
@@ -25,7 +25,7 @@ const MatchFoundDisplay = ({ matchData, countdown }) => {
         <div className='min-h-screen w-full bg-black flex flex-col items-center justify-center'>
             {/* Title */}
             <h1 className='text-7xl font-bold text-white mb-24 tracking-wider scale-90 sm:scale-100'>
-                Match Found!
+                {statement}
             </h1>
 
             {/* Players Container - Always horizontal */}

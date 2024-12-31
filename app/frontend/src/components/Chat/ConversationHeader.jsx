@@ -2,6 +2,7 @@ import { useAlert } from "../AlertContext"
 import { useSocket } from '../Layout/Layout'
 import useAuth from '../../context/AuthContext.jsx'
 import { useEffect } from 'react'
+
 const Button = ({ onClick, children }) => {
 	return (
 		<button
@@ -39,10 +40,19 @@ const ConversationHeader = ({
 
 	// add by ahaloui -----------------
 	const { triggerAlert } = useAlert()
-	const { socket_notification } = useSocket()
 	const { getAuthHeaders } = useAuth()
 
+	// for game invite (arabiai)
+	const { socket_notification, sendGameInvite } = useSocket()
 
+	const handleInviteToGame = (userId) => {
+        if (socket_notification?.readyState === WebSocket.OPEN) {
+            sendGameInvite(userId);
+			// handleSubmit('success', 'Game Invitation Sent')
+        } else {
+            handleSubmit('error', 'Cannot send invite - connection error');
+        }
+    };
 
 	const handleSubmit = (type, message) => {
 		triggerAlert(type, message)
@@ -137,7 +147,7 @@ return (
 			)}
 			{(blockerId === 0 || blockerId === null) &&
 				(areFriends
-				? <Button>Invite to Play</Button>
+				? <Button onClick={() => handleInviteToGame(reciver_id)}>Invite to Game</Button>
 				: <Button onClick={() => handle_add_friend(reciver_id)}>Add Friend</Button>
 			)}
 			{(blockerId === 0 || blockerId === null) && (

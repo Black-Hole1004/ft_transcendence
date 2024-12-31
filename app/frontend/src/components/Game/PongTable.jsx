@@ -29,7 +29,7 @@ const PongTable = forwardRef(
 		const paddleX = 5
 		const BallInitialSpeed = 0.5
 		const BallAcceleration = 0.1 // it was 0.1
-		const paddleSpeed = 300
+		const paddleSpeed = 200
 		const MAX_BALL_SPEED = 10 // it was 8
 
 		const [playerY, setPlayerY] = useState(200 - paddleSize / 2)

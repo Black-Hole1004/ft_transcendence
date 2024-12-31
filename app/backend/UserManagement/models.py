@@ -33,13 +33,43 @@ class CustomUserManager(BaseUserManager):
 
 class Achievement:
     LEVELS = [
-        {'name': 'NOVICE ASTRONAUT', 'xp': 0, 'image': '/badges/novice.png'},
-        {'name': 'COSMIC EXPLORER', 'xp': 2000, 'image': '/badges/cosmic.png'},
-        {'name': 'STELLAR VOYAGER', 'xp': 4000, 'image': '/badges/stellar.png'},
-        {'name': 'GALACTIC TRAILBLAZER', 'xp': 6000, 'image': '/badges/galactic.png'},
-        {'name': 'CELESTIAL MASTER', 'xp': 8000, 'image': '/badges/celestial.png'}
+        {
+            'name': 'NOVICE ASTRONAUT',
+            'xp': 0,
+            'image': '/badges/novice.png',
+            'title': 'Welcome aboard, Novice Astronaut!',
+            'body': 'Your journey begins on Venus, where the cosmos eagerly awaits your exploration. Strap in and prepare for an adventure beyond the stars!',
+        },
+        {
+            'name': 'COSMIC EXPLORER',
+            'xp': 2000,
+            'image': '/badges/cosmic.png',
+            'title': 'Greetings, Cosmic Explorer!',
+            'body': 'Level 2 brings you to Jupiter, the king of planets, where vast storms and boundless mysteries await your exploration. Blaze a trail through the cosmos and leave your mark among the stars.',
+        },
+        {
+            'name': 'STELLAR VOYAGER',
+            'xp': 4000,
+            'image': '/badges/stellar.png',
+            'title': 'Ahoy, Stellar Voyager!',
+            'body': 'As you ascend to Level 3, Saturn\'s majestic rings beckon you to new realms of discovery. Navigate the cosmos with grace and curiosity, for the stars themselves await your presence.',
+        },
+        {
+            'name': 'GALACTIC TRAILBLAZER',
+            'xp': 6000,
+            'image': '/badges/galactic.png',
+            'title': 'Salutations, Galactic Trailblazer!',
+            'body': 'Here on Earth, the universe unfolds before your eyes, offering endless wonders to discover. Embrace the journey ahead as you chart new territories and unlock the secrets of our celestial home.',
+        },
+        {
+            'name': 'CELESTIAL MASTER',
+            'xp': 8000,
+            'image': '/badges/celestial.png',
+            'title': 'Congratulations, Celestial Master!',
+            'body': 'You\'ve ascended to the highest echelons of cosmic mastery, basking in the brilliance of the Sun itself. As a true luminary of the cosmos, your journey knows no bounds. Shine on, and may your light guide others to new celestial heights!',
+        }
     ]
-
+    
     @staticmethod
     def get_badge(xp):
         for level in reversed(Achievement.LEVELS):
@@ -195,44 +225,4 @@ class Notification(models.Model):
         return f"Notification from {self.sender.username} to {self.receiver.username}: {self.message}"
 
 
-class Tournament(models.Model):
-    STATUS_CHOICES = [
-        ('PENDIND', 'Pending'),
-        ('IN_PROGRESS', 'In Progress'),
-        ('COMPLETED', 'Completed'),
-    ]
-    name = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='PENDING')
-    winner = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='tournament_winner')
 
-    def __str__(self):
-        return self.name
-
-class TournamentParticipant(models.Model):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='participants')
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='tournament_participant')
-    seed = models.IntegerField()
-    eliminated = models.BooleanField(default=False)
-
-    class Meta:
-        unique_together = ('tournament', 'user')
-
-    def __str__(self):
-        return f"{self.user.username} in {self.tournament.name}"
-
-class Match(models.Model):
-    STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('IN_PROGRESS', 'In Progress'),
-        ('COMPLETED', 'Completed'),
-    ]
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='matches')
-    player1 = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='matches_as_player1')
-    player2 = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='matches_as_player2')
-    winner = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='match_winner')
-    round_number = models.IntegerField()
-    status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='PENDING')
-    created_at = models.DateTimeField(auto_now_add=True)
-    player1_score = models.IntegerField(default=0)
-    player2_score = models.IntegerField(default=0)

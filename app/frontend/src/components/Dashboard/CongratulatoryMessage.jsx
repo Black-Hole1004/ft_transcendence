@@ -1,17 +1,16 @@
 // import { useEffect, useState } from 'react'
 
-//message-padding
-
-function CongratulatoryMessage() {
+function CongratulatoryMessage(props) {
 	return (
 		<div className='max-lg:pb-[60px]'>
 			<h1 className='message-title font-heavy leading-[3]'>
-				Congratulations, Celestial Master!
+				{props.title}
 			</h1>
+			{/* <p className='message-body font-medium'>
+				{props.description}.
+			</p> */}
 			<p className='message-body font-medium'>
-				You've ascended to the highest echelons of cosmic mastery, basking in the brilliance
-				of the Sun itself. As a true luminary of the cosmos, your journey knows no bounds.
-				Shine on, and may your light guide others to new celestial heights!
+				{props.body}.
 			</p>
 		</div>
 	)
