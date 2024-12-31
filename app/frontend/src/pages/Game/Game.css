@@ -106,7 +106,7 @@
 }
 
 .gameoverpopup h1 {
-	font-size: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
+	font-size: clamp(1.5rem, 1.593vw + 1.201rem, 3.75rem);
 	margin-top: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
 	margin-bottom: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
 }

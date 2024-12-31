@@ -4,6 +4,8 @@ import MatchmakingService from '../../services/MatchmakingService'
 import './MatchMaking.css'
 import MatchFoundDisplay from './MatchFoundDisplay';
 
+import Button from '../Home/Buttons/Button'
+
 
 // Main Matchmaking component
 const Matchmaking = () => {
@@ -91,25 +93,24 @@ const Matchmaking = () => {
     };
 
     return (
-        <div className='min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary flex items-center justify-center'>
+        <section className='flex justify-center absolute h-screen w-screen
+            top-[44%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-backdrop-40'>
             {status === 'match_found' ? (
                 <MatchFoundDisplay matchData={matchData} countdown={count} />
             ) : status === 'timeout' ? (
-                <div className='w-1/3 min-w-[400px]'>
-                    <div className='w-full flex flex-col items-center gap-8 bg-backdrop-80 p-12 rounded-lg shadow-xl'>
-                        <h2 className='text-3xl font-bold'>Time Out</h2>
-                        <p>No ppponent found at the moment, Please try again later.</p>
-                        <button 
-                            onClick={() => navigate('/custom')}
-                            className='px-8 py-3 bg-primary text-backdrop-80 rounded-lg hover:bg-opacity-90 transition-all font-bold'
-                        >
-                            Back to Menu
-                        </button>
+                <div className='w-1/3 min-w-[400px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                    <div className='w-full flex flex-col items-center gap-8 p-12 text-center'>
+                        <h2 className='text-3xl font-heavy'>Time Out</h2>
+                        <p className='font-medium'>No opponent found at the moment, Please try again later.</p>
+                        <Button onClick={() => navigate('/custom')}
+                            className={'py-3 px-6 rounded border border-border font-medium buttons-text remove-button'}>
+                            Back to Menuu
+                        </Button>
                     </div>
                 </div>
             ) : (
-                <div className='w-1/3 min-w-[400px]'>
-                    <div className='w-full flex flex-col items-center gap-8 bg-backdrop-80 p-12 rounded-lg shadow-xl'>
+                <div className='w-1/3 min-w-[400px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                    <div className='w-full flex flex-col items-center gap-8 p-12'>
                         <h2 className='text-3xl font-bold'>Finding Opponent</h2>
                         <div className='text-xl text-center'>
                             {status === 'connecting' && 'Connecting to server...'}
@@ -138,7 +139,7 @@ const Matchmaking = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </section>
     );
 };
 
