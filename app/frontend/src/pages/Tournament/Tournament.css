@@ -1,0 +1,7 @@
+.tournament h1 {
+	font-size: clamp(1.25rem, 1.77vw + 0.918rem, 3.75rem);
+}
+
+.tournament .description {
+	font-size: clamp(0.625rem, 0.442vw + 0.542rem, 1.25rem);
+}

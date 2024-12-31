@@ -4,6 +4,8 @@ import MatchmakingService from '../../services/MatchmakingService'
 import './MatchMaking.css'
 import MatchFoundDisplay from './MatchFoundDisplay'
 import SearchingAnimation from './Remote/SearchingAnimation'
+import Button from '../Home/Buttons/Button'
+
 
 const Matchmaking = () => {
     const navigate = useNavigate()

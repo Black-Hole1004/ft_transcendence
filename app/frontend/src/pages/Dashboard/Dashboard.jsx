@@ -10,6 +10,8 @@ import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMess
 import useAuth from '../../context/AuthContext'
 import { useEffect, useState } from 'react'
 
+import Loader from '../../components/Loader/Loader'
+
 
 const Dashboard = () => {
 	const { authTokens, logout, getAuthHeaders } = useAuth();
@@ -88,8 +90,8 @@ const Dashboard = () => {
 		fetchData();
 	}, []);
 	/************************************************************************ */
-	// if (loading) return <Loader />;
-// 
+	if (loading) return <Loader />;
+
 	return (
 		<>
 			<section className='flex lg:flex-row flex-col lg:pl-section-lg

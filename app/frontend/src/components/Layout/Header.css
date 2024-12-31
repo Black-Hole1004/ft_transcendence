@@ -7,8 +7,8 @@
 }
 
 .header-margin {
-	margin-left: clamp(0.313rem, 0.682vw + 0.185rem, 1.25rem);
-	margin-right: clamp(0.75rem, 2.636vw + 0.256rem, 4.375rem);
+	padding-left: clamp(0.313rem, 0.682vw + 0.185rem, 1.25rem);
+	padding-right: clamp(0.75rem, 2.636vw + 0.256rem, 4.375rem);
 }
 
 .header-logo {

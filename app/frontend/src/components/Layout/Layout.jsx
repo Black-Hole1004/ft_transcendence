@@ -302,7 +302,7 @@ function Layout() {
 	return (
 		<SocketContext.Provider value={sockets}>
 			<div className='relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'>
-				<AlertWrapper />
+				
 				<Header
 					user_data={user_data}
 					notifications={notifications}
@@ -314,14 +314,14 @@ function Layout() {
 	)
 }
 
-export function AlertWrapper() {
+export const AlertWrapper = () => {
 	const { showAlert, alertType, alertMessage, dismissAlert } = useAlert()
 
 	useEffect(() => {
 		if (showAlert) {
 			const timer = setTimeout(() => {
 				dismissAlert()
-			}, 3000)
+			}, 5400)
 			return () => clearTimeout(timer)
 		}
 	}, [showAlert, dismissAlert])

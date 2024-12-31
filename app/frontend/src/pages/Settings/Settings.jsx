@@ -287,7 +287,7 @@ const Settings = () => {
 							<div>
 								<img
 									src={preview || `${BASE_URL}${profile_picture}`}
-									className='rounded-full object-cover ring-1 ring-primary profile-pic'
+									className='rounded-full object-cover border-1.5 border-border profile-pic'
 									alt='Profile Picture'
 								/>
 							</div>

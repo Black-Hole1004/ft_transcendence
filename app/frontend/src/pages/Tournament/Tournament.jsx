@@ -1,13 +1,14 @@
-import React from 'react'
-import Button from '../../components/Home/Buttons/Button'
-import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
-import { useTournament } from '../../context/TournamentContext'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import { useCallback } from 'react'
+import './Tournament.css'
+
 import Confetti from 'react-confetti'
-import ChampionCelebration from '../../components/Tournament/ChampionCelebration'
+import Button from '../../components/Home/Buttons/Button'
+import { useTournament } from '../../context/TournamentContext'
 import MatchWarning from '../../components/Tournament/MatchWarning'
+import ChampionCelebration from '../../components/Tournament/ChampionCelebration'
+
+import { useEffect, useCallback, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
+import Loader from '../../components/Loader/Loader'
 
 const players = [
 	{
@@ -259,299 +260,24 @@ const Tournament = () => {
 	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState])
 
 	if (!tournamentData) {
-		return <div>Loading...</div>
+		return <Loader />
 	}
 
 	return (
-		<div className='flex flex-row items-start justify-center min-h-screen overflow-hidden'>
-			{/* Champion celebration */}
-			{showChampionCelebration && finalWinner && (
-				<>
-					<Confetti
-						width={window.innerWidth}
-						height={window.innerHeight}
-						numberOfPieces={200}
-						recycle={false}
-						colors={['#FFD700', '#FFA500', '#FF8C00', '#FF7F50']}
-					/>
-					<ChampionCelebration winner={finalWinner} />
-				</>
-			)}
-
-			{/* start missing part */}
-			<div className='w-[35%] flex flex-col overflow-hidden  p-8'>
-				<div className=''>
-					<h1
-						className='text-6xl font-dreamscape'
-						style={{
-							textShadow:
-								'0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)',
-						}}
-					>
-						CELESTIAL PONG CLASH
-					</h1>
-					<div className='flex flex-col justify-center'>
-						<p className='text-gray-300 text-base font-medium text-justify pr-40'>
-							The Celestial Pong Clash invites players from across the galaxy to
-							compete in intense interstellar battles, where victory depends on
-							mastering precision and strategy in the vast cosmic realm.
-						</p>
-					</div>
-				</div>
-
-				<div className='justify-center rounded-3xl mt-20 w-[60%] border border-white border-b-opacity-20'>
-					<h2 className='text-2xl font-semibold flex items-center justify-center'>
-						PLAYERS
-					</h2>
-					<div className='space-y-4 p-4 '>
-						{players.map((player, index) => {
-							return (
-								<div
-									key={index}
-									className='user-container flex items-center justify-between font-dreamscape-sans
-									rounded-md hover:bg-[rgba(183,170,156,0.2)]'
-								>
-									<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[68%]'>
-										<img
-											src={player.avatar}
-											className='h-16 rounded-full ring-1 ring-primary select-none'
-											alt='user-image'
-											loading='eager'
-										/>
-										<div className='flex flex-wrap items-center overflow-hidden'>
-											<p className='text-primary nickname-size leading-[1] truncate mr-1'>
-												{player.nickname}
-											</p>
-											<p className='text-achievement text-xs '>
-												{' '}
-												{player.achievement}
-											</p>
-										</div>
-									</div>
-									<div></div>
-									<div className='h-full mx-1 flex items-center'>
-										<img
-											src={player.icon}
-											className='h-16 select-none'
-											alt='achievement-icon'
-											loading='eager'
-										/>
-										<p className={`xp text-primary leading-[1]`}>
-											{`${player.xp}` + 'xp'}
-										</p>
-									</div>
-								</div>
-							)
-						})}
-					</div>
-				</div>
+		<section className='tournament flex flex-col items-center'>
+			<div className='w-[96%] flex flex-col overflow-hidden py-8'>
+				<h1
+					className='font-dreamscape drop-shadow-[0_2px_10px_rgba(251,251,238,0.8)]'
+				>
+					CELESTIAL PONG CLASH
+				</h1>
+				<p className='description text-primary font-regular text-justify'>
+					The Celestial Pong Clash invites players from across the galaxy to
+					compete in intense interstellar battles, where victory depends on
+					mastering precision and strategy in the vast cosmic realm.
+				</p>
 			</div>
-			{/* end missing part */}
-
-			{/* Warning Message */}
-			{showWarning && (
-				<MatchWarning
-					player1Name={
-						tournamentState === 'not_started'
-							? player1?.name
-							: tournamentState === 'semifinal2'
-								? player3?.name
-								: semiFinal1winner?.name
-					}
-					player2Name={
-						tournamentState === 'not_started'
-							? player2?.name
-							: tournamentState === 'semifinal2'
-								? player4?.name
-								: semiFinal2winner?.name
-					}
-				/>
-			)}
-
-			<div className='flex flex-col border rounded-3xl mt-20 pb-8 pl-16 w-[800px] h-[1100px]'>
-				{/* first partie of tournament */}
-				<div className=' flex-1 flex flex-row relative'>
-					{/* first column */}
-					<div className=' flex flex-col justify-around'>
-						<div className=''>
-							<img
-								className={`w-24 h-24 rounded-full border-2 ${
-									tournamentState === 'semifinal1'
-										? 'border-yellow-400'
-										: 'border-white'
-								}`}
-								src='../../../dist/assets/images/avatar.jpg'
-								alt='avatar'
-							/>
-							<p className='text-white text-center'>{player1.name}</p>
-						</div>
-
-						<div className=''>
-							<img
-								className={`w-24 h-24 rounded-full border-2 ${
-									tournamentState === 'semifinal1'
-										? 'border-yellow-400'
-										: 'border-white'
-								}`}
-								src='../../../dist/assets/images/avatar.jpg'
-								alt='avatar'
-							/>
-							<p className='text-white text-center'>{player2.name}</p>
-						</div>
-					</div>
-					{/* second column */}
-					<div className='w-24 h-full flex flex-col'>
-						<div className=' flex-1'></div>
-						<div className='border-t-2 border-r-2 border-white flex-1'></div>
-						<div className='border-b-2 border-r-2 border-white flex-1'></div>
-						<div className='flex-1'></div>
-					</div>
-
-					{/* third column */}
-					<div className='w-24 flex flex-col'>
-						<div className='flex-1'></div>
-						<div className='flex-1'></div>
-						<div className='border-t-2 border-white flex-1'></div>
-						<div className='flex-1'> </div>
-					</div>
-
-					{/* fourth column */}
-					<div className=' w-24 flex flex-col'>
-						<div className=' flex-1'></div>
-						<div className='flex-1 flex flex-col justify-center items-center'>
-							<img
-								className='w-24 h-24 rounded-full border-2 border-white'
-								src={
-									semiFinal1winner
-										? '../../../dist/assets/images/avatar.jpg'
-										: '../../../dist/assets/images/question_mark.jpeg'
-								}
-								alt='avatar'
-							/>
-							<p className='text-white text-center'>
-								{semiFinal1winner ? semiFinal1winner.name : 'unknown'}
-							</p>
-						</div>
-						<div className=' flex-1'> </div>
-					</div>
-
-					{/* fifth column */}
-					<div className='w-24 h-full flex flex-col'>
-						<div className=' flex-1'></div>
-						<div className='flex-1'></div>
-						<div className='border-t-2 border-r-2 border-white flex-1'></div>
-						<div className='border-r-2 flex-1'></div>
-					</div>
-
-					{/* sixth column */}
-					<div className='border-b border-white w-24 h-full flex flex-col'></div>
-
-					{/* seventh column */}
-					<div className='w-24 h-full flex flex-col absolute top-1/2 right-24 justify-center '>
-						<img
-							className='w-24 h-24 rounded-full border-2 border-white'
-							src={
-								finalWinner
-									? '../../../dist/assets/images/avatar.jpg'
-									: '../../../dist/assets/images/question_mark.jpeg'
-							}
-							alt='avatar'
-						/>
-						<p className='text-white text-center'>
-							{finalWinner ? finalWinner.name : 'unknown'}
-						</p>
-					</div>
-				</div>
-
-				{/* second partie of tournament */}
-				<div className=' flex-1 flex flex-row'>
-					{/* first column */}
-					<div className=' flex flex-col justify-around'>
-						<div className=''>
-							<img
-								className={`w-24 h-24 rounded-full border-2 ${
-									tournamentState === 'semifinal1'
-										? 'border-yellow-400'
-										: 'border-white'
-								}`}
-								src='../../../dist/assets/images/avatar.jpg'
-								alt='avatar'
-							/>
-							<p className='text-white text-center'>{player3.name}</p>
-						</div>
-
-						<div className=''>
-							<img
-								className={`w-24 h-24 rounded-full border-2 ${
-									tournamentState === 'semifinal1'
-										? 'border-yellow-400'
-										: 'border-white'
-								}`}
-								src='../../../dist/assets/images/avatar.jpg'
-								alt='avatar'
-							/>
-							<p className='text-white text-center'>{player4.name}</p>
-						</div>
-					</div>
-					{/* second column */}
-					<div className='w-24 h-full flex flex-col'>
-						<div className=' flex-1'></div>
-						<div className='border-t-2 border-r-2 border-white flex-1'></div>
-						<div className='border-b-2 border-r-2 border-white flex-1'></div>
-						<div className='flex-1'></div>
-					</div>
-
-					{/* third column */}
-					<div className='w-24 flex flex-col'>
-						<div className='flex-1'></div>
-						<div className='flex-1'></div>
-						<div className='border-t-2 border-white flex-1'></div>
-						<div className='flex-1'> </div>
-					</div>
-
-					{/* fourth column */}
-					<div className=' w-24 flex flex-col'>
-						<div className=' flex-1'></div>
-						<div className='mt-10 flex-1 flex-col justify-center items-center'>
-							<img
-								className='w-24 h-24 rounded-full border-2 border-white'
-								src={
-									semiFinal2winner
-										? '../../../dist/assets/images/avatar.jpg'
-										: '../../../dist/assets/images/question_mark.jpeg'
-								}
-								alt='avatar'
-							/>
-							<p className='text-white text-center'>
-								{semiFinal2winner ? semiFinal2winner.name : 'unknown'}
-							</p>
-						</div>
-						<div className=' flex-1'> </div>
-					</div>
-
-					{/* fifth column */}
-					<div className=' w-24 h-full flex flex-col'>
-						<div className='border-r-2 flex-1'></div>
-						<div className='border-b-2 border-r-2 flex-1'></div>
-						<div className=' border-white flex-1'></div>
-						<div className='flex-1'></div>
-					</div>
-
-					{/* sixth column */}
-					<div className='border-t border-white w-24 h-full flex flex-col'></div>
-				</div>
-
-				<div className='flex justify-center'>
-					<Button
-						className={'rounded-md  w-1/2 h-12 font-regular buttons-text remove-button'}
-						onClick={handleTournamentAction}
-						type='submit'
-					>
-						{getButtonText()}
-					</Button>
-				</div>
-			</div>
-		</div>
+		</section>
 	)
 }
 export default Tournament

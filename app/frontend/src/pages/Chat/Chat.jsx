@@ -131,6 +131,8 @@ const Chat = () => {
 			} else if (data.event === 'block') {
 				console.log('socket: ', data.blocker_id)
 				setBlockerId(data.blocker_id)
+				if (data.blocker_id)
+					setAreFriends(false)
 			}
 		}
 

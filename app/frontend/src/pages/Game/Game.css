@@ -35,8 +35,8 @@
 }
 
 .game-table {
-	width: clamp(37.5rem, 37.611vw + 30.448rem, 90.625rem);
-	height: clamp(18.75rem, 19.912vw + 15.017rem, 46.875rem);
+	/* width: clamp(37.5rem, 37.611vw + 30.448rem, 90.625rem); */
+	/* height: clamp(18.75rem, 19.912vw + 15.017rem, 46.875rem); */
 }
 
 .glow {
@@ -106,7 +106,7 @@
 }
 
 .gameoverpopup h1 {
-	font-size: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
+	font-size: clamp(1.5rem, 1.593vw + 1.201rem, 3.75rem);
 	margin-top: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
 	margin-bottom: clamp(1.875rem, 1.327vw + 1.626rem, 3.75rem);
 }
