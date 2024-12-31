@@ -1,30 +1,28 @@
-import React from 'react'
-import './Header.css'
-import Button from '../Buttons/Button'
+import React from 'react';
+import './Header.css';
+import Button from '../Buttons/Button';
 
 function Header({ handleClick }) {
 	return (
-		<header className='relative flex items-center text-primary font-medium header-height'>
-			<nav
-				className='absolute flex justify-between nav'
-			>
+		<header className="relative flex items-center text-primary font-medium header-height">
+			<nav className="absolute flex justify-between nav">
 				<button
-					id='sign-in'
+					id="sign-in"
 					onClick={handleClick}
-					className='header-buttons'
+					className="header-buttons"
 				>
 					Sign in
 				</button>
 				<Button
-					id='sign-up'
+					id="sign-up"
 					onClick={handleClick}
-					className='rounded header-buttons'
+					className="rounded header-buttons"
 				>
 					Sign up
 				</Button>
 			</nav>
 		</header>
-	)
+	);
 }
 
-export default Header
+export default Header;

@@ -1,39 +1,39 @@
-import Slider from '@mui/material/Slider'
+import Slider from '@mui/material/Slider';
 
 const Sliders = ({ id, size, minSize, maxSize, setSize }) => {
+	const CANVAS_HEIGHT = 400; // my actual game canvas height
+	const CANVAS_WIDTH = 800; // my actual game canvas width
 
-	const CANVAS_HEIGHT = 400 // my actual game canvas height
-	const CANVAS_WIDTH = 800 // my actual game canvas width
-	
 	const calculatePaddleHeight = (percentage) => {
 		// Convert percentage to actual pixels
-		return Math.round((percentage / 100) * CANVAS_HEIGHT)
-	}
+		return Math.round((percentage / 100) * CANVAS_HEIGHT);
+	};
 
 	const calculateBallRadius = (percentage) => {
 		// Convert percentage to a reasonable ball size
 		// Using smaller divisor to keep ball from getting too big
-		return Math.round((percentage / 100) * (CANVAS_HEIGHT / 8))
-	}
+		return Math.round((percentage / 100) * (CANVAS_HEIGHT / 8));
+	};
 
-	const actualSize = id === 'paddle' 
-    ? calculatePaddleHeight(size)
-    : calculateBallRadius(size);
-
+	const actualSize =
+		id === 'paddle'
+			? calculatePaddleHeight(size)
+			: calculateBallRadius(size);
 
 	return (
-		<div className='flex flex-col gap-5 max-w-[80%]'>
-			<label className='font-regular text-light labels' htmlFor={id}>
-				{id === 'paddle' ? 'Paddle' : 'Ball'} Size: {size}% ({actualSize}px)
+		<div className="flex flex-col gap-5 max-w-[80%]">
+			<label className="font-regular text-light labels" htmlFor={id}>
+				{id === 'paddle' ? 'Paddle' : 'Ball'} Size: {size}% (
+				{actualSize}px)
 			</label>
-			<div className='pl-8'>
+			<div className="pl-8">
 				<Slider
 					id={id}
-					aria-label='Default'
+					aria-label="Default"
 					value={size}
 					min={minSize}
 					max={maxSize}
-					valueLabelDisplay='auto'
+					valueLabelDisplay="auto"
 					onChange={(e) => setSize(parseInt(e.target.value))}
 					sx={{
 						// Thumb
@@ -53,12 +53,14 @@ const Sliders = ({ id, size, minSize, maxSize, setSize }) => {
 
 							// Hover state
 							'&:hover': {
-								boxShadow: '0 0 0 8px rgba(251, 251, 238, 0.16)',
+								boxShadow:
+									'0 0 0 8px rgba(251, 251, 238, 0.16)',
 							},
 
 							// Active state (while dragging)
 							'&.Mui-active': {
-								boxShadow: '0 0 0 14px rgba(251, 251, 238, 0.3)',
+								boxShadow:
+									'0 0 0 14px rgba(251, 251, 238, 0.3)',
 							},
 						},
 
@@ -80,7 +82,8 @@ const Sliders = ({ id, size, minSize, maxSize, setSize }) => {
 						'& .MuiSlider-valueLabel': {
 							color: '#1B1611',
 							backgroundColor: '#FBFBEE',
-							fontSize: 'clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem)',
+							fontSize:
+								'clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem)',
 
 							paddingTop: 0,
 							paddingBottom: '1px',
@@ -92,7 +95,7 @@ const Sliders = ({ id, size, minSize, maxSize, setSize }) => {
 				/>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Sliders
+export default Sliders;

@@ -116,4 +116,51 @@
 2024/12/30 18:07:50 [error] 12#12: *1555 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:5173/", host: "localhost", referrer: "https://localhost/custom"
 2024/12/30 18:07:50 [error] 15#15: *1813 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /assets/images/tables/table8.gif HTTP/1.1", upstream: "http://172.18.0.4:5173/assets/images/tables/table8.gif", host: "localhost", referrer: "https://localhost/custom"
 2024/12/30 18:07:50 [error] 15#15: *1813 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /custom HTTP/1.1", upstream: "http://172.18.0.4:5173/custom", host: "localhost", referrer: "https://localhost/custom"
-2024/12/30 19:03:29 [alert] 13#13: *6299 write() to "/var/log/nginx/access.log" was incomplet
+2024/12/30 19:03:29 [alert] 13#13: *6299 write() to "/var/log/nginx/access.log" was incomplet2024/12/30 21:17:17 [notice] 17#17: signal 15 (SIGTERM) received, exiting
+2024/12/30 21:17:17 [notice] 17#17: exiting
+2024/12/30 21:17:17 [notice] 12#12: signal 15 (SIGTERM) received, exiting
+2024/12/30 21:17:17 [notice] 12#12: exiting
+2024/12/30 21:17:17 [notice] 13#13: signal 15 (SIGTERM) received, exiting
+2024/12/30 21:17:17 [notice] 13#13: exiting
+2024/12/30 21:17:17 [notice] 16#16: signal 15 (SIGTERM) received, exiting
+2024/12/30 21:17:17 [notice] 16#16: exiting
+2024/12/30 21:17:17 [notice] 16#16: exit
+2024/12/30 21:17:17 [notice] 11#11: signal 15 (SIGTERM) received, exiting
+2024/12/30 21:17:17 [notice] 15#15: signal 15 (SIGTERM) received, exiting
+2024/12/30 21:17:17 [notice] 15#15: exiting
+2024/12/30 21:17:17 [notice] 14#14: signal 15 (SIGTERM) received, exiting
+2024/12/30 21:17:17 [notice] 17#17: exit
+2024/12/30 21:17:17 [notice] 12#12: exit
+2024/12/30 21:17:17 [notice] 13#13: exit
+2024/12/30 21:17:17 [notice] 15#15: exit
+2024/12/30 21:17:17 [notice] 14#14: exiting
+2024/12/30 21:17:17 [notice] 14#14: exit
+2024/12/30 21:17:17 [notice] 11#11: signal 14 (SIGALRM) received
+2024/12/30 21:17:17 [notice] 11#11: signal 17 (SIGCHLD) received from 16
+2024/12/30 21:17:17 [notice] 11#11: worker process 16 exited with code 0
+2024/12/30 21:17:17 [notice] 11#11: signal 29 (SIGIO) received
+2024/12/30 21:17:17 [notice] 11#11: signal 17 (SIGCHLD) received from 12
+2024/12/30 21:17:17 [notice] 11#11: worker process 12 exited with code 0
+2024/12/30 21:17:17 [notice] 11#11: signal 29 (SIGIO) received
+2024/12/30 21:17:17 [notice] 11#11: signal 17 (SIGCHLD) received from 17
+2024/12/30 21:17:17 [notice] 11#11: worker process 14 exited with code 0
+2024/12/30 21:17:17 [notice] 11#11: worker process 15 exited with code 0
+2024/12/30 21:17:17 [notice] 11#11: worker process 17 exited with code 0
+2024/12/30 21:17:17 [notice] 11#11: signal 29 (SIGIO) received
+2024/12/30 21:17:17 [notice] 11#11: signal 17 (SIGCHLD) received from 15
+2024/12/30 21:17:17 [notice] 11#11: worker process 13 exited with code 0
+2024/12/30 21:17:17 [notice] 11#11: exit
+2024/12/30 23:19:58 [notice] 11#11: using the "epoll" event method
+2024/12/30 23:19:58 [notice] 11#11: nginx/1.27.3
+2024/12/30 23:19:58 [notice] 11#11: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/12/30 23:19:58 [notice] 11#11: OS: Linux 5.15.49-linuxkit
+2024/12/30 23:19:58 [notice] 11#11: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/12/30 23:19:58 [notice] 11#11: start worker processes
+2024/12/30 23:19:58 [notice] 11#11: start worker process 12
+2024/12/30 23:19:58 [notice] 11#11: start worker process 13
+2024/12/30 23:19:58 [notice] 11#11: start worker process 14
+2024/12/30 23:19:58 [notice] 11#11: start worker process 15
+2024/12/30 23:19:58 [notice] 11#11: start worker process 16
+2024/12/30 23:19:58 [notice] 11#11: start worker process 17
+2024/12/31 00:14:59 [error] 16#16: *1689 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:5173/", host: "localhost", referrer: "https://localhost/matchmaking"
+2024/12/31 00:14:59 [error] 16#16: *1689 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /matchmaking HTTP/1.1", upstream: "http://172.18.0.4:5173/matchmaking", host: "localhost", referrer: "https://localhost/matchmaking"

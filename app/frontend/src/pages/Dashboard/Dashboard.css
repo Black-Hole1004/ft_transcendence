@@ -46,7 +46,8 @@
 	font-size: clamp(0.438rem, 0.182vw + 0.278rem, 0.563rem);
 }
 
-.nickname-size, .xp {
+.nickname-size,
+.xp {
 	font-size: clamp(0.563rem, 0.398vw + 0.488rem, 1.125rem);
 }
 
@@ -84,7 +85,8 @@
 }
 
 .achivements-card {
-	padding: clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem) clamp(1.25rem, 1.062vw + 1.051rem, 2.75rem);
+	padding: clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem)
+		clamp(1.25rem, 1.062vw + 1.051rem, 2.75rem);
 }
 
 .levels-font {

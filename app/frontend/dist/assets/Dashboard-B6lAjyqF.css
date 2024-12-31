@@ -1,1 +1,84 @@
-.message-title{font-size:clamp(.75rem,1.045vw + .554rem,2.188rem)}.message-body{font-size:clamp(.563rem,.591vw + .452rem,1.375rem)}.message-padding{padding-top:clamp(3.125rem,.909vw + 2.955rem,4.375rem);padding-left:clamp(.625rem,2.727vw + .114rem,4.375rem);padding-right:clamp(1.25rem,1.591vw + .952rem,3.438rem);padding-bottom:clamp(3.125rem,10.536vw - 6.357rem,10.5rem)}.card-height{height:clamp(28.125rem,23.585vw + 6.899rem,43.75rem)}.cards-padding{padding-left:clamp(.5rem,5.536vw - 4.482rem,4.375rem);padding-right:clamp(.5rem,2.5vw - 1.75rem,2.25rem)}.card-title{margin-top:clamp(1rem,.409vw + .923rem,1.563rem);margin-bottom:clamp(.75rem,.849vw - .014rem,1.313rem);font-size:clamp(.875rem,.545vw + .773rem,1.625rem)}.search-input{font-size:clamp(.75rem,.377vw + .41rem,1rem);width:clamp(15rem,5.66vw + 9.906rem,18.75rem)}.search-icon{width:clamp(.938rem,.472vw + .513rem,1.25rem)}.users{margin-bottom:10px;margin-top:clamp(1.25rem,1.818vw - .341rem,2.5rem);padding-left:clamp(.313rem,.221vw + .271rem,.625rem);padding-right:clamp(.313rem,.221vw + .271rem,.625rem)}.achievement-icon-fr{width:clamp(1.563rem,.909vw + .767rem,2.188rem)}.achievement-icon-ldr{width:clamp(2.188rem,.909vw + 1.392rem,2.813rem)}.user-image{width:clamp(2rem,1.636vw + .568rem,3.125rem)}.achievement-name{font-size:clamp(.438rem,.182vw + .278rem,.563rem)}.nickname-size,.xp{font-size:clamp(.563rem,.579vw + .345rem,1.25rem)}.status{font-size:clamp(.563rem,.364vw + .244rem,.813rem)}.add-friend-button{font-size:clamp(.563rem,.364vw + .244rem,.813rem);padding:clamp(.188rem,.182vw + .028rem,.313rem)}.modes-font{line-height:1.2;font-size:clamp(1.125rem,2.743vw + .611rem,5rem)}.rightside-my{margin-top:clamp(1.25rem,4.091vw + .483rem,6.875rem);margin-bottom:40px}.modes{margin-bottom:clamp(1.25rem,.442vw + 1.167rem,1.875rem)}.achievements{font-size:clamp(.75rem,1.018vw + .559rem,2.188rem)}.achievements-titles-font{font-size:clamp(.375rem,.398vw + .3rem,.938rem)}.achivements-card{padding:clamp(.625rem,.221vw + .584rem,.938rem) clamp(1.25rem,1.062vw + 1.051rem,2.75rem)}.levels-font{font-size:clamp(.25rem,.354vw + .184rem,.75rem)}
+.message-title {
+	font-size: clamp(0.75rem, 1.045vw + 0.554rem, 2.188rem);
+}
+.message-body {
+	font-size: clamp(0.563rem, 0.591vw + 0.452rem, 1.375rem);
+}
+.message-padding {
+	padding-top: clamp(3.125rem, 0.909vw + 2.955rem, 4.375rem);
+	padding-left: clamp(0.625rem, 2.727vw + 0.114rem, 4.375rem);
+	padding-right: clamp(1.25rem, 1.591vw + 0.952rem, 3.438rem);
+	padding-bottom: clamp(3.125rem, 10.536vw - 6.357rem, 10.5rem);
+}
+.card-height {
+	height: clamp(28.125rem, 23.585vw + 6.899rem, 43.75rem);
+}
+.cards-padding {
+	padding-left: clamp(0.5rem, 5.536vw - 4.482rem, 4.375rem);
+	padding-right: clamp(0.5rem, 2.5vw - 1.75rem, 2.25rem);
+}
+.card-title {
+	margin-top: clamp(1rem, 0.409vw + 0.923rem, 1.563rem);
+	margin-bottom: clamp(0.75rem, 0.849vw - 0.014rem, 1.313rem);
+	font-size: clamp(0.875rem, 0.545vw + 0.773rem, 1.625rem);
+}
+.search-input {
+	font-size: clamp(0.75rem, 0.377vw + 0.41rem, 1rem);
+	width: clamp(15rem, 5.66vw + 9.906rem, 18.75rem);
+}
+.search-icon {
+	width: clamp(0.938rem, 0.472vw + 0.513rem, 1.25rem);
+}
+.users {
+	margin-bottom: 10px;
+	margin-top: clamp(1.25rem, 1.818vw - 0.341rem, 2.5rem);
+	padding-left: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem);
+	padding-right: clamp(0.313rem, 0.221vw + 0.271rem, 0.625rem);
+}
+.achievement-icon-fr {
+	width: clamp(1.563rem, 0.909vw + 0.767rem, 2.188rem);
+}
+.achievement-icon-ldr {
+	width: clamp(2.188rem, 0.909vw + 1.392rem, 2.813rem);
+}
+.user-image {
+	width: clamp(2rem, 1.636vw + 0.568rem, 3.125rem);
+}
+.achievement-name {
+	font-size: clamp(0.438rem, 0.182vw + 0.278rem, 0.563rem);
+}
+.nickname-size,
+.xp {
+	font-size: clamp(0.563rem, 0.579vw + 0.345rem, 1.25rem);
+}
+.status {
+	font-size: clamp(0.563rem, 0.364vw + 0.244rem, 0.813rem);
+}
+.add-friend-button {
+	font-size: clamp(0.563rem, 0.364vw + 0.244rem, 0.813rem);
+	padding: clamp(0.188rem, 0.182vw + 0.028rem, 0.313rem);
+}
+.modes-font {
+	line-height: 1.2;
+	font-size: clamp(1.125rem, 2.743vw + 0.611rem, 5rem);
+}
+.rightside-my {
+	margin-top: clamp(1.25rem, 4.091vw + 0.483rem, 6.875rem);
+	margin-bottom: 40px;
+}
+.modes {
+	margin-bottom: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
+}
+.achievements {
+	font-size: clamp(0.75rem, 1.018vw + 0.559rem, 2.188rem);
+}
+.achievements-titles-font {
+	font-size: clamp(0.375rem, 0.398vw + 0.3rem, 0.938rem);
+}
+.achivements-card {
+	padding: clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem)
+		clamp(1.25rem, 1.062vw + 1.051rem, 2.75rem);
+}
+.levels-font {
+	font-size: clamp(0.25rem, 0.354vw + 0.184rem, 0.75rem);
+}

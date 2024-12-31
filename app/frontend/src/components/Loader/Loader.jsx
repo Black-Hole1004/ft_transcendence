@@ -1,4 +1,4 @@
-import './Loader.css'
+import './Loader.css';
 
 const Loader = () => {
 	return (
@@ -8,7 +8,7 @@ const Loader = () => {
 				<div className="absolute loader-paddles loader-right-paddle right-2 bg-primary h-[50%] w-[15%] rounded-lg"></div>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Loader
+export default Loader;

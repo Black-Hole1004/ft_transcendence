@@ -1,68 +1,63 @@
-import { useEffect, useState } from 'react'
-import UserFriendsList from './UserFriendsList'
-import useAuth from '../../../context/AuthContext'
-import { useSocket } from '../../Layout/Layout'
-import { use } from 'react'
-
+import { useEffect, useState } from 'react';
+import UserFriendsList from './UserFriendsList';
+import useAuth from '../../../context/AuthContext';
+import { useSocket } from '../../Layout/Layout';
+import { use } from 'react';
 
 function FriendsList() {
-	const [users, setUsers] = useState([])
-	const [searchQuery, setSearchQuery] = useState('')
-	const { getAuthHeaders } = useAuth()
-	const { profile_picture } = useSocket()
+	const [users, setUsers] = useState([]);
+	const [searchQuery, setSearchQuery] = useState('');
+	const { getAuthHeaders } = useAuth();
+	const { profile_picture } = useSocket();
 
 	const { socket_notify, socket_friends } = useSocket();
 
 	const get_all_users = async () => {
-		console.log('-----------------> get_all_users')
+		console.log('-----------------> get_all_users');
 		try {
 			const response = await fetch('https://localhost/api/users/', {
 				method: 'GET',
 				headers: getAuthHeaders(),
-			})
-			const data = await response.json()
-			console.log('data =====> []', data)
-			setUsers(data)
+			});
+			const data = await response.json();
+			console.log('data =====> []', data);
+			setUsers(data);
+		} catch (error) {
+			console.log('data =====>error []');
+			console.error('Error:', error);
 		}
-		catch (error) {
-			console.log('data =====>error []')
-			console.error('Error:', error)
-		}
-	}
-
-
+	};
 
 	useEffect(() => {
-		console.log('-----------------> useEffect')
-		get_all_users()
-	}, [])
+		console.log('-----------------> useEffect');
+		get_all_users();
+	}, []);
 
-	const filterUsers = users?.filter((user) => 
-		user.username.toLowerCase().startsWith(searchQuery.toLowerCase())
-	) || [];
+	const filterUsers =
+		users?.filter((user) =>
+			user.username.toLowerCase().startsWith(searchQuery.toLowerCase()),
+		) || [];
 
 	// this useEffect listens for friend request acceptances
 	useEffect(() => {
-		if (!socket_friends)
-			return;
+		if (!socket_friends) return;
 		const original_onmessage = socket_friends.onmessage;
 		socket_friends.onmessage = (event) => {
 			const data = JSON.parse(event.data);
-			if (data.type === 'friend_request_accepted' ) {
+			if (data.type === 'friend_request_accepted') {
 				get_all_users();
 			}
 			if (original_onmessage) {
 				original_onmessage(event);
 			}
-		}
+		};
 		return () => {
 			socket_friends.onmessage = original_onmessage;
-		}
+		};
 	}, [socket_friends]);
 
 	useEffect(() => {
-		if (!socket_notify)
-			return;
+		if (!socket_notify) return;
 		const original_onmessage = socket_notify.onmessage;
 		socket_notify.onmessage = (event) => {
 			const data = JSON.parse(event.data);
@@ -72,41 +67,50 @@ function FriendsList() {
 			if (original_onmessage) {
 				original_onmessage(event);
 			}
-		}
+		};
 		return () => {
 			socket_notify.onmessage = original_onmessage;
-		}
-	}, [socket_notify])
-
+		};
+	}, [socket_notify]);
 
 	return (
 		<div
-			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border-1.5
+			className="flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border-1.5
 			transition duration-300 border-[rgba(255,206,157,.2)] hover:border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]
-			hover:drop-shadow-[0_0_20px_rgba(255,206,157,0.2)]'
+			hover:drop-shadow-[0_0_20px_rgba(255,206,157,0.2)]"
 		>
-			<h1 className='font-dreamscape-sans card-title text-primary'>FRIENDS LIST</h1>
+			<h1 className="font-dreamscape-sans card-title text-primary">
+				FRIENDS LIST
+			</h1>
 
-			<div className='flex items-center border border-border rounded-2xl pl-2.5 w-[90%]'>
-				<img src='/assets/images/icons/search-icon.png' className='search-icon select-none' alt='' />
+			<div className="flex items-center border border-border rounded-2xl pl-2.5 w-[90%]">
+				<img
+					src="/assets/images/icons/search-icon.png"
+					className="search-icon select-none"
+					alt=""
+				/>
 				<input
-					type='text'
-					name='search for friends'
-					placeholder='Search for friends...'
-					className='flex-1 font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border overflow-hidden'
+					type="text"
+					name="search for friends"
+					placeholder="Search for friends..."
+					className="flex-1 font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border overflow-hidden"
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}
 				/>
 			</div>
-			<div className='w-[96%] overflow-y-auto users'>
-				{
-					filterUsers.map((user) => {
-						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} />
-					})
-				}
+			<div className="w-[96%] overflow-y-auto users">
+				{filterUsers.map((user) => {
+					return (
+						<UserFriendsList
+							key={user.id}
+							user_friend={user}
+							user_profile_picture={profile_picture}
+						/>
+					);
+				})}
 			</div>
 		</div>
-	)
+	);
 }
 
-export default FriendsList
+export default FriendsList;

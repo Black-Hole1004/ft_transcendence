@@ -1,31 +1,29 @@
-import './Card.css'
-import Input from '../Input'
-import CardButton from '../Buttons/CardButton'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import './Card.css';
+import Input from '../Input';
+import CardButton from '../Buttons/CardButton';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 // import { useNavigate } from 'react-router-dom'
-import Alert from '@mui/material/Alert'
+import Alert from '@mui/material/Alert';
 
-import useAuth from '../../../context/AuthContext'
+import useAuth from '../../../context/AuthContext';
 
-const API_LOGIN = import.meta.env.VITE_API_LOGIN
-const API_REGISTER = import.meta.env.VITE_API_REGISTER
-const API_42 = import.meta.env.VITE_API_42
-const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
-
-
-
+const API_LOGIN = import.meta.env.VITE_API_LOGIN;
+const API_REGISTER = import.meta.env.VITE_API_REGISTER;
+const API_42 = import.meta.env.VITE_API_42;
+const API_GOOGLE = import.meta.env.VITE_API_GOOGLE;
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
-	const handleClick = () => setIsSigningIn(!isSigningIn)
+	const handleClick = () => setIsSigningIn(!isSigningIn);
 
-	const { email, password, confirmPassword} = useAuth()
+	const { email, password, confirmPassword } = useAuth();
 
-	const { login, register, setEmail, setPassword, setConfirmPassword } = useAuth()
+	const { login, register, setEmail, setPassword, setConfirmPassword } =
+		useAuth();
 	// --------------------------- moudrib code -------------------------------------------
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
-			const dialogDimensions = dialogRef.current.getBoundingClientRect()
+			const dialogDimensions = dialogRef.current.getBoundingClientRect();
 
 			if (
 				e.clientX < dialogDimensions.left ||
@@ -33,17 +31,20 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 				e.clientY < dialogDimensions.top ||
 				e.clientY > dialogDimensions.bottom
 			)
-				dialogRef.current.close()
-		}
+				dialogRef.current.close();
+		};
 		if (dialogRef.current) {
-			dialogRef.current.addEventListener('click', handleOutsideClick)
+			dialogRef.current.addEventListener('click', handleOutsideClick);
 		}
 
 		return () => {
 			if (dialogRef.current)
-				dialogRef.current.removeEventListener('click', handleOutsideClick)
-		}
-	}, [])
+				dialogRef.current.removeEventListener(
+					'click',
+					handleOutsideClick,
+				);
+		};
+	}, []);
 	const inputs = [
 		{
 			id: 'email',
@@ -60,7 +61,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			iconPath: 'lock',
 			placeholder: 'Confirm your password',
 		},
-	]
+	];
 
 	const buttons = [
 		{
@@ -75,15 +76,15 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			alt: '42-logo',
 			content: 'Continue with 42 Intra',
 		},
-	]
+	];
 	// --------------------------------------------------------------------------------------------
 
 	// --------------------------- moudrib code -------------------------------------------
 	const handleOauth = (provider) => {
-		console.log('provider', provider)
+		console.log('provider', provider);
 		const API_URLS = {
-			"google": API_GOOGLE,
-			'42': API_42,
+			google: API_GOOGLE,
+			42: API_42,
 		};
 
 		const apiUrl = API_URLS[provider];
@@ -95,9 +96,9 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	};
 
 	const handleSubmit = (e) => {
-		e.preventDefault()
-		isSigningIn ? login() : register()
-	}
+		e.preventDefault();
+		isSigningIn ? login() : register();
+	};
 	// --------------------------------------------------------------------------------------------
 
 	return (
@@ -109,39 +110,44 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'} overflow-y-hidden
 			ml:border-1.5 border border-b-0 border-primary rounded bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
-
-			<div className='m-2'>
-				<div className='relative w-full flex items-center'>
+			<div className="m-2">
+				<div className="relative w-full flex items-center">
 					<img
 						onClick={closeDialog}
-						className='absolute right-2 top-1 select-none close-button'
-						src='/assets/images/icons/close.png'
-						loading='lazy'
+						className="absolute right-2 top-1 select-none close-button"
+						src="/assets/images/icons/close.png"
+						loading="lazy"
 					/>
-					<div className='card-separator h-0.5 flex-1'></div>
+					<div className="card-separator h-0.5 flex-1"></div>
 					<img
-						className='select-none pointer-events-none logo'
-						src='/assets/images/logo.webp'
-						loading='lazy'
+						className="select-none pointer-events-none logo"
+						src="/assets/images/logo.webp"
+						loading="lazy"
 					/>
-					<div className='card-separator h-0.5 flex-1'></div>
+					<div className="card-separator h-0.5 flex-1"></div>
 				</div>
-				<div className='flex flex-col justify-center form-padding text-light font-heavy lp:mb-8 mb-5'>
+				<div className="flex flex-col justify-center form-padding text-light font-heavy lp:mb-8 mb-5">
 					{isSigningIn ? (
-						<div className='w-full flex flex-col items-center welcome-message'>
-							<h1 className='sign-in-title'>Welcome back!</h1>
-							<p className='sign-in-phrases'>Sign in to access your dashboard .</p>
+						<div className="w-full flex flex-col items-center welcome-message">
+							<h1 className="sign-in-title">Welcome back!</h1>
+							<p className="sign-in-phrases">
+								Sign in to access your dashboard .
+							</p>
 						</div>
 					) : (
-						<h1 className='sign-in-title text-center create-account'>
+						<h1 className="sign-in-title text-center create-account">
 							Create New Account
 						</h1>
 					)}
 
 					{/* -----------------------------------------------------------------------------------------*/}
-					<form className='flex flex-col form-gap' onSubmit={handleSubmit}>
-						{
-							inputs.slice(0, isSigningIn ? 2 : 3).map((input, index) => (
+					<form
+						className="flex flex-col form-gap"
+						onSubmit={handleSubmit}
+					>
+						{inputs
+							.slice(0, isSigningIn ? 2 : 3)
+							.map((input, index) => (
 								<Input
 									key={index}
 									iconPath={`/assets/images/icons/${input.iconPath}.png`}
@@ -155,14 +161,14 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 									}
 									type={index > 0 && 'password'}
 									onChange={(e) => {
-										if (index === 0) setEmail(e.target.value)
-										else if (index === 1) setPassword(e.target.value)
-										else setConfirmPassword(e.target.value)
+										if (index === 0)
+											setEmail(e.target.value);
+										else if (index === 1)
+											setPassword(e.target.value);
+										else setConfirmPassword(e.target.value);
 									}}
-								>
-								</Input>
-							))
-						}
+								></Input>
+							))}
 						<CardButton
 							className={
 								'text-primary font-heavy rounded hover:bg-[rgb(183,170,156,30%)] '
@@ -170,27 +176,26 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 						>
 							{isSigningIn ? <>Sign in</> : <>Sign up</>}
 						</CardButton>
-
 					</form>
 
 					{!isSigningIn && (
-						<p className='sign-in-phrases text-light font-medium text-center'>
+						<p className="sign-in-phrases text-light font-medium text-center">
 							Already have an account?
 							<button
 								onClick={handleClick}
-								className='font-heavy text-primary pt-2 px-1.5'
+								className="font-heavy text-primary pt-2 px-1.5"
 							>
 								Sign in
 							</button>
 						</p>
 					)}
 
-					<div className='flex flex-row items-center text-light or-separator'>
-						<div className='card-separator h-0.5 flex-1'></div>
-						<p className='sign-in-phrases'>or</p>
-						<div className='card-separator h-0.5 flex-1'></div>
+					<div className="flex flex-row items-center text-light or-separator">
+						<div className="card-separator h-0.5 flex-1"></div>
+						<p className="sign-in-phrases">or</p>
+						<div className="card-separator h-0.5 flex-1"></div>
 					</div>
-					<div className='flex flex-col buttons-gap font-medium sign-in-phrases'>
+					<div className="flex flex-col buttons-gap font-medium sign-in-phrases">
 						{buttons.map((button, index) => (
 							<CardButton
 								id={button.id}
@@ -202,19 +207,19 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 							>
 								<img
 									src={`/assets/images/icons/${button.iconPath}.png`}
-									className='card-images'
+									className="card-images"
 									alt={button.alt}
-									loading='eager'
+									loading="eager"
 								/>
 								<p>{button.content}</p>
 							</CardButton>
 						))}
 						{isSigningIn && (
-							<p className=' text-light text-center'>
+							<p className=" text-light text-center">
 								Don't have an account?
 								<button
 									onClick={handleClick}
-									className='font-heavy text-primary px-1.5'
+									className="font-heavy text-primary px-1.5"
 								>
 									Sign up
 								</button>
@@ -224,6 +229,6 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 				</div>
 			</div>
 		</dialog>
-	)
+	);
 }
-export default Card
+export default Card;

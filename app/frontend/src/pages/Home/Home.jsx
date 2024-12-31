@@ -1,74 +1,73 @@
-import React, { useRef, useState } from 'react'
-import './Home.css'
-const Card = React.lazy(() => import('../../components/Home/Card/Card'))
+import React, { useRef, useState } from 'react';
+import './Home.css';
+const Card = React.lazy(() => import('../../components/Home/Card/Card'));
 // import Card from '../../components/Home/Card/Card'
-import Header from '../../components/Home/Header/Header'
-import Button from '../../components/Home/Buttons/Button'
+import Header from '../../components/Home/Header/Header';
+import Button from '../../components/Home/Buttons/Button';
 // import useAuth from '../../context/AuthContext'
-import {AlertWrapper} from '../../components/Layout/Layout'
+import { AlertWrapper } from '../../components/Layout/Layout';
 
-import Loader from '../../components/Loader/Loader'
+import Loader from '../../components/Loader/Loader';
 
 const Home = () => {
-
-	const dialogRef = useRef(null)
-	const [isSigningIn, setIsSigningIn] = useState(false)
+	const dialogRef = useRef(null);
+	const [isSigningIn, setIsSigningIn] = useState(false);
 
 	const openDialog = () => {
 		if (dialogRef.current) {
-			dialogRef.current.showModal()
+			dialogRef.current.showModal();
 		}
-	}
+	};
 
 	const closeDialog = () => {
-		dialogRef.current.close()
-	}
+		dialogRef.current.close();
+	};
 
 	const handleClick = (event) => {
-		const buttonId = event.target.getAttribute('id')
-		setIsSigningIn(buttonId === 'sign-in')
-		openDialog()
-	}
+		const buttonId = event.target.getAttribute('id');
+		setIsSigningIn(buttonId === 'sign-in');
+		openDialog();
+	};
 
-	const body = document.getElementsByTagName('body')[0]
-	body.classList.toggle('overflow-y-hidden')
+	const body = document.getElementsByTagName('body')[0];
+	body.classList.toggle('overflow-y-hidden');
 
 	return (
 		<>
 			<AlertWrapper cardRef={dialogRef} />
 			<Header handleClick={handleClick} />
-			<section className='text-primary responsive-text'>
-				<div className='flex lp:justify-start justify-center'>
+			<section className="text-primary responsive-text">
+				<div className="flex lp:justify-start justify-center">
 					<h1
-						className='relative border gradient-border leading-[1] font-dreamscape select-none
+						className="relative border gradient-border leading-[1] font-dreamscape select-none
 						lg:border-y-2 lp:pt-[16px] pt-[10px] pb-[10px]
-						4k:ml-[80px] xl:ml-[60px] lg:ml-[40px] lp:ml-[25px]'
+						4k:ml-[80px] xl:ml-[60px] lg:ml-[40px] lp:ml-[25px]"
 					>
 						starserve
-						<span className='absolute font-heavy bottom-2 left-0'>
+						<span className="absolute font-heavy bottom-2 left-0">
 							Serve Among the Stars
 						</span>
 					</h1>
 				</div>
-				<div className='font-heavy text-center lp:mt-[120px] mt-[80px] mx-1 tracking-wide leading-[1.7]'>
+				<div className="font-heavy text-center lp:mt-[120px] mt-[80px] mx-1 tracking-wide leading-[1.7]">
 					<p>
-						Join the ultimate space pong adventure on Venus! Serve, spin, and score in
-						zero-gravity.
+						Join the ultimate space pong adventure on Venus! Serve,
+						spin, and score in zero-gravity.
 					</p>
 					<p>
-						Come along for an unforgettable adventure of space competition and celestial
-						marvels.
+						Come along for an unforgettable adventure of space
+						competition and celestial marvels.
 					</p>
 					<Button
-						id='get-started'
+						id="get-started"
 						onClick={handleClick}
-						className='rounded my-[20px]'
+						className="rounded my-[20px]"
 					>
 						Get Started
 					</Button>
 				</div>
 			</section>
-			
+
 			<React.Suspense fallback={<Loader />}>
 				{/* <LazyCard */}
 				<Card
@@ -79,7 +78,7 @@ const Home = () => {
 				/>
 			</React.Suspense>
 		</>
-	)
-}
+	);
+};
 
-export default Home
+export default Home;

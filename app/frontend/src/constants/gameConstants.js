@@ -15,4 +15,4 @@ export const GAME_CONSTRAINTS = {
 	DURATION: {
 		DEFAULT: 30,
 	},
-}
+};

@@ -1,5 +1,6 @@
 .section-margin {
-	margin: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem) clamp(0rem, 7.692vw - 2.933rem, 9.375rem);
+	margin: clamp(1.25rem, 1.327vw + 1.001rem, 3.125rem)
+		clamp(0rem, 7.692vw - 2.933rem, 9.375rem);
 }
 
 .search-icon {
@@ -38,7 +39,11 @@
 
 .separator {
 	height: clamp(31.25rem, 16.741vw + 23.214rem, 50rem);
-	background: linear-gradient(rgb(251, 251, 238, 0), rgb(251, 251, 238, 0.2), rgb(251, 251, 238, 0));
+	background: linear-gradient(
+		rgb(251, 251, 238, 0),
+		rgb(251, 251, 238, 0.2),
+		rgb(251, 251, 238, 0)
+	);
 }
 
 .search {
@@ -72,8 +77,9 @@
 	}
 }
 
-.chat-header, .history-input {
-	box-shadow: 20px 40px 100px 0 rgba(21,16,13,1);
+.chat-header,
+.history-input {
+	box-shadow: 20px 40px 100px 0 rgba(21, 16, 13, 1);
 }
 
 .friend-name {
@@ -100,9 +106,6 @@
 	width: clamp(0.75rem, 0.575vw + 0.642rem, 1.563rem);
 }
 
-
-
-
 /* Message */
 
 .message-image {
@@ -122,9 +125,8 @@
 	margin-top: auto !important;
 }
 
-
 .shadow {
-	background: linear-gradient(rgba(21,16,13,1), transparent);;
+	background: linear-gradient(rgba(21, 16, 13, 1), transparent);
 }
 
 .search-badge {
@@ -132,27 +134,15 @@
 	height: clamp(1.875rem, 0.558vw + 1.607rem, 2.5rem);
 }
 
-
-
-
-
 .block-button {
-	padding: clamp(0.188rem, 0.177vw + 0.154rem, 0.438rem) clamp(0.313rem, 0.442vw + 0.23rem, 0.938rem);
+	padding: clamp(0.188rem, 0.177vw + 0.154rem, 0.438rem)
+		clamp(0.313rem, 0.442vw + 0.23rem, 0.938rem);
 }
-
-
-
-
-
-
-
-
-
 
 /* ================= Skeleton ================== */
 
 .user-skeleton {
-	animation: skeleton-loading  1s linear infinite alternate;
+	animation: skeleton-loading 1s linear infinite alternate;
 }
 
 @keyframes skeleton-loading {

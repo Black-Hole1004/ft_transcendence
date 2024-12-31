@@ -33,7 +33,8 @@
 }
 
 .start-battle {
-	padding: clamp(0.25rem, 0.265vw + 0.2rem, 0.625rem) clamp(0.313rem, 0.442vw + 0.23rem, 0.938rem);
+	padding: clamp(0.25rem, 0.265vw + 0.2rem, 0.625rem)
+		clamp(0.313rem, 0.442vw + 0.23rem, 0.938rem);
 }
 
 .paddles {

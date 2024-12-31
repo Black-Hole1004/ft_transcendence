@@ -7,7 +7,8 @@
 	font-size: clamp(0.75rem, 1.681vw + 0.435rem, 3.125rem);
 }
 
-.not-found h3, button {
+.not-found h3,
+button {
 	font-size: clamp(0.438rem, 0.664vw + 0.313rem, 1.375rem);
 }
 

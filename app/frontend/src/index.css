@@ -42,10 +42,10 @@ body {
 	height: 100vh;
 	max-width: 100%;
 	background-size: cover;
-	background-color: #0B0B0B;
+	background-color: #0b0b0b;
 	background-repeat: no-repeat;
 	background-position: 50% 37%;
-	background-image: url("/assets/images/background.webp");
+	background-image: url('/assets/images/background.webp');
 }
 
 .header-height {
@@ -58,11 +58,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-	background: #48433E;
+	background: #48433e;
 	border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #FBFBEE;
+	background: #fbfbee;
 	border-radius: 4px;
 }

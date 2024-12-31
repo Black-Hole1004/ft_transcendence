@@ -1,39 +1,37 @@
-import './Chat.css'
-import axios from 'axios'
-import { useState, useEffect, useRef } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import './Chat.css';
+import axios from 'axios';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import Footer from '../../components/Chat/Footer.jsx'
-import Messages from '../../components/Chat/Messages.jsx'
-import UserInfos from '../../components/Chat/UserInfos.jsx'
-import ChatHistory from '../../components/Chat/ChatHistory.jsx'
-import StartConversation from '../../components/Chat/StartConversation.jsx'
-import ConversationHeader from '../../components/Chat/ConversationHeader.jsx'
+import Footer from '../../components/Chat/Footer.jsx';
+import Messages from '../../components/Chat/Messages.jsx';
+import UserInfos from '../../components/Chat/UserInfos.jsx';
+import ChatHistory from '../../components/Chat/ChatHistory.jsx';
+import StartConversation from '../../components/Chat/StartConversation.jsx';
+import ConversationHeader from '../../components/Chat/ConversationHeader.jsx';
 
 // import { useAlert } from '../../components/AlertContext'
-import useAuth from '../../context/AuthContext.jsx'
+import useAuth from '../../context/AuthContext.jsx';
 
-const API_CHAT = import.meta.env.VITE_API_CHAT
+const API_CHAT = import.meta.env.VITE_API_CHAT;
 
 const Chat = () => {
-	const currentLocation = useLocation()
-	const navigate = useNavigate()
-	const { getAuthHeaders } = useAuth()
+	const currentLocation = useLocation();
+	const navigate = useNavigate();
+	const { getAuthHeaders } = useAuth();
 
-	const webSocketRef = useRef(null)
-	const messageInputRef = useRef(null)
+	const webSocketRef = useRef(null);
+	const messageInputRef = useRef(null);
 
-	const [blockerId, setBlockerId] = useState(null)
-	const [areFriends, setAreFriends] = useState(false)
-	const [recipientInfo, setRecipientInfo] = useState(null)
-	const [conversationKey, setConversationKey] = useState(null)
-	const [conversationMessages, setConversationMessages] = useState([])
-	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0)
-	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
-	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
-	const [reciver_id, setReciver_id] = useState(null)
-
-	
+	const [blockerId, setBlockerId] = useState(null);
+	const [areFriends, setAreFriends] = useState(false);
+	const [recipientInfo, setRecipientInfo] = useState(null);
+	const [conversationKey, setConversationKey] = useState(null);
+	const [conversationMessages, setConversationMessages] = useState([]);
+	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0);
+	const [isConversationLoaded, setIsConversationLoaded] = useState(false);
+	const [recipientProfileImage, setrecipientProfileImage] = useState(null);
+	const [reciver_id, setReciver_id] = useState(null);
 
 	// const { triggerAlert } = useAlert()
 
@@ -42,59 +40,68 @@ const Chat = () => {
 	// }
 
 	useEffect(() => {
-		console.log('here')
-		console.log('blocker id: ', blockerId)
+		console.log('here');
+		console.log('blocker id: ', blockerId);
 		const sendBlockMessage = () => {
 			webSocketRef.current?.send(
 				JSON.stringify({
 					message_type: 'block',
 					blocker_id: blockerId,
 					conversation_key: conversationKey,
-				})
-			)
-		}
+				}),
+			);
+		};
 
-		if (webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
-			sendBlockMessage()
+		if (
+			webSocketRef.current &&
+			webSocketRef.current.readyState === WebSocket.OPEN
+		) {
+			sendBlockMessage();
 		}
-	}, [conversationKey, blockerId])
+	}, [conversationKey, blockerId]);
 
 	useEffect(() => {
 		const friendshipStatus = async () => {
 			try {
 				if (conversationKey) {
-					const response = await axios.get(`${API_CHAT}status/${conversationKey}/`, {
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: getAuthHeaders().Authorization,
+					const response = await axios.get(
+						`${API_CHAT}status/${conversationKey}/`,
+						{
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: getAuthHeaders().Authorization,
+							},
 						},
-					})
-					const blocker = response.data.blocked_by === null ? 0 : response.data.blocked_by
-					setAreFriends(response.data.status)
-					setBlockerId(response.data.blocked_by)
+					);
+					const blocker =
+						response.data.blocked_by === null
+							? 0
+							: response.data.blocked_by;
+					setAreFriends(response.data.status);
+					setBlockerId(response.data.blocked_by);
 				}
 			} catch (error) {
-				console.error('Error fetching friendship status:', error)
+				console.error('Error fetching friendship status:', error);
 			}
-		}
+		};
 
 		if (conversationKey) {
-			friendshipStatus()
+			friendshipStatus();
 		}
-	}, [conversationKey])
+	}, [conversationKey]);
 
 	useEffect(() => {
 		// Extract conversation key from URL
-		const uri = window.location.pathname.split('/').slice(2, 3)
+		const uri = window.location.pathname.split('/').slice(2, 3);
 		if (uri.length === 1) {
-			setConversationMessages([])
-			setConversationKey(uri[0])
-			setBlockerId(0)
-			setIsConversationLoaded(true)
+			setConversationMessages([]);
+			setConversationKey(uri[0]);
+			setBlockerId(0);
+			setIsConversationLoaded(true);
 		} else {
-			setIsConversationLoaded(false)
+			setIsConversationLoaded(false);
 		}
-	}, [currentLocation.pathname])
+	}, [currentLocation.pathname]);
 
 	useEffect(() => {
 		const onWebSocketOpen = () => {
@@ -104,20 +111,20 @@ const Chat = () => {
 					JSON.stringify({
 						message_type: 'join',
 						conversation_key: conversationKey,
-					})
-				)
+					}),
+				);
 			}
-		}
+		};
 
 		const onWebSocketClose = () => {
 			// console.log('WebSocket disconnected')
-			webSocketRef.current = null
-			setTimeout(initializeWebSocket, 3000)
-		}
+			webSocketRef.current = null;
+			setTimeout(initializeWebSocket, 3000);
+		};
 
 		const onWebSocketMessage = (e) => {
-			console.log('WebSocket message received')
-			const data = JSON.parse(e.data)
+			console.log('WebSocket message received');
+			const data = JSON.parse(e.data);
 			// console.log(data.event)
 			if (data.event === 'message') {
 				setConversationMessages((prevMessages) => [
@@ -127,83 +134,97 @@ const Chat = () => {
 						content: data.message,
 						sent_datetime: data.timestamp,
 					},
-				])
+				]);
 			} else if (data.event === 'block') {
-				console.log('socket: ', data.blocker_id)
-				setBlockerId(data.blocker_id)
-				if (data.blocker_id)
-					setAreFriends(false)
+				console.log('socket: ', data.blocker_id);
+				setBlockerId(data.blocker_id);
+				if (data.blocker_id) setAreFriends(false);
 			}
-		}
+		};
 
 		const initializeWebSocket = () => {
 			if (!webSocketRef.current) {
 				// console.log(window.location.protocol)
 				// console.log('xxxxx===> ', window.location.hostname)
-				const ws = new WebSocket(`wss://${window.location.hostname}/ws/chat/`)
-				webSocketRef.current = ws
+				const ws = new WebSocket(
+					`wss://${window.location.hostname}/ws/chat/`,
+				);
+				webSocketRef.current = ws;
 
-				webSocketRef.current.addEventListener('open', onWebSocketOpen)
-				webSocketRef.current.addEventListener('close', onWebSocketClose)
-				webSocketRef.current.addEventListener('message', onWebSocketMessage)
+				webSocketRef.current.addEventListener('open', onWebSocketOpen);
+				webSocketRef.current.addEventListener(
+					'close',
+					onWebSocketClose,
+				);
+				webSocketRef.current.addEventListener(
+					'message',
+					onWebSocketMessage,
+				);
 			}
-		}
+		};
 
-		initializeWebSocket()
+		initializeWebSocket();
 
 		return () => {
 			if (webSocketRef.current) {
 				// console.log('cleanup running')
-				const ws = webSocketRef.current
+				const ws = webSocketRef.current;
 
-				ws.removeEventListener('open', onWebSocketOpen)
-				ws.removeEventListener('close', onWebSocketClose)
-				ws.removeEventListener('message', onWebSocketMessage)
+				ws.removeEventListener('open', onWebSocketOpen);
+				ws.removeEventListener('close', onWebSocketClose);
+				ws.removeEventListener('message', onWebSocketMessage);
 
-				ws.close()
-				webSocketRef.current = null
+				ws.close();
+				webSocketRef.current = null;
 			}
-		}
-	}, [isConversationLoaded, conversationKey])
+		};
+	}, [isConversationLoaded, conversationKey]);
 
 	useEffect(() => {
 		const fetchConversationDetails = async () => {
 			try {
 				if (conversationKey) {
-					const response = await axios.get(`${API_CHAT}${conversationKey}/`, {
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: getAuthHeaders().Authorization,
+					const response = await axios.get(
+						`${API_CHAT}${conversationKey}/`,
+						{
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: getAuthHeaders().Authorization,
+							},
 						},
-					})
-					setReciver_id(response.data.user_infos[0].id)
-					setRecipientInfo(response.data.user_infos[0])
-					const messages = response.data.messages ? response.data.messages : []
-					setConversationMessages(messages)
-					setrecipientProfileImage(response.data.user_infos[0].profile_picture)
+					);
+					setReciver_id(response.data.user_infos[0].id);
+					setRecipientInfo(response.data.user_infos[0]);
+					const messages = response.data.messages
+						? response.data.messages
+						: [];
+					setConversationMessages(messages);
+					setrecipientProfileImage(
+						response.data.user_infos[0].profile_picture,
+					);
 				}
 			} catch (error) {
-				console.error('Error fetching user infos:', error)
-				navigate('/404')
+				console.error('Error fetching user infos:', error);
+				navigate('/404');
 			}
-		}
+		};
 
 		if (conversationKey) {
-			fetchConversationDetails()
+			fetchConversationDetails();
 		}
-	}, [conversationKey, getAuthHeaders])
+	}, [conversationKey, getAuthHeaders]);
 
 	const handleMessageKeyPress = (e) => {
 		if (e.key === 'Enter') {
-			sendConversationMessage()
+			sendConversationMessage();
 		}
-	}
+	};
 
 	const sendConversationMessage = () => {
-		let ws = webSocketRef.current
+		let ws = webSocketRef.current;
 
 		if (ws && ws.readyState === WebSocket.OPEN) {
-			const value = messageInputRef.current.value.trim()
+			const value = messageInputRef.current.value.trim();
 
 			if (value !== '') {
 				ws.send(
@@ -212,13 +233,13 @@ const Chat = () => {
 						message: value,
 						message_type: 'message',
 						conversation_key: conversationKey,
-					})
-				)
-				messageInputRef.current.value = ''
+					}),
+				);
+				messageInputRef.current.value = '';
 				// handleSubmit()
 			}
 		}
-	}
+	};
 
 	return (
 		<section
@@ -226,8 +247,8 @@ const Chat = () => {
 			${conversationKey ? 'lg:justify-between' : 'lg:justify-center'}`}
 		>
 			<div
-				className='flex tb:flex-row flex-col tb:border tb:items-center border-primary
-						lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1 overflow-hidden'
+				className="flex tb:flex-row flex-col tb:border tb:items-center border-primary
+						lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1 overflow-hidden"
 			>
 				{/* Chat History Component */}
 				<ChatHistory
@@ -237,20 +258,17 @@ const Chat = () => {
 					conversationMessages={conversationMessages}
 					currentLoggedInUserId={currentLoggedInUserId}
 					setCurrentLoggedInUserId={setCurrentLoggedInUserId}
-					
 				/>
 
 				{/* Separator */}
-				<div className='separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden'></div>
+				<div className="separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden"></div>
 
 				{/* Chat Area */}
 				<div
-					className='tb:w-[65.8%] flex flex-col items-center max-tb:border border-primary overflow-hidden
-						lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
+					className="tb:w-[65.8%] flex flex-col items-center max-tb:border border-primary overflow-hidden
+						lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]"
 				>
-					{
-						console.log('reciver_id -----> ', reciver_id)
-					}
+					{console.log('reciver_id -----> ', reciver_id)}
 					{recipientInfo ? (
 						<>
 							{/* Chat Header */}
@@ -275,22 +293,27 @@ const Chat = () => {
 							{/* Chat Footer */}
 							{blockerId ? (
 								blockerId === currentLoggedInUserId ? (
-									<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
-										You have blocked this user. Unblock them to resume the
-										conversation.
+									<p className="message-content my-3 font-heavy text-center text-border brightness-200">
+										You have blocked this user. Unblock them
+										to resume the conversation.
 									</p>
 								) : (
-									<p className='message-content my-3 font-heavy text-center text-border brightness-200'>
-										You have been blocked by this user. You cannot send messages
-										until you are unblocked.
+									<p className="message-content my-3 font-heavy text-center text-border brightness-200">
+										You have been blocked by this user. You
+										cannot send messages until you are
+										unblocked.
 									</p>
 								)
 							) : (
 								<Footer
 									messageInputRef={messageInputRef}
 									conversationKey={conversationKey}
-									handleMessageKeyPress={handleMessageKeyPress}
-									sendConversationMessage={sendConversationMessage}
+									handleMessageKeyPress={
+										handleMessageKeyPress
+									}
+									sendConversationMessage={
+										sendConversationMessage
+									}
 								/>
 							)}
 						</>
@@ -303,7 +326,7 @@ const Chat = () => {
 			{/* User Information Sidebar */}
 			{conversationKey && <UserInfos recipientInfo={recipientInfo} />}
 		</section>
-	)
-}
+	);
+};
 
-export default Chat
+export default Chat;

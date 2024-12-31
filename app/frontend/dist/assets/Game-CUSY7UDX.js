@@ -1,1 +1,117 @@
-import{r as l,j as e}from"./index-CZOGhjFl.js";import{H as t}from"./Header-3Ry2d7os.js";import"./Button-5ZxX_AXj.js";const n=()=>{const[s,a]=l.useState(!1),r=()=>{a(!s)};return e.jsxs("div",{className:`min-h-screen backdrop-blur-sm text-primary ${s?"bg-backdrop-80":"bg-backdrop-40"}`,children:[e.jsx(t,{}),e.jsx("section",{className:"flex",children:e.jsxs("div",{className:"flex-1 margin-page flex flex-col items-center gap-8",children:[e.jsx("div",{className:`score border-1.5 border-primary rounded-xl ${s?"brightness-[20%]":"brightness-[1]"}`,children:e.jsx("p",{className:"font-dreamscape leading-[1.125] text-center",children:"1 - 3"})}),e.jsxs("div",{className:"flex-1 w-full flex justify-between font-dreamscape-sans max-lg:flex-wrap max-lg:justify-around",children:[e.jsxs("div",{className:`flex flex-col items-center ${s?"brightness-[20%]":"brightness-[1]"}`,children:[e.jsx("img",{src:"/assets/images/moudrib.jpeg",className:"rounded-full border-2 border-primary user-photo",alt:"user photo"}),e.jsx("p",{className:"players-usernames truncate",children:"mouad55"}),e.jsx("img",{src:"/assets/images/Achievements/celestial-master.svg",className:"achievements-icons hover:scale-[1.2] transition duration-500",alt:""}),e.jsx("p",{className:"text-level badge-name",children:"celestial master"})]}),e.jsxs("div",{className:"flex flex-col items-center gap-7 max-lg:order-first max-lg:w-full",children:[e.jsx("canvas",{id:"game-table",className:`game-table border ${s?"brightness-[20%]":"brightness-[1]"}`}),e.jsxs("button",{onClick:r,className:"pause flex items-center gap-3 brightness-[1] leading-[0.95]",children:[e.jsx("img",{src:`/assets/images/icons/${s?"play":"pause"}.svg`,alt:""}),e.jsx("p",{className:"align-middle",children:s?"resume":"pause"})]})]}),e.jsxs("div",{className:`flex flex-col items-center ${s?"brightness-[20%]":"brightness-[1]"}`,children:[e.jsx("img",{src:"/assets/images/lmoudir.jpg",className:"rounded-full border-2 border-primary user-photo",alt:"user photo"}),e.jsx("p",{className:"players-usernames",children:"Ahmaymou"}),e.jsx("img",{src:"/assets/images/Achievements/galactic-trailblazer.svg",className:"achievements-icons hover:scale-[1.2] transition duration-500",alt:""}),e.jsx("p",{className:"text-level badge-name",children:"galactic trailblazer"})]})]})]})})]})};export{n as default};
+import { r as l, j as e } from './index-CZOGhjFl.js';
+import { H as t } from './Header-3Ry2d7os.js';
+import './Button-5ZxX_AXj.js';
+const n = () => {
+	const [s, a] = l.useState(!1),
+		r = () => {
+			a(!s);
+		};
+	return e.jsxs('div', {
+		className: `min-h-screen backdrop-blur-sm text-primary ${s ? 'bg-backdrop-80' : 'bg-backdrop-40'}`,
+		children: [
+			e.jsx(t, {}),
+			e.jsx('section', {
+				className: 'flex',
+				children: e.jsxs('div', {
+					className:
+						'flex-1 margin-page flex flex-col items-center gap-8',
+					children: [
+						e.jsx('div', {
+							className: `score border-1.5 border-primary rounded-xl ${s ? 'brightness-[20%]' : 'brightness-[1]'}`,
+							children: e.jsx('p', {
+								className:
+									'font-dreamscape leading-[1.125] text-center',
+								children: '1 - 3',
+							}),
+						}),
+						e.jsxs('div', {
+							className:
+								'flex-1 w-full flex justify-between font-dreamscape-sans max-lg:flex-wrap max-lg:justify-around',
+							children: [
+								e.jsxs('div', {
+									className: `flex flex-col items-center ${s ? 'brightness-[20%]' : 'brightness-[1]'}`,
+									children: [
+										e.jsx('img', {
+											src: '/assets/images/moudrib.jpeg',
+											className:
+												'rounded-full border-2 border-primary user-photo',
+											alt: 'user photo',
+										}),
+										e.jsx('p', {
+											className:
+												'players-usernames truncate',
+											children: 'mouad55',
+										}),
+										e.jsx('img', {
+											src: '/assets/images/Achievements/celestial-master.svg',
+											className:
+												'achievements-icons hover:scale-[1.2] transition duration-500',
+											alt: '',
+										}),
+										e.jsx('p', {
+											className: 'text-level badge-name',
+											children: 'celestial master',
+										}),
+									],
+								}),
+								e.jsxs('div', {
+									className:
+										'flex flex-col items-center gap-7 max-lg:order-first max-lg:w-full',
+									children: [
+										e.jsx('canvas', {
+											id: 'game-table',
+											className: `game-table border ${s ? 'brightness-[20%]' : 'brightness-[1]'}`,
+										}),
+										e.jsxs('button', {
+											onClick: r,
+											className:
+												'pause flex items-center gap-3 brightness-[1] leading-[0.95]',
+											children: [
+												e.jsx('img', {
+													src: `/assets/images/icons/${s ? 'play' : 'pause'}.svg`,
+													alt: '',
+												}),
+												e.jsx('p', {
+													className: 'align-middle',
+													children: s
+														? 'resume'
+														: 'pause',
+												}),
+											],
+										}),
+									],
+								}),
+								e.jsxs('div', {
+									className: `flex flex-col items-center ${s ? 'brightness-[20%]' : 'brightness-[1]'}`,
+									children: [
+										e.jsx('img', {
+											src: '/assets/images/lmoudir.jpg',
+											className:
+												'rounded-full border-2 border-primary user-photo',
+											alt: 'user photo',
+										}),
+										e.jsx('p', {
+											className: 'players-usernames',
+											children: 'Ahmaymou',
+										}),
+										e.jsx('img', {
+											src: '/assets/images/Achievements/galactic-trailblazer.svg',
+											className:
+												'achievements-icons hover:scale-[1.2] transition duration-500',
+											alt: '',
+										}),
+										e.jsx('p', {
+											className: 'text-level badge-name',
+											children: 'galactic trailblazer',
+										}),
+									],
+								}),
+							],
+						}),
+					],
+				}),
+			}),
+		],
+	});
+};
+export { n as default };

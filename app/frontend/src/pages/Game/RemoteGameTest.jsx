@@ -316,15 +316,6 @@
 // 	)
 // }
 
-
-
-
-
-
-
-
-
-
 // src/pages/Game/RemoteGame.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -335,414 +326,464 @@ import MessageMonitor from '../../components/Game/MessageMonitor';
 import GameTestingControls from '../../components/Game/GameTestingControls';
 
 const RemoteGameTest = () => {
-    // Navigation and routing
-    const location = useLocation();
-    const navigate = useNavigate();
+	// Navigation and routing
+	const location = useLocation();
+	const navigate = useNavigate();
 
-    // Core game state
-    const [gameId, setGameId] = useState(null);
-    const [playerNumber, setPlayerNumber] = useState(null);
-    const [gameState, setGameState] = useState(null);
-    const [status, setStatus] = useState('connecting');
-    const [isConnected, setIsConnected] = useState(false);
+	// Core game state
+	const [gameId, setGameId] = useState(null);
+	const [playerNumber, setPlayerNumber] = useState(null);
+	const [gameState, setGameState] = useState(null);
+	const [status, setStatus] = useState('connecting');
+	const [isConnected, setIsConnected] = useState(false);
 
-    // Debug and monitoring state
-    const [messages, setMessages] = useState([]);
-    const [eventLog, setEventLog] = useState([]);
-    const [debugInfo, setDebugInfo] = useState({
-        lastUpdate: Date.now(),
-        updateCount: 0,
-        fps: 0,
-        latency: 0
-    });
+	// Debug and monitoring state
+	const [messages, setMessages] = useState([]);
+	const [eventLog, setEventLog] = useState([]);
+	const [debugInfo, setDebugInfo] = useState({
+		lastUpdate: Date.now(),
+		updateCount: 0,
+		fps: 0,
+		latency: 0,
+	});
 
-    // Game statistics
-    const [gameStats, setGameStats] = useState({
-        paddleMoves: 0,
-        ballPositionUpdates: 0,
-        collisions: 0,
-        scores: {
-            player1: 0,
-            player2: 0
-        }
-    });
+	// Game statistics
+	const [gameStats, setGameStats] = useState({
+		paddleMoves: 0,
+		ballPositionUpdates: 0,
+		collisions: 0,
+		scores: {
+			player1: 0,
+			player2: 0,
+		},
+	});
 
-    // Control states
-    const [isPaused, setIsPaused] = useState(false);
-    const [isAutoPilot, setIsAutoPilot] = useState(false);
-    const [showDebugPanel, setShowDebugPanel] = useState(true);
+	// Control states
+	const [isPaused, setIsPaused] = useState(false);
+	const [isAutoPilot, setIsAutoPilot] = useState(false);
+	const [showDebugPanel, setShowDebugPanel] = useState(true);
 
-    // Refs
-    const gameSocketRef = useRef(null);
-    const gameLoopRef = useRef(null);
-    const lastUpdateTimeRef = useRef(Date.now());
+	// Refs
+	const gameSocketRef = useRef(null);
+	const gameLoopRef = useRef(null);
+	const lastUpdateTimeRef = useRef(Date.now());
 
-    // Utility functions
-    const addMessage = (direction, data) => {
-        setMessages(prev => [
-            ...prev, 
-            {
-                time: new Date().toLocaleTimeString(),
-                direction,
-                data
-            }
-        ].slice(-50)); // Keep last 50 messages
-    };
+	// Utility functions
+	const addMessage = (direction, data) => {
+		setMessages((prev) =>
+			[
+				...prev,
+				{
+					time: new Date().toLocaleTimeString(),
+					direction,
+					data,
+				},
+			].slice(-50),
+		); // Keep last 50 messages
+	};
 
-    const addLogEntry = (message, type = 'info') => {
-        setEventLog(prev => [
-            ...prev,
-            {
-                time: new Date().toLocaleTimeString(),
-                type,
-                message
-            }
-        ].slice(-100)); // Keep last 100 entries
-    };
+	const addLogEntry = (message, type = 'info') => {
+		setEventLog((prev) =>
+			[
+				...prev,
+				{
+					time: new Date().toLocaleTimeString(),
+					type,
+					message,
+				},
+			].slice(-100),
+		); // Keep last 100 entries
+	};
 
-    const updateDebugInfo = () => {
-        const now = Date.now();
-        const timeSinceLastUpdate = now - debugInfo.lastUpdate;
-        
-        setDebugInfo(prev => ({
-            lastUpdate: now,
-            updateCount: prev.updateCount + 1,
-            fps: Math.round(1000 / timeSinceLastUpdate),
-            latency: prev.latency
-        }));
-    };
+	const updateDebugInfo = () => {
+		const now = Date.now();
+		const timeSinceLastUpdate = now - debugInfo.lastUpdate;
 
-    // Game control functions
-    const movePaddle = (direction) => {
-        if (!gameSocketRef.current?.isSocketConnected() || !gameState) return;
+		setDebugInfo((prev) => ({
+			lastUpdate: now,
+			updateCount: prev.updateCount + 1,
+			fps: Math.round(1000 / timeSinceLastUpdate),
+			latency: prev.latency,
+		}));
+	};
 
-        const currentY = gameState[`player${playerNumber}`]?.y || 0;
-        const moveAmount = direction === 'up' ? -20 : 20;
-        const newY = Math.max(0, Math.min(300, currentY + moveAmount));
+	// Game control functions
+	const movePaddle = (direction) => {
+		if (!gameSocketRef.current?.isSocketConnected() || !gameState) return;
 
-        gameSocketRef.current.send({
-            type: 'paddle_move',
-            y: newY
-        });
-        addMessage('sent', { type: 'paddle_move', y: newY });
-        
-        setGameStats(prev => ({
-            ...prev,
-            paddleMoves: prev.paddleMoves + 1
-        }));
-    };
+		const currentY = gameState[`player${playerNumber}`]?.y || 0;
+		const moveAmount = direction === 'up' ? -20 : 20;
+		const newY = Math.max(0, Math.min(300, currentY + moveAmount));
 
-    const togglePause = () => {
-        if (!gameSocketRef.current?.isSocketConnected()) return;
+		gameSocketRef.current.send({
+			type: 'paddle_move',
+			y: newY,
+		});
+		addMessage('sent', { type: 'paddle_move', y: newY });
 
-        const newPauseState = !isPaused;
-        gameSocketRef.current.send({
-            type: newPauseState ? 'pause_game' : 'resume_game'
-        });
-        setIsPaused(newPauseState);
-        addLogEntry(`Game ${newPauseState ? 'paused' : 'resumed'}`);
-    };
+		setGameStats((prev) => ({
+			...prev,
+			paddleMoves: prev.paddleMoves + 1,
+		}));
+	};
 
-    const toggleAutoPilot = () => {
-        setIsAutoPilot(!isAutoPilot);
-        addLogEntry(`AutoPilot ${!isAutoPilot ? 'enabled' : 'disabled'}`);
-    };
+	const togglePause = () => {
+		if (!gameSocketRef.current?.isSocketConnected()) return;
 
+		const newPauseState = !isPaused;
+		gameSocketRef.current.send({
+			type: newPauseState ? 'pause_game' : 'resume_game',
+		});
+		setIsPaused(newPauseState);
+		addLogEntry(`Game ${newPauseState ? 'paused' : 'resumed'}`);
+	};
 
-    // Game loop and auto-pilot
-    useEffect(() => {
-        if (isAutoPilot && gameState?.ball && !isPaused) {
-            const autoPilotInterval = setInterval(() => {
-                const ballY = gameState.ball.y;
-                const paddleY = gameState[`player${playerNumber}`]?.y || 0;
-                const paddleCenter = paddleY + 55; // Half paddle height
+	const toggleAutoPilot = () => {
+		setIsAutoPilot(!isAutoPilot);
+		addLogEntry(`AutoPilot ${!isAutoPilot ? 'enabled' : 'disabled'}`);
+	};
 
-                if (Math.abs(ballY - paddleCenter) > 10) {
-                    movePaddle(ballY > paddleCenter ? 'down' : 'up');
-                }
-            }, 50);
+	// Game loop and auto-pilot
+	useEffect(() => {
+		if (isAutoPilot && gameState?.ball && !isPaused) {
+			const autoPilotInterval = setInterval(() => {
+				const ballY = gameState.ball.y;
+				const paddleY = gameState[`player${playerNumber}`]?.y || 0;
+				const paddleCenter = paddleY + 55; // Half paddle height
 
-            return () => clearInterval(autoPilotInterval);
-        }
-    }, [isAutoPilot, gameState, isPaused, playerNumber]);
+				if (Math.abs(ballY - paddleCenter) > 10) {
+					movePaddle(ballY > paddleCenter ? 'down' : 'up');
+				}
+			}, 50);
 
-    // Main WebSocket setup
-    useEffect(() => {
-        if (!location.state?.gameId) {
-            navigate('/dashboard');
-            return;
-        }
+			return () => clearInterval(autoPilotInterval);
+		}
+	}, [isAutoPilot, gameState, isPaused, playerNumber]);
 
-        const { gameId } = location.state;
-        setGameId(gameId);
-        addLogEntry(`Initializing game ${gameId}`);
+	// Main WebSocket setup
+	useEffect(() => {
+		if (!location.state?.gameId) {
+			navigate('/dashboard');
+			return;
+		}
 
-        // Create and configure WebSocket
-        gameSocketRef.current = new GameWebSocket();
+		const { gameId } = location.state;
+		setGameId(gameId);
+		addLogEntry(`Initializing game ${gameId}`);
 
-        // Connection handlers
-        gameSocketRef.current.on('connect', () => {
-            setIsConnected(true);
-            setStatus('connected');
-            addLogEntry('Connected to game server', 'success');
-        });
+		// Create and configure WebSocket
+		gameSocketRef.current = new GameWebSocket();
 
-        gameSocketRef.current.on('disconnect', () => {
-            setIsConnected(false);
-            setStatus('disconnected');
-            addLogEntry('Disconnected from game server', 'warning');
-            setIsPaused(true);
-        });
+		// Connection handlers
+		gameSocketRef.current.on('connect', () => {
+			setIsConnected(true);
+			setStatus('connected');
+			addLogEntry('Connected to game server', 'success');
+		});
 
-        gameSocketRef.current.on('error', (error) => {
-            setStatus('error');
-            addLogEntry(`WebSocket error: ${error.message}`, 'error');
-        });
+		gameSocketRef.current.on('disconnect', () => {
+			setIsConnected(false);
+			setStatus('disconnected');
+			addLogEntry('Disconnected from game server', 'warning');
+			setIsPaused(true);
+		});
 
-        // Game state handlers
-        gameSocketRef.current.on('game_info', (data) => {
-            setPlayerNumber(data.player_number);
-            setGameState(data.state);
-            addMessage('received', { type: 'game_info', data });
-            addLogEntry(`Assigned as Player ${data.player_number}`, 'info');
-        });
+		gameSocketRef.current.on('error', (error) => {
+			setStatus('error');
+			addLogEntry(`WebSocket error: ${error.message}`, 'error');
+		});
 
-        gameSocketRef.current.on('state_update', (changes) => {
-            setGameState(prev => {
-                const newState = { ...prev, ...changes };
-                updateDebugInfo();
-                return newState;
-            });
-            addMessage('received', { type: 'state_update', changes });
-        });
+		// Game state handlers
+		gameSocketRef.current.on('game_info', (data) => {
+			setPlayerNumber(data.player_number);
+			setGameState(data.state);
+			addMessage('received', { type: 'game_info', data });
+			addLogEntry(`Assigned as Player ${data.player_number}`, 'info');
+		});
 
-        gameSocketRef.current.on('paddle_update', (data) => {
-            addMessage('received', { type: 'paddle_update', data });
-            setGameStats(prev => ({
-                ...prev,
-                paddleMoves: prev.paddleMoves + 1
-            }));
-        });
+		gameSocketRef.current.on('state_update', (changes) => {
+			setGameState((prev) => {
+				const newState = { ...prev, ...changes };
+				updateDebugInfo();
+				return newState;
+			});
+			addMessage('received', { type: 'state_update', changes });
+		});
 
-        gameSocketRef.current.on('ball_update', (data) => {
-            addMessage('received', { type: 'ball_update', data });
-            setGameStats(prev => ({
-                ...prev,
-                ballPositionUpdates: prev.ballPositionUpdates + 1,
-                collisions: data.collision ? prev.collisions + 1 : prev.collisions
-            }));
-        });
+		gameSocketRef.current.on('paddle_update', (data) => {
+			addMessage('received', { type: 'paddle_update', data });
+			setGameStats((prev) => ({
+				...prev,
+				paddleMoves: prev.paddleMoves + 1,
+			}));
+		});
 
-        gameSocketRef.current.on('score_update', (data) => {
-            addMessage('received', { type: 'score_update', data });
-            setGameStats(prev => ({
-                ...prev,
-                scores: {
-                    ...prev.scores,
-                    [data.player]: prev.scores[data.player] + 1
-                }
-            }));
-        });
+		gameSocketRef.current.on('ball_update', (data) => {
+			addMessage('received', { type: 'ball_update', data });
+			setGameStats((prev) => ({
+				...prev,
+				ballPositionUpdates: prev.ballPositionUpdates + 1,
+				collisions: data.collision
+					? prev.collisions + 1
+					: prev.collisions,
+			}));
+		});
 
-        gameSocketRef.current.on('game_paused', () => {
-            setIsPaused(true);
-            addLogEntry('Game paused');
-        });
+		gameSocketRef.current.on('score_update', (data) => {
+			addMessage('received', { type: 'score_update', data });
+			setGameStats((prev) => ({
+				...prev,
+				scores: {
+					...prev.scores,
+					[data.player]: prev.scores[data.player] + 1,
+				},
+			}));
+		});
 
-        gameSocketRef.current.on('game_resumed', () => {
-            setIsPaused(false);
-            addLogEntry('Game resumed');
-        });
+		gameSocketRef.current.on('game_paused', () => {
+			setIsPaused(true);
+			addLogEntry('Game paused');
+		});
 
-        // Connect to game
-        gameSocketRef.current.connect(gameId);
+		gameSocketRef.current.on('game_resumed', () => {
+			setIsPaused(false);
+			addLogEntry('Game resumed');
+		});
 
-        // Cleanup
-        return () => {
-            if (gameSocketRef.current) {
-                addLogEntry('Cleaning up game connection');
-                gameSocketRef.current.disconnect();
-            }
-        };
-    }, [location.state, navigate]);
+		// Connect to game
+		gameSocketRef.current.connect(gameId);
 
-    // Keyboard controls
-    useEffect(() => {
-        const handleKeyPress = (e) => {
-            if (!isConnected || isPaused) return;
+		// Cleanup
+		return () => {
+			if (gameSocketRef.current) {
+				addLogEntry('Cleaning up game connection');
+				gameSocketRef.current.disconnect();
+			}
+		};
+	}, [location.state, navigate]);
 
-            switch (e.key) {
-                case 'ArrowUp':
-                    movePaddle('up');
-                    break;
-                case 'ArrowDown':
-                    movePaddle('down');
-                    break;
-                case ' ':
-                    togglePause();
-                    break;
-                case 'a':
-                    toggleAutoPilot();
-                    break;
-                case 'd':
-                    setShowDebugPanel(prev => !prev);
-                    break;
-                default:
-                    break;
-            }
-        };
+	// Keyboard controls
+	useEffect(() => {
+		const handleKeyPress = (e) => {
+			if (!isConnected || isPaused) return;
 
-        window.addEventListener('keydown', handleKeyPress);
-        return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [isConnected, isPaused]);
+			switch (e.key) {
+				case 'ArrowUp':
+					movePaddle('up');
+					break;
+				case 'ArrowDown':
+					movePaddle('down');
+					break;
+				case ' ':
+					togglePause();
+					break;
+				case 'a':
+					toggleAutoPilot();
+					break;
+				case 'd':
+					setShowDebugPanel((prev) => !prev);
+					break;
+				default:
+					break;
+			}
+		};
 
-    return (
-        <div className="min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary p-4"
-            tabIndex={0}>
-            <div className="max-w-7xl mx-auto">
-                {/* Header Section */}
-                <div className="mb-4 flex justify-between items-center">
-                    <div>
-                        <h1 className="text-2xl font-bold">Remote Game Testing Panel</h1>
-                        <p className="text-sm">Game ID: {gameId} | Player: {playerNumber} | Status: {status}</p>
-                    </div>
-                    <div className="space-x-2">
-                        <button
-                            onClick={() => setShowDebugPanel(prev => !prev)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded"
-                        >
-                            {showDebugPanel ? 'Hide' : 'Show'} Debug
-                        </button>
-                        <button
-                            onClick={() => {
-                                gameSocketRef.current?.disconnect();
-                                navigate('/dashboard');
-                            }}
-                            className="px-4 py-2 bg-red-500 text-white rounded"
-                        >
-                            Exit Game
-                        </button>
-                    </div>
-                </div>
+		window.addEventListener('keydown', handleKeyPress);
+		return () => window.removeEventListener('keydown', handleKeyPress);
+	}, [isConnected, isPaused]);
 
-                {/* Main Content */}
-                <div className="grid grid-cols-12 gap-4">
-                    {/* Game View and Controls */}
-                    <div className="col-span-8 space-y-4">
-                        {/* Game Canvas */}
-                        <div className="bg-black rounded-lg p-4">
-                            <GameStateMonitor 
-                                gameState={gameState} 
-                                showTrails={showDebugPanel}
-                            />
-                            {showDebugPanel && <GameDebugPanel gameState={gameState} />}
-                        </div>
+	return (
+		<div
+			className="min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary p-4"
+			tabIndex={0}
+		>
+			<div className="max-w-7xl mx-auto">
+				{/* Header Section */}
+				<div className="mb-4 flex justify-between items-center">
+					<div>
+						<h1 className="text-2xl font-bold">
+							Remote Game Testing Panel
+						</h1>
+						<p className="text-sm">
+							Game ID: {gameId} | Player: {playerNumber} | Status:{' '}
+							{status}
+						</p>
+					</div>
+					<div className="space-x-2">
+						<button
+							onClick={() => setShowDebugPanel((prev) => !prev)}
+							className="px-4 py-2 bg-blue-500 text-white rounded"
+						>
+							{showDebugPanel ? 'Hide' : 'Show'} Debug
+						</button>
+						<button
+							onClick={() => {
+								gameSocketRef.current?.disconnect();
+								navigate('/dashboard');
+							}}
+							className="px-4 py-2 bg-red-500 text-white rounded"
+						>
+							Exit Game
+						</button>
+					</div>
+				</div>
 
-                        {/* Game Controls */}
-                        <div className="bg-backdrop-80 rounded-lg p-4">
-                            <div className="grid grid-cols-3 gap-4">
-                                <button
-                                    onClick={() => movePaddle('up')}
-                                    disabled={!isConnected || isPaused}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                                >
-                                    Move Up (↑)
-                                </button>
-                                <button
-                                    onClick={() => movePaddle('down')}
-                                    disabled={!isConnected || isPaused}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                                >
-                                    Move Down (↓)
-                                </button>
-                                <button
-                                    onClick={togglePause}
-                                    disabled={!isConnected}
-                                    className="px-4 py-2 bg-yellow-500 text-white rounded disabled:opacity-50"
-                                >
-                                    {isPaused ? 'Resume (Space)' : 'Pause (Space)'}
-                                </button>
-                                <button
-                                    onClick={toggleAutoPilot}
-                                    disabled={!isConnected}
-                                    className={`px-4 py-2 ${isAutoPilot ? 'bg-red-500' : 'bg-green-500'} text-white rounded disabled:opacity-50`}
-                                >
-                                    {isAutoPilot ? 'Disable AutoPilot (A)' : 'Enable AutoPilot (A)'}
-                                </button>
-                            </div>
-                        </div>
+				{/* Main Content */}
+				<div className="grid grid-cols-12 gap-4">
+					{/* Game View and Controls */}
+					<div className="col-span-8 space-y-4">
+						{/* Game Canvas */}
+						<div className="bg-black rounded-lg p-4">
+							<GameStateMonitor
+								gameState={gameState}
+								showTrails={showDebugPanel}
+							/>
+							{showDebugPanel && (
+								<GameDebugPanel gameState={gameState} />
+							)}
+						</div>
 
-                        {/* Game Stats */}
-                        <div className="bg-backdrop-80 rounded-lg p-4">
-                            <h3 className="text-lg font-bold mb-2">Game Stats</h3>
-                            <div className="grid grid-cols-4 gap-4">
-                                <div>
-                                    <p className="text-sm text-gray-400">FPS</p>
-                                    <p className="text-xl">{debugInfo.fps}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-400">Paddle Moves</p>
-                                    <p className="text-xl">{gameStats.paddleMoves}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-400">Ball Updates</p>
-                                    <p className="text-xl">{gameStats.ballPositionUpdates}</p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-400">Collisions</p>
-                                    <p className="text-xl">{gameStats.collisions}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+						{/* Game Controls */}
+						<div className="bg-backdrop-80 rounded-lg p-4">
+							<div className="grid grid-cols-3 gap-4">
+								<button
+									onClick={() => movePaddle('up')}
+									disabled={!isConnected || isPaused}
+									className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+								>
+									Move Up (↑)
+								</button>
+								<button
+									onClick={() => movePaddle('down')}
+									disabled={!isConnected || isPaused}
+									className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+								>
+									Move Down (↓)
+								</button>
+								<button
+									onClick={togglePause}
+									disabled={!isConnected}
+									className="px-4 py-2 bg-yellow-500 text-white rounded disabled:opacity-50"
+								>
+									{isPaused
+										? 'Resume (Space)'
+										: 'Pause (Space)'}
+								</button>
+								<button
+									onClick={toggleAutoPilot}
+									disabled={!isConnected}
+									className={`px-4 py-2 ${isAutoPilot ? 'bg-red-500' : 'bg-green-500'} text-white rounded disabled:opacity-50`}
+								>
+									{isAutoPilot
+										? 'Disable AutoPilot (A)'
+										: 'Enable AutoPilot (A)'}
+								</button>
+							</div>
+						</div>
 
-                    {/* Monitoring Panels */}
-                    <div className="col-span-4 space-y-4">
-                        {/* WebSocket Messages */}
-                        <div className="bg-backdrop-80 rounded-lg p-4">
-                            <h3 className="text-lg font-bold mb-2">WebSocket Messages</h3>
-                            <MessageMonitor messages={messages} />
-                        </div>
+						{/* Game Stats */}
+						<div className="bg-backdrop-80 rounded-lg p-4">
+							<h3 className="text-lg font-bold mb-2">
+								Game Stats
+							</h3>
+							<div className="grid grid-cols-4 gap-4">
+								<div>
+									<p className="text-sm text-gray-400">FPS</p>
+									<p className="text-xl">{debugInfo.fps}</p>
+								</div>
+								<div>
+									<p className="text-sm text-gray-400">
+										Paddle Moves
+									</p>
+									<p className="text-xl">
+										{gameStats.paddleMoves}
+									</p>
+								</div>
+								<div>
+									<p className="text-sm text-gray-400">
+										Ball Updates
+									</p>
+									<p className="text-xl">
+										{gameStats.ballPositionUpdates}
+									</p>
+								</div>
+								<div>
+									<p className="text-sm text-gray-400">
+										Collisions
+									</p>
+									<p className="text-xl">
+										{gameStats.collisions}
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                        {/* Event Log */}
-                        <div className="bg-backdrop-80 rounded-lg p-4">
-                            <h3 className="text-lg font-bold mb-2">Event Log</h3>
-                            <div className="bg-black bg-opacity-20 p-4 rounded overflow-auto max-h-96">
-                                {eventLog.map((entry, index) => (
-                                    <div 
-                                        key={index} 
-                                        className={`mb-2 ${
-                                            entry.type === 'error' ? 'text-red-400' :
-                                            entry.type === 'warning' ? 'text-yellow-400' :
-                                            entry.type === 'success' ? 'text-green-400' :
-                                            'text-white'
-                                        }`}
-                                    >
-                                        <span className="text-gray-400">{entry.time}</span>
-                                        <span className="ml-2">{entry.message}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+					{/* Monitoring Panels */}
+					<div className="col-span-4 space-y-4">
+						{/* WebSocket Messages */}
+						<div className="bg-backdrop-80 rounded-lg p-4">
+							<h3 className="text-lg font-bold mb-2">
+								WebSocket Messages
+							</h3>
+							<MessageMonitor messages={messages} />
+						</div>
 
-                        {/* Testing Controls */}
-                        <div className="bg-backdrop-80 rounded-lg p-4">
-                            <h3 className="text-lg font-bold mb-2">Testing Controls</h3>
-                            <GameTestingControls 
-                                onTest={(type, data) => {
-                                    if (gameSocketRef.current?.isSocketConnected()) {
-                                        gameSocketRef.current.send({ type, ...data });
-                                        addLogEntry(`Sent test: ${type}`);
-                                    }
-                                }}
-                                isConnected={isConnected}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+						{/* Event Log */}
+						<div className="bg-backdrop-80 rounded-lg p-4">
+							<h3 className="text-lg font-bold mb-2">
+								Event Log
+							</h3>
+							<div className="bg-black bg-opacity-20 p-4 rounded overflow-auto max-h-96">
+								{eventLog.map((entry, index) => (
+									<div
+										key={index}
+										className={`mb-2 ${
+											entry.type === 'error'
+												? 'text-red-400'
+												: entry.type === 'warning'
+													? 'text-yellow-400'
+													: entry.type === 'success'
+														? 'text-green-400'
+														: 'text-white'
+										}`}
+									>
+										<span className="text-gray-400">
+											{entry.time}
+										</span>
+										<span className="ml-2">
+											{entry.message}
+										</span>
+									</div>
+								))}
+							</div>
+						</div>
+
+						{/* Testing Controls */}
+						<div className="bg-backdrop-80 rounded-lg p-4">
+							<h3 className="text-lg font-bold mb-2">
+								Testing Controls
+							</h3>
+							<GameTestingControls
+								onTest={(type, data) => {
+									if (
+										gameSocketRef.current?.isSocketConnected()
+									) {
+										gameSocketRef.current.send({
+											type,
+											...data,
+										});
+										addLogEntry(`Sent test: ${type}`);
+									}
+								}}
+								isConnected={isConnected}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default RemoteGameTest;

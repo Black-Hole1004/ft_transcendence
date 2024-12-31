@@ -1,14 +1,14 @@
-import './Tournament.css'
+import './Tournament.css';
 
-import Confetti from 'react-confetti'
-import Button from '../../components/Home/Buttons/Button'
-import { useTournament } from '../../context/TournamentContext'
-import MatchWarning from '../../components/Tournament/MatchWarning'
-import ChampionCelebration from '../../components/Tournament/ChampionCelebration'
+import Confetti from 'react-confetti';
+import Button from '../../components/Home/Buttons/Button';
+import { useTournament } from '../../context/TournamentContext';
+import MatchWarning from '../../components/Tournament/MatchWarning';
+import ChampionCelebration from '../../components/Tournament/ChampionCelebration';
 
-import { useEffect, useCallback, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
-import Loader from '../../components/Loader/Loader'
+import { useEffect, useCallback, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom'; // Make sure this is included
+import Loader from '../../components/Loader/Loader';
 
 const players = [
 	{
@@ -83,11 +83,11 @@ const players = [
 		avatar: '../../../dist/assets/images/ahaloui.jpeg',
 		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png',
 	},
-]
+];
 
 const Tournament = () => {
-	const navigate = useNavigate()
-	const location = useLocation()
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const {
 		semiFinal1winner,
@@ -101,10 +101,11 @@ const Tournament = () => {
 		tournamentData,
 		setTournamentData,
 		resetTournament,
-	} = useTournament()
+	} = useTournament();
 
 	// Destructure data only if it exists
-	const [showChampionCelebration, setShowChampionCelebration] = useState(false)
+	const [showChampionCelebration, setShowChampionCelebration] =
+		useState(false);
 
 	const {
 		mode,
@@ -117,14 +118,14 @@ const Tournament = () => {
 		ballSize,
 		ballColor,
 		paddleSize,
-	} = tournamentData || {}
+	} = tournamentData || {};
 
-	const [showWarning, setShowWarning] = useState(false)
+	const [showWarning, setShowWarning] = useState(false);
 
 	const startSemiFinal1 = () => {
-		setShowWarning(true)
+		setShowWarning(true);
 		setTimeout(() => {
-			setShowWarning(false)
+			setShowWarning(false);
 			navigate('/local-game-tour', {
 				state: {
 					mode,
@@ -137,15 +138,15 @@ const Tournament = () => {
 					paddleSize,
 					tournamentRound: 'semifinal1',
 				},
-			})
-			setTournamentState('semifinal1')
-		}, 3000) // 3 seconds delay
-	}
+			});
+			setTournamentState('semifinal1');
+		}, 3000); // 3 seconds delay
+	};
 
 	const startSemiFinal2 = () => {
-		setShowWarning(true)
+		setShowWarning(true);
 		setTimeout(() => {
-			setShowWarning(false)
+			setShowWarning(false);
 			navigate('/local-game-tour', {
 				state: {
 					mode,
@@ -158,17 +159,17 @@ const Tournament = () => {
 					paddleSize,
 					tournamentRound: 'semifinal2',
 				},
-			})
-			setTournamentState('semifinal2')
-		}, 3000)
-	}
+			});
+			setTournamentState('semifinal2');
+		}, 3000);
+	};
 
 	const startFinal = () => {
-		if (!semiFinal1winner || !semiFinal2winner) return
+		if (!semiFinal1winner || !semiFinal2winner) return;
 
-		setShowWarning(true)
+		setShowWarning(true);
 		setTimeout(() => {
-			setShowWarning(false)
+			setShowWarning(false);
 			navigate('/local-game-tour', {
 				state: {
 					mode,
@@ -181,103 +182,112 @@ const Tournament = () => {
 					paddleSize,
 					tournamentRound: 'final',
 				},
-			})
-		}, 3000)
-	}
+			});
+		}, 3000);
+	};
 
 	useEffect(() => {
 		if (finalWinner && tournamentState === 'completed') {
-			setShowChampionCelebration(true)
+			setShowChampionCelebration(true);
 			setTimeout(() => {
-				setShowChampionCelebration(false)
-			}, 5000)
+				setShowChampionCelebration(false);
+			}, 5000);
 		}
-	}, [finalWinner, tournamentState])
+	}, [finalWinner, tournamentState]);
 
 	const handleTournamentAction = () => {
 		switch (tournamentState) {
 			case 'not_started':
-				startSemiFinal1()
-				break
+				startSemiFinal1();
+				break;
 			case 'semifinal1':
 				// Wait for game to complete
-				break
+				break;
 			case 'semifinal2':
-				startSemiFinal2()
-				break
+				startSemiFinal2();
+				break;
 			case 'final':
-				startFinal()
-				break
+				startFinal();
+				break;
 			case 'completed':
-				resetTournament()
-				navigate('/dashboard')
-				break
+				resetTournament();
+				navigate('/dashboard');
+				break;
 			default:
-				break
+				break;
 		}
-	}
+	};
 
 	const getButtonText = () => {
 		switch (tournamentState) {
 			case 'not_started':
-				return 'Start Tournament'
+				return 'Start Tournament';
 			case 'semifinal1':
-				return 'Playing Semifinal 1...'
+				return 'Playing Semifinal 1...';
 			case 'semifinal2':
-				return 'Start Semifinal 2'
+				return 'Start Semifinal 2';
 			case 'final':
-				return 'Start Final Match'
+				return 'Start Final Match';
 			case 'completed':
-				return 'Tournament Complete'
+				return 'Tournament Complete';
 			default:
-				return 'Start Tournament'
+				return 'Start Tournament';
 		}
-	}
+	};
 
 	useEffect(() => {
 		// Cleanup only when exiting tournament completely
 		return () => {
 			// Check if navigating to game or truly exiting
 			if (!window.location.pathname.includes('local-game-tour')) {
-				resetTournament()
-				setTournamentData(null)
+				resetTournament();
+				setTournamentData(null);
 			}
-		}
-	}, [])
+		};
+	}, []);
 
 	useEffect(() => {
 		// Check and store tournament data
-		console.log(location.state)
+		console.log(location.state);
 		if (location.state && !tournamentData) {
-			console.log('Setting tournament data from location state...')
-			setTournamentData(location.state)
+			console.log('Setting tournament data from location state...');
+			setTournamentData(location.state);
 		}
 		// Handle navigation if no data is available
-		else if (!location.state && !tournamentData && tournamentState === 'not_started') {
-			console.log('No tournament data found, navigating to setup...')
-			navigate('/CustomTournament')
+		else if (
+			!location.state &&
+			!tournamentData &&
+			tournamentState === 'not_started'
+		) {
+			console.log('No tournament data found, navigating to setup...');
+			navigate('/CustomTournament');
 		}
-	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState])
+	}, [
+		location.state,
+		tournamentData,
+		setTournamentData,
+		navigate,
+		tournamentState,
+	]);
 
 	if (!tournamentData) {
-		return <Loader />
+		return <Loader />;
 	}
 
 	return (
-		<section className='tournament flex flex-col items-center'>
-			<div className='w-[96%] flex flex-col overflow-hidden py-8'>
-				<h1
-					className='font-dreamscape drop-shadow-[0_2px_10px_rgba(251,251,238,0.8)]'
-				>
+		<section className="tournament flex flex-col items-center">
+			<div className="w-[96%] flex flex-col overflow-hidden py-8">
+				<h1 className="font-dreamscape drop-shadow-[0_2px_10px_rgba(251,251,238,0.8)]">
 					CELESTIAL PONG CLASH
 				</h1>
-				<p className='description text-primary font-regular text-justify'>
-					The Celestial Pong Clash invites players from across the galaxy to
-					compete in intense interstellar battles, where victory depends on
-					mastering precision and strategy in the vast cosmic realm.
+				<p className="description text-primary font-regular text-justify">
+					The Celestial Pong Clash invites players from across the
+					galaxy to compete in intense interstellar battles, where
+					victory depends on mastering precision and strategy in the
+					vast cosmic realm.
 				</p>
 			</div>
 		</section>
-	)
-}
-export default Tournament
+	);
+};
+export default Tournament;

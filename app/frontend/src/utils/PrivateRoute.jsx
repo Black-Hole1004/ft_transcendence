@@ -1,13 +1,11 @@
-import useAuth from "../context/AuthContext"
-import { Navigate } from "react-router-dom"
-import React, { } from "react"
-import { use } from "react";
-import { useEffect } from "react";
-
+import useAuth from '../context/AuthContext';
+import { Navigate } from 'react-router-dom';
+import React from 'react';
+import { use } from 'react';
+import { useEffect } from 'react';
 
 const PrivateRoute = ({ children }) => {
-
-	const { authTokens } = useAuth()
+	const { authTokens } = useAuth();
 	if (authTokens && authTokens.access_token) {
 		return children;
 	} else {
@@ -15,4 +13,4 @@ const PrivateRoute = ({ children }) => {
 	}
 };
 
-export default PrivateRoute
+export default PrivateRoute;

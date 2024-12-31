@@ -1,30 +1,26 @@
-import Alert from '../Alert'
-import Header from './Header'
-import { useEffect , useState} from 'react'
-import { Outlet } from 'react-router-dom'
-import { useAlert } from '../AlertContext'
-import useAuth from '../../context/AuthContext'
-import Cookies from 'js-cookie'
-import { createContext, useContext } from 'react'
-
+import Alert from '../Alert';
+import Header from './Header';
+import { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useAlert } from '../AlertContext';
+import useAuth from '../../context/AuthContext';
+import Cookies from 'js-cookie';
+import { createContext, useContext } from 'react';
 
 const USER_API = import.meta.env.VITE_USER_API;
 const WP_NOTIFY = import.meta.env.VITE_WP_NOTIFY;
 const WP_FRINEDS = import.meta.env.VITE_WP_FRINEDS;
 const WP_NOTIFICATIONS = import.meta.env.VITE_WP_NOTIFICATIONS;
-const SocketContext = createContext()
-export const useSocket = () => useContext(SocketContext)
-
+const SocketContext = createContext();
+export const useSocket = () => useContext(SocketContext);
 
 function Layout() {
-
-	const { authTokens, getAuthHeaders } = useAuth()
+	const { authTokens, getAuthHeaders } = useAuth();
 	const [refreshData, setRefreshData] = useState(0);
 	const [socket_notify, setSocketNotify] = useState(null);
 	const [socket_friends, setSocketFriends] = useState(null);
 	const [socket_notification, setSocketNotification] = useState(null);
 	const [notifications, setNotifications] = useState([]);
-
 
 	const refreshUserData = () => {
 		console.log('------- Refreshing user data -------');
@@ -43,58 +39,52 @@ function Layout() {
 		new_password: '',
 		confirm_password: '',
 		profile_picture: '',
-	})
+	});
 
-	const [first_name, setFirst_name] = useState('')
-	const [last_name, setLast_name] = useState('')
-	const [email_, setEmail_] = useState('')
-	const [mobile_number, setMobile_number] = useState('')
-	const [username, setUsername] = useState('')
-	const [display_name, setDisplay_name] = useState('')
-	const [bio, setBio] = useState('')
-	const [profile_picture, setProfile_picture] = useState('')
-
+	const [first_name, setFirst_name] = useState('');
+	const [last_name, setLast_name] = useState('');
+	const [email_, setEmail_] = useState('');
+	const [mobile_number, setMobile_number] = useState('');
+	const [username, setUsername] = useState('');
+	const [display_name, setDisplay_name] = useState('');
+	const [bio, setBio] = useState('');
+	const [profile_picture, setProfile_picture] = useState('');
 
 	const fetchUser = async () => {
 		try {
 			const response = await fetch(USER_API, {
 				method: 'GET',
-				headers: getAuthHeaders()
-			})
+				headers: getAuthHeaders(),
+			});
 			const data = await response.json();
 			if (response.ok) {
 				console.log('Successfully fetched user data');
-				return (data)
+				return data;
 			} else {
 				console.log('Failed to fetch user data');
-				return (null)
+				return null;
 			}
-		}
-		catch (error) {
+		} catch (error) {
 			console.log(error);
-			return (null);
+			return null;
 		}
 	};
 
 	useEffect(() => {
-
 		if (!authTokens?.access_token) {
-			logout();  // Redirect to login
+			logout(); // Redirect to login
 			return;
 		}
 		const fetchData = async () => {
 			const fetchedData = await fetchUser();
-			if (fetchedData)
-				setuser_data(fetchedData);
-			else
-				console.log('-- Failed to fetch user data --');
+			if (fetchedData) setuser_data(fetchedData);
+			else console.log('-- Failed to fetch user data --');
 		};
 		fetchData();
 	}, [authTokens, refreshData]);
 
 	useEffect(() => {
-		if (!user_data)
-			return;
+		if (!user_data) return;
 		setFirst_name(user_data.first_name);
 		setLast_name(user_data.last_name);
 		setEmail_(user_data.email);
@@ -106,11 +96,12 @@ function Layout() {
 	}, [user_data]);
 
 	const access_token = Cookies.get('access_token');
-	if (!access_token)
-		return;
+	if (!access_token) return;
 
 	useEffect(() => {
-		const newSocket = new WebSocket(WP_NOTIFY+'?access_token='+access_token);
+		const newSocket = new WebSocket(
+			WP_NOTIFY + '?access_token=' + access_token,
+		);
 
 		newSocket.onopen = () => {
 			console.log('---- WebSocket Connected from Notify Consumer ----');
@@ -136,10 +127,14 @@ function Layout() {
 	}, [authTokens?.access_token]);
 
 	useEffect(() => {
-		const newSocket = new WebSocket(WP_FRINEDS+'?access_token='+access_token);
+		const newSocket = new WebSocket(
+			WP_FRINEDS + '?access_token=' + access_token,
+		);
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from AcceptFriendsRequest Consumer ----');
+			console.log(
+				'---- WebSocket Connected from AcceptFriendsRequest Consumer ----',
+			);
 		};
 		newSocket.onmessage = (event) => {
 			const data = JSON.parse(event.data);
@@ -147,7 +142,10 @@ function Layout() {
 		};
 
 		newSocket.onclose = (event) => {
-			console.log('WebSocket Closed form AcceptFriendsRequest Consumer:', event);
+			console.log(
+				'WebSocket Closed form AcceptFriendsRequest Consumer:',
+				event,
+			);
 		};
 
 		newSocket.onerror = (error) => {
@@ -162,10 +160,14 @@ function Layout() {
 	}, [authTokens?.access_token]);
 
 	useEffect(() => {
-		const newSocket = new WebSocket(WP_NOTIFICATIONS+'?access_token='+access_token);
+		const newSocket = new WebSocket(
+			WP_NOTIFICATIONS + '?access_token=' + access_token,
+		);
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from Notifications Consumer ----');
+			console.log(
+				'---- WebSocket Connected from Notifications Consumer ----',
+			);
 		};
 
 		newSocket.onmessage = (event) => {
@@ -184,22 +186,20 @@ function Layout() {
 			]);
 		};
 
-
 		newSocket.onclose = (event) => {
 			console.log('WebSocket Closed form Notifications Consumer:', event);
-		}
+		};
 
 		newSocket.onerror = (error) => {
 			console.error('WebSocket Error:', error);
-		}
+		};
 
 		setSocketNotification(newSocket);
 
 		return () => {
 			newSocket.close();
-		}
-	}
-		, [authTokens?.access_token]);
+		};
+	}, [authTokens?.access_token]);
 
 	const sockets = {
 		socket_notify: socket_notify,
@@ -208,12 +208,11 @@ function Layout() {
 		refreshUserData: refreshUserData,
 		fetchUser: fetchUser,
 		profile_picture: profile_picture,
-	}
+	};
 
 	return (
 		<SocketContext.Provider value={sockets}>
-			<div className='relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'>
-				
+			<div className="relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden">
 				<Header
 					user_data={user_data}
 					notifications={notifications}
@@ -222,22 +221,30 @@ function Layout() {
 				<Outlet />
 			</div>
 		</SocketContext.Provider>
-	)
+	);
 }
 
 export const AlertWrapper = () => {
-	const { showAlert, alertType, alertMessage, dismissAlert } = useAlert()
+	const { showAlert, alertType, alertMessage, dismissAlert } = useAlert();
 
 	useEffect(() => {
 		if (showAlert) {
 			const timer = setTimeout(() => {
-				dismissAlert()
-			}, 5400)
-			return () => clearTimeout(timer)
+				dismissAlert();
+			}, 5400);
+			return () => clearTimeout(timer);
 		}
-	}, [showAlert, dismissAlert])
+	}, [showAlert, dismissAlert]);
 
-	return showAlert && <Alert type={alertType} message={alertMessage} onClose={dismissAlert} />
-}
+	return (
+		showAlert && (
+			<Alert
+				type={alertType}
+				message={alertMessage}
+				onClose={dismissAlert}
+			/>
+		)
+	);
+};
 
-export default Layout
+export default Layout;

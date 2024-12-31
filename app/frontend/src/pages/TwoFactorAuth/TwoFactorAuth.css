@@ -9,7 +9,7 @@
 }
 
 .paragraph {
-	font-size: clamp(0.75rem, 0.136vw + 0.724rem, 0.938rem)
+	font-size: clamp(0.75rem, 0.136vw + 0.724rem, 0.938rem);
 }
 
 .sep {

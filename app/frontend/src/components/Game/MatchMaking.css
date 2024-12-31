@@ -1,54 +1,56 @@
 .loading-indicator {
-    position: relative;
-    width: 500px;  /* Increased from 200px */
-    height: 100px;
-    margin: 100px auto;
+	position: relative;
+	width: 500px; /* Increased from 200px */
+	height: 100px;
+	margin: 100px auto;
 }
 
 .paddle {
-    position: absolute;
-    width: 18px;
-    height: 100px;
-    background-color: #E6DDC6;
-    border-radius: 10px;
+	position: absolute;
+	width: 18px;
+	height: 100px;
+	background-color: #e6ddc6;
+	border-radius: 10px;
 }
 
 .paddle.left {
-    left: 0;
-    animation: paddle-move 1s infinite;
+	left: 0;
+	animation: paddle-move 1s infinite;
 }
 
 .paddle.right {
-    right: 0;
-    animation: paddle-move 1s infinite reverse;
+	right: 0;
+	animation: paddle-move 1s infinite reverse;
 }
 
 .ball {
-    position: absolute;
-    width: 25px;
-    height: 20px;
-    background-color: #E6DDC6;
-    border-radius: 50%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    animation: ball-move 1s infinite;
+	position: absolute;
+	width: 25px;
+	height: 20px;
+	background-color: #e6ddc6;
+	border-radius: 50%;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	animation: ball-move 1s infinite;
 }
 
 @keyframes paddle-move {
-    0%, 100% {
-        transform: translateY(-20px);
-    }
-    50% {
-        transform: translateY(20px);
-    }
+	0%,
+	100% {
+		transform: translateY(-20px);
+	}
+	50% {
+		transform: translateY(20px);
+	}
 }
 
 @keyframes ball-move {
-    0%, 100% {
-        left: 20%;
-    }
-    50% {
-        left: 80%;
-    }
+	0%,
+	100% {
+		left: 20%;
+	}
+	50% {
+		left: 80%;
+	}
 }

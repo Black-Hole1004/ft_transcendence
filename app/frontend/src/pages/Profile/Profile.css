@@ -88,19 +88,11 @@
 	height: clamp(7.5rem, 2.876vw + 6.961rem, 11.563rem);
 }
 
-
 /* 1024 - 2560 */
 .win-rate {
 	width: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
 	height: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
 }
-
-
-
-
-
-
-
 
 /* Match history */
 
@@ -146,10 +138,9 @@
 	font-size: clamp(0.5rem, 0.398vw + 0.425rem, 1.063rem);
 }
 
-
 /* .chart-card { */
-	/* width: clamp(18.625rem, 41.77vw + 10.793rem, 37.5rem); */
-	/* height: clamp(9.375rem, 20.747vw + 5.485rem, 18.75rem); */
-	/* width: clamp(25rem, 19.531vw + 12.5rem, 43.75rem); */
-	/* height: clamp(8.75rem, 12.37vw + 0.833rem, 20.625rem); */
+/* width: clamp(18.625rem, 41.77vw + 10.793rem, 37.5rem); */
+/* height: clamp(9.375rem, 20.747vw + 5.485rem, 18.75rem); */
+/* width: clamp(25rem, 19.531vw + 12.5rem, 43.75rem); */
+/* height: clamp(8.75rem, 12.37vw + 0.833rem, 20.625rem); */
 /* } */

@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import useAuth from '../context/AuthContext';
 
-
 const OauthHandler = () => {
 	const { setAuthTokens, setUser } = useAuth();
 	const navigate = useNavigate();
@@ -19,11 +18,11 @@ const OauthHandler = () => {
 			Cookies.set('refresh_token', JSON.stringify(refreshToken));
 			const data = {
 				access_token: accessToken,
-				refresh_token: refreshToken
-			}
-			setAuthTokens(data)
+				refresh_token: refreshToken,
+			};
+			setAuthTokens(data);
 			setUser(jwtDecode(accessToken));
-			navigate("/dashboard", { replace: true });
+			navigate('/dashboard', { replace: true });
 			// window.location.reload();
 		}
 	}, [setAuthTokens, navigate]);

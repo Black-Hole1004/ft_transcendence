@@ -1,21 +1,29 @@
-const Message = ({ index, currentLoggedInUserId, message, recipientProfileImage }) => {
-	let content = message.content
-	let senderId = message.sender_id
-	let time = new Date(message.sent_datetime)
+const Message = ({
+	index,
+	currentLoggedInUserId,
+	message,
+	recipientProfileImage,
+}) => {
+	let content = message.content;
+	let senderId = message.sender_id;
+	let time = new Date(message.sent_datetime);
 
-	const messageTime = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+	const messageTime = time.toLocaleTimeString([], {
+		hour: '2-digit',
+		minute: '2-digit',
+	});
 	return (
 		<div
 			key={index}
-			id='message'
+			id="message"
 			className={`flex items-start lg:gap-2 gap-1 px-2 w-full
 			${senderId === currentLoggedInUserId ? 'justify-end' : ''}`}
 		>
 			{currentLoggedInUserId !== senderId && (
 				<img
 					src={`${recipientProfileImage}`}
-					className='rounded-full object-cover ring-1 ring-primary message-image select-none'
-					alt='friend-image'
+					className="rounded-full object-cover ring-1 ring-primary message-image select-none"
+					alt="friend-image"
 				/>
 			)}
 			<div className={`flex flex-col ml:max-w-[60%] max-w-[80%]`}>
@@ -25,12 +33,12 @@ const Message = ({ index, currentLoggedInUserId, message, recipientProfileImage 
 				>
 					{content}
 				</p>
-				<p className='text-light font-regular message-time self-end select-none'>
+				<p className="text-light font-regular message-time self-end select-none">
 					{messageTime}
 				</p>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Message
+export default Message;

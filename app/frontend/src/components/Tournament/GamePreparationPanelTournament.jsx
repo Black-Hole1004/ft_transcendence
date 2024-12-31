@@ -1,4 +1,4 @@
-import Inputs from '../Game/Local/Inputs'
+import Inputs from '../Game/Local/Inputs';
 
 const GamePreparationPanelT = ({
 	players,
@@ -10,36 +10,46 @@ const GamePreparationPanelT = ({
 	onGameConfigUpdate,
 }) => {
 	return (
-		<div className='flex-1 flex flex-col lp:pl-4'>
-			<h3 className='title-size font-heavy text-2xl mt-5 mb-6'>Prepare for Battle</h3>
+		<div className="flex-1 flex flex-col lp:pl-4">
+			<h3 className="title-size font-heavy text-2xl mt-5 mb-6">
+				Prepare for Battle
+			</h3>
 			<div
 				onSubmit={onSubmit}
-				className='flex-1 flex flex-col max-lp:gap-12 justify-between'
+				className="flex-1 flex flex-col max-lp:gap-12 justify-between"
 			>
-				<div className='flex flex-col gap-4'>
-					<div className='flex justify-between'>
+				<div className="flex flex-col gap-4">
+					<div className="flex justify-between">
 						<Inputs
 							id={'Player 1'}
 							value={players.player1}
-							setValue={(field, value) => onPlayerUpdate('player1', field, value)}
-							/>
+							setValue={(field, value) =>
+								onPlayerUpdate('player1', field, value)
+							}
+						/>
 						<Inputs
 							id={'Player 2'}
 							value={players.player2}
-							setValue={(field, value) => onPlayerUpdate('player2', field, value)}
-							/>
+							setValue={(field, value) =>
+								onPlayerUpdate('player2', field, value)
+							}
+						/>
 					</div>
-					<div className='flex justify-between'>
+					<div className="flex justify-between">
 						<Inputs
 							id={'Player 3'}
 							value={players.player3}
-							setValue={(field, value) => onPlayerUpdate('player3', field, value)}
+							setValue={(field, value) =>
+								onPlayerUpdate('player3', field, value)
+							}
 						/>
 						<Inputs
 							id={'Player 4'}
 							value={players.player4}
-							setValue={(field, value) => onPlayerUpdate('player4', field, value)}
-							/>
+							setValue={(field, value) =>
+								onPlayerUpdate('player4', field, value)
+							}
+						/>
 					</div>
 					{/* <div className='self-end'>
 						<Inputs
@@ -53,7 +63,7 @@ const GamePreparationPanelT = ({
 							/>
 					</div> */}
 				</div>
-				<div className='self-end flex flex-col gap-2'>
+				<div className="self-end flex flex-col gap-2">
 					{/* <button
 						type='button'
 						onClick={onRandomize}
@@ -81,7 +91,7 @@ const GamePreparationPanelT = ({
 				</div>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default GamePreparationPanelT
+export default GamePreparationPanelT;

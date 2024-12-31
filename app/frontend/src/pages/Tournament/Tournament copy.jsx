@@ -1,13 +1,13 @@
-import React from 'react'
-import Button from '../../components/Home/Buttons/Button'
-import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
-import { useTournament } from '../../context/TournamentContext'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import { useCallback } from 'react'
-import Confetti from 'react-confetti'
-import ChampionCelebration from '../../components/Tournament/ChampionCelebration'
-import MatchWarning from '../../components/Tournament/MatchWarning'
+import React from 'react';
+import Button from '../../components/Home/Buttons/Button';
+import { useLocation, useNavigate } from 'react-router-dom'; // Make sure this is included
+import { useTournament } from '../../context/TournamentContext';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useCallback } from 'react';
+import Confetti from 'react-confetti';
+import ChampionCelebration from '../../components/Tournament/ChampionCelebration';
+import MatchWarning from '../../components/Tournament/MatchWarning';
 
 const players = [
 	{
@@ -82,11 +82,11 @@ const players = [
 		avatar: '../../../dist/assets/images/ahaloui.jpeg',
 		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png',
 	},
-]
+];
 
 const Tournament = () => {
-	const navigate = useNavigate()
-	const location = useLocation()
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const {
 		semiFinal1winner,
@@ -100,10 +100,11 @@ const Tournament = () => {
 		tournamentData,
 		setTournamentData,
 		resetTournament,
-	} = useTournament()
+	} = useTournament();
 
 	// Destructure data only if it exists
-	const [showChampionCelebration, setShowChampionCelebration] = useState(false)
+	const [showChampionCelebration, setShowChampionCelebration] =
+		useState(false);
 
 	const {
 		mode,
@@ -116,14 +117,14 @@ const Tournament = () => {
 		ballSize,
 		ballColor,
 		paddleSize,
-	} = tournamentData || {}
+	} = tournamentData || {};
 
-	const [showWarning, setShowWarning] = useState(false)
+	const [showWarning, setShowWarning] = useState(false);
 
 	const startSemiFinal1 = () => {
-		setShowWarning(true)
+		setShowWarning(true);
 		setTimeout(() => {
-			setShowWarning(false)
+			setShowWarning(false);
 			navigate('/local-game-tour', {
 				state: {
 					mode,
@@ -136,15 +137,15 @@ const Tournament = () => {
 					paddleSize,
 					tournamentRound: 'semifinal1',
 				},
-			})
-			setTournamentState('semifinal1')
-		}, 3000) // 3 seconds delay
-	}
+			});
+			setTournamentState('semifinal1');
+		}, 3000); // 3 seconds delay
+	};
 
 	const startSemiFinal2 = () => {
-		setShowWarning(true)
+		setShowWarning(true);
 		setTimeout(() => {
-			setShowWarning(false)
+			setShowWarning(false);
 			navigate('/local-game-tour', {
 				state: {
 					mode,
@@ -157,17 +158,17 @@ const Tournament = () => {
 					paddleSize,
 					tournamentRound: 'semifinal2',
 				},
-			})
-			setTournamentState('semifinal2')
-		}, 3000)
-	}
+			});
+			setTournamentState('semifinal2');
+		}, 3000);
+	};
 
 	const startFinal = () => {
-		if (!semiFinal1winner || !semiFinal2winner) return
+		if (!semiFinal1winner || !semiFinal2winner) return;
 
-		setShowWarning(true)
+		setShowWarning(true);
 		setTimeout(() => {
-			setShowWarning(false)
+			setShowWarning(false);
 			navigate('/local-game-tour', {
 				state: {
 					mode,
@@ -180,91 +181,101 @@ const Tournament = () => {
 					paddleSize,
 					tournamentRound: 'final',
 				},
-			})
-		}, 3000)
-	}
+			});
+		}, 3000);
+	};
 
 	useEffect(() => {
 		if (finalWinner && tournamentState === 'completed') {
-			setShowChampionCelebration(true)
+			setShowChampionCelebration(true);
 			setTimeout(() => {
-				setShowChampionCelebration(false)
-			}, 5000)
+				setShowChampionCelebration(false);
+			}, 5000);
 		}
-	}, [finalWinner, tournamentState])
+	}, [finalWinner, tournamentState]);
 
 	const handleTournamentAction = () => {
 		switch (tournamentState) {
 			case 'not_started':
-				startSemiFinal1()
-				break
+				startSemiFinal1();
+				break;
 			case 'semifinal1':
 				// Wait for game to complete
-				break
+				break;
 			case 'semifinal2':
-				startSemiFinal2()
-				break
+				startSemiFinal2();
+				break;
 			case 'final':
-				startFinal()
-				break
+				startFinal();
+				break;
 			case 'completed':
-				resetTournament()
-				navigate('/dashboard')
-				break
+				resetTournament();
+				navigate('/dashboard');
+				break;
 			default:
-				break
+				break;
 		}
-	}
+	};
 
 	const getButtonText = () => {
 		switch (tournamentState) {
 			case 'not_started':
-				return 'Start Tournament'
+				return 'Start Tournament';
 			case 'semifinal1':
-				return 'Playing Semifinal 1...'
+				return 'Playing Semifinal 1...';
 			case 'semifinal2':
-				return 'Start Semifinal 2'
+				return 'Start Semifinal 2';
 			case 'final':
-				return 'Start Final Match'
+				return 'Start Final Match';
 			case 'completed':
-				return 'Tournament Complete'
+				return 'Tournament Complete';
 			default:
-				return 'Start Tournament'
+				return 'Start Tournament';
 		}
-	}
+	};
 
 	useEffect(() => {
 		// Cleanup only when exiting tournament completely
 		return () => {
 			// Check if navigating to game or truly exiting
 			if (!window.location.pathname.includes('local-game-tour')) {
-				resetTournament()
-				setTournamentData(null)
+				resetTournament();
+				setTournamentData(null);
 			}
-		}
-	}, [])
+		};
+	}, []);
 
 	useEffect(() => {
 		// Check and store tournament data
-		console.log(location.state)
+		console.log(location.state);
 		if (location.state && !tournamentData) {
-			console.log('Setting tournament data from location state...')
-			setTournamentData(location.state)
+			console.log('Setting tournament data from location state...');
+			setTournamentData(location.state);
 		}
 		// Handle navigation if no data is available
-		else if (!location.state && !tournamentData && tournamentState === 'not_started') {
-			console.log('No tournament data found, navigating to setup...')
-			navigate('/CustomTournament')
+		else if (
+			!location.state &&
+			!tournamentData &&
+			tournamentState === 'not_started'
+		) {
+			console.log('No tournament data found, navigating to setup...');
+			navigate('/CustomTournament');
 		}
-	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState])
+	}, [
+		location.state,
+		tournamentData,
+		setTournamentData,
+		navigate,
+		tournamentState,
+	]);
 
 	if (!tournamentData) {
-		return <Loader />
+		return <Loader />;
 	}
 
 	return (
-		<section className='flex justify-center'>
-			<div className='flex flex-row items-start justify-center min-h-screen overflow-hidden'>
+		<section className="flex justify-center">
+			<div className="flex flex-row items-start justify-center min-h-screen overflow-hidden">
 				{/* Champion celebration */}
 				{showChampionCelebration && finalWinner && (
 					<>
@@ -273,17 +284,22 @@ const Tournament = () => {
 							height={window.innerHeight}
 							numberOfPieces={200}
 							recycle={false}
-							colors={['#FFD700', '#FFA500', '#FF8C00', '#FF7F50']}
+							colors={[
+								'#FFD700',
+								'#FFA500',
+								'#FF8C00',
+								'#FF7F50',
+							]}
 						/>
 						<ChampionCelebration winner={finalWinner} />
 					</>
 				)}
 
 				{/* start missing part */}
-				<div className='w-[35%] flex flex-col overflow-hidden  p-8'>
-					<div className=''>
+				<div className="w-[35%] flex flex-col overflow-hidden  p-8">
+					<div className="">
 						<h1
-							className='text-6xl font-dreamscape'
+							className="text-6xl font-dreamscape"
 							style={{
 								textShadow:
 									'0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)',
@@ -291,15 +307,16 @@ const Tournament = () => {
 						>
 							CELESTIAL PONG CLASH
 						</h1>
-						<div className='flex flex-col justify-center'>
-							<p className='text-gray-300 text-base font-medium text-justify pr-40'>
-								The Celestial Pong Clash invites players from across the galaxy to
-								compete in intense interstellar battles, where victory depends on
-								mastering precision and strategy in the vast cosmic realm.
+						<div className="flex flex-col justify-center">
+							<p className="text-gray-300 text-base font-medium text-justify pr-40">
+								The Celestial Pong Clash invites players from
+								across the galaxy to compete in intense
+								interstellar battles, where victory depends on
+								mastering precision and strategy in the vast
+								cosmic realm.
 							</p>
 						</div>
 					</div>
-
 				</div>
 				{/* end missing part */}
 
@@ -323,184 +340,198 @@ const Tournament = () => {
 					/>
 				)}
 
-				<div className='flex flex-col border rounded-3xl mt-20 pb-8 pl-16 w-[800px] h-[1100px]'>
+				<div className="flex flex-col border rounded-3xl mt-20 pb-8 pl-16 w-[800px] h-[1100px]">
 					{/* first partie of tournament */}
-					<div className=' flex-1 flex flex-row relative'>
+					<div className=" flex-1 flex flex-row relative">
 						{/* first column */}
-						<div className=' flex flex-col justify-around'>
-							<div className=''>
+						<div className=" flex flex-col justify-around">
+							<div className="">
 								<img
 									className={`w-24 h-24 rounded-full border-2 ${
 										tournamentState === 'semifinal1'
 											? 'border-yellow-400'
 											: 'border-white'
 									}`}
-									src='../../../dist/assets/images/avatar.jpg'
-									alt='avatar'
+									src="../../../dist/assets/images/avatar.jpg"
+									alt="avatar"
 								/>
-								<p className='text-white text-center'>{player1.name}</p>
+								<p className="text-white text-center">
+									{player1.name}
+								</p>
 							</div>
 
-							<div className=''>
+							<div className="">
 								<img
 									className={`w-24 h-24 rounded-full border-2 ${
 										tournamentState === 'semifinal1'
 											? 'border-yellow-400'
 											: 'border-white'
 									}`}
-									src='../../../dist/assets/images/avatar.jpg'
-									alt='avatar'
+									src="../../../dist/assets/images/avatar.jpg"
+									alt="avatar"
 								/>
-								<p className='text-white text-center'>{player2.name}</p>
+								<p className="text-white text-center">
+									{player2.name}
+								</p>
 							</div>
 						</div>
 						{/* second column */}
-						<div className='w-24 h-full flex flex-col'>
-							<div className=' flex-1'></div>
-							<div className='border-t-2 border-r-2 border-white flex-1'></div>
-							<div className='border-b-2 border-r-2 border-white flex-1'></div>
-							<div className='flex-1'></div>
+						<div className="w-24 h-full flex flex-col">
+							<div className=" flex-1"></div>
+							<div className="border-t-2 border-r-2 border-white flex-1"></div>
+							<div className="border-b-2 border-r-2 border-white flex-1"></div>
+							<div className="flex-1"></div>
 						</div>
 
 						{/* third column */}
-						<div className='w-24 flex flex-col'>
-							<div className='flex-1'></div>
-							<div className='flex-1'></div>
-							<div className='border-t-2 border-white flex-1'></div>
-							<div className='flex-1'> </div>
+						<div className="w-24 flex flex-col">
+							<div className="flex-1"></div>
+							<div className="flex-1"></div>
+							<div className="border-t-2 border-white flex-1"></div>
+							<div className="flex-1"> </div>
 						</div>
 
 						{/* fourth column */}
-						<div className=' w-24 flex flex-col'>
-							<div className=' flex-1'></div>
-							<div className='flex-1 flex flex-col justify-center items-center'>
+						<div className=" w-24 flex flex-col">
+							<div className=" flex-1"></div>
+							<div className="flex-1 flex flex-col justify-center items-center">
 								<img
-									className='w-24 h-24 rounded-full border-2 border-white'
+									className="w-24 h-24 rounded-full border-2 border-white"
 									src={
 										semiFinal1winner
 											? '../../../dist/assets/images/avatar.jpg'
 											: '../../../dist/assets/images/question_mark.jpeg'
 									}
-									alt='avatar'
+									alt="avatar"
 								/>
-								<p className='text-white text-center'>
-									{semiFinal1winner ? semiFinal1winner.name : 'unknown'}
+								<p className="text-white text-center">
+									{semiFinal1winner
+										? semiFinal1winner.name
+										: 'unknown'}
 								</p>
 							</div>
-							<div className=' flex-1'> </div>
+							<div className=" flex-1"> </div>
 						</div>
 
 						{/* fifth column */}
-						<div className='w-24 h-full flex flex-col'>
-							<div className=' flex-1'></div>
-							<div className='flex-1'></div>
-							<div className='border-t-2 border-r-2 border-white flex-1'></div>
-							<div className='border-r-2 flex-1'></div>
+						<div className="w-24 h-full flex flex-col">
+							<div className=" flex-1"></div>
+							<div className="flex-1"></div>
+							<div className="border-t-2 border-r-2 border-white flex-1"></div>
+							<div className="border-r-2 flex-1"></div>
 						</div>
 
 						{/* sixth column */}
-						<div className='border-b border-white w-24 h-full flex flex-col'></div>
+						<div className="border-b border-white w-24 h-full flex flex-col"></div>
 
 						{/* seventh column */}
-						<div className='w-24 h-full flex flex-col absolute top-1/2 right-24 justify-center '>
+						<div className="w-24 h-full flex flex-col absolute top-1/2 right-24 justify-center ">
 							<img
-								className='w-24 h-24 rounded-full border-2 border-white'
+								className="w-24 h-24 rounded-full border-2 border-white"
 								src={
 									finalWinner
 										? '../../../dist/assets/images/avatar.jpg'
 										: '../../../dist/assets/images/question_mark.jpeg'
 								}
-								alt='avatar'
+								alt="avatar"
 							/>
-							<p className='text-white text-center'>
+							<p className="text-white text-center">
 								{finalWinner ? finalWinner.name : 'unknown'}
 							</p>
 						</div>
 					</div>
 
 					{/* second partie of tournament */}
-					<div className=' flex-1 flex flex-row'>
+					<div className=" flex-1 flex flex-row">
 						{/* first column */}
-						<div className=' flex flex-col justify-around'>
-							<div className=''>
+						<div className=" flex flex-col justify-around">
+							<div className="">
 								<img
 									className={`w-24 h-24 rounded-full border-2 ${
 										tournamentState === 'semifinal1'
 											? 'border-yellow-400'
 											: 'border-white'
 									}`}
-									src='../../../dist/assets/images/avatar.jpg'
-									alt='avatar'
+									src="../../../dist/assets/images/avatar.jpg"
+									alt="avatar"
 								/>
-								<p className='text-white text-center'>{player3.name}</p>
+								<p className="text-white text-center">
+									{player3.name}
+								</p>
 							</div>
 
-							<div className=''>
+							<div className="">
 								<img
 									className={`w-24 h-24 rounded-full border-2 ${
 										tournamentState === 'semifinal1'
 											? 'border-yellow-400'
 											: 'border-white'
 									}`}
-									src='../../../dist/assets/images/avatar.jpg'
-									alt='avatar'
+									src="../../../dist/assets/images/avatar.jpg"
+									alt="avatar"
 								/>
-								<p className='text-white text-center'>{player4.name}</p>
+								<p className="text-white text-center">
+									{player4.name}
+								</p>
 							</div>
 						</div>
 						{/* second column */}
-						<div className='w-24 h-full flex flex-col'>
-							<div className=' flex-1'></div>
-							<div className='border-t-2 border-r-2 border-white flex-1'></div>
-							<div className='border-b-2 border-r-2 border-white flex-1'></div>
-							<div className='flex-1'></div>
+						<div className="w-24 h-full flex flex-col">
+							<div className=" flex-1"></div>
+							<div className="border-t-2 border-r-2 border-white flex-1"></div>
+							<div className="border-b-2 border-r-2 border-white flex-1"></div>
+							<div className="flex-1"></div>
 						</div>
 
 						{/* third column */}
-						<div className='w-24 flex flex-col'>
-							<div className='flex-1'></div>
-							<div className='flex-1'></div>
-							<div className='border-t-2 border-white flex-1'></div>
-							<div className='flex-1'> </div>
+						<div className="w-24 flex flex-col">
+							<div className="flex-1"></div>
+							<div className="flex-1"></div>
+							<div className="border-t-2 border-white flex-1"></div>
+							<div className="flex-1"> </div>
 						</div>
 
 						{/* fourth column */}
-						<div className=' w-24 flex flex-col'>
-							<div className=' flex-1'></div>
-							<div className='mt-10 flex-1 flex-col justify-center items-center'>
+						<div className=" w-24 flex flex-col">
+							<div className=" flex-1"></div>
+							<div className="mt-10 flex-1 flex-col justify-center items-center">
 								<img
-									className='w-24 h-24 rounded-full border-2 border-white'
+									className="w-24 h-24 rounded-full border-2 border-white"
 									src={
 										semiFinal2winner
 											? '../../../dist/assets/images/avatar.jpg'
 											: '../../../dist/assets/images/question_mark.jpeg'
 									}
-									alt='avatar'
+									alt="avatar"
 								/>
-								<p className='text-white text-center'>
-									{semiFinal2winner ? semiFinal2winner.name : 'unknown'}
+								<p className="text-white text-center">
+									{semiFinal2winner
+										? semiFinal2winner.name
+										: 'unknown'}
 								</p>
 							</div>
-							<div className=' flex-1'> </div>
+							<div className=" flex-1"> </div>
 						</div>
 
 						{/* fifth column */}
-						<div className=' w-24 h-full flex flex-col'>
-							<div className='border-r-2 flex-1'></div>
-							<div className='border-b-2 border-r-2 flex-1'></div>
-							<div className=' border-white flex-1'></div>
-							<div className='flex-1'></div>
+						<div className=" w-24 h-full flex flex-col">
+							<div className="border-r-2 flex-1"></div>
+							<div className="border-b-2 border-r-2 flex-1"></div>
+							<div className=" border-white flex-1"></div>
+							<div className="flex-1"></div>
 						</div>
 
 						{/* sixth column */}
-						<div className='border-t border-white w-24 h-full flex flex-col'></div>
+						<div className="border-t border-white w-24 h-full flex flex-col"></div>
 					</div>
 
-					<div className='flex justify-center'>
+					<div className="flex justify-center">
 						<Button
-							className={'rounded-md  w-1/2 h-12 font-regular buttons-text remove-button'}
+							className={
+								'rounded-md  w-1/2 h-12 font-regular buttons-text remove-button'
+							}
 							onClick={handleTournamentAction}
-							type='submit'
+							type="submit"
 						>
 							{getButtonText()}
 						</Button>
@@ -508,6 +539,6 @@ const Tournament = () => {
 				</div>
 			</div>
 		</section>
-	)
-}
-export default Tournament
+	);
+};
+export default Tournament;

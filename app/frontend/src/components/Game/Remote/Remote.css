@@ -21,5 +21,6 @@
 
 .cancel-button {
 	font-size: clamp(0.5rem, 0.31vw + 0.442rem, 0.938rem);
-	padding: clamp(0.25rem, 0.265vw + 0.2rem, 0.625rem) clamp(1rem, 1.504vw + 0.718rem, 3.125rem);
+	padding: clamp(0.25rem, 0.265vw + 0.2rem, 0.625rem)
+		clamp(1rem, 1.504vw + 0.718rem, 3.125rem);
 }

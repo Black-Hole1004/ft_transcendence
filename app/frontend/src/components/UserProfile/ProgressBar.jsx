@@ -1,5 +1,5 @@
-import 'react-circular-progressbar/dist/styles.css'
-import { CircularProgressbar } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar } from 'react-circular-progressbar';
 
 function ProgressBar({ value }) {
 	return (
@@ -20,7 +20,7 @@ function ProgressBar({ value }) {
 				},
 			}}
 		/>
-	)
+	);
 }
 
-export default ProgressBar
+export default ProgressBar;

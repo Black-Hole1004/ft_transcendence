@@ -1,15 +1,23 @@
 function Player(props) {
-	const { id, isPaused, PlayerName, playerImage, badgeImage, BadgeName, GameMode } = props
+	const {
+		id,
+		isPaused,
+		PlayerName,
+		playerImage,
+		badgeImage,
+		BadgeName,
+		GameMode,
+	} = props;
 
 	// Function to trim the name to 11 characters
 	const trimName = (name) => {
 		if (name.length > 11) {
-			return name.slice(0, 11) + '...'
+			return name.slice(0, 11) + '...';
 		}
-		return name
-	}
+		return name;
+	};
 
-	const displayName = trimName(PlayerName)
+	const displayName = trimName(PlayerName);
 
 	return (
 		<div
@@ -19,25 +27,25 @@ function Player(props) {
 			{GameMode === 'remote' && (
 				<img
 					src={playerImage}
-					className='rounded-full border-2 border-primary user-photo'
-					alt='user photo'
+					className="rounded-full border-2 border-primary user-photo"
+					alt="user photo"
 				/>
 			)}
-			<p className='players-usernames text-center' title={PlayerName}>
+			<p className="players-usernames text-center" title={PlayerName}>
 				{displayName}
 			</p>
 			{GameMode === 'remote' && (
 				<>
 					<img
 						src={badgeImage}
-						className='achievements-icons hover:scale-[1.2] transition duration-500'
-						alt='badge'
+						className="achievements-icons hover:scale-[1.2] transition duration-500"
+						alt="badge"
 					/>
-					<p className='text-level badge-name'>{BadgeName}</p>
+					<p className="text-level badge-name">{BadgeName}</p>
 				</>
 			)}
 		</div>
-	)
+	);
 }
 
-export default Player
+export default Player;

@@ -1,9 +1,321 @@
-import{j as e,r as a}from"./index-CZOGhjFl.js";import{H as i}from"./Header-3Ry2d7os.js";import"./Button-5ZxX_AXj.js";function t(){return e.jsxs("div",{className:`lg:border-2 border-[1px] border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
+import { j as e, r as a } from './index-CZOGhjFl.js';
+import { H as i } from './Header-3Ry2d7os.js';
+import './Button-5ZxX_AXj.js';
+function t() {
+	return e.jsxs('div', {
+		className: `lg:border-2 border-[1px] border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
 		flex lg:flex-col mtb:flex-row flex-col items-center max-lg:justify-around lg:pt-user-info-t bg-[rgba(27,22,17,0.5)]
-		lg:h-chat-user-info-lg lg:px-user-info-x-lg px-user-info-x-ms ms:py-user-info-y-ms`,children:[e.jsx("img",{src:"./assets/images/tabi3a.jpeg",className:"rounded-full lg:border-2 border border-primary user-info-image mr-1",alt:"User image"}),e.jsxs("div",{className:"flex flex-col justify-center font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2",children:[e.jsxs("div",{children:[e.jsx("p",{className:"text-primary full-name leading-[1]",children:"Abdelouahed Rabiai"}),e.jsx("p",{className:"text-light nickname",children:"@Arabiai"})]}),e.jsx("div",{className:"max-w-[500px]",children:e.jsx("p",{className:"font-medium text-primary bio",children:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa sunt quae corrupti ratione, esse quod amet quidem possimus necessitatibus optio cupiditate nisi placeat, nihil expedita sed quisquam. Commodi, cumque repellat. Lorem ipsum dolor sit amet, consectetur adipisicing elit."})})]}),e.jsxs("div",{className:"flex flex-col justify-center items-center",children:[e.jsx("img",{className:"badge hover:scale-[1.2] transition duration-500 xl:mt-5 lg:mt-3 xl:mb-2 lg:mb-0",src:"./assets/images/Achievements/celestial-master.png",alt:"achievement badge"}),e.jsxs("div",{className:"flex flex-col",children:[e.jsx("p",{className:"font-dreamscape-sans text-level achievement-title leading-[1] text-center",children:"Celestial Master"}),e.jsx("p",{className:"text-primary self-end xp",children:"10231xp"})]})]})]})}function s(){return e.jsxs("div",{className:`flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
-				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-xl user tb:p-user-div-px-tb `,children:[e.jsx("img",{src:"./assets/images/tabi3a.jpeg",className:"rounded-full border border-primary select-none",alt:"user image"}),e.jsxs("div",{className:"font-medium flex-1",children:[e.jsx("p",{className:"user-nickname text-primary max-tb:w-[100px] truncate max-tb:text-center",children:"Arabiai"}),e.jsxs("div",{className:"flex text-light max-tb:hidden last-message",children:[e.jsx("pre",{className:"font-medium",children:"You: "}),e.jsx("p",{className:"last-message-w whitespace-nowrap overflow-hidden text-ellipsis",children:"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, omnis possimus officia fuga enim ullam"}),e.jsx("pre",{className:"font-medium",children:" · 1h"})]})]})]})}function n(){const[l,r]=a.useState(window.innerWidth<768);return window.addEventListener("resize",()=>{r(window.innerWidth<768)}),e.jsxs("div",{className:`flex flex-col tb:w-[34%] max-tb:border border-primary lg:rounded-3xl rounded-2xl
-			tb:h-chat h-leftside-chat-ms gap-y-3 bg-[rgba(27,22,17,0.5)]`,children:[e.jsx("div",{className:"flex justify-center items-center tb:h-[20%] tb:mt-0 mt-2",children:e.jsxs("div",{className:"flex items-center border border-border rounded-2xl pl-2.5 tb:w-[85%]",children:[e.jsx("img",{src:"/assets/images/icons/search-icon.png",className:"search-icon",alt:"search-icon"}),e.jsx("input",{type:"text",placeholder:"Search for friends...",className:`font-medium bg-transparent text-primary outline-none search placeholder:text-border
-									lg:w-input-lg ms:w-input-ms w-0`})]})}),e.jsxs("div",{className:`flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1
-							tb:overflow-y-scroll ${l?"overflow-x-scroll":"overflow-x-hidden"}`,children:[e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{}),e.jsx(s,{})]})]})}const o=()=>e.jsxs("div",{className:"min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary",children:[e.jsx(i,{}),e.jsx("section",{className:"section-margin",children:e.jsxs("div",{className:"flex lg:flex-row flex-col lg:justify-between gap-4",children:[e.jsxs("div",{className:`flex tb:flex-row flex-col lg:border-2 tb:border-[1px] tb:items-center
-						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1`,children:[e.jsx(n,{}),e.jsx("div",{className:"separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden"}),e.jsxs("div",{className:`flex-1 flex flex-col items-center max-tb:border border-primary
-							lg:rounded-3xl rounded-2xl h-chat bg-[rgba(27,22,17,0.5)]`,children:[e.jsxs("div",{className:"chat-header flex max-ms:flex-col items-center h-[20%] w-full lp:gap-5 gap-3 max-tb:my-3",children:[e.jsx("img",{src:"./assets/images/tabi3a.jpeg",className:"w-20 rounded-full border border-primary",alt:"user image"}),e.jsxs("div",{className:"max-ms:hidden",children:[e.jsx("p",{className:"font-heavy friend-name text-primary",children:"Abdelouahed Rabiai"}),e.jsx("p",{className:"last-message text-light",children:"Online"})]})]}),e.jsxs("div",{className:"flex-1 flex flex-col justify-between items-center text-transparent",children:[e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"}),e.jsx("p",{children:"· Hello"})]}),e.jsx("div",{className:"footer flex justify-center items-center w-full h-[10%] py-2",children:e.jsxs("div",{className:"flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]",children:[e.jsx("button",{children:e.jsx("img",{src:"./assets/images/icons/paperclip.svg",alt:""})}),e.jsx("input",{type:"text",className:"w-[85%] chat-input bg-transparent placeholder:text-light outline-none",placeholder:"Type your message here..."}),e.jsx("button",{children:e.jsx("img",{src:"./assets/images/icons/emoji.svg",alt:""})}),e.jsx("button",{children:e.jsx("img",{src:"./assets/images/icons/send-icon.svg",alt:""})})]})})]})]}),e.jsx(t,{})]})})]});export{o as default};
+		lg:h-chat-user-info-lg lg:px-user-info-x-lg px-user-info-x-ms ms:py-user-info-y-ms`,
+		children: [
+			e.jsx('img', {
+				src: './assets/images/tabi3a.jpeg',
+				className:
+					'rounded-full lg:border-2 border border-primary user-info-image mr-1',
+				alt: 'User image',
+			}),
+			e.jsxs('div', {
+				className:
+					'flex flex-col justify-center font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2',
+				children: [
+					e.jsxs('div', {
+						children: [
+							e.jsx('p', {
+								className: 'text-primary full-name leading-[1]',
+								children: 'Abdelouahed Rabiai',
+							}),
+							e.jsx('p', {
+								className: 'text-light nickname',
+								children: '@Arabiai',
+							}),
+						],
+					}),
+					e.jsx('div', {
+						className: 'max-w-[500px]',
+						children: e.jsx('p', {
+							className: 'font-medium text-primary bio',
+							children:
+								'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa sunt quae corrupti ratione, esse quod amet quidem possimus necessitatibus optio cupiditate nisi placeat, nihil expedita sed quisquam. Commodi, cumque repellat. Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+						}),
+					}),
+				],
+			}),
+			e.jsxs('div', {
+				className: 'flex flex-col justify-center items-center',
+				children: [
+					e.jsx('img', {
+						className:
+							'badge hover:scale-[1.2] transition duration-500 xl:mt-5 lg:mt-3 xl:mb-2 lg:mb-0',
+						src: './assets/images/Achievements/celestial-master.png',
+						alt: 'achievement badge',
+					}),
+					e.jsxs('div', {
+						className: 'flex flex-col',
+						children: [
+							e.jsx('p', {
+								className:
+									'font-dreamscape-sans text-level achievement-title leading-[1] text-center',
+								children: 'Celestial Master',
+							}),
+							e.jsx('p', {
+								className: 'text-primary self-end xp',
+								children: '10231xp',
+							}),
+						],
+					}),
+				],
+			}),
+		],
+	});
+}
+function s() {
+	return e.jsxs('div', {
+		className: `flex tb:flex-row flex-col max-tb:justify-around items-center gap-2
+				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-xl user tb:p-user-div-px-tb `,
+		children: [
+			e.jsx('img', {
+				src: './assets/images/tabi3a.jpeg',
+				className: 'rounded-full border border-primary select-none',
+				alt: 'user image',
+			}),
+			e.jsxs('div', {
+				className: 'font-medium flex-1',
+				children: [
+					e.jsx('p', {
+						className:
+							'user-nickname text-primary max-tb:w-[100px] truncate max-tb:text-center',
+						children: 'Arabiai',
+					}),
+					e.jsxs('div', {
+						className: 'flex text-light max-tb:hidden last-message',
+						children: [
+							e.jsx('pre', {
+								className: 'font-medium',
+								children: 'You: ',
+							}),
+							e.jsx('p', {
+								className:
+									'last-message-w whitespace-nowrap overflow-hidden text-ellipsis',
+								children:
+									'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, omnis possimus officia fuga enim ullam',
+							}),
+							e.jsx('pre', {
+								className: 'font-medium',
+								children: ' · 1h',
+							}),
+						],
+					}),
+				],
+			}),
+		],
+	});
+}
+function n() {
+	const [l, r] = a.useState(window.innerWidth < 768);
+	return (
+		window.addEventListener('resize', () => {
+			r(window.innerWidth < 768);
+		}),
+		e.jsxs('div', {
+			className: `flex flex-col tb:w-[34%] max-tb:border border-primary lg:rounded-3xl rounded-2xl
+			tb:h-chat h-leftside-chat-ms gap-y-3 bg-[rgba(27,22,17,0.5)]`,
+			children: [
+				e.jsx('div', {
+					className:
+						'flex justify-center items-center tb:h-[20%] tb:mt-0 mt-2',
+					children: e.jsxs('div', {
+						className:
+							'flex items-center border border-border rounded-2xl pl-2.5 tb:w-[85%]',
+						children: [
+							e.jsx('img', {
+								src: '/assets/images/icons/search-icon.png',
+								className: 'search-icon',
+								alt: 'search-icon',
+							}),
+							e.jsx('input', {
+								type: 'text',
+								placeholder: 'Search for friends...',
+								className: `font-medium bg-transparent text-primary outline-none search placeholder:text-border
+									lg:w-input-lg ms:w-input-ms w-0`,
+							}),
+						],
+					}),
+				}),
+				e.jsxs('div', {
+					className: `flex tb:flex-col flex-row gap-1 users-container h-users-div scroll max-tb:ml-1
+							tb:overflow-y-scroll ${l ? 'overflow-x-scroll' : 'overflow-x-hidden'}`,
+					children: [
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+						e.jsx(s, {}),
+					],
+				}),
+			],
+		})
+	);
+}
+const o = () =>
+	e.jsxs('div', {
+		className: 'min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary',
+		children: [
+			e.jsx(i, {}),
+			e.jsx('section', {
+				className: 'section-margin',
+				children: e.jsxs('div', {
+					className:
+						'flex lg:flex-row flex-col lg:justify-between gap-4',
+					children: [
+						e.jsxs('div', {
+							className: `flex tb:flex-row flex-col lg:border-2 tb:border-[1px] tb:items-center
+						border-primary lg:rounded-3xl rounded-2xl lg:w-[75%] w-full max-tb:gap-y-1`,
+							children: [
+								e.jsx(n, {}),
+								e.jsx('div', {
+									className:
+										'separator max-tb:h-0 lp:w-[2px] tb:w-[1px] w-0 justify-self-center max-tb:hidden',
+								}),
+								e.jsxs('div', {
+									className: `flex-1 flex flex-col items-center max-tb:border border-primary
+							lg:rounded-3xl rounded-2xl h-chat bg-[rgba(27,22,17,0.5)]`,
+									children: [
+										e.jsxs('div', {
+											className:
+												'chat-header flex max-ms:flex-col items-center h-[20%] w-full lp:gap-5 gap-3 max-tb:my-3',
+											children: [
+												e.jsx('img', {
+													src: './assets/images/tabi3a.jpeg',
+													className:
+														'w-20 rounded-full border border-primary',
+													alt: 'user image',
+												}),
+												e.jsxs('div', {
+													className: 'max-ms:hidden',
+													children: [
+														e.jsx('p', {
+															className:
+																'font-heavy friend-name text-primary',
+															children:
+																'Abdelouahed Rabiai',
+														}),
+														e.jsx('p', {
+															className:
+																'last-message text-light',
+															children: 'Online',
+														}),
+													],
+												}),
+											],
+										}),
+										e.jsxs('div', {
+											className:
+												'flex-1 flex flex-col justify-between items-center text-transparent',
+											children: [
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+												e.jsx('p', {
+													children: '· Hello',
+												}),
+											],
+										}),
+										e.jsx('div', {
+											className:
+												'footer flex justify-center items-center w-full h-[10%] py-2',
+											children: e.jsxs('div', {
+												className:
+													'flex justify-between w-[90%] max-lp:gap-1 chat-input-container border border-chat rounded-[50px]',
+												children: [
+													e.jsx('button', {
+														children: e.jsx('img', {
+															src: './assets/images/icons/paperclip.svg',
+															alt: '',
+														}),
+													}),
+													e.jsx('input', {
+														type: 'text',
+														className:
+															'w-[85%] chat-input bg-transparent placeholder:text-light outline-none',
+														placeholder:
+															'Type your message here...',
+													}),
+													e.jsx('button', {
+														children: e.jsx('img', {
+															src: './assets/images/icons/emoji.svg',
+															alt: '',
+														}),
+													}),
+													e.jsx('button', {
+														children: e.jsx('img', {
+															src: './assets/images/icons/send-icon.svg',
+															alt: '',
+														}),
+													}),
+												],
+											}),
+										}),
+									],
+								}),
+							],
+						}),
+						e.jsx(t, {}),
+					],
+				}),
+			}),
+		],
+	});
+export { o as default };

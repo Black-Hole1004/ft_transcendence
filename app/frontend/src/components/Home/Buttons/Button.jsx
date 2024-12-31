@@ -1,7 +1,7 @@
-import React from 'react'
-import '../../../pages/Custom/Custom.css'
+import React from 'react';
+import '../../../pages/Custom/Custom.css';
 
-function Button({id, disabled, onClick, className, children }) {
+function Button({ id, disabled, onClick, className, children }) {
 	return (
 		<button
 			id={id}
@@ -12,7 +12,7 @@ function Button({id, disabled, onClick, className, children }) {
 		>
 			{disabled ? 'Disable Two-factor Authentication' : children}
 		</button>
-	)
+	);
 }
 
-export default Button
+export default Button;

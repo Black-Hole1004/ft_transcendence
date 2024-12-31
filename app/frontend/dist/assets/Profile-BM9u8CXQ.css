@@ -1,1 +1,148 @@
-.section{margin-left:clamp(.625rem,14.159vw - 2.03rem,20.625rem);margin-right:clamp(.625rem,14.159vw - 2.03rem,20.625rem)}.user-info-lp{width:clamp(38.938rem,34.115vw + 17.104rem,71.688rem);height:clamp(31.625rem,27.669vw + 13.917rem,58.188rem);background-size:cover;background-image:url(./assets/images/Profile/user-info-lp.svg)}.rank-card-lp{width:clamp(23.063rem,20.247vw + 10.104rem,42.5rem);height:clamp(12.563rem,11.003vw + 5.521rem,23.125rem);background-size:cover;background-image:url(./assets/images/Profile/rank-card-lp.svg)}.match-history-lp{width:clamp(30.563rem,26.823vw + 13.396rem,56.313rem);height:clamp(17.75rem,15.56vw + 7.792rem,32.688rem);background-size:cover;background-image:url(./assets/images/Profile/match-history-lp.svg)}.cards-title{font-size:clamp(.938rem,1.106vw + .73rem,2.5rem);margin-top:clamp(1rem,.409vw + .923rem,1.563rem);margin-bottom:clamp(.75rem,.177vw + .717rem,1rem)}.rank img{width:clamp(3.75rem,7.301vw + 2.381rem,14.063rem)}.level{width:clamp(10rem,9.735vw + 8.175rem,23.75rem)}.achievement-title{font-size:clamp(.5rem,.752vw + .359rem,1.563rem)}.progress{font-size:clamp(.5rem,.177vw + .467rem,.75rem)}.arrow{width:clamp(.938rem,.929vw + .763rem,2.25rem)}.profile-image{width:clamp(3.75rem,6.195vw + 2.588rem,12.5rem);margin-left:clamp(1.875rem,.885vw + 1.709rem,3.125rem);margin-right:clamp(1.875rem,.885vw + 1.709rem,3.125rem)}.titles{font-size:clamp(.625rem,.575vw + .517rem,1.438rem)}.bio-content{font-size:clamp(.5rem,.31vw + .442rem,.938rem)}.about{width:clamp(17.5rem,9.744vw + 13.785rem,29.375rem);height:clamp(6.25rem,5.398vw + 5.238rem,13.875rem);font-size:clamp(.5rem,.31vw + .442rem,.938rem);padding-left:clamp(.5rem,.752vw + .359rem,1.563rem);padding-right:clamp(.5rem,.752vw + .359rem,1.563rem);background:linear-gradient(#997c5e00,#997c5e4d)}.about img{width:clamp(1.125rem,.31vw + 1.067rem,1.563rem)}.infos-chart{margin-left:clamp(.5rem,.872vw + .168rem,1.563rem)}.CircularProgressbar .CircularProgressbar-text{font-family:dreamscape-sans;font-size:clamp(.625rem,.221vw + .584rem,.938rem)}.progressbar{width:clamp(7.5rem,2.876vw + 6.961rem,11.563rem);height:clamp(7.5rem,2.876vw + 6.961rem,11.563rem)}.win-rate{width:clamp(8.125rem,3.348vw + 5.982rem,10rem);height:clamp(8.125rem,3.348vw + 5.982rem,10rem)}.match-history{gap:clamp(.625rem,6.25vw - 5rem,5rem);margin-right:clamp(0rem,1.302vw - .833rem,1.25rem);margin-bottom:clamp(.75rem,.849vw - .014rem,1.313rem)}.match-infos{width:clamp(18.75rem,20.089vw + 5.893rem,30rem)}.match-winner{border-top-left-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-right-radius:clamp(1.25rem,1.953vw + 0rem,3.125rem);height:clamp(2.375rem,2.474vw + .792rem,4.75rem)}.match-loser{border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:clamp(1.25rem,1.953vw + 0rem,3.125rem);height:clamp(2.375rem,2.474vw + .792rem,4.75rem)}.result{font-size:clamp(.5rem,.651vw + .083rem,1.125rem)}.points img{width:clamp(1.25rem,1.172vw + .5rem,2.375rem)}.points p{font-size:clamp(.375rem,.391vw + .125rem,.75rem)}.chart-title{font-size:clamp(.5rem,.398vw + .425rem,1.063rem)}.CircularProgressbar{width:100%;vertical-align:middle}.CircularProgressbar .CircularProgressbar-path{stroke:#3e98c7;stroke-linecap:round;transition:stroke-dashoffset .5s ease 0s}.CircularProgressbar .CircularProgressbar-trail{stroke:#d6d6d6;stroke-linecap:round}.CircularProgressbar .CircularProgressbar-text{fill:#3e98c7;font-size:20px;dominant-baseline:middle;text-anchor:middle}.CircularProgressbar .CircularProgressbar-background{fill:#d6d6d6}.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-background{fill:#3e98c7}.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-text{fill:#fff}.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-path{stroke:#fff}.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail{stroke:transparent}
+.section {
+	margin-left: clamp(0.625rem, 14.159vw - 2.03rem, 20.625rem);
+	margin-right: clamp(0.625rem, 14.159vw - 2.03rem, 20.625rem);
+}
+.user-info-lp {
+	width: clamp(38.938rem, 34.115vw + 17.104rem, 71.688rem);
+	height: clamp(31.625rem, 27.669vw + 13.917rem, 58.188rem);
+	background-size: cover;
+	background-image: url(./assets/images/Profile/user-info-lp.svg);
+}
+.rank-card-lp {
+	width: clamp(23.063rem, 20.247vw + 10.104rem, 42.5rem);
+	height: clamp(12.563rem, 11.003vw + 5.521rem, 23.125rem);
+	background-size: cover;
+	background-image: url(./assets/images/Profile/rank-card-lp.svg);
+}
+.match-history-lp {
+	width: clamp(30.563rem, 26.823vw + 13.396rem, 56.313rem);
+	height: clamp(17.75rem, 15.56vw + 7.792rem, 32.688rem);
+	background-size: cover;
+	background-image: url(./assets/images/Profile/match-history-lp.svg);
+}
+.cards-title {
+	font-size: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
+	margin-top: clamp(1rem, 0.409vw + 0.923rem, 1.563rem);
+	margin-bottom: clamp(0.75rem, 0.177vw + 0.717rem, 1rem);
+}
+.rank img {
+	width: clamp(3.75rem, 7.301vw + 2.381rem, 14.063rem);
+}
+.level {
+	width: clamp(10rem, 9.735vw + 8.175rem, 23.75rem);
+}
+.achievement-title {
+	font-size: clamp(0.5rem, 0.752vw + 0.359rem, 1.563rem);
+}
+.progress {
+	font-size: clamp(0.5rem, 0.177vw + 0.467rem, 0.75rem);
+}
+.arrow {
+	width: clamp(0.938rem, 0.929vw + 0.763rem, 2.25rem);
+}
+.profile-image {
+	width: clamp(3.75rem, 6.195vw + 2.588rem, 12.5rem);
+	margin-left: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
+	margin-right: clamp(1.875rem, 0.885vw + 1.709rem, 3.125rem);
+}
+.titles {
+	font-size: clamp(0.625rem, 0.575vw + 0.517rem, 1.438rem);
+}
+.bio-content {
+	font-size: clamp(0.5rem, 0.31vw + 0.442rem, 0.938rem);
+}
+.about {
+	width: clamp(17.5rem, 9.744vw + 13.785rem, 29.375rem);
+	height: clamp(6.25rem, 5.398vw + 5.238rem, 13.875rem);
+	font-size: clamp(0.5rem, 0.31vw + 0.442rem, 0.938rem);
+	padding-left: clamp(0.5rem, 0.752vw + 0.359rem, 1.563rem);
+	padding-right: clamp(0.5rem, 0.752vw + 0.359rem, 1.563rem);
+	background: linear-gradient(#997c5e00, #997c5e4d);
+}
+.about img {
+	width: clamp(1.125rem, 0.31vw + 1.067rem, 1.563rem);
+}
+.infos-chart {
+	margin-left: clamp(0.5rem, 0.872vw + 0.168rem, 1.563rem);
+}
+.CircularProgressbar .CircularProgressbar-text {
+	font-family: dreamscape-sans;
+	font-size: clamp(0.625rem, 0.221vw + 0.584rem, 0.938rem);
+}
+.progressbar {
+	width: clamp(7.5rem, 2.876vw + 6.961rem, 11.563rem);
+	height: clamp(7.5rem, 2.876vw + 6.961rem, 11.563rem);
+}
+.win-rate {
+	width: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
+	height: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
+}
+.match-history {
+	gap: clamp(0.625rem, 6.25vw - 5rem, 5rem);
+	margin-right: clamp(0rem, 1.302vw - 0.833rem, 1.25rem);
+	margin-bottom: clamp(0.75rem, 0.849vw - 0.014rem, 1.313rem);
+}
+.match-infos {
+	width: clamp(18.75rem, 20.089vw + 5.893rem, 30rem);
+}
+.match-winner {
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-right-radius: clamp(1.25rem, 1.953vw + 0rem, 3.125rem);
+	height: clamp(2.375rem, 2.474vw + 0.792rem, 4.75rem);
+}
+.match-loser {
+	border-top-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-left-radius: clamp(1.25rem, 1.953vw + 0rem, 3.125rem);
+	height: clamp(2.375rem, 2.474vw + 0.792rem, 4.75rem);
+}
+.result {
+	font-size: clamp(0.5rem, 0.651vw + 0.083rem, 1.125rem);
+}
+.points img {
+	width: clamp(1.25rem, 1.172vw + 0.5rem, 2.375rem);
+}
+.points p {
+	font-size: clamp(0.375rem, 0.391vw + 0.125rem, 0.75rem);
+}
+.chart-title {
+	font-size: clamp(0.5rem, 0.398vw + 0.425rem, 1.063rem);
+}
+.CircularProgressbar {
+	width: 100%;
+	vertical-align: middle;
+}
+.CircularProgressbar .CircularProgressbar-path {
+	stroke: #3e98c7;
+	stroke-linecap: round;
+	transition: stroke-dashoffset 0.5s ease 0s;
+}
+.CircularProgressbar .CircularProgressbar-trail {
+	stroke: #d6d6d6;
+	stroke-linecap: round;
+}
+.CircularProgressbar .CircularProgressbar-text {
+	fill: #3e98c7;
+	font-size: 20px;
+	dominant-baseline: middle;
+	text-anchor: middle;
+}
+.CircularProgressbar .CircularProgressbar-background {
+	fill: #d6d6d6;
+}
+.CircularProgressbar.CircularProgressbar-inverted
+	.CircularProgressbar-background {
+	fill: #3e98c7;
+}
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-text {
+	fill: #fff;
+}
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-path {
+	stroke: #fff;
+}
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
+	stroke: transparent;
+}

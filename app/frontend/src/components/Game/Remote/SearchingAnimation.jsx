@@ -1,24 +1,37 @@
-import './Remote.css'
-import { useState } from 'react'
-import Button from '../../Home/Buttons/Button'
+import './Remote.css';
+import { useState } from 'react';
+import Button from '../../Home/Buttons/Button';
 
 const SearchingAnimation = () => {
-	const [opponentFound, setOpponentFound] = useState(false)
+	const [opponentFound, setOpponentFound] = useState(false);
 
 	const delay = setTimeout(() => {
-		setOpponentFound(true)
-	}, 5000)
+		setOpponentFound(true);
+	}, 5000);
 
 	return (
 		<>
 			<div
-				className='animation-container absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2
-				flex text-primary font-dreamscape select-none'
+				className="animation-container absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2
+				flex text-primary font-dreamscape select-none"
 			>
-				{['S', 'E', 'A', 'R', 'C', 'H', 'I', 'N', 'G', '.', '.', '.'].map((char, index) => (
+				{[
+					'S',
+					'E',
+					'A',
+					'R',
+					'C',
+					'H',
+					'I',
+					'N',
+					'G',
+					'.',
+					'.',
+					'.',
+				].map((char, index) => (
 					<marquee
-					key={index}
-						direction='down'
+						key={index}
+						direction="down"
 						scrollamount={20 + Math.ceil((Math.random() * 10) % 10)}
 						style={{
 							transitionDelay: `${index * 50}ms`,
@@ -37,17 +50,15 @@ const SearchingAnimation = () => {
 					SEARCHING...
 				</div>
 				<Button
-					className={
-						`rounded border border-border font-medium cancel-button
-						absolute left-1/2 top-full mt-10 transform -translate-x-1/2`
-					}
-					type='submit'
+					className={`rounded border border-border font-medium cancel-button
+						absolute left-1/2 top-full mt-10 transform -translate-x-1/2`}
+					type="submit"
 				>
 					Cancel
 				</Button>
 			</div>
 		</>
-	)
-}
+	);
+};
 
-export default SearchingAnimation
+export default SearchingAnimation;

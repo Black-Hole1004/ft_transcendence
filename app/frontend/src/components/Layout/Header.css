@@ -1,5 +1,11 @@
 .header-border {
-	border-image: linear-gradient(to right, rgba(251, 251, 238, 0), rgba(251, 251, 238, 0.2), rgba(251, 251, 238, 0)) 1;
+	border-image: linear-gradient(
+			to right,
+			rgba(251, 251, 238, 0),
+			rgba(251, 251, 238, 0.2),
+			rgba(251, 251, 238, 0)
+		)
+		1;
 }
 
 .header-title-font {
@@ -24,7 +30,8 @@
 	width: clamp(11.563rem, 5.088vw + 10.608rem, 18.75rem);
 	height: clamp(13.75rem, 5.973vw + 12.63rem, 22.188rem);
 	gap: clamp(0.813rem, 0.354vw + 0.746rem, 1.313rem);
-	padding: clamp(1.563rem, 0.841vw + 1.405rem, 2.75rem) clamp(0.625rem, 0.354vw + 0.559rem, 1.125rem);
+	padding: clamp(1.563rem, 0.841vw + 1.405rem, 2.75rem)
+		clamp(0.625rem, 0.354vw + 0.559rem, 1.125rem);
 }
 
 .dropdown-user-photo {
