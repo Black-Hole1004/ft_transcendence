@@ -7,8 +7,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 const ModeCard = ({ mode, handleGameModeSelect }) => {
 	return (
 		<div
-			className='relative mode-card text-primary border border-primary rounded flex-1
-			overflow-hidden hover:text-transparent aspect-video bg-primary bg-opacity-90 transition ease-in duration-300'
+			className='relative mode-card text-primary border border-primary rounded flex-1 max-mtb:max-w-[350px] 
+			overflow-hidden hover:text-transparent aspect-video bg-opacity-90 transition ease-in duration-300'
 		>
 			<img
 				src='assets/images/remote.webp'
@@ -160,7 +160,7 @@ const Custom = () => {
 					<h2 className='text-2xl font-dreamscape-sans mt-6 mb-10 custom-title'>
 						Choose Game Mode
 					</h2>
-					<div className='flex max-mtb:flex-col justify-between gap-8 mb-12'>
+					<div className='flex-1 flex max-mtb:flex-col mtb:justify-between gap-8 mb-12'>
 						<ModeCard mode={'remote'} handleGameModeSelect={handleGameModeSelect}/>
 						<ModeCard mode={'local'} handleGameModeSelect={handleGameModeSelect}/>
 					</div>

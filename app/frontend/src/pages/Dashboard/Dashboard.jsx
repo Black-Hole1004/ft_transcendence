@@ -10,9 +10,6 @@ import CongratulatoryMessage from '../../components/Dashboard/CongratulatoryMess
 import useAuth from '../../context/AuthContext'
 import { useEffect, useState } from 'react'
 
-import Loader from '../../components/Loader/Loader'
-
-
 const Dashboard = () => {
 	const { authTokens, logout, getAuthHeaders } = useAuth();
 	const [leaderboardData, setLeaderboardData] = useState([]);

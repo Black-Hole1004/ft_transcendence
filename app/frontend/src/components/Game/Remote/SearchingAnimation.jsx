@@ -1,19 +1,13 @@
 import './Remote.css'
-import { useState } from 'react'
 import Button from '../../Home/Buttons/Button'
 
-const SearchingAnimation = ({ handleCancel }) => {
-	const [opponentFound, setOpponentFound] = useState(false)
-
-	const delay = setTimeout(() => {
-		setOpponentFound(true)
-	}, 5000)
+const SearchingAnimation = ({ handleCancel, opponentFound }) => {
 
 	return (
 		<>
 			<div
 				className='animation-container absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2
-				flex text-primary font-dreamscape select-none'
+				flex text-primary font-dreamscape select-none z-20'
 			>
 				{['S', 'E', 'A', 'R', 'C', 'H', 'I', 'N', 'G', '.', '.', '.'].map((char, index) => (
 					<marquee
