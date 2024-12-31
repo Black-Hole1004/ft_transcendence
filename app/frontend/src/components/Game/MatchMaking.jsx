@@ -93,20 +93,19 @@ const Matchmaking = () => {
     };
 
     return (
-        <section className='flex justify-center absolute h-screen w-screen
-            top-[44%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-backdrop-40'>
+        <>
+        <div class='fixed inset-0 bg-black bg-opacity-50 z-10'></div>
             {status === 'match_found' ? (
                 <MatchFoundDisplay matchData={matchData} countdown={count} />
             ) : status === 'timeout' ? (
-                <div className='w-1/3 min-w-[400px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-                    <div className='w-full flex flex-col items-center gap-8 p-12 text-center'>
-                        <h2 className='text-3xl font-heavy'>Time Out</h2>
-                        <p className='font-medium'>No opponent found at the moment, Please try again later.</p>
-                        <Button onClick={() => navigate('/custom')}
-                            className={'py-3 px-6 rounded border border-border font-medium buttons-text remove-button'}>
-                            Back to Menuu
-                        </Button>
-                    </div>
+                <div className='w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                flex flex-col items-center gap-8 text-center z-20 gameoverpopup'>
+                    <h2 className='players-usernames font-heavy'>Time Out</h2>
+                    <p className='font-medium'>No opponent found at the moment, Please try again later.</p>
+                    <Button onClick={() => navigate('/custom')}
+                        className={'py-3 px-6 rounded border border-border font-medium buttons-text remove-button'}>
+                        Back to Menuu
+                    </Button>
                 </div>
             ) : (
                 <div className='w-1/3 min-w-[400px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
@@ -128,7 +127,7 @@ const Matchmaking = () => {
                         <button 
                             onClick={handleCancel}
                             className='px-8 py-3 bg-primary text-backdrop-80 rounded-lg hover:bg-opacity-90 transition-all font-bold'
-                        >
+                            >
                             Cancel
                         </button>
     
@@ -139,7 +138,7 @@ const Matchmaking = () => {
                     </div>
                 </div>
             )}
-        </section>
+        </>
     );
 };
 
