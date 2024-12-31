@@ -276,7 +276,20 @@ const RemoteGame = () => {
 					onClose={handleClose}
 				/>
 			)}
-			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
+			{winner && showConfetti && (
+				<Confetti
+					style={{
+						position: 'fixed',
+						top: 0,
+						left: 0,
+						width: '100vw',
+						height: '100vh',
+						zIndex: 20,
+					}}
+					recycle={false}
+					numberOfPieces={500}
+				/>
+			)}
 		</>
 	)
 }

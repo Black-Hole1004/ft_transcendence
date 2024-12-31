@@ -31,8 +31,8 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 	return (
 		<>
 			<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
-			<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20 w-[40rem]
-			flex flex-col justify-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded text-center gameoverpopup'>
+			<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-5 z-20 
+			flex flex-col justify-center text-center gameoverpopup'>
 					{/* Result Banner */}
 
 
@@ -55,7 +55,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 							<img
 								src={profileImageUrl}
 								alt={currentPlayerStats?.username}
-								className='rounded-full ring-1 ring-primary object-cover'
+								className='rounded-full ring-1 ring-primary aspect-square object-cover'
 								onError={(e) => {
 									e.target.src = '/assets/images/default-avatar.png'
 								}}
@@ -63,7 +63,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 							<div className='flex flex-col items-start'>
 								<h2 className='font-heavy text-primary'>{currentPlayerStats?.username}</h2>
 								<p className='achievement-name font-dreamscape-sans text-level'>{currentPlayerStats?.badge?.name}</p>
-								<p className='font-medium text-border leading-none'>Score: {currentPlayerStats?.score}</p>
+								<p className='achievement-name font-heavy text-light leading-none'>Score: {currentPlayerStats?.score}</p>
 							</div>
 						</div>
 
@@ -73,12 +73,12 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 								Your Experience Update
 							</h3>
 							<div className='ml-2'>
-								<div className='flex justify-between text-lg font-medium'>
-									<span className='text-gray-400'>Previous XP</span>
+								<div className='flex items-center justify-between text-lg font-medium leading-normal'>
+									<span className='text-light'>Previous XP</span>
 									<span className='text-primary'>{currentPlayerStats?.old_xp}</span>
-							</div>
-								<div className='flex justify-between text-lg font-medium'>
-									<span className='text-gray-400'>XP Change</span>
+								</div>
+								<div className='flex items-center justify-between text-lg font-medium leading-normal'>
+									<span className='text-light'>XP Change</span>
 									<span className={`${ 
 											isDraw ? 'text-yellow-400' 
 											: isWinner 
@@ -90,8 +90,8 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 											: currentPlayerStats?.xp_change}
 								</span>
 								</div>
-								<div className='flex justify-between text-lg font-medium'>
-									<span className='text-gray-400'>New XP</span>
+								<div className='flex items-center justify-between text-lg font-medium leading-normal'>
+									<span className='text-light'>New XP</span>
 									<span className='text-primary'>{currentPlayerStats?.new_xp}</span>
 								</div>
 							</div>
@@ -104,7 +104,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 									<img
 										src={badgeImageUrl}
 										alt={currentPlayerStats?.badge?.name}
-										className='w-16 h-16 object-contain hover:scale-105 transition duration-500'
+										className='object-contain hover:scale-105 transition duration-500'
 										onError={(e) => {
 											e.target.style.display = 'none';
 										}}

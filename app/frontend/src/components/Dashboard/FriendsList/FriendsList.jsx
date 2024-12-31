@@ -81,13 +81,13 @@ function FriendsList() {
 
 	return (
 		<div
-			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border-1.5
+			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border
 			transition duration-300 border-[rgba(255,206,157,.2)] hover:border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]
 			hover:drop-shadow-[0_0_20px_rgba(255,206,157,0.2)]'
 		>
 			<h1 className='font-dreamscape-sans card-title text-primary'>FRIENDS LIST</h1>
 
-			<div className='flex items-center border border-border rounded-2xl pl-2.5 w-[90%]'>
+			<div className='flex items-center border border-border rounded-lg pl-2.5 w-[90%]'>
 				<img src='/assets/images/icons/search-icon.png' className='search-icon select-none' alt='' />
 				<input
 					type='text'
