@@ -234,7 +234,7 @@ const RemoteGame = () => {
 				</div>
 
 					{/* Main game area */}
-					<div className='relative w-full flex justify-center font-dreamscape-sans'>
+					<div className='relative w-full flex justify-center items-center font-dreamscape-sans matchmaking'>
 						{/* Left side - Always opponent */}
 						<RemotePlayer
 							id={1}
@@ -276,7 +276,20 @@ const RemoteGame = () => {
 					onClose={handleClose}
 				/>
 			)}
-			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
+			{winner && showConfetti && (
+				<Confetti
+					style={{
+						position: 'fixed',
+						top: 0,
+						left: 0,
+						width: '100vw',
+						height: '100vh',
+						zIndex: 20,
+					}}
+					recycle={false}
+					numberOfPieces={500}
+				/>
+			)}
 		</>
 	)
 }

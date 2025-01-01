@@ -44,6 +44,7 @@ const Profile = () => {
 				headers: getAuthHeaders()
 			});
 			const data = await response.json();
+			console.log('data: ', data)
 			if (response.ok) {
 				setStats(data.stats);
 				setAchievement(data.achievement);
@@ -177,7 +178,7 @@ const Profile = () => {
 							<p className='titles max-mtb:self-start max-mtb:ml-3'>
 								Overall Progression
 							</p>
-							<div className='progressbar justify-self-center'>
+							<div className='progressbar justify-self-center aspect-square'>
 								<ProgressBar value={achievement.overall_progress} />
 								{/* <AnimatedProgressBar targetProgress={achievement.current.progress_percentage} /> */}
 							</div>
@@ -192,31 +193,33 @@ const Profile = () => {
 						<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
 					</div>
 					<div className='flex-1 flex items-center justify-center'>
-						<div>
 							<img
 								src={`${BASE_URL}${achievement.current.image}`}
 								className='hover:scale-[1.05] transition duration-500 select-none'
 								alt='achievement badge'
-							/>
+								/>
+								<div>
 						</div>
-						<div className='flex flex-col'>
-							<p className='font-dreamscape-sans text-level text-center achievement-title'>
-								{achievement.current.name.toLowerCase()}
-							</p>
-							<div className='flex justify-between text-primary font-medium progress'>
-								<p>{achievement.current.current_threshold}xp</p>
-								<p>{achievement.current.next_threshold}xp</p>
+						<div className='flex flex-col gap-6'>
+							<div>
+								<p className='font-dreamscape-sans text-level text-center achievement-title'>
+									{achievement.current.name}
+								</p>
+								<div className='flex justify-between text-primary font-medium progress'>
+									<p>{achievement.current.current_threshold}xp</p>
+									<p>{achievement.current.next_threshold}xp</p>
+								</div>
+								<div className='level xl:h-[10px] tb:h-2 h-[7px] rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
+									<div
+										className='rounded-lg h-full bg-level'
+										style={{
+											width: `${achievement.current.progress_percentage}%`,
+										}}
+										></div>
+								</div>
 							</div>
-							<div className='level xl:h-[11px] tb:h-2 h-[7px] rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
-								<div
-									className='lp:mx-2 mx-1 rounded-lg h-[65%] bg-level'
-									style={{
-										width: `${achievement.current.progress_percentage}%`,
-									}}
-								></div>
-							</div>
-							<div className='flex justify-center text-primary font-medium progresstitles lp:self-center self-start font-medium'>
-								<p>{stats.xp} xp</p>
+							<div className='text-center achievement-title mb-2'>
+								<pre className='font-medium text-primary'>Current XP:   <span className='text-light'>{stats.xp} xp</span></pre>
 							</div>
 						</div>
 					</div>
@@ -232,13 +235,13 @@ const Profile = () => {
 					</div>
 					<div
 						className='match-history flex-1 flex mtb:flex-row flex-col
-							lp:justify-end mtb:justify-around justify-center  mb-3'
+							lp:justify-end mtb:justify-around justify-center mb-3'
 					>
 						<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
 							<p className='titles lp:self-center self-start font-medium'>
 								Win Rate
 							</p>
-							<div className='win-rate justify-self-center'>
+							<div className='win-rate justify-self-center aspect-square'>
 								<ProgressBar value={stats.win_rate}/>
 							</div>
 						</div>

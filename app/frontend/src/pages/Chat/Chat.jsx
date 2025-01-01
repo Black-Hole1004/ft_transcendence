@@ -245,7 +245,7 @@ const Chat = () => {
 				{/* Chat Area */}
 				<div
 					className='tb:w-[65.8%] flex flex-col items-center max-tb:border border-primary overflow-hidden
-						lg:rounded-3xl rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
+						rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
 				>
 					{
 						console.log('reciver_id -----> ', reciver_id)

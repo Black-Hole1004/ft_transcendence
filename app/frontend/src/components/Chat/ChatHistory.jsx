@@ -80,11 +80,11 @@ function ChatHistory({
 
 	return (
 		<div
-			className='flex flex-col tb:w-[34%] max-tb:border border-primary lg:rounded-3xl rounded-2xl
+			className='flex flex-col tb:w-[34%] max-tb:border border-primary rounded-2xl
 			tb:h-chat h-leftside-chat-ms gap-y-3 bg-[rgba(27,22,17,0.5)]'
 		>
 			<div className='history-input flex justify-center items-center tb:h-[20%] tb:mt-0 mt-2 z-10'>
-				<div className='flex items-center border border-border rounded-2xl pl-2.5 tb:w-[85%]'>
+				<div className='flex items-center border border-border rounded-xl pl-2.5 tb:w-[85%]'>
 					<img
 						src='/assets/images/icons/search-icon.png'
 						className='search-icon select-none'

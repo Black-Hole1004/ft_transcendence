@@ -130,5 +130,4 @@ button {
 
 .gameoverpopup img {
 	width: clamp(2.5rem, 1.327vw + 2.251rem, 4.375rem);
-	height: clamp(2.5rem, 1.327vw + 2.251rem, 4.375rem);
 }

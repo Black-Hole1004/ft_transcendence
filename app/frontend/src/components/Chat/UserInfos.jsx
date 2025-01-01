@@ -7,21 +7,21 @@ function UserInfos({ recipientInfo }) {
 		>
 			{recipientInfo ? (
 				<>
-					<div className="flex lg:flex-col gap-2 max-ml:flex-col text-start">
+					<div className="lg:w-full flex lg:flex-col gap-2 ml:flex-row flex-col text-start">
 						<img
 							src={`${recipientInfo.profile_picture}`}
-							className='rounded-full object-cover ring-1 ring-primary user-info-image select-none self-center'
+							className='rounded-full aspect-square object-cover ring-1 ring-primary user-info-image select-none self-center'
 							alt='User image'
 						/>
-						<div className='flex-1 flex flex-col font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>
+						<div className='w-full flex-1 flex flex-col font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>
 							<div>
 								<p className='text-primary full-name leading-[1]'>
 									{`${recipientInfo.first_name} ${recipientInfo.last_name}`}
 								</p>
 								<p className='text-light nickname'>@{`${recipientInfo.username}`}</p>
 							</div>
-							<div className='max-w-[500px]'>
-								<p className='font-medium text-primary bio break-words'>{`${recipientInfo.bio}`}</p>
+							<div className='max-w-[400px] break-words'>
+								<p className='font-medium text-primary bio'>{`${recipientInfo.bio}`}</p>
 							</div>
 						</div>
 					</div>

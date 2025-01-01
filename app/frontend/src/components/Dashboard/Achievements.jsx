@@ -23,7 +23,7 @@ function Achievements({ achievements, currentXp }) {
     ];
 
     return (
-        <div className='border-1.5 rounded-xl achivements-card font-dreamscape-sans
+        <div className='border rounded-xl achivements-card font-dreamscape-sans
 		transition duration-300 border-[rgba(255,206,157,.2)] hover:border-[rgba(255,206,157,.4)]
 		bg-[rgba(27,22,17,0.5)] hover:drop-shadow-[0_0_20px_rgba(255,206,157,0.2)]'>
             <h1 className='text-primary text-center leading-[1.02] achievements'>

@@ -52,3 +52,28 @@
         left: 80%;
     }
 }
+
+.timeout p,
+button {
+	font-size: clamp(0.813rem, 0.221vw + 0.771rem, 1.125rem);
+}
+
+.matchmaking {
+    gap: clamp(0.625rem, 3.982vw - 0.122rem, 6.25rem);
+}
+
+.matchmaking .avatar {
+    width: clamp(5rem, 7.522vw + 3.59rem, 15.625rem);
+}
+
+.matchmaking h1 {
+    font-size: clamp(1.625rem, 3.274vw + 1.011rem, 6.25rem);
+}
+
+.matchmaking h2 {
+    font-size: clamp(0.75rem, 1.239vw + 0.518rem, 2.5rem);
+}
+
+.matchmaking h6 {
+    font-size: clamp(0.375rem, 0.442vw + 0.292rem, 1rem);
+}
