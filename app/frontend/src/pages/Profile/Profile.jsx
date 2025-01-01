@@ -44,6 +44,7 @@ const Profile = () => {
 				headers: getAuthHeaders()
 			});
 			const data = await response.json();
+			console.log('data: ', data)
 			if (response.ok) {
 				setStats(data.stats);
 				setAchievement(data.achievement);
@@ -177,7 +178,7 @@ const Profile = () => {
 							<p className='titles max-mtb:self-start max-mtb:ml-3'>
 								Overall Progression
 							</p>
-							<div className='progressbar justify-self-center'>
+							<div className='progressbar justify-self-center aspect-square'>
 								<ProgressBar value={achievement.overall_progress} />
 								{/* <AnimatedProgressBar targetProgress={achievement.current.progress_percentage} /> */}
 							</div>
@@ -215,7 +216,7 @@ const Profile = () => {
 									}}
 								></div>
 							</div>
-							<div className='flex justify-center text-primary font-medium progresstitles lp:self-center self-start font-medium'>
+							<div className='flex justify-center text-primary font-medium progresstitles lp:self-center self-start'>
 								<p>{stats.xp} xp</p>
 							</div>
 						</div>
@@ -232,29 +233,17 @@ const Profile = () => {
 					</div>
 					<div
 						className='match-history flex-1 flex mtb:flex-row flex-col
-							lp:justify-end mtb:justify-around justify-center  mb-3'
+							lp:justify-end mtb:justify-around justify-center mb-3'
 					>
 						<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
 							<p className='titles lp:self-center self-start font-medium'>
 								Win Rate
 							</p>
-							<div className='win-rate justify-self-center'>
+							<div className='win-rate justify-self-center aspect-square'>
 								<ProgressBar value={stats.win_rate}/>
 							</div>
 						</div>
 						<div className='flex flex-col gap-1 max-mtb:self-center'>
-							{matchHistory.map((match, index) => (
-								<MatchStats 
-									key={index}
-									currentPlayer={match.current_player}
-									opponent={match.opponent}
-									result={match.result}
-								/>
-							))}
-						</div>
-
-
-						<div className='flex flex-col gap-1'>
 							{matchHistory.map((match, index) => (
 								<MatchStats
 									key={index}

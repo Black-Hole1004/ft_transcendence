@@ -85,14 +85,12 @@
 
 .progressbar {
 	width: clamp(7.5rem, 2.876vw + 6.961rem, 11.563rem);
-	height: clamp(7.5rem, 2.876vw + 6.961rem, 11.563rem);
 }
 
 
 /* 1024 - 2560 */
 .win-rate {
 	width: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
-	height: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
 }
 
 
@@ -111,7 +109,7 @@
 }
 
 .match-infos {
-	width: clamp(18.75rem, 20.089vw + 5.893rem, 30rem);
+	width: clamp(18.125rem, 8.407vw + 16.549rem, 30rem);
 }
 
 .match-winner {
