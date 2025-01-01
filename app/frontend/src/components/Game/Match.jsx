@@ -19,26 +19,28 @@ const Match = ({ matchData, countdown, statement }) => {
 						{/* Profile Picture */}
 						<div className='relative rounded-full border border-primary'>
 							<img
-								src={'/assets/images/moudrib.jpeg'}
-								alt={'mouad55'}
-								className='object-cover  rounded-full'
+								src={getImageUrl(currentUser.profile_picture, 'profile')}
+								alt={currentUser.username}
+								className='object-cover rounded-full'
 								onError={(e) => {
 									console.log('Profile image load error:', e);
 									e.target.src = '/assets/images/default-avatar.png';
 								}}
 							/>
-							<img
-								src={'/assets/images/Achievements/celestial-master.png'}
-								alt={'mouad55'}
-								className='absolute z-10 bottom-0 -left-5 w-[60%]'
-							/>
+							{currentUser.badge && (
+								<img
+									src={getImageUrl(currentUser.badge.image, 'badge')}
+									alt={currentUser.badge.name}
+									className='absolute z-10 bottom-0 -left-5 w-[60%]'
+								/>
+							)}
 						</div>
 						{/* Username */}
 						<div>
 							<h2 className='font-dreamscape-sans text-primary leading-none'>
-								{'mouad55'}
+								{currentUser.username}
 							</h2>
-							<h6 className='font-dreamscape-sans text-level'>Celestial Master</h6>
+							<h6 className='font-dreamscape-sans text-level'>{currentUser.badge.name}</h6>
 						</div>
 					</div>
 					
@@ -57,26 +59,28 @@ const Match = ({ matchData, countdown, statement }) => {
 						{/* Profile Picture */}
 						<div className='relative rounded-full border border-primary'>
 							<img
-								src={'/assets/images/lmoudir.jpg'}
-								alt={'mouad55'}
-								className='object-cover  rounded-full'
+								src={getImageUrl(opponent.profile_picture, 'profile')}
+								alt={opponent.username}
+								className='object-cover rounded-full'
 								onError={(e) => {
 									console.log('Profile image load error:', e);
 									e.target.src = '/assets/images/default-avatar.png';
 								}}
 							/>
-							<img
-								src={'/assets/images/Achievements/galactic-trailblazer.png'}
-								alt={'lmoudir'}
+							{opponent.badge && (
+								<img
+								src={getImageUrl(opponent.badge.image, 'badge')}
+								alt={opponent.badge.name}
 								className='absolute z-10 bottom-0 -right-5 w-[60%]'
-							/>
+								/>
+							)}
 						</div>
 						{/* Username */}
 						<div>
 							<h2 className='font-dreamscape-sans text-primary leading-none'>
-								{'lmoudir'}
+								{opponent.username}
 							</h2>
-							<h6 className='font-dreamscape-sans text-level'>Galactic Trailblazer</h6>
+							<h6 className='font-dreamscape-sans text-level'>{opponent.badge.name}</h6>
 						</div>
 					</div>
 

@@ -264,8 +264,8 @@ const Tournament = () => {
 	}
 
 	return (
-		<section className='tournament flex flex-col items-center'>
-			<div className='w-[96%] flex flex-col overflow-hidden py-8'>
+		<section className='tournament w-[96%] flex justify-center'>
+			<div className='lp:w-[33%] w-full overflow-hidden py-8'>
 				<h1
 					className='font-dreamscape drop-shadow-[0_2px_10px_rgba(251,251,238,0.8)]'
 				>
@@ -276,8 +276,30 @@ const Tournament = () => {
 					compete in intense interstellar battles, where victory depends on
 					mastering precision and strategy in the vast cosmic realm.
 				</p>
+				<div className='flex flex-col items-center gap-5'>
+					<h3 className='font-dreamscape-sans'>SEMIFINAL</h3>
+					{/* {Match 1 } */}
+					<Match />
+					{/* {Match 2 } */}
+					<Match />
+					<h3 className='font-dreamscape-sans'>FINAL</h3>
+					{/* {Match 3 } */}
+					<Match />
+				</div>
+			</div>
+			<div className='flex-1'>
 			</div>
 		</section>
 	)
 }
 export default Tournament
+
+const Match = () => {
+	return (
+		<div className='w-full h-20 bg-border bg-opacity-20 rounded flex justify-center'>
+			<div className='relative flex items-center w-px rotate-12 h-full bg-border'>
+				<p className='absolute left-1/2 transform -translate-x-1/2 font-dreamscape -rotate-12 z-10'>VS</p>
+			</div>
+		</div>
+	)
+}

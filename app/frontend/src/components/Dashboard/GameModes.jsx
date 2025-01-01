@@ -14,13 +14,13 @@ function GameModes() {
 					mode={'tournaments'}
 				></Mode>
 			</Link>
-			<Link to={'/custom'}>
 				<Mode
 					image={'training.webp'}
 					title={'right-[10%]'}
 					className={'right-0 w-[42%]'}
 					mode={'training'}
 				></Mode>
+			<Link to={'/custom'}>
 				<Mode
 					image={'1vs1.webp'}
 					title={'right-[30%]'}

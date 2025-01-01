@@ -112,7 +112,7 @@ const Custom = () => {
 							key={backgroundId}
 							className='lp:border-2 border border-primary overflow-hidden selected-table mtb:w-select-table w-full rounded-2xl relative'
 							style={{
-								background: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}`,
+								background: `url(/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'})`,
 								backgroundSize: 'cover',
 							}}
 						>
@@ -136,7 +136,7 @@ const Custom = () => {
 								onClick={() => handleClick(id)}
 								className={`border border-primary rounded-xl overflow-hidden outline-none hover:scale-[1.05] transition duration-500 aspect-video`}
 								style={{
-									background: `url('/assets/images/tables/table${id}.${id > 6 ? 'gif' : 'webp'}`,
+									background: `url(/assets/images/tables/table${id}.${id > 6 ? 'gif' : 'webp'})`,
 									backgroundSize: 'cover',
 								}}
 								// disabled={xp / 1000 < id && id > 1 ? true : false}

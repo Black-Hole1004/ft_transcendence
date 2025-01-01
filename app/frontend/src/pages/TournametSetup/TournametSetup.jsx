@@ -267,7 +267,6 @@ const TournamentSetup = () => {
 									onClick={handleSubmit}
 									className='font-dreamscape labels w-full p-2 bg-primary text-secondary rounded brightness-90
 									hover:scale-[1.02] hover:brightness-100 transition duration-200 ease-in'
-									onClick={handleSubmit}
 									>
 									Start Tournament
 								</button>

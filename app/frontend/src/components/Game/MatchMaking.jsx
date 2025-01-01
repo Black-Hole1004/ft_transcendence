@@ -91,7 +91,7 @@ const Matchmaking = () => {
 
         matchmakingService.on('match_found', async (data) => {
             setStatus('match_found')
-            setStatement('Random match found')
+            setStatement('match found')
             setMatchData(data)
 
             if (!data.game_id) {
@@ -104,7 +104,7 @@ const Matchmaking = () => {
             const backgroundId = location.state?.backgroundId || 1
 
             // Start countdown
-            for (let i = 5; i > 0; i--) {
+            for (let i = 9; i > 0; i--) {
                 setCountdown(i)
                 await new Promise((r) => setTimeout(r, 1000))
             }
@@ -122,7 +122,7 @@ const Matchmaking = () => {
 
         matchmakingService.on('direct_match', async (data) => {
             setStatus('match_found')
-            setStatement('Direct match found')
+            setStatement('Friendly Match')
             setMatchData(data)
 
             if (!data.game_id) {
@@ -135,7 +135,7 @@ const Matchmaking = () => {
             const backgroundId = location.state?.backgroundId || 1
 
             // Start countdown
-            for (let i = 5; i > 0; i--) {
+            for (let i = 9; i > 0; i--) {
                 setCountdown(i)
                 await new Promise((r) => setTimeout(r, 1000))
             }
@@ -165,7 +165,6 @@ const Matchmaking = () => {
     const renderContent = () => {
         switch (status) {
             case 'match_found':
-                setOpponentFound(true)
                 return <MatchFoundDisplay matchData={matchData} countdown={count} statement={statement} />
             case 'timeout':
                 return (

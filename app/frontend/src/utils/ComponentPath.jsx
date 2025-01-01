@@ -31,6 +31,7 @@ const LocalGameTour = React.lazy(() => import('../pages/Game/LocalGameTour'))
 const UserProfile = React.lazy(() => import('../pages/UserProfile/UserProfile'))
 
 const Match = React.lazy(() => import('../components/Game/Match'))
+
 const ComponentPath = () => {
 	const { authTokens } = useAuth();
 
