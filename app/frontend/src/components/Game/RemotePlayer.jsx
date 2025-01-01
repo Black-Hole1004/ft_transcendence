@@ -1,3 +1,4 @@
+import './MatchMaking.css'
 import React, { useMemo, useCallback } from 'react'
 
 const RemotePlayer = (props) => {
@@ -40,29 +41,34 @@ const RemotePlayer = (props) => {
 
 	return (
 		<div
-			className={`${props.id === 1 ? 'left-0' : 'right-0'} max-lg:-bottom-10 max-lg:top-full
-			absolute flex flex-col items-center ${props.isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+			className={`${props.id === 1 ? 'mtb:left-0 left-3' : 'mtb:right-0 right-3'} max-lg:-bottom-10 max-lg:top-full
+			absolute flex flex-col items-center ${props.isPaused ? 'brightness-[20%]' : 'brightness-[1]'}
+			avatar aspect-square xl:gap-12 lg:gap-10 tb:gap-5 gap-3`}
 		>
-			<img
-				src={profileImageUrl}
-				className='rounded-full aspect-square object-cover ring-1 ring-primary user-photo'
-				alt='user photo'
-				onError={(e) => {
-					e.target.src = '/assets/images/default-avatar.png'
-				}}
-			/>
-			<p className='players-usernames text-center'>{displayName}</p>
-			
-			<img
-				src={badgeImageUrl}
-				className='achievements-icons hover:scale-[1.2] transition duration-500'
-				alt='badge'
-				onError={(e) => {
-					e.target.style.display = 'none'
-				}}
-			/>
-			<p className='text-level badge-name'>{props.BadgeName}</p>
+			<div className='relative rounded-full border border-primary'>
+				<img
+					src={profileImageUrl}
+					alt='user photo'
+					className='aspect-square object-cover rounded-full'
+					onError={(e) => {
+						console.log('Profile image load error:', e);
+						e.target.src = '/assets/images/default-avatar.png';
+					}}
+				/>
+				<img
+					src={badgeImageUrl}
+					alt='badge'
+					className={`absolute z-10 bottom-0 ${props.id === 1 ? '-left-5' : '-right-5'} w-[60%]`}
+				/>
+			</div>
+			<div>
+				<h2 className='font-dreamscape-sans text-primary leading-none'>
+					{'mouad55'}
+				</h2>
+				<h6 className='font-dreamscape-sans text-level'>Celestial Master</h6>
+			</div>
 		</div>
+		
 	)
 }
 

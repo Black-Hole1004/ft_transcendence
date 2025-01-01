@@ -193,31 +193,33 @@ const Profile = () => {
 						<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
 					</div>
 					<div className='flex-1 flex items-center justify-center'>
-						<div>
 							<img
 								src={`${BASE_URL}${achievement.current.image}`}
 								className='hover:scale-[1.05] transition duration-500 select-none'
 								alt='achievement badge'
-							/>
+								/>
+								<div>
 						</div>
-						<div className='flex flex-col'>
-							<p className='font-dreamscape-sans text-level text-center achievement-title'>
-								{achievement.current.name.toLowerCase()}
-							</p>
-							<div className='flex justify-between text-primary font-medium progress'>
-								<p>{achievement.current.current_threshold}xp</p>
-								<p>{achievement.current.next_threshold}xp</p>
+						<div className='flex flex-col gap-6'>
+							<div>
+								<p className='font-dreamscape-sans text-level text-center achievement-title'>
+									{achievement.current.name}
+								</p>
+								<div className='flex justify-between text-primary font-medium progress'>
+									<p>{achievement.current.current_threshold}xp</p>
+									<p>{achievement.current.next_threshold}xp</p>
+								</div>
+								<div className='level xl:h-[10px] tb:h-2 h-[7px] rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
+									<div
+										className='rounded-lg h-full bg-level'
+										style={{
+											width: `${achievement.current.progress_percentage}%`,
+										}}
+										></div>
+								</div>
 							</div>
-							<div className='level xl:h-[11px] tb:h-2 h-[7px] rounded-md bg-[rgb(121,118,110,0.7)] mt-[2px] flex items-center'>
-								<div
-									className='lp:mx-2 mx-1 rounded-lg h-[65%] bg-level'
-									style={{
-										width: `${achievement.current.progress_percentage}%`,
-									}}
-								></div>
-							</div>
-							<div className='flex justify-center text-primary font-medium progresstitles lp:self-center self-start'>
-								<p>{stats.xp} xp</p>
+							<div className='text-center achievement-title mb-2'>
+								<pre className='font-medium text-primary'>Current XP:   <span className='text-light'>{stats.xp} xp</span></pre>
 							</div>
 						</div>
 					</div>

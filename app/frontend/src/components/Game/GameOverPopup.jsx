@@ -30,7 +30,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 
 	return (
 		<>
-			<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
+			<div className='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
 			<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-5 z-20 
 			flex flex-col justify-center text-center gameoverpopup'>
 					{/* Result Banner */}

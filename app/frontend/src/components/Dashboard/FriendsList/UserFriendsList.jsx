@@ -80,7 +80,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                     loading='eager'
                 />
                 <div className='flex flex-wrap items-center overflow-hidden'>
-                    <p className='text-primary nickname-size leading-[1] truncate mr-1'>
+                    <p className='text-primary nickname-size leading-none truncate mr-1'>
                         {user_friend.username}
                     </p>
                     <p className='text-achievement achievement-name '> 
@@ -88,14 +88,14 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                     </p>
                 </div>
             </div>
-            <div className='mx-1 flex gap-2'> {/* Added flex and gap for button spacing */}
+            <div className='mx-1 flex items-center gap-2'> {/* Added flex and gap for button spacing */}
                 {/* Status indicator for friends */}
                 {user_friend.is_friend && (
                     <>
                         <p className={`
                             ${user_friend.status === 'online' ? 'text-online' : 
                             user_friend.status === 'offline' ? 'text-offline' : 
-                            'text-defeat'} status`}
+                            'text-defeat'} achievement-name`}
                         >
                             {user_friend.status}
                         </p>
@@ -103,7 +103,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                         {/* Invite button only shown for online friends */}
                         {user_friend.status === 'online' && (
                             <Button
-                                className={'font-medium add-friend-button rounded border border-border'}
+                                className={'font-medium invite-button px-3 py-1 rounded border border-border'}
                                 onClick={() => handleInviteToGame(user_friend.id)}
                             >
                                 Invite

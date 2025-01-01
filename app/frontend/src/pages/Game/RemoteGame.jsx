@@ -234,7 +234,7 @@ const RemoteGame = () => {
 				</div>
 
 					{/* Main game area */}
-					<div className='relative w-full flex justify-center font-dreamscape-sans'>
+					<div className='relative w-full flex justify-center items-center font-dreamscape-sans matchmaking'>
 						{/* Left side - Always opponent */}
 						<RemotePlayer
 							id={1}
