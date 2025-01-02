@@ -92,6 +92,7 @@ const Matchmaking = () => {
         matchmakingService.on('match_found', async (data) => {
             setStatus('match_found')
             setStatement('Random match found')
+            setOpponentFound(true) // added by tabi3a here to prevent the fix the infinite loop of rerendering the searching animation
             setMatchData(data)
 
             if (!data.game_id) {
@@ -123,6 +124,7 @@ const Matchmaking = () => {
         matchmakingService.on('direct_match', async (data) => {
             setStatus('match_found')
             setStatement('Direct match found')
+            setOpponentFound(true) // added by tabi3a here to prevent the fix the infinite loop of rerendering the searching animation
             setMatchData(data)
 
             if (!data.game_id) {
@@ -165,7 +167,6 @@ const Matchmaking = () => {
     const renderContent = () => {
         switch (status) {
             case 'match_found':
-                setOpponentFound(true)
                 return <MatchFoundDisplay matchData={matchData} countdown={count} statement={statement} />
             case 'timeout':
                 return (
