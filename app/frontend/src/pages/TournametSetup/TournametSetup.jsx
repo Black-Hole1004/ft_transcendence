@@ -86,7 +86,7 @@ const TournamentSetup = () => {
 		if (players.player1.name && players.player2.name && players.player3.name && players.player4.name) {
 			console.log('player1: ', players.player1.name)
 			console.log('player2: ', players.player2.name)
-			navigate('/Tournament', {
+			navigate('/TournamentMoudrib', {
 				state: {
 					mode: 'local',
 

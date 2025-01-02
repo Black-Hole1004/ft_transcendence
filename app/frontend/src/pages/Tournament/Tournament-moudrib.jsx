@@ -10,81 +10,6 @@ import { useEffect, useCallback, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
 import Loader from '../../components/Loader/Loader'
 
-const players = [
-	{
-		id: '1',
-		nickname: 'MOUAD55',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 12456,
-		avatar: '../../../dist/assets/images/moudrib.jpeg',
-		icon: '../../../dist/assets/images/Achievements/celestial-master.png',
-	},
-	{
-		id: '2',
-		nickname: 'ARABIAI',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 11648,
-		avatar: '../../../dist/assets/images/tabi3a.jpeg',
-		icon: '../../../dist/assets/images/Achievements/galactic-trailblazer.png',
-	},
-	{
-		id: '3',
-		nickname: 'AHMAYMOU',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 10231,
-		avatar: '../../../dist/assets/images/lmoudir.jpg',
-		icon: '../../../dist/assets/images/Achievements/stellar-voyager.png',
-	},
-	{
-		id: '4',
-		nickname: 'PLAYER1',
-		achievement: 'GALACTIC TRAILBLAZER',
-		rankClass: 'text-cyan-400',
-		xp: 9153,
-		avatar: '../../../dist/assets/images/ahaloui.jpeg',
-		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png',
-	},
-	{
-		id: '1',
-		nickname: 'MOUAD55',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 12456,
-		avatar: '../../../dist/assets/images/moudrib.jpeg',
-		icon: '../../../dist/assets/images/Achievements/celestial-master.png',
-	},
-	{
-		id: '2',
-		nickname: 'ARABIAI',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 11648,
-		avatar: '../../../dist/assets/images/tabi3a.jpeg',
-		icon: '../../../dist/assets/images/Achievements/galactic-trailblazer.png',
-	},
-	{
-		id: '3',
-		nickname: 'AHMAYMOU',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 10231,
-		avatar: '../../../dist/assets/images/lmoudir.jpg',
-		icon: '../../../dist/assets/images/Achievements/stellar-voyager.png',
-	},
-	{
-		id: '4',
-		nickname: 'PLAYER1',
-		achievement: 'GALACTIC TRAILBLAZER',
-		rankClass: 'text-cyan-400',
-		xp: 9153,
-		avatar: '../../../dist/assets/images/ahaloui.jpeg',
-		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png',
-	},
-]
-
 const Tournament = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
@@ -264,30 +189,80 @@ const Tournament = () => {
 	}
 
 	return (
-		<section className='tournament w-[96%] flex justify-center'>
-			<div className='lp:w-[33%] w-full overflow-hidden py-8'>
+		<section className='flex-1 parent tournament self-center w-[96%]'>
+			{/* Description */}
+			<div className='tournament-description lg:pt-24 pt-12 max-lp:mb-10'>
 				<h1
 					className='font-dreamscape drop-shadow-[0_2px_10px_rgba(251,251,238,0.8)]'
-				>
+					>
 					CELESTIAL PONG CLASH
 				</h1>
-				<p className='description text-primary font-regular text-justify'>
+				<p className='description text-primary font-regular'>
 					The Celestial Pong Clash invites players from across the galaxy to
 					compete in intense interstellar battles, where victory depends on
 					mastering precision and strategy in the vast cosmic realm.
 				</p>
-				<div className='flex flex-col items-center gap-5'>
-					<h3 className='font-dreamscape-sans'>SEMIFINAL</h3>
-					{/* {Match 1 } */}
-					<Match />
-					{/* {Match 2 } */}
-					<Match />
-					<h3 className='font-dreamscape-sans'>FINAL</h3>
-					{/* {Match 3 } */}
-					<Match />
-				</div>
 			</div>
-			<div className='flex-1'>
+
+
+
+
+			{/* Tournament History */}
+			<div className='tournament-history flex flex-col items-center gap-5'>
+				<h3 className='font-dreamscape-sans text-light shadow'>SEMIFINAL</h3>
+				{/* {Match 1 } */}
+				<Match />
+				{/* {Match 2 } */}
+				<Match />
+				<h3 className='font-dreamscape-sans text-light shadow'>FINAL</h3>
+				{/* {Match 3 } */}
+				<Match />
+			</div>
+
+
+
+
+			{/* Tournament Scheme */}
+			<div className='tournament-scheme scheme-parent'>
+				<div className='player1 flex items-center justify-center text-primary bg-border bg-opacity-20 rounded-md'>Player 1</div>
+				<div className='player2 flex items-center justify-center text-primary bg-border bg-opacity-20 rounded-md'>Player 2</div>
+				<div className='player3 flex items-center justify-center text-primary bg-border bg-opacity-20 rounded-md'>Player 3</div>
+				<div className='player4 flex items-center justify-center text-primary bg-border bg-opacity-20 rounded-md'>Player 4</div>
+
+				{/* path to final */}
+				{/* Match 1 */}
+				<div className='match1-part1 flex justify-center'>
+					<div className='w-1/3 border-l-2 border-t-2 border-border'></div>
+					<div className='w-1/3 border-r-2 border-t-2 border-border'></div>
+				</div>
+				<div className='match1-part2 flex'>
+					<div className='flex-1 border-r-2 border-border'></div>
+					<div className='flex-1 border-border'></div>
+				</div>
+				{/* Match 2 */}
+				<div className='match2-part1 flex justify-center'>
+					<div className='w-1/3 border-l-2 border-t-2 border-border'></div>
+					<div className='w-1/3 border-r-2 border-t-2 border-border'></div>
+				</div>
+				<div className='match2-part2 flex'>
+					<div className='flex-1 border-border'></div>
+					<div className='flex-1 border-l-2 border-border'></div>
+				</div>
+				{/* Match 3 */}
+				<div className='winner-match1 flex items-center justify-center text-center text-primary bg-border bg-opacity-20 rounded-md'>Winner from match 1</div>
+				<div className='winner-match2 flex items-center justify-center text-center text-primary bg-border bg-opacity-20 rounded-md'>Winner from match 2</div>
+
+				<div className='match3-part1 flex justify-center'>
+					<div className='w-2/5 border-l-2 border-t-2 border-border'></div>
+					<div className='w-2/5 border-r-2 border-t-2 border-border'></div>
+				</div>
+				<div className='match3-part2 flex'>
+					<div className='flex-1 border-border'></div>
+					<div className='flex-1 border-l-2 border-border'></div>
+				</div>
+
+				<div className='winner flex items-center justify-center text-primary bg-border bg-opacity-20 rounded-md'>Winner</div>
+
 			</div>
 		</section>
 	)
@@ -296,9 +271,18 @@ export default Tournament
 
 const Match = () => {
 	return (
-		<div className='w-full h-20 bg-border bg-opacity-20 rounded flex justify-center'>
-			<div className='relative flex items-center w-px rotate-12 h-full bg-border'>
-				<p className='absolute left-1/2 transform -translate-x-1/2 font-dreamscape -rotate-12 z-10'>VS</p>
+		<div className='round relative w-full h-20 bg-border bg-opacity-20 rounded-md flex justify-between items-center leading-none max-w-[500px]'>
+			<div className='flex-1 flex justify-around'>
+				<p className='font-dreamscape-sans'>Player 101</p>
+				<p className='font-dreamscape'>7</p>
+			</div>
+			<div className='flex-1 flex justify-around'>
+				<p className='font-dreamscape'>2</p>
+				<p className='font-dreamscape-sans'>Player 202</p>
+			</div>
+
+			<div className='absolute flex items-center w-px rotate-12 h-full bg-border left-1/2 transform -translate-x-1/2'>
+				<p className='vs text-light absolute left-1/2 transform -translate-x-1/2 font-dreamscape -rotate-12 z-10 shadow'>VS</p>
 			</div>
 		</div>
 	)
