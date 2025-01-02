@@ -34,28 +34,16 @@ const RemotePongTable = ({
 		// Clear and prepare the canvas
 		const clearCanvas = (ctx) => {
 			ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-			// ctx.fillStyle = 'black';
-			// ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
-		};
-
-		// Draw the center line
-		const drawCenterLine = (ctx) => {
-			ctx.setLineDash([5, 15]);
-			ctx.beginPath();
-			ctx.moveTo(canvasSize.width / 2, 0);
-			ctx.lineTo(canvasSize.width / 2, canvasSize.height);
-			ctx.strokeStyle = 'white';
-			ctx.stroke();
 		};
 
 		// Draw a single paddle
 		const drawPaddle = (ctx, x, y, color) => {
 			const width = 20;   // paddle width
 			const height = 110; // paddle height
-			const radius = 10;  // corner radius
+			const radius = 8.6;  // corner radius
 
 			// Add glow effect
-			ctx.shadowBlur = 6;
+			ctx.shadowBlur = 0;
 			ctx.shadowColor = color;
 			ctx.fillStyle = color;
 			ctx.beginPath();
@@ -80,7 +68,7 @@ const RemotePongTable = ({
 		const drawBall = (ctx, ball) => {
 			if (!ball) return;
 			
-			ctx.shadowBlur = 6;
+			ctx.shadowBlur = 0;
 			ctx.shadowColor = 'white';
 			ctx.beginPath();
 
@@ -90,7 +78,7 @@ const RemotePongTable = ({
 			ctx.arc(
 				ballX,
 				ball.y,
-				10,
+				12, // ball radius 
 				0,
 				Math.PI * 2
 			);
@@ -126,7 +114,6 @@ const RemotePongTable = ({
 			
 			// Execute drawing functions in order
 			clearCanvas(ctx);
-			drawCenterLine(ctx);
 			drawBall(ctx, gameState.ball);
 			drawPaddles(ctx, gameState, playerNumber);
 		};

@@ -26,22 +26,20 @@ const Matchmaking = () => {
         const invitationId = location.state?.invitationId
         
 
-		if (!currentUser || !currentUser.id) {
+		if (!currentUser || !currentUserId) {
             console.error('No user data available. Redirecting to dashboard...')
             navigate('/dashboard', { replace: true }) // Using replace to prevent back button issues
             return
         }
 
-        if (currentUserId === undefined) {
-            console.error('No user ID provided in location state')
-            navigate('/dashboard')
-            return
+        if (matchmakingService.isConnected()) {
+            matchmakingService.disconnect()
         }
+        setMatchData(null)
+        setStatus('connecting')
 
         // Cancel any ongoing matchmaking before starting new one
-        matchmakingService.cancelSearch()
-        setMatchData(null)  // Reset match data state
-        setStatus('connecting')
+        matchmakingService.cancelSearch(); // CAUSES ERROR
 
         matchmakingService.connect(currentUserId)
 
@@ -91,8 +89,8 @@ const Matchmaking = () => {
 
         matchmakingService.on('match_found', async (data) => {
             setStatus('match_found')
-            setStatement('Random match found')
-            setOpponentFound(true) // added by tabi3a here to prevent the fix the infinite loop of rerendering the searching animation
+            setStatement('Random Match Found')
+            setOpponentFound(true) 
             setMatchData(data)
 
             if (!data.game_id) {
@@ -102,29 +100,30 @@ const Matchmaking = () => {
                 return
             }
 
-            const backgroundId = location.state?.backgroundId || 1
-
-            // Start countdown
-            for (let i = 5; i > 0; i--) {
-                setCountdown(i)
-                await new Promise((r) => setTimeout(r, 1000))
+            // get the countdown from the server
+            if (data.countdown !== undefined) {
+                setCountdown(data.countdown);
             }
 
-            navigate('/remote-game', {
-                state: {
-                    playerNumber: data.player_number,
-                    gameId: data.game_id,
-                    opponent: data.opponent,
-                    currentUser: data.current_user,
-                    backgroundId: backgroundId,
-                },
-            })
-        })
+            // Navigate when countdown is complete and server signals
+            if (data.should_navigate) {
+                const backgroundId = location.state?.backgroundId || 3;
+                navigate('/remote-game', {
+                    state: {
+                        playerNumber: data.player_number,
+                        gameId: data.game_id,
+                        opponent: data.opponent,
+                        currentUser: data.current_user,
+                        backgroundId: backgroundId,
+                    },
+                });
+            }
+        });
 
         matchmakingService.on('direct_match', async (data) => {
             setStatus('match_found')
-            setStatement('Direct match found')
-            setOpponentFound(true) // added by tabi3a here to prevent the fix the infinite loop of rerendering the searching animation
+            setStatement('Direct Match Found')
+            setOpponentFound(true)
             setMatchData(data)
 
             if (!data.game_id) {
@@ -134,24 +133,25 @@ const Matchmaking = () => {
                 return
             }
 
-            const backgroundId = location.state?.backgroundId || 1
-
-            // Start countdown
-            for (let i = 5; i > 0; i--) {
-                setCountdown(i)
-                await new Promise((r) => setTimeout(r, 1000))
+            // get the countdown from the server
+            if (data.countdown !== undefined) {
+                setCountdown(data.countdown);
             }
 
-            navigate('/remote-game', {
-                state: {
-                    playerNumber: data.player_number,
-                    gameId: data.game_id,
-                    opponent: data.opponent,
-                    currentUser: data.current_user,
-                    backgroundId: backgroundId,
-                },
-            })
-        })
+            // Navigate when countdown is complete and server signals
+            if (data.should_navigate) {
+                const backgroundId = location.state?.backgroundId || 3;
+                navigate('/remote-game', {
+                    state: {
+                        playerNumber: data.player_number,
+                        gameId: data.game_id,
+                        opponent: data.opponent,
+                        currentUser: data.current_user,
+                        backgroundId: backgroundId,
+                    },
+                });
+            }
+        });
 
         return () => {
             matchmakingService.disconnect()

@@ -63,9 +63,9 @@ const RemotePlayer = (props) => {
 			</div>
 			<div>
 				<h2 className='font-dreamscape-sans text-primary leading-none'>
-					{'mouad55'}
+					{displayName}
 				</h2>
-				<h6 className='font-dreamscape-sans text-level'>Celestial Master</h6>
+				<h6 className='font-dreamscape-sans text-level'>{props.BadgeName}</h6>
 			</div>
 		</div>
 		

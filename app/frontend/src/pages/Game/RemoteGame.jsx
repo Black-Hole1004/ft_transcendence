@@ -45,17 +45,21 @@ const RemoteGame = () => {
 		socketRef.current = ws
 
 		// Connect to game
-		console.log('Connecting to game:', gameId, 'as player', playerNumber, 'with user_id', currentUser.id)
+		// console.log('Connecting to game:', gameId, 'as player', playerNumber, 'with user_id', currentUser.id)
 		ws.connect(gameId, playerNumber, currentUser.id)
 
 		// Event handlers
 		ws.on('game_info', (data) => {
-			console.log('Received initial game state:', data)
+			// console.log('Received initial game state:', data)
 			setGameState(data.state)
+			// sleep one second before sending ready
+			setTimeout(() => handleReady(), 1000)
+			setTimeout(() => handleStartGame(), 1000)
+			handleStartGame()
 		})
 
 		ws.on('game_state_update', (data) => {
-			console.log('Received game state update: => ' , data)	
+			// console.log('Received game state update: => ' , data)	
 			// Update game state
 			setGameState(prev => ({
 				...prev,
@@ -100,7 +104,7 @@ const RemoteGame = () => {
 		ws.on('game_started', () => setIsPaused(false))
 
 		ws.on('game_ended', (data) => {
-			console.log('Game ended: data received => ', data)
+			// console.log('Game ended: data received => ', data)
 			setIsGameOver(true)
 			setShowRestartPopup(true)
 			
@@ -154,18 +158,18 @@ const RemoteGame = () => {
 		if (!socketRef.current || !playerNumber) return
 
 		if (isGameOver) {
-			console.log('Game is over, cannot pause')
+			// console.log('Game is over, cannot pause')
 			return
 		}
 
 		// Check if can pause
 		if (!isPaused && pausesRemaining[playerNumber] <= 0) {
-			console.log('No more pauses remaining')
+			// console.log('No more pauses remaining')
 			return
 		}
 		// Check if can resume
 		if (isPaused && pausingPlayer !== playerNumber) {
-			console.log('Only the pausing player can resume the game')
+			// console.log('Only the pausing player can resume the game')
 			return
 		}
 
@@ -212,7 +216,7 @@ const RemoteGame = () => {
 				<div className='flex flex-col'>
 					{/* Game controls */}
 					<div className='flex justify-center gap-4'>
-						{!isGameOver && (
+						{/* {!isGameOver && (
 							<>
 								<button onClick={handleReady} className='bg-[#BE794A] hover:bg-[#61463A] text-[#E6DDC6] font-bold py-2 px-6 rounded-full transition duration-300'>
 									Ready
@@ -221,7 +225,7 @@ const RemoteGame = () => {
 									Start Game
 								</button>
 							</>
-						)}
+						)} */}
 					</div>
 
 					{/* Score and Timer */}
