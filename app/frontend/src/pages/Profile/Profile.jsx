@@ -247,7 +247,7 @@ const Profile = () => {
 						</div>
 						<div className='flex flex-col gap-1 max-mtb:self-center'>
 							{matchHistory.map((match, index) => (
-								<MatchStats
+								<MatchStats 
 									key={index}
 									currentPlayer={match.current_player}
 									opponent={match.opponent}
