@@ -86,7 +86,8 @@ const TournamentSetup = () => {
 		if (players.player1.name && players.player2.name && players.player3.name && players.player4.name) {
 			console.log('player1: ', players.player1.name)
 			console.log('player2: ', players.player2.name)
-			navigate('/TournamentMoudrib', {
+			// navigate('/TournamentAhaloui', {
+			navigate('/Tournament', {
 				state: {
 					mode: 'local',
 
@@ -107,7 +108,7 @@ const TournamentSetup = () => {
 		}
 	}
 
-	const generateRandomName = () => `Player ${Math.floor(Math.random() * 1000)}`
+	const generateRandomName = () => `Player${Math.floor(Math.random() * 1000)}`
 
 	const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`
 

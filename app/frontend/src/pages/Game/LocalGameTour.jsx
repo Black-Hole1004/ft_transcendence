@@ -158,7 +158,7 @@ const LocalGame = () => {
 	// Update handleProceed for tournament flow
 	const handleProceed = () => {
 		setShowProceedPopup(false)
-		navigate('/tournament', {
+		navigate('/Tournament', {
 			replace: true,
 			isFromGame: true,
 		})

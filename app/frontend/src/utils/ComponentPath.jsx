@@ -12,7 +12,7 @@ const Custom = React.lazy(() => import('../pages/Custom/Custom'))
 const Profile = React.lazy(() => import('../pages/Profile/Profile'))
 const Settings = React.lazy(() => import('../pages/Settings/Settings'))
 const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
-const TournamentMoudrib = React.lazy(() => import('../pages/Tournament/Tournament-moudrib'))
+const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
 const TournamentAhaloui = React.lazy(() => import('../pages/Tournament/Tournament-ahaloui'))
 const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
 const Layout = React.lazy(() => import('../components/Layout/Layout'))
@@ -54,7 +54,7 @@ const ComponentPath = () => {
 
 					<Route path="/users/:profile_name" element={<UserProfile />} />
 					
-					<Route path="/TournamentMoudrib" element={<TournamentMoudrib />} />
+					<Route path="/Tournament" element={<Tournament />} />
 					<Route path="/TournamentAhaloui" element={<TournamentAhaloui />} />
 					<Route path="/CustomTournament" element={<CustomTournament />} />
 					<Route path="/TournamentSetup" element={<TournamentSetup />} />
