@@ -175,7 +175,7 @@ function Layout() {
 					setNotifications((prevNotifications) => [
 						...prevNotifications,
 						{
-							id: data.invitation_id,
+							// id: data.invitation_id,
 							type: 'game_invite',
 							from_user: data.sender.username,
 							profile_picture: data.sender.profile_picture,
@@ -184,14 +184,15 @@ function Layout() {
 						},
 					])
 					break
-
 				case 'invite_failed':
 					// Handle notification when receiver is offline/in game
 					triggerAlert('error', data.message)
 					break
 
 				case 'game_invite_accepted':
-					// check if the sneder is online or not beofe sending the notification and navigate to the game
+					// check if the sneder is online or not before sending the notification and navigate to the game
+					const is_sender = data.sender.id === data.user.id
+
 					if (data.sender.status === 'offline') {
 						triggerAlert(
 							'info',
@@ -206,11 +207,12 @@ function Layout() {
 						)
 						return
 					}
-
-					triggerAlert(
-						'success',
-						`${data.receiver.username} accepted your game invitation!`
-					)
+					if (is_sender) {
+						triggerAlert('success', `${data.receiver.username} accepted your game invitation`)
+					}
+					else {
+						triggerAlert('success', `Starting game...`)
+					}
 
 
 					navigate('/matchmaking', {
@@ -224,8 +226,11 @@ function Layout() {
 					break
 
 				case 'game_invite_declined':
+					const is_sender_ = data.sender.id === data.user.id
 					// Show decline notification
-					triggerAlert('info', `${data.receiver.username} declined your game invitation`)
+					if (is_sender_) {
+						triggerAlert('info', `${data.receiver.username} declined your game invitation`)
+					}
 					break
 
 				default:

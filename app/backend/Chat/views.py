@@ -26,12 +26,8 @@ def ConversationsList(request):
 
     serializer = ConversationSerializer(conversations, context={'request': request}, many=True)
     return Response({'id': request.user.id,
-                     'conversations': serializer.data
+                    'conversations': serializer.data
                     })
-
-
-
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
