@@ -27,7 +27,7 @@ class MatchmakingService {
 			this.socket.close()
 		}
 
-		this.socket = new WebSocket(`wss://localhost/ws/matchmaking/?user_id=${userId}`)
+		this.socket = new WebSocket(`wss://10.12.3.12/ws/matchmaking/?user_id=${userId}`)
 
 		this.socket.onopen = () => {
 			console.log('Connected to matchmaking service')
