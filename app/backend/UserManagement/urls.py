@@ -4,6 +4,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('delete/', views.delete_user, name='delete-user'),
     path('profile/stats/', views.get_current_profile_stats, name='profile-stats'), # for current logged in user
     path('leaderboard/', views.get_leaderboard, name='leaderboard'),
     path('achievements/', views.get_achievements, name='achievements'),

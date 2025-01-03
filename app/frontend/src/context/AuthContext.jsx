@@ -32,8 +32,8 @@ export const AuthProvider = ({ children }) => {
                 console.log('access_token:', TrimmedAccess);
                 console.log('refresh_token:', TrimmedRefresh);
                 return {
-                    access_token: JSON.parse(TrimmedAccess),
-                    refresh_token: JSON.parse(TrimmedRefresh),
+                    access_token: TrimmedAccess,
+                    refresh_token: TrimmedRefresh,
                 };
             }
             return null;

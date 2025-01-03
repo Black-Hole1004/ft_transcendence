@@ -983,6 +983,14 @@ def get_user_data(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 
+# delete user data
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user(request):
+    user = request.user
+    user.delete()
+    return JsonResponse({'message': 'User deleted successfully'})
+
 class GetUserByUserName(APIView):
     permission_classes = [IsAuthenticated]
 

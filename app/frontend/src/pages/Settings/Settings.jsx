@@ -11,6 +11,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
 import { useAlert } from '../../components/AlertContext'
 import ConfirmationModal from '../../components/Settings/ConfirmationModal'
+import Cookies from 'js-cookie'
 
 function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
@@ -110,7 +111,38 @@ const Settings = () => {
 	const { authTokens, logout, getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
 
-	
+	function clearAllCookies() {
+		// Get all cookies as an object
+		const allCookies = Cookies.get();
+	  
+		// Loop through the cookies and remove each one
+		for (const cookieName in allCookies) {
+		  if (allCookies.hasOwnProperty(cookieName)) {
+			Cookies.remove(cookieName);
+		  }
+		}
+	  }
+	  
+	const deleteAccount = () => {
+		axios
+			.delete(USER_API + 'delete/', {
+				headers: {
+					Authorization: getAuthHeaders().Authorization,
+				},
+			})
+			.then((response) => {
+				if (response.status === 200) {
+					// sleep 1 second
+					console.log('response ----->', response.data)
+					// trigger alert wait for 1 second --> clear cookies --> redirect to / 
+					triggerAlert('success', 'Account deleted successfully')
+					setTimeout(() => {
+						clearAllCookies()
+						window.location.href = '/'
+					}, 1000)
+				}
+			})
+		}
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -480,6 +512,7 @@ const Settings = () => {
 								<button
 									className='rounded-md border-red-600 font-regular buttons-text remove-button border 
 								transition duration-300 select-none bg-red-600 bg-opacity-10 hover:bg-red-600 active:bg-red-700'
+								onClick={deleteAccount}
 								>
 									Delete Account
 								</button>
