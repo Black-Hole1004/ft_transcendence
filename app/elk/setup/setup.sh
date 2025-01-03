@@ -22,19 +22,19 @@ instances:
   - name: elasticsearch
     dns:
       - elasticsearch
-      - 10.12.3.12
+      - localhost
     ip:
       - 127.0.0.1
   - name: kibana
     dns:
       - kibana
-      - 10.12.3.12
+      - localhost
     ip:
       - 127.0.0.1
   - name: logstash
     dns:
       - logstash
-      - 10.12.3.12
+      - localhost
     ip:
       - 127.0.0.1
 EOL
