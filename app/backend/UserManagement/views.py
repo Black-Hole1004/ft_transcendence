@@ -476,6 +476,8 @@ class AcceptFriendRequestView(APIView):
     def post(self, request, friend_request_id):
         try:
             friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+            if (friend_request.user_to != request.user):
+                return Response({"message": "You are not authorized to accept this friend request"}, status=403)
             if friend_request.status == 'accepted':
                 return Response({"message": "Friend request already accepted"}, status=400)
 
@@ -519,6 +521,8 @@ class CancelFriendRequestView(APIView):
     def post(self, request, friend_request_id):
         try:
             friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+            if (friend_request.user_to != request.user):
+                return Response({"message": "You are not authorized to accept this friend request"}, status=403)
 
             if friend_request.status == 'rejected':
                 return Response({"message": "Friend request already rejected"}, status=400)
