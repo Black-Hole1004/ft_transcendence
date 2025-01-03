@@ -16,6 +16,9 @@ from django.contrib.auth.signals import user_logged_in
 from .models import FriendShip
 from game.models import GameInvitations
 from collections import defaultdict
+from django.core.exceptions import ValidationError
+
+import logging as log
 
 User = get_user_model()
 
@@ -207,6 +210,8 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
     def accept_game_invite(self, invitation):
         """Handle invitation acceptance"""
         # Update invitation status
+        if (invitation.receiver.id != self.user.id):
+            raise ValidationError("Not authorized to accept this invitation !!!")
         invitation.status = GameInvitations.Status.ACCEPTED
         invitation.save()
         # get the status of the sender (online or offline)
@@ -248,72 +253,138 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         try:
             # Call the sync-to-async wrapped function
             result = await self.accept_game_invite(invitation)
-
-            # Notify the sender
+            
+            # Send notifications if acceptance was successful
             await self.channel_layer.group_send(
                 result["room_groups"]["sender"],
                 {
                     'type': 'game_invite_notification',
                     'data': {
                         **result["data"],
-                        'user': result["data"]["sender"],  # The sender is the current user
+                        'user': result["data"]["sender"],
                     }
                 }
             )
 
-            # Notify the receiver
             await self.channel_layer.group_send(
                 result["room_groups"]["receiver"],
                 {
                     'type': 'game_invite_notification',
                     'data': {
                         **result["data"],
-                        'user': result["data"]["receiver"],  # The receiver is the current user
+                        'user': result["data"]["receiver"],
                     }
                 }
             )
+
+        except ValidationError as e:
+            # Notify unauthorized user who tried to accept
+            await self.send(json.dumps({
+                'type': 'error',
+                'message': str(e)
+            }))
+            
+            log.warning(f"Unauthorized acceptance attempt by user {self.user.id} : {self.user.username} on invitation {invitation.id}")
+            log.warning(str(e))
+            
         except Exception as e:
+            # Handle other unexpected errors
             print(f"Error accepting game invite: {e}")
-            print(f"Error details: {str(e)}")  # More detailed error logging
-
-
-
+            print(f"Error details: {str(e)}")
+            await self.send(json.dumps({
+                'type': 'error',
+                'message': 'An unexpected error occurred'
+            }))
 
     @database_sync_to_async
     def decline_game_invite(self, invitation):
         """Handle invitation decline"""
+        # Verify current user is intended recipient
+        if invitation.receiver.id != self.user.id:
+            raise ValidationError("Not authorized to decline this invitation")
+
         # Update invitation status
         invitation.status = GameInvitations.Status.DECLINED
         invitation.save()
 
-        # Notify sender that their invitation was declined
-        sender_room_group_name = f'friend_request_{invitation.sender.id}'
-        return {
-            "sender_room_group_name": sender_room_group_name,
-            "data": {
-                'type': 'game_invite_declined',
-                'invitation_id': invitation.id,
-                'receiver': {
-                    'id': self.user.id,
-                    'username': self.user.username,
-                    'profile_picture': self.user.profile_picture.url if self.user.profile_picture else None
-                }
+        # Get sender status
+        try:
+            sender_user = User.objects.get(id=invitation.sender.id)
+            status = sender_user.status
+        except Exception as e:
+            print(f"Error getting user {user_id}: {e}")
+            return None
+
+        # Prepare notification data
+        notification_data = {
+            'type': 'game_invite_declined',
+            'invitation_id': invitation.id,
+            'sender': {
+                'status': status, 
+                'id': invitation.sender.id,
+                'username': invitation.sender.username,
+                'profile_picture': invitation.sender.profile_picture.url if invitation.sender.profile_picture else None
+            },
+            'receiver': {
+                'id': self.user.id,
+                'username': self.user.username, 
+                'profile_picture': self.user.profile_picture.url if self.user.profile_picture else None
             }
+        }
+
+        return {
+            "room_groups": {
+                "sender": f'friend_request_{invitation.sender.id}',
+                "receiver": f'friend_request_{self.user.id}'  
+            },
+            "data": notification_data
         }
         
     async def handle_invitation_decline(self, invitation):
-        """Asynchronous wrapper to handle game invitation decline"""
+        """Asynchronous wrapper to handle game invitation declinee"""
         try:
-            # Call the sync-to-async wrapped function
             result = await self.decline_game_invite(invitation)
             
-            # Send notification to the sender
+            # Notify sender
             await self.channel_layer.group_send(
-                result["sender_room_group_name"],
-                result["data"]
+                result["room_groups"]["sender"],
+                {
+                    'type': 'game_invite_notification',
+                    'data': {
+                        **result["data"],
+                        'user': result["data"]["sender"],
+                    }
+                }
             )
+
+            # Notify receiver 
+            await self.channel_layer.group_send(
+                result["room_groups"]["receiver"],
+                {
+                    'type': 'game_invite_notification',
+                    'data': {
+                        **result["data"],
+                        'user': result["data"]["receiver"],
+                    }
+                }
+            )
+
+        except ValidationError as e:
+            await self.send(json.dumps({
+                'type': 'error',
+                'message': str(e)
+            }))
+
+            log.warning(f"Unauthorized acceptance attempt by user {self.user.id} : {self.user.username} on invitation {invitation.id}")
+            log.warning(str(e))
+
         except Exception as e:
-            print(f"Error declining game invite in NotificationConsumer: {e}")
+            print(f"Error declining invite: {e}")
+            print(f"Error details: {str(e)}")
+            await self.send(json.dumps({
+                'type': 'error',
+                'message': 'An unexpected error occurred'
+            }))
     
     # handers for game invite accept and decline
     async def game_invite_accepted(self, event):
