@@ -80,71 +80,7 @@ import socket
 from rest_framework.exceptions import ValidationError
 from django.db.models import Sum
 from django.db.models.functions import TruncDate, ExtractHour, ExtractMinute, ExtractSecond
-
-{
-    "data": [
-        {
-            "date": "2024-12-26",
-            "total_time_spent": "P0DT00H14M35.466212S",
-            "total_time_spent_seconds": 875.466212,
-            "total_time_spent_minutes": 14.591103533333333
-        }
-    ]
-}
-
-{
-    "data": [
-        {
-            "date": "2024-12-26",
-            "total_time_spent_minutes": 7.166666666666667
-        }
-    ]
-}
-
-
 User = get_user_model()
-#todo: (DELETE THIS LATER) simple view to test permissions control and jwt decoding
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-@csrf_exempt  # Disable CSRF for this view for testing purposes
-def decode_jwt(request):
-    try:
-        # get jwt from bearer
-        token = request.headers['Authorization'].split(' ')[1]
-        print(f"Token: {token}")
-        # Decode the JWT without verification (to get the payload/body)
-        payload = jwt.decode(
-            token, 
-            key=settings.SECRET_KEY,  # Use your Django secret key here
-            algorithms=["HS256"]      # Algorithm used for signing
-        )
-        # return payload
-        response = JsonResponse({
-                    'jwt': payload,
-                    'message': 'User authenticated successfully'
-                })
-        return response
-    except jwt.ExpiredSignatureError:
-        return JsonResponse({"error": "Token has expired"})
-    except jwt.InvalidTokenError:
-        return JsonResponse({"error": "Invalid token"})
-
-def decode_jwt_info(token):
-    try:
-        # Decode the JWT without verification (to get the payload/body)
-        payload = jwt.decode(
-            token, 
-            key=settings.SECRET_KEY,  # Use your Django secret key here
-            algorithms=["HS256"]      # Algorithm used for signing
-        )
-        return payload
-    except jwt.ExpiredSignatureError:
-        return {"error": "Token has expired"}
-    except jwt.InvalidTokenError:
-        return {"error": "Invalid token"}
-
-
-
 
 
 
@@ -173,14 +109,6 @@ class RegisterView(APIView):
             return JsonResponse(form.errors, status=400)
 
 
-
-def generate_random_username():
-    prefix = 'moha_'
-    suffix = str(uuid.uuid4())[:8]
-    return prefix + suffix
-
-
-
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
@@ -193,23 +121,6 @@ def getRoutes(request):
     ]
 
     return Response(routes)
-
-
-def display_text(request):
-    text = request.GET.get('text', '')
-    return HttpResponse(f'Text: {text}')
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def check_user_password(request):
-    print(f"Request data: {request.data}")
-    user = request.user
-    password = request.data.get('password')
-    if user.check_password(password):
-        return Response({'message': 'Password is correct.'})
-    else:
-        return Response({'error': 'Incorrect password.'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class LoginView(APIView):
     def post(self, request):
@@ -227,7 +138,6 @@ class LoginView(APIView):
                     friends = async_to_sync(self.get_user_friends)(user)
                     notify_friends(user, friends)
 
-                    print(f"User logged in ------> {user.email}")
                     refresh = RefreshToken.for_user(user)
                     access_token = str(refresh.access_token)
                     refresh_token = str(refresh)
@@ -278,25 +188,6 @@ class LogoutView(APIView):
         friends = list(set(friends_from + friends_to))
         return friends
 
-class UserStatusView(APIView):
-    permission_classes = [IsAuthenticated]
-    
-    def get(self, request):
-        return Response({'status': request.user.status})
-
-    def post(self, request):
-        print(f"Request data: {request.data}")
-        user = request.user
-        status = request.data.get('status', 'online')
-        
-        valid_statuses = ['online', 'offline', 'ingame']
-        if status not in valid_statuses:
-            return Response({'error': 'Invalid status'}, status=400)
-        
-        user.status = status
-        user.save()
-        return Response({'status': 'success'})
-
 
 
 
@@ -307,9 +198,8 @@ class UserProfileView(APIView):
 
     def get(self, request):
         try:
-            payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
-            user_id = payload['user_id']
-            user = User.objects.get(id=user_id)
+            user = request.user
+            user = User.objects.get(id=user.id);
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user)
@@ -550,100 +440,6 @@ class FriendShipRequestListView(APIView):
         return Response(serializer.data, status=200)
 
 
-# Tournament views for creating and managing tournaments
-class TournamentView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        tournaments = Tournament.objects.all()
-        serializer = TournamentSerializer(tournaments, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        print(f"Request data =====> {request.data}")
-        with transaction.atomic():
-            users = request.data.get('users', [])
-            print(f"Users =========> {users}")
-
-
-            if len(users) != 4:
-                return Response(
-                    {'error': 'Invalid number of users'}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            tournament = Tournament.objects.create(
-                name = request.data.get('name', 'Tournament'),
-            )
-
-            for idx, user_id in enumerate(users, 1):
-                TournamentParticipant.objects.create(
-                    tournament=tournament,
-                    user_id=user_id,
-                    seed=idx
-                )
-            
-            Match.objects.create(
-                tournament=tournament,
-                player1_id=users[0],
-                player2_id=users[3],
-                round_number=1
-            )
-
-            Match.objects.create(
-                tournament=tournament,
-                player1_id=users[1],
-                player2_id=users[2],
-                round_number=1
-            )
-
-            tournament.status = 'IN_PROGRESS'
-            tournament.save()
-
-            serializer = TournamentSerializer(tournament)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-class TournamentDetailView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get_objects(self, pk):
-        try:
-            return Tournament.objects.get(pk=pk)
-        except Tournament.DoesNotExist:
-            raise None
-    
-    def get(self, request, pk):
-        tournament = self.get_objects(pk)
-        if tournament is None:
-            return Response(
-                {'error': 'Tournament not found'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-        serializer = TournamentSerializer(tournament)
-        return Response(serializer.data)
-    
-    def put(self, request, pk):
-        tournament = self.get_objects(pk)
-        if tournament is None:
-            return Response(
-                {'error': 'Tournament not found'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-        serializer = TournamentSerializer(tournament, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, pk):
-        tournament = self.get_objects(pk)
-        if tournament is None:
-            return Response(
-                {'error': 'Tournament not found'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-        tournament.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class HealthCheckView(APIView):
     """
