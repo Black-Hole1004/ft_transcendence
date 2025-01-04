@@ -13,6 +13,7 @@ from django.core.cache import cache
 from django_redis import get_redis_connection
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+from .validators import ConversationValidator
 
 User = get_user_model()
 
@@ -76,7 +77,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         redis_client = get_redis_connection("default")
         group_key = f"asgi:group:{group_name}"
         group_members = redis_client.smembers(group_key)
-        print('group members: ', group_members)
 
         if not group_members:
             redis_client.delete(group_key)
@@ -92,20 +92,35 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if hasattr(self, 'conversation_key') and self.conversation_key:
 
                 # Remove this channel from group
-                await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+                await self.channel_layer.group_discard(self.chat_room_name, self.channel_name)
 
-                await self.check_and_delete_empty_group(self.room_group_name)
+                await self.check_and_delete_empty_group(self.chat_room_name)
 
         except Exception as e:
             print(f"Disconnect error: {str(e)}")
 
 
+    @database_sync_to_async
+    def check_conversation_existed(self, conversation_key, other_participant_id):
+        try:
+            self.other_participant = User.objects.get(id=other_participant_id)
+            conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
+
+            if not conversation:
+                conversation = Conversation.objects.create(
+                    conversation_key = conversation_key,
+                    user1_id = self.user,
+                    user2_id = self.other_participant
+                )
+            return conversation
+
+        except User.DoesNotExist:
+            return None
 
 
     @database_sync_to_async
-    def save_message(self, conversation_id, sender_id, content):
+    def save_message(self, conversation, sender_id, content):
         sender = User.objects.get(id=sender_id)
-        conversation = Conversation.objects.get(id=conversation_id)
         new_message =  Message.objects.create(
             conversation_id = conversation,
             sender_id = sender,
@@ -115,105 +130,123 @@ class ChatConsumer(AsyncWebsocketConsumer):
         conversation.save()
         return new_message
 
-    @database_sync_to_async
-    def check_conversation_existed(self, conversation_key, id1, id2):
-        try:
-            self.user1 = User.objects.get(id=id1)
-            self.user2 = User.objects.get(id=id2)
-            conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
 
-            if not conversation:
-                conversation = Conversation.objects.create(
-                    conversation_key = conversation_key,
-                    user1_id = self.user1,
-                    user2_id = self.user2
-                )
-            return conversation
-
-        except User.DoesNotExist:
-            return None
-        
     @database_sync_to_async
     def set_conversation_status(self, conversation, blocker_id):
         try:
+            # Update block status
+            conversation.blocked_by = blocker_id if blocker_id > 0 else 0
+
+            # Remove friendship if blocked
             if blocker_id > 0:
-                conversation.blocked_by = blocker_id
-                is_friend_from = FriendShip.objects.filter(user_from=self.user1, user_to=self.user2)
-                is_friend_to = FriendShip.objects.filter(user_from=self.user2, user_to=self.user1)
-                is_friend_from.delete()
-                is_friend_to.delete()
-            else:
-                conversation.blocked_by = 0
+                is_friend_from = FriendShip.objects.filter(user_from=self.user1, user_to=self.user2).delete()
+                is_friend_to = FriendShip.objects.filter(user_from=self.user2, user_to=self.user1).delete()
+
+            # Save the updated conversation
             conversation.save()
         except Exception as e:
             print(f"Error setting block status: {e}")
 
 
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        # print('data: ', data)
-        message_type = data['message_type']
-        self.conversation_key = data['conversation_key']
-        self.participants = data['conversation_key'].split('_')
 
-        if len(set(self.participants)) == 1 or self.userid not in map(int, self.participants):
+    async def receive(self, text_data):
+        try:
+            data = json.loads(text_data)
+            message_type = data['message_type']
+
+            # Extract conversation participants
+            conversation_key = data['conversation_key']
+            participants = conversation_key.split('_')
+            participants = [int(key) for key in participants]
+
+            # Validate conversation participants
+            if not ConversationValidator.is_valid_conversation(participants, self.userid):
+                return
+
+            # Get the other participant's ID
+            other_participant_id = ConversationValidator.get_other_participant_id(participants, self.userid)
+
+            # Handle different message types
+            handlers = {
+                'join': self._handle_join,
+                'message': self._handle_message,
+                'block': self._handle_block
+            }
+
+            if handler := handlers.get(message_type):
+                await handler(data, conversation_key, other_participant_id)
+
+        except Exception as e:
+            print(f"Error in receive: {str(e)}")
+
+
+    async def _handle_join(self, data, conversation_key, other_participant_id):
+        # Create chat room name
+        chat_room_name = f"chat_{conversation_key}"
+
+        # Add current user to chat room
+        await self.channel_layer.group_add(chat_room_name, self.channel_name)
+
+        # Try to add other participant if they're online
+        current_participant_channel = cache.get(f"user_{other_participant_id}_channel")
+        if current_participant_channel:
+            await self.channel_layer.group_add(chat_room_name, current_participant_channel)
+
+        # Store room name for later use
+        self.chat_room_name = chat_room_name
+        self.conversation_key = conversation_key
+
+
+    async def _handle_message(self, data, conversation_key, other_participant_id):
+        if not hasattr(self, 'chat_room_name') or data['sender'] != self.userid:
             return
 
-        self.other_user = int(self.participants[0]) if int(self.participants[0]) != self.userid else int(self.participants[1])
+        # Check if other participant's channel has changed
+        current_participant_channel = cache.get(f"user_{other_participant_id}_channel")
+        if current_participant_channel != getattr(self, 'last_participant_channel', None):
+            await self.channel_layer.group_add(self.chat_room_name, current_participant_channel)
+            self.last_participant_channel = current_participant_channel
 
-        if message_type == 'join':
-            if self.participants:
-                self.room_group_name = f"chat_{self.conversation_key}"
+        # Save message to database
+        conversation = await self.check_conversation_existed(
+            conversation_key,
+            other_participant_id
+        )
+        saved_message = await self.save_message(
+            conversation = conversation,
+            sender_id = data['sender'],
+            content = data['message']
+        )
 
-                await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-
-                self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
-
-                if self.other_user_channel:
-                    await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
-
-        elif message_type == 'message':
-            if self.room_group_name and data['sender'] == self.userid:
-                sender = data['sender']
-                message = data['message']
-                self.old_user_channel = self.other_user_channel
-                self.other_user_channel = cache.get(f"user_{self.other_user}_channel")
-                if self.old_user_channel is not self.other_user_channel:
-                    await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
-
-                conversation = await self.check_conversation_existed(self.conversation_key, self.userid, self.other_user)
-                saved_message = await self.save_message(
-                    conversation_id = conversation.id,
-                    sender_id = sender,
-                    content = message
-                )
+        # Broadcast message to group
+        await self.channel_layer.group_send(
+            self.chat_room_name, {
+                'type': 'chat.message',
+                'event': 'message',
+                'message': data['message'],
+                'sender': data['sender'],
+                'id': saved_message.id,
+                'timestamp': saved_message.sent_datetime.isoformat(),
+            }
+        )
 
 
-                await self.channel_layer.group_send(
-                    self.room_group_name, {
-                        'type': 'chat.message',
-                        'event': 'message',
-                        'message': message,
-                        'sender': sender,
-                        'id': saved_message.id,
-                        'timestamp': saved_message.sent_datetime.isoformat(),
-                    }
-                )
+    async def _handle_block(self, data, conversation_key, other_participant_id):
+        conversation = await self.check_conversation_existed(
+            self.conversation_key,
+            self.userid,
+            other_participant_id
+        )
 
-        elif message_type == 'block':
-            blocker_id = data['blocker_id']
-            conversation = await self.check_conversation_existed(self.conversation_key, self.userid, self.other_user)
+        await self.set_conversation_status(conversation, data['blocker_id'])
 
-            await self.set_conversation_status(conversation, blocker_id)
-
-            await self.channel_layer.group_send(
-                self.room_group_name, {
-                    'type': 'block.message',
-                    'event': 'block',
-                    'blocker_id': blocker_id,
-                }
-            )
-
+        await self.channel_layer.group_send(
+            self.room_group_name, {
+                'type': 'block.message',
+                'event': 'block',
+                'blocker_id': data['blocker_id'],
+            }
+        )
 
 
     async def block_message(self, event):
