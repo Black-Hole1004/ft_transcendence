@@ -1,10 +1,12 @@
 import React from 'react'
 import './Header.css'
 import Button from '../Buttons/Button'
+import { AlertWrapper } from '../../Layout/Layout'
 
 function Header({ handleClick }) {
 	return (
 		<header className='relative flex items-center text-primary font-medium header-height'>
+			<AlertWrapper />
 			<nav
 				className='absolute flex justify-between nav'
 			>

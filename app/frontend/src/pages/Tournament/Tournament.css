@@ -1,4 +1,6 @@
 .parent {
+	margin-top: clamp(2.5rem, 2.655vw + 2.002rem, 6.25rem);
+	margin-bottom: clamp(2.5rem, 2.655vw + 2.002rem, 6.25rem);
 	font-size: clamp(0.438rem, 0.487vw + 0.346rem, 1.125rem);
 }
 

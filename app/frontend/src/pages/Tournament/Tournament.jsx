@@ -191,9 +191,9 @@ const Tournament = () => {
 	console.log('semifinal2 winner', semiFinal2winner?.name)
 
 	return (
-		<section className='flex-1 parent tournament self-center w-[96%] max-lp:flex max-lp:flex-col'>
+		<section className='flex-1 parent tournament self-center w-[96%] max-lp:flex max-lp:flex-col max-lp:gap-10'>
 			{/* Description */}
-			<div className='tournament-description lg:pt-24 pt-12 max-lp:mb-10'>
+			<div className='tournament-description'>
 				<h1
 					className='font-dreamscape drop-shadow-[0_2px_10px_rgba(251,251,238,0.8)]'
 					>
@@ -252,7 +252,7 @@ const Tournament = () => {
 
 
 			{/* Tournament Scheme */}
-			<div className='tournament-scheme scheme-parent my-20'>
+			<div className='tournament-scheme scheme-parent'>
 				<div className='player1 flex items-center justify-center text-primary
 					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans'
 					style={{
