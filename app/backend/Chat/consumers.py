@@ -10,8 +10,9 @@ from django.contrib.auth import get_user_model
 from channels.db import database_sync_to_async
 
 from django.core.cache import cache
-
+from django_redis import get_redis_connection
 from channels.generic.websocket import AsyncWebsocketConsumer
+
 
 User = get_user_model()
 
@@ -46,25 +47,59 @@ def decode_jwt_info(token):
 class ChatConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        headers = self.scope['headers']
-        access_token = extract_access_token(headers)
-        access_token = access_token.replace('%22', '')
-        self.userid = decode_jwt_info(access_token)['user_id']
-        print('userid: ===>', self.userid)
-        self.user = await database_sync_to_async(User.objects.get)(id=self.userid)
-        print('user: ===>', self.user)
-        cache.set(f"user_{self.userid}_channel", self.channel_name)
-        if self.user.is_authenticated:
-            await self.accept()
-        else:
+
+        try:
+            # Extract and validate token
+            headers = self.scope['headers']
+            access_token = extract_access_token(headers)
+            access_token = access_token.replace('%22', '')
+
+            # Get user information
+            self.userid = decode_jwt_info(access_token)['user_id']
+            self.user = await database_sync_to_async(User.objects.get)(id=self.userid)
+
+            if self.user.is_authenticated:
+                await self.accept()
+
+                cache.set(f"user_{self.userid}_channel", self.channel_name, timeout=86400)
+                print(f"Connected: User {self.userid} on channel {self.channel_name}")
+            else:
+                await self.close()
+
+        except (KeyError, User.DoesNotExist, Exception) as e:
+            print(f"Connection error: {str(e)}")
             await self.close()
 
 
+    @database_sync_to_async
+    def check_and_delete_empty_group(self, group_name):
+        redis_client = get_redis_connection("default")
+        group_key = f"asgi:group:{group_name}"
+        group_members = redis_client.smembers(group_key)
+        print('group members: ', group_members)
+
+        if not group_members:
+            redis_client.delete(group_key)
+            print(f"Group {group_name} deleted as it's empty")
+
+
     async def disconnect(self, close_code):
-        cache.delete(f"user_{self.user.id}_channel")
-        # if self.conversation_id:
-        # print('group discarded')
-        # await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+        try:
+            # Clean up cache
+            cache.delete(f"user_{self.userid}_channel")
+
+            # Clean up group membership if exists
+            if hasattr(self, 'conversation_key') and self.conversation_key:
+
+                # Remove this channel from group
+                await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
+                await self.check_and_delete_empty_group(self.room_group_name)
+
+        except Exception as e:
+            print(f"Disconnect error: {str(e)}")
+
+
 
 
     @database_sync_to_async
@@ -146,7 +181,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 if self.old_user_channel is not self.other_user_channel:
                     await self.channel_layer.group_add(self.room_group_name, self.other_user_channel)
 
-                conversation = await self.check_conversation_existed(self.conversation_key, self.user.id, self.other_user)
+                conversation = await self.check_conversation_existed(self.conversation_key, self.userid, self.other_user)
                 saved_message = await self.save_message(
                     conversation_id = conversation.id,
                     sender_id = sender,
@@ -167,7 +202,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         elif message_type == 'block':
             blocker_id = data['blocker_id']
-            conversation = await self.check_conversation_existed(self.conversation_key, self.user.id, self.other_user)
+            conversation = await self.check_conversation_existed(self.conversation_key, self.userid, self.other_user)
 
             await self.set_conversation_status(conversation, blocker_id)
 
