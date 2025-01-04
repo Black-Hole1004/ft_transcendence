@@ -89,7 +89,7 @@ const Matchmaking = () => {
 
         matchmakingService.on('match_found', async (data) => {
             setStatus('match_found')
-            setStatement('Random Match Found')
+            setStatement('match found')
             setOpponentFound(true) 
             setMatchData(data)
 
@@ -100,6 +100,12 @@ const Matchmaking = () => {
                 return
             }
 
+            const backgroundId = location.state?.backgroundId || 1
+
+            // Start countdown
+            for (let i = 9; i > 0; i--) {
+                setCountdown(i)
+                await new Promise((r) => setTimeout(r, 1000))
             // get the countdown from the server
             if (data.countdown !== undefined) {
                 setCountdown(data.countdown);
@@ -122,7 +128,7 @@ const Matchmaking = () => {
 
         matchmakingService.on('direct_match', async (data) => {
             setStatus('match_found')
-            setStatement('Direct Match Found')
+            setStatement('Friendly Match')
             setOpponentFound(true)
             setMatchData(data)
 
@@ -133,6 +139,12 @@ const Matchmaking = () => {
                 return
             }
 
+            const backgroundId = location.state?.backgroundId || 1
+
+            // Start countdown
+            for (let i = 9; i > 0; i--) {
+                setCountdown(i)
+                await new Promise((r) => setTimeout(r, 1000))
             // get the countdown from the server
             if (data.countdown !== undefined) {
                 setCountdown(data.countdown);

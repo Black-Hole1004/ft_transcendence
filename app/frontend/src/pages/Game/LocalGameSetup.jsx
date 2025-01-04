@@ -93,7 +93,7 @@ const LocalGameSetup = () => {
 		}
 	}
 
-	const generateRandomName = () => `Player ${Math.floor(Math.random() * 1000)}`
+	const generateRandomName = () => `Player${Math.floor(Math.random() * 1000)}`
 
 	const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`
 

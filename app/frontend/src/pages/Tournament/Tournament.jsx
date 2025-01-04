@@ -10,81 +10,6 @@ import { useEffect, useCallback, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
 import Loader from '../../components/Loader/Loader'
 
-const players = [
-	{
-		id: '1',
-		nickname: 'MOUAD55',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 12456,
-		avatar: '../../../dist/assets/images/moudrib.jpeg',
-		icon: '../../../dist/assets/images/Achievements/celestial-master.png',
-	},
-	{
-		id: '2',
-		nickname: 'ARABIAI',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 11648,
-		avatar: '../../../dist/assets/images/tabi3a.jpeg',
-		icon: '../../../dist/assets/images/Achievements/galactic-trailblazer.png',
-	},
-	{
-		id: '3',
-		nickname: 'AHMAYMOU',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 10231,
-		avatar: '../../../dist/assets/images/lmoudir.jpg',
-		icon: '../../../dist/assets/images/Achievements/stellar-voyager.png',
-	},
-	{
-		id: '4',
-		nickname: 'PLAYER1',
-		achievement: 'GALACTIC TRAILBLAZER',
-		rankClass: 'text-cyan-400',
-		xp: 9153,
-		avatar: '../../../dist/assets/images/ahaloui.jpeg',
-		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png',
-	},
-	{
-		id: '1',
-		nickname: 'MOUAD55',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 12456,
-		avatar: '../../../dist/assets/images/moudrib.jpeg',
-		icon: '../../../dist/assets/images/Achievements/celestial-master.png',
-	},
-	{
-		id: '2',
-		nickname: 'ARABIAI',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 11648,
-		avatar: '../../../dist/assets/images/tabi3a.jpeg',
-		icon: '../../../dist/assets/images/Achievements/galactic-trailblazer.png',
-	},
-	{
-		id: '3',
-		nickname: 'AHMAYMOU',
-		achievement: 'CELESTIAL MASTER',
-		rankClass: 'text-orange-400',
-		xp: 10231,
-		avatar: '../../../dist/assets/images/lmoudir.jpg',
-		icon: '../../../dist/assets/images/Achievements/stellar-voyager.png',
-	},
-	{
-		id: '4',
-		nickname: 'PLAYER1',
-		achievement: 'GALACTIC TRAILBLAZER',
-		rankClass: 'text-cyan-400',
-		xp: 9153,
-		avatar: '../../../dist/assets/images/ahaloui.jpeg',
-		icon: '../../../dist/assets/images/Achievements/cosmic-explorer.png',
-	},
-]
-
 const Tournament = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
@@ -262,22 +187,236 @@ const Tournament = () => {
 	if (!tournamentData) {
 		return <Loader />
 	}
+	console.log('semifinal1 winner', semiFinal1winner?.name)
+	console.log('semifinal2 winner', semiFinal2winner?.name)
 
 	return (
-		<section className='tournament flex flex-col items-center'>
-			<div className='w-[96%] flex flex-col overflow-hidden py-8'>
+		<section className='flex-1 parent tournament self-center w-[96%] max-lp:flex max-lp:flex-col max-lp:gap-10'>
+			{/* Description */}
+			<div className='tournament-description'>
 				<h1
 					className='font-dreamscape drop-shadow-[0_2px_10px_rgba(251,251,238,0.8)]'
-				>
+					>
 					CELESTIAL PONG CLASH
 				</h1>
-				<p className='description text-primary font-regular text-justify'>
+				<p className='description text-primary font-regular'>
 					The Celestial Pong Clash invites players from across the galaxy to
 					compete in intense interstellar battles, where victory depends on
 					mastering precision and strategy in the vast cosmic realm.
 				</p>
 			</div>
+
+			{showWarning && (
+					<MatchWarning
+						player1Name={
+							tournamentState === 'not_started'
+								? player1?.name
+								: tournamentState === 'semifinal2'
+									? player3?.name
+									: semiFinal1winner?.name
+						}
+						player2Name={
+							tournamentState === 'not_started'
+								? player2?.name
+								: tournamentState === 'semifinal2'
+									? player4?.name
+									: semiFinal2winner?.name
+						}
+					/>
+			)}
+
+
+
+
+			{/* Tournament History */}
+			<div className='tournament-history flex flex-col items-center gap-5 max-lp:order-last'>
+				<h3 className='font-dreamscape-sans text-light round shadow'>SEMIFINAL</h3>
+				{/* {Match 1 } */}
+				<Match player1={player1.name} player2={player2.name} />
+				{/* {Match 2 } */}
+				<Match player1={player3.name} player2={player4.name} />
+				<h3 className='font-dreamscape-sans text-light round shadow'>FINAL</h3>
+				{/* {Match 3 } */}
+				<Match player1={semiFinal1winner?.name} player2={semiFinal2winner?.name} />
+				<Button
+					className={`rounded font-medium round w-full max-w-[500px] py-3 mb-10
+					bg-[rgb(183,170,156,8%)] transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]`}
+					onClick={handleTournamentAction}
+					type='submit'
+				>
+					{getButtonText()}
+				</Button>
+			</div>
+
+
+
+
+			{/* Tournament Scheme */}
+			<div className='tournament-scheme scheme-parent'>
+				<div className='player1 flex items-center justify-center text-primary
+					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans'
+					style={{
+						border: `2px solid ${player1.color}`
+					}}
+				>{player1.name}</div>
+				<div className='player2 flex items-center justify-center text-primary
+					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans'
+					style={{
+						border: `2px solid ${player2.color}`
+					}}
+				>{player2.name}</div>
+				<div className='player3 flex items-center justify-center text-primary
+					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans'
+					style={{
+						border: `2px solid ${player3.color}`
+					}}
+				>{player3.name}</div>
+				<div className='player4 flex items-center justify-center text-primary
+					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans'
+					style={{
+						border: `2px solid ${player4.color}`
+					}}
+				>{player4.name}</div>
+
+
+				{/* path to final */}
+				{/* Match 1 */}
+				<div className='match1-part1 flex justify-center'>
+					<div className='w-1/3'
+						style={{
+							borderLeft: `2px solid ${semiFinal1winner?.name === player1.name ? player1.color : '#646464'}`,
+							borderTop: `2px solid ${semiFinal1winner?.name === player1.name ? player1.color : '#646464'}`
+						}}
+					></div>
+					<div className='w-1/3'
+						style={{
+							borderRight: `2px solid ${semiFinal1winner?.name === player2.name ? player2.color : '#646464'}`,
+							borderTop: `2px solid ${semiFinal1winner?.name === player2.name ? player2.color : '#646464'}`
+						}}
+					></div>
+				</div>
+				<div className='match1-part2 flex'>
+					<div className='flex-1'
+						style={{
+							borderRight: `2px solid ${!semiFinal1winner ? '#646464' : semiFinal1winner?.name === player1.name ? player1.color : 'none'}`,
+						}}
+						></div>
+					<div className='flex-1'
+						style={{
+							borderLeft: `2px solid ${semiFinal1winner?.name === player2.name ? player2.color : 'none'}`,
+						}}
+					></div>
+				</div>
+
+
+				{/* Match 2 */}
+				<div className='match2-part1 flex justify-center'>
+					<div className='w-1/3'
+						style={{
+							borderLeft: `2px solid ${semiFinal2winner?.name === player3.name ? player3.color : '#646464'}`,
+							borderTop: `2px solid ${semiFinal2winner?.name === player3.name ? player3.color : '#646464'}`
+						}}
+					></div>
+					<div className='w-1/3'
+						style={{
+							borderRight: `2px solid ${semiFinal2winner?.name === player4.name ? player4.color : '#646464'}`,
+							borderTop: `2px solid ${semiFinal2winner?.name === player4.name ? player4.color : '#646464'}`
+						}}
+					></div>
+				</div>
+				<div className='match2-part2 flex'>
+					<div className='flex-1'
+						style={{
+							borderRight: `2px solid ${!semiFinal2winner ? '#646464' : semiFinal2winner?.name === player3.name ? player3.color : 'none'}`,
+						}}
+					></div>
+					<div className='flex-1'
+						style={{
+							borderLeft: `2px solid ${semiFinal2winner?.name === player4.name ? player4.color : 'none'}`,
+						}}
+					></div>
+				</div>
+				{/* Match 3 */}
+				<div className='winner-match1 flex items-center justify-center text-center text-primary
+					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans'
+					style={{
+						border: `2px solid ${!semiFinal1winner ? '#646464' : semiFinal1winner.color}`,
+						background: `url(${semiFinal1winner ? '' : '/assets/images/unknown.webp'})`,
+						backgroundSize: 'cover',
+						backgroundPosition: 'center',
+						filter: `${!semiFinal1winner ? 'brightness(.6)' : ''}`,
+					}}
+					>{semiFinal1winner ? semiFinal1winner.name : 'unknown'}</div>
+				<div className='winner-match2 flex items-center justify-center text-center text-primary
+					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans'
+					style={{
+						border: `2px solid ${!semiFinal2winner ? '#646464' : semiFinal2winner.color}`,
+						background: `url(${semiFinal2winner ? '' : '/assets/images/unknown.webp'})`,
+						backgroundSize: 'cover',
+						backgroundPosition: 'center',
+						filter: `${!semiFinal2winner ? 'brightness(.6)' : ''}`,
+					}}
+					>{semiFinal2winner ? semiFinal2winner.name : 'unknown'}</div>
+
+				<div className='match3-part1 flex justify-center'>
+					<div className='w-2/5'
+						style={{
+							borderLeft: `2px solid ${finalWinner && finalWinner?.name === semiFinal1winner?.name ? semiFinal1winner?.color : '#646464'}`,
+							borderTop: `2px solid ${finalWinner && finalWinner?.name === semiFinal1winner?.name ? semiFinal1winner?.color : '#646464'}`
+						}}
+					></div>
+					<div className='w-2/5'
+						style={{
+							borderRight: `2px solid ${finalWinner && finalWinner?.name === semiFinal2winner?.name ? semiFinal2winner?.color : '#646464'}`,
+							borderTop: `2px solid ${finalWinner && finalWinner?.name === semiFinal2winner?.name ? semiFinal2winner?.color : '#646464'}`
+						}}
+						></div>
+				</div>
+				<div className='match3-part2 flex'>
+					<div className='flex-1'
+						style={{
+							borderRight: `2px solid ${!finalWinner ? '#646464' : finalWinner?.name === semiFinal1winner?.name ? semiFinal1winner?.color : 'none'}`,
+						}}
+						></div>
+					<div className='flex-1'
+						style={{
+							borderLeft: `2px solid ${finalWinner?.name === semiFinal2winner?.name ? semiFinal2winner?.color : 'none'}`,
+						}}
+						></div>
+				</div>
+
+				<div className='winner flex items-center justify-center text-primary
+					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans'
+					style={{
+						border: `2px solid ${!finalWinner ? '#646464' : finalWinner.color}`,
+						background: `url(${semiFinal2winner ? '' : '/assets/images/unknown.webp'})`,
+						backgroundSize: 'cover',
+						backgroundPosition: 'center',
+						filter: `${!finalWinner ? 'brightness(.6)' : ''}`,
+					}}
+				>{finalWinner ? finalWinner.name : 'unknown'}</div>
+
+			</div>
 		</section>
 	)
 }
 export default Tournament
+
+const Match = ({ player1, player2 }) => {
+	return (
+		<div className='round relative w-full h-20 bg-border bg-opacity-20 rounded-md flex justify-between items-center leading-none max-w-[500px]'>
+			<div className='flex-1 flex justify-around'>
+				<p className='font-dreamscape-sans'>{player1}</p>
+				<p className='font-dreamscape'>7</p>
+			</div>
+			<div className='flex-1 flex justify-around'>
+				<p className='font-dreamscape'>2</p>
+				<p className='font-dreamscape-sans'>{player2}</p>
+			</div>
+
+			<div className='absolute flex items-center w-px rotate-12 h-full bg-border left-1/2 transform -translate-x-1/2'>
+				<p className='vs text-light absolute left-1/2 transform -translate-x-1/2 font-dreamscape -rotate-12 z-10 shadow'>VS</p>
+			</div>
+		</div>
+	)
+}

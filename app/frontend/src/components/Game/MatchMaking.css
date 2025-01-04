@@ -53,20 +53,24 @@
     }
 }
 
+.statement {
+    font-size: clamp(1.25rem, 3.54vw + 0.586rem, 6.25rem);
+}
+
 .timeout p,
 button {
 	font-size: clamp(0.813rem, 0.221vw + 0.771rem, 1.125rem);
 }
 
 .matchmaking {
-    gap: clamp(0.625rem, 3.982vw - 0.122rem, 6.25rem);
+    gap: clamp(1.875rem, 4.867vw + 0.962rem, 8.75rem);
 }
 
 .matchmaking .avatar {
     width: clamp(5rem, 7.522vw + 3.59rem, 15.625rem);
 }
 
-.matchmaking h1 {
+.matchmaking h1, .countdown {
     font-size: clamp(1.625rem, 3.274vw + 1.011rem, 6.25rem);
 }
 
