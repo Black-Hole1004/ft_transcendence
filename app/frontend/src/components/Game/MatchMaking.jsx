@@ -102,10 +102,6 @@ const Matchmaking = () => {
 
             const backgroundId = location.state?.backgroundId || 1
 
-            // Start countdown
-            for (let i = 9; i > 0; i--) {
-                setCountdown(i)
-                await new Promise((r) => setTimeout(r, 1000))
             // get the countdown from the server
             if (data.countdown !== undefined) {
                 setCountdown(data.countdown);
@@ -141,10 +137,6 @@ const Matchmaking = () => {
 
             const backgroundId = location.state?.backgroundId || 1
 
-            // Start countdown
-            for (let i = 9; i > 0; i--) {
-                setCountdown(i)
-                await new Promise((r) => setTimeout(r, 1000))
             // get the countdown from the server
             if (data.countdown !== undefined) {
                 setCountdown(data.countdown);
