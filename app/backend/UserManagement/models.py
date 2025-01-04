@@ -137,6 +137,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+    is_2fa_enabled = models.BooleanField(default=False)
+
+    # 2fa fields
+    otp_secret = models.IntegerField(default=0)  # Store OTP secret
+    otp_expiry = models.DateTimeField(blank=True, null=True)  # OTP expiry time
+    otp_attempts = models.IntegerField(default=0)  # Track OTP attempts
+    otp_verified = models.BooleanField(default=False)  # Track OTP verification status
 
     objects = CustomUserManager()
 

@@ -70,6 +70,9 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json()
             if (response.ok) {
                 console.log('Login successful', data)
+                if (data.Twofa_enabled === true) {
+                    navigate('/2fa')
+                }
                 setAuthTokens(data)
                 setUser(jwtDecode(data.access_token))
                 

@@ -61,6 +61,33 @@ const Settings = () => {
 	// 	openDialog()
 	// }
 
+	const send2faAxiosRequest = (status) => {
+		axios
+				.post(USER_API + '2fa/', { '2fa_status': status }, { headers: getAuthHeaders() })
+				.then((response) => {
+					if (response.status === 200) {
+						console.log('response ----->', response.data)
+						// openDialog()
+					}
+				})
+				.catch((error) => {
+					if (error.response) {
+						console.log('Error:', error.response.data)
+						const errorMessage = error.response.data?.error || 'Failed to enable 2FA'
+						triggerAlert('error', errorMessage)
+						console.error('Error:', errorMessage)
+					} else if (error.request) {
+						// Request was made but no response received
+						triggerAlert('error', 'No response from the server')
+						console.error('Error: No response from the server')
+					} else {
+						// Something happened while setting up the request
+						triggerAlert('error', error.message)
+						console.error('Error:', error.message)
+					}
+				})
+	}
+
 	const openDeleteDialog = () => {
 		if (deleteDialogRef.current) {
 			deleteDialogRef.current.showModal()
@@ -76,6 +103,8 @@ const Settings = () => {
 	const enableDesable2FA = () => {
 		if (!twoFactorAuthEnabled) {
 			setTwoFactorAuthEnabled(true)
+			// do axios call to enable 2FA `api/users/2fa/` using post request with json body {"2fa_status": true}
+			send2faAxiosRequest(true);
 		} else {
 			// console.log(twoFactorAuthEnabled)
 			openDialog()
@@ -560,6 +589,7 @@ const Settings = () => {
 				dialogRef={dialogRef}
 				closeDialog={closeDialog}
 				setTwoFactorAuthEnabled={setTwoFactorAuthEnabled}
+				send2faAxiosRequest={send2faAxiosRequest}
 			/>
 			<DeleteConfirmationModal
 				dialogRef={deleteDialogRef}
