@@ -6,11 +6,15 @@ import axios from 'axios'
 import useAuth from '../../context/AuthContext'
 import { useSocket } from '../../components/Layout/Layout'
 
-const USER_API = import.meta.env.VITE_USER_API
-const BASE_URL = import.meta.env.VITE_BASE_URL
-const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
 import { useAlert } from '../../components/AlertContext'
 import ConfirmationModal from '../../components/Settings/ConfirmationModal'
+import Cookies from 'js-cookie'
+
+import DeleteConfirmationModal from './DeleteConfirmationModal'
+
+const USER_API = import.meta.env.VITE_USER_API
+const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 function Input({ id, type, label, placeholder, value, onChange }) {
 	return (
@@ -33,10 +37,10 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 }
 
 const Settings = () => {
-
-	const { refreshUserData , fetchUser } = useSocket()
+	const { refreshUserData, fetchUser } = useSocket()
 
 	const dialogRef = useRef(null)
+	const deleteDialogRef = useRef(null)
 	const [twoFactorAuthEnabled, setTwoFactorAuthEnabled] = useState(false)
 
 	const openDialog = () => {
@@ -56,6 +60,18 @@ const Settings = () => {
 	// const handle2FAModal = () => {
 	// 	openDialog()
 	// }
+
+	const openDeleteDialog = () => {
+		if (deleteDialogRef.current) {
+			deleteDialogRef.current.showModal()
+		}
+	}
+
+	const closeDeleteDialog = () => {
+		if (deleteDialogRef.current) {
+			deleteDialogRef.current.close()
+		}
+	}
 
 	const enableDesable2FA = () => {
 		if (!twoFactorAuthEnabled) {
@@ -110,7 +126,38 @@ const Settings = () => {
 	const { authTokens, logout, getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
 
-	
+	function clearAllCookies() {
+		// Get all cookies as an object
+		const allCookies = Cookies.get()
+
+		// Loop through the cookies and remove each one
+		for (const cookieName in allCookies) {
+			if (allCookies.hasOwnProperty(cookieName)) {
+				Cookies.remove(cookieName)
+			}
+		}
+	}
+
+	const deleteAccount = () => {
+		axios
+			.delete(USER_API + 'delete/', {
+				headers: {
+					Authorization: getAuthHeaders().Authorization,
+				},
+			})
+			.then((response) => {
+				if (response.status === 200) {
+					// sleep 1 second
+					console.log('response ----->', response.data)
+					// trigger alert wait for 1 second --> clear cookies --> redirect to /
+					triggerAlert('success', 'Account deleted successfully')
+					setTimeout(() => {
+						clearAllCookies()
+						window.location.href = '/'
+					}, 1000)
+				}
+			})
+	}
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -187,8 +234,7 @@ const Settings = () => {
 			.catch((error) => {
 				if (error.response) {
 					console.log('Error:', error.response.data)
-					const errorMessage =
-						error.response.data?.error || 'Failed to update user data'
+					const errorMessage = error.response.data?.error || 'Failed to update user data'
 					triggerAlert('error', errorMessage)
 					console.error('Error:', errorMessage)
 				} else if (error.request) {
@@ -480,6 +526,8 @@ const Settings = () => {
 								<button
 									className='rounded-md border-red-600 font-regular buttons-text remove-button border 
 								transition duration-300 select-none bg-red-600 bg-opacity-10 hover:bg-red-600 active:bg-red-700'
+									// onClick={deleteAccount}
+									onClick={openDeleteDialog}
 								>
 									Delete Account
 								</button>
@@ -512,6 +560,11 @@ const Settings = () => {
 				dialogRef={dialogRef}
 				closeDialog={closeDialog}
 				setTwoFactorAuthEnabled={setTwoFactorAuthEnabled}
+			/>
+			<DeleteConfirmationModal
+				dialogRef={deleteDialogRef}
+				closeDialog={closeDeleteDialog}
+				onDelete={deleteAccount}
 			/>
 		</>
 	)

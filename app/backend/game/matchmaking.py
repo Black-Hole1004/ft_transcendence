@@ -6,6 +6,9 @@ from .models import GameSessions
 from UserManagement.models import Achievement
 from django.core.cache import cache
 import time
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class MatchmakingConsumer(AsyncWebsocketConsumer):
     matchmaking_queue = {}
@@ -14,6 +17,49 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.search_task = None  # this to track the search task (solved the issue with disconnect doesn't get called)
+    
+    async def send_countdown(self, channel_name, match_data):
+        """Send synchronized countdown before match starts"""
+        countdown_start = 5
+        
+        for i in range(countdown_start, 0, -1):
+            # Use JSON dumps consistently for both players
+            message = json.dumps({
+                **match_data,
+                'countdown': i
+            })
+            
+            if channel_name == self.channel_name:
+                # Current user - use send directly
+                await self.send(text_data=message)
+            else:
+                # Other player - use channel layer
+                await self.channel_layer.send(
+                    channel_name,
+                    {
+                        'type': 'match_notification',
+                        'data': message
+                    }
+                )
+            await asyncio.sleep(1)
+            
+        # Send final navigation message
+        final_message = json.dumps({
+            **match_data,
+            'countdown': 0,
+            'should_navigate': True
+        })
+        
+        if channel_name == self.channel_name:
+            await self.send(text_data=final_message)
+        else:
+            await self.channel_layer.send(
+                channel_name,
+                {
+                    'type': 'match_notification',
+                    'data': final_message
+                }
+            )
     
     async def connect(self):
         """Handle new WebSocket connection"""
@@ -54,8 +100,6 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def check_player_status(self, user_id):
         """Check if player is currently in a game"""
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
         try:
             user = User.objects.get(id=user_id)
             return user.status
@@ -150,8 +194,6 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_user_data(self, user_id):
         """Get fresh user data from database"""
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
         user = User.objects.get(id=user_id)
         return user
 
@@ -248,8 +290,12 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                                         'data': match_data_player2
                                     }
                                 )
-                                return
                                 
+                                # Start countdown for both players
+                                await asyncio.gather(
+                                    self.send_countdown(self.channel_name, match_data_player1),
+                                    self.send_countdown(opponent_channel, match_data_player2)
+                                )
                             except Exception as e:
                                 print(f"Error creating match: {e}")
                                 continue
@@ -340,6 +386,11 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                 # Send to second player
                 await self.send(json.dumps(match_data_player2))
                 
+                # Start countdown for both players
+                await asyncio.gather(
+                    self.send_countdown(first_channel, match_data_player1),
+                    self.send_countdown(self.channel_name, match_data_player2)
+                )
                 # Clean up
                 del self.direct_match_pairs[invitation_id]
                 
@@ -363,5 +414,10 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
             }))
         
     async def match_notification(self, event):
-        """Handle match notification"""
-        await self.send(text_data=json.dumps(event['data']))
+        """Handle match notification - now expects pre-formatted JSON string"""
+        # If data is already a string (JSON), send it directly
+        if isinstance(event['data'], str):
+            await self.send(text_data=event['data'])
+        else:
+            # Otherwise, encode it (for backward compatibility)
+            await self.send(text_data=json.dumps(event['data']))

@@ -9,6 +9,10 @@ class MatchmakingService {
 		this.currentUserId = null
 	}
 
+	isConnected() {
+        return this.socket?.readyState === WebSocket.OPEN;
+    }
+
 	close() {
 		if (this.socket?.readyState === WebSocket.OPEN) {
 			this.socket.close(1000, 'Normal closure')
@@ -17,6 +21,11 @@ class MatchmakingService {
 
 	connect(userId) {
 		this.currentUserId = userId
+
+		// Close the existing connection if it exists
+		if (this.socket) {
+			this.socket.close()
+		}
 
 		this.socket = new WebSocket(`wss://localhost/ws/matchmaking/?user_id=${userId}`)
 

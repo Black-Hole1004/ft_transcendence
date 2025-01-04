@@ -26,9 +26,14 @@ export const AuthProvider = ({ children }) => {
         try {
             
             if (accessToken && refreshToken) {
+                // trim double quotes from the token with trim
+                let TrimmedAccess = accessToken.replace(/^"|"$|"/g, ''); 
+                let TrimmedRefresh = refreshToken.replace(/^"|"$|"/g, '');
+                console.log('access_token:', TrimmedAccess);
+                console.log('refresh_token:', TrimmedRefresh);
                 return {
-                    access_token: JSON.parse(accessToken),
-                    refresh_token: JSON.parse(refreshToken),
+                    access_token: TrimmedAccess,
+                    refresh_token: TrimmedRefresh,
                 };
             }
             return null;

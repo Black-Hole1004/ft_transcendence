@@ -476,6 +476,8 @@ class AcceptFriendRequestView(APIView):
     def post(self, request, friend_request_id):
         try:
             friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+            if (friend_request.user_to != request.user):
+                return Response({"message": "You are not authorized to accept this friend request"}, status=403)
             if friend_request.status == 'accepted':
                 return Response({"message": "Friend request already accepted"}, status=400)
 
@@ -519,6 +521,8 @@ class CancelFriendRequestView(APIView):
     def post(self, request, friend_request_id):
         try:
             friend_request = FriendShipRequest.objects.get(id=friend_request_id)
+            if (friend_request.user_to != request.user):
+                return Response({"message": "You are not authorized to accept this friend request"}, status=403)
 
             if friend_request.status == 'rejected':
                 return Response({"message": "Friend request already rejected"}, status=400)
@@ -978,6 +982,32 @@ def get_user_data(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_data_by_id(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        return JsonResponse({
+            'id': user.id,
+            'username': user.username,
+            'xp': user.xp,
+            'email': user.email,
+            'profile_picture': user.profile_picture.url if hasattr(user, 'profile_picture') and user.profile_picture else None,
+            'badge': Achievement.get_badge(user.xp)
+        })
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+# delete user data
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user(request):
+    user = request.user
+    user.delete()
+    return JsonResponse({'message': 'User deleted successfully'})
 
 class GetUserByUserName(APIView):
     permission_classes = [IsAuthenticated]
