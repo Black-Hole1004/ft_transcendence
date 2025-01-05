@@ -13,6 +13,7 @@ const Profile = React.lazy(() => import('../pages/Profile/Profile'))
 const Settings = React.lazy(() => import('../pages/Settings/Settings'))
 const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
 const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
+const TournamentAhaloui = React.lazy(() => import('../pages/Tournament/Tournament-ahaloui'))
 const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
 const Layout = React.lazy(() => import('../components/Layout/Layout'))
 const TwoFactorAuth = React.lazy(() => import('../pages/TwoFactorAuth/TwoFactorAuth'))
@@ -31,6 +32,7 @@ const LocalGameTour = React.lazy(() => import('../pages/Game/LocalGameTour'))
 const UserProfile = React.lazy(() => import('../pages/UserProfile/UserProfile'))
 
 const Match = React.lazy(() => import('../components/Game/Match'))
+
 const ComponentPath = () => {
 	const { authTokens } = useAuth();
 
@@ -53,6 +55,7 @@ const ComponentPath = () => {
 					<Route path="/users/:profile_name" element={<UserProfile />} />
 					
 					<Route path="/Tournament" element={<Tournament />} />
+					<Route path="/TournamentAhaloui" element={<TournamentAhaloui />} />
 					<Route path="/CustomTournament" element={<CustomTournament />} />
 					<Route path="/TournamentSetup" element={<TournamentSetup />} />
 					<Route path='/local-game-tour' element={<LocalGameTour />} />

@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }) => {
                 handleSubmit('success', 'Registration successful')
             } else {
                 console.log('registartion failed', data)
-                handleSubmit('error', data.password2)
+                handleSubmit('error', data.password2 || data.email)
             }
         } catch (error) {
             console.error('error', error)

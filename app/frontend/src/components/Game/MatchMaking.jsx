@@ -89,7 +89,7 @@ const Matchmaking = () => {
 
         matchmakingService.on('match_found', async (data) => {
             setStatus('match_found')
-            setStatement('Random Match Found')
+            setStatement('match found')
             setOpponentFound(true) 
             setMatchData(data)
 
@@ -99,6 +99,8 @@ const Matchmaking = () => {
                 setErrorMessage('Invalid game data received')
                 return
             }
+
+            const backgroundId = location.state?.backgroundId || 1
 
             // get the countdown from the server
             if (data.countdown !== undefined) {
@@ -122,7 +124,7 @@ const Matchmaking = () => {
 
         matchmakingService.on('direct_match', async (data) => {
             setStatus('match_found')
-            setStatement('Direct Match Found')
+            setStatement('Friendly Match')
             setOpponentFound(true)
             setMatchData(data)
 
@@ -132,6 +134,8 @@ const Matchmaking = () => {
                 setErrorMessage('Invalid game data received')
                 return
             }
+
+            const backgroundId = location.state?.backgroundId || 1
 
             // get the countdown from the server
             if (data.countdown !== undefined) {

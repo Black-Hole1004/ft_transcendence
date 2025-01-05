@@ -5,7 +5,6 @@ const Card = React.lazy(() => import('../../components/Home/Card/Card'))
 import Header from '../../components/Home/Header/Header'
 import Button from '../../components/Home/Buttons/Button'
 // import useAuth from '../../context/AuthContext'
-import {AlertWrapper} from '../../components/Layout/Layout'
 
 import Loader from '../../components/Loader/Loader'
 
@@ -35,7 +34,6 @@ const Home = () => {
 
 	return (
 		<>
-			<AlertWrapper cardRef={dialogRef} />
 			<Header handleClick={handleClick} />
 			<section className='text-primary responsive-text'>
 				<div className='flex lp:justify-start justify-center'>
