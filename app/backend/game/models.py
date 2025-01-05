@@ -50,7 +50,6 @@ class GameSessions(models.Model):
     player1_xp_gain = models.IntegerField(default=0)
     player2_xp_gain = models.IntegerField(default=0)
     
-        
     # Game state
     is_paused = models.BooleanField(default=False)
     start_time = models.DateTimeField(auto_now_add=True)
