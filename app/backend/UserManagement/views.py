@@ -188,7 +188,15 @@ class Verify2faView(APIView):
             if not user:
                 return JsonResponse({'error': 'not user False'}, status=400)
             elif user.otp_verified:
-                return JsonResponse({'message': 'User already verified'}, status=200)
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+                response = JsonResponse({
+                    'access_token': access_token,
+                    'refresh_token': refresh_token,
+                    'message': 'User already verified 2fa'
+                }, status=200)
+                return response
             elif user.otp_attempts >= 3:
                 return JsonResponse({'error': 'Too many attempts'}, status=400)
             elif Twofa.verify_otp(user, otp):
@@ -202,7 +210,7 @@ class Verify2faView(APIView):
                 }, status=200)
                 return response
             else:
-                return JsonResponse({'error': 'zbi False'}, status=400)
+                return JsonResponse({'error': 'False'}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
 

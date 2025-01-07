@@ -119,7 +119,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     mobile_number = models.CharField(max_length=15, default='', blank=True,
     validators=[RegexValidator(regex='^\+?1?\d{9,15}$', message='Phone number must be entered in the format: +999999999. Up to 15 digits allowed.')])
     display_name = models.CharField(max_length=30, default='', blank=True)
-    bio = models.TextField(default='', blank=True)
+    bio = models.TextField(max_length=150, default='', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/avatar.jpg')
     date_joined = models.DateField(auto_now_add=True)
     # added by tabi3a
@@ -224,7 +224,7 @@ class FriendShipRequest(models.Model):
 class Notification(models.Model):
     sender = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='sender')
     receiver = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='receiver')
-    message = models.TextField()
+    message = models.TextField(max_length=50)
     is_read =  models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
