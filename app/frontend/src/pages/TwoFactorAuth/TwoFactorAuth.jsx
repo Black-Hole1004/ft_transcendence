@@ -21,6 +21,7 @@ const TwoFactorAuth = () => {
 		Array.from(inputs).forEach(element => {
 			code += element.value
 		});
+
 		console.log('code: ', code)
 	}
 
