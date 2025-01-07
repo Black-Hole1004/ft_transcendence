@@ -38,12 +38,11 @@ def getUserInfos(request, conversation_key):
 
     if len(ids) != 2 or not all(id.isdigit() for id in ids) or request.user.id not in map(int, ids):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
-    # print('ids: ', ids)
+
     if int(ids[0]) > int(ids[1]):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
     user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
-    # print('user_id: ', user_id)
-    # print('request.user.id: ', request.user.id)
+
 
     user_infos = User.objects.filter(id=user_id)
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()

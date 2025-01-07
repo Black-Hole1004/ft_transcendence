@@ -25,3 +25,8 @@
 .verify {
 	width: clamp(16.875rem, 14.602vw + 14.137rem, 37.5rem);
 }
+
+.inputs:focus {
+	outline: 1px solid #fbfbee;
+	outline-offset: 2px;
+}

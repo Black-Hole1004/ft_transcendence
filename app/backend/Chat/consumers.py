@@ -72,15 +72,35 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.close()
 
 
-    @database_sync_to_async
-    def check_and_delete_empty_group(self, group_name):
-        redis_client = get_redis_connection("default")
-        group_key = f"asgi:group:{group_name}"
-        group_members = redis_client.smembers(group_key)
+    async def receive(self, text_data):
+        try:
+            data = json.loads(text_data)
+            message_type = data['message_type']
 
-        if not group_members:
-            redis_client.delete(group_key)
-            print(f"Group {group_name} deleted as it's empty")
+            # Extract conversation participants
+            conversation_key = data['conversation_key']
+            participants = conversation_key.split('_')
+            participants = [int(key) for key in participants]
+
+            # Validate conversation participants
+            if not ConversationValidator.is_valid_conversation(participants, self.userid):
+                return
+
+            # Get the other participant's ID
+            other_participant_id = ConversationValidator.get_other_participant_id(participants, self.userid)
+
+            # Handle different message types
+            handlers = {
+                'join': self._handle_join,
+                'message': self._handle_message,
+                'block': self._handle_block
+            }
+
+            if handler := handlers.get(message_type):
+                await handler(data, conversation_key, other_participant_id)
+
+        except Exception as e:
+            print(f"Error in receive: {str(e)}")
 
 
     async def disconnect(self, close_code):
@@ -98,6 +118,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         except Exception as e:
             print(f"Disconnect error: {str(e)}")
+
+
+    @database_sync_to_async
+    def check_and_delete_empty_group(self, group_name):
+        redis_client = get_redis_connection("default")
+        group_key = f"asgi:group:{group_name}"
+        group_members = redis_client.smembers(group_key)
+
+        if not group_members:
+            redis_client.delete(group_key)
+            print(f"Group {group_name} deleted as it's empty")
 
 
     @database_sync_to_async
@@ -146,38 +177,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             conversation.save()
         except Exception as e:
             print(f"Error setting block status: {e}")
-
-
-
-    async def receive(self, text_data):
-        try:
-            data = json.loads(text_data)
-            message_type = data['message_type']
-
-            # Extract conversation participants
-            conversation_key = data['conversation_key']
-            participants = conversation_key.split('_')
-            participants = [int(key) for key in participants]
-
-            # Validate conversation participants
-            if not ConversationValidator.is_valid_conversation(participants, self.userid):
-                return
-
-            # Get the other participant's ID
-            other_participant_id = ConversationValidator.get_other_participant_id(participants, self.userid)
-
-            # Handle different message types
-            handlers = {
-                'join': self._handle_join,
-                'message': self._handle_message,
-                'block': self._handle_block
-            }
-
-            if handler := handlers.get(message_type):
-                await handler(data, conversation_key, other_participant_id)
-
-        except Exception as e:
-            print(f"Error in receive: {str(e)}")
 
 
     async def _handle_join(self, data, conversation_key, other_participant_id):
