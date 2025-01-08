@@ -68,7 +68,7 @@ def getUserInfos(request, conversation_key):
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def getSearchedUsers(request, user):
-    users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)
+    users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)[:10]
 
     search_serializer = SearchResultSerializer(users, context={'request': request}, many=True)
 
@@ -90,10 +90,11 @@ def getFriendshipStatus(request, conversation_key):
     is_friend_to = FriendShip.objects.filter(user_from=user2, user_to=user1).exists()
 
     status = is_friend_to or is_friend_from
-    
+
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
-    
-    return Response({
+    response = {
         'status': status,
-        'blocked_by': conversation.blocked_by
-    })
+    }
+    if conversation:
+        response['blocked_by'] = conversation.blocked_by
+    return Response(response)

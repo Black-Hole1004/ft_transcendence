@@ -170,8 +170,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             # Remove friendship if blocked
             if blocker_id > 0:
-                is_friend_from = FriendShip.objects.filter(user_from=self.user1, user_to=self.user2).delete()
-                is_friend_to = FriendShip.objects.filter(user_from=self.user2, user_to=self.user1).delete()
+                is_friend_from = FriendShip.objects.filter(user_from=self.user, user_to=self.other_participant).delete()
+                is_friend_to = FriendShip.objects.filter(user_from=self.other_participant, user_to=self.user).delete()
 
             # Save the updated conversation
             conversation.save()
@@ -232,15 +232,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def _handle_block(self, data, conversation_key, other_participant_id):
         conversation = await self.check_conversation_existed(
-            self.conversation_key,
-            self.userid,
+            conversation_key,
             other_participant_id
         )
 
         await self.set_conversation_status(conversation, data['blocker_id'])
 
         await self.channel_layer.group_send(
-            self.room_group_name, {
+            self.chat_room_name, {
                 'type': 'block.message',
                 'event': 'block',
                 'blocker_id': data['blocker_id'],

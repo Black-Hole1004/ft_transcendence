@@ -25,15 +25,13 @@ const Chat = () => {
 
 	const [blockerId, setBlockerId] = useState(null)
 	const [areFriends, setAreFriends] = useState(false)
+	const [receiver_id, setReceiver_id] = useState(null)
 	const [recipientInfo, setRecipientInfo] = useState(null)
 	const [conversationKey, setConversationKey] = useState(null)
 	const [conversationMessages, setConversationMessages] = useState([])
 	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0)
 	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
-	const [reciver_id, setReciver_id] = useState(null)
-
-	
 
 	// const { triggerAlert } = useAlert()
 
@@ -41,10 +39,11 @@ const Chat = () => {
 	// 	triggerAlert('success', 'Message sent successfuly!')
 	// }
 
+	console.log('chat')
+
 	useEffect(() => {
-		console.log('here')
-		console.log('blocker id: ', blockerId)
 		const sendBlockMessage = () => {
+			console.log('send block message')
 			webSocketRef.current?.send(
 				JSON.stringify({
 					message_type: 'block',
@@ -60,19 +59,19 @@ const Chat = () => {
 	}, [conversationKey, blockerId])
 
 	useEffect(() => {
+		
 		const friendshipStatus = async () => {
 			try {
-				if (conversationKey) {
-					const response = await axios.get(`${API_CHAT}status/${conversationKey}/`, {
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: getAuthHeaders().Authorization,
-						},
-					})
-					const blocker = response.data.blocked_by === null ? 0 : response.data.blocked_by
-					setAreFriends(response.data.status)
-					setBlockerId(response.data.blocked_by)
-				}
+				console.log('get friendship status')
+				const response = await axios.get(`${API_CHAT}status/${conversationKey}/`, {
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: getAuthHeaders().Authorization,
+					},
+				})
+				const blocker = response.data.blocked_by === null ? 0 : response.data.blocked_by
+				setAreFriends(response.data.status)
+				setBlockerId(response.data.blocked_by)
 			} catch (error) {
 				console.error('Error fetching friendship status:', error)
 			}
@@ -83,10 +82,12 @@ const Chat = () => {
 		}
 	}, [conversationKey])
 
+
 	useEffect(() => {
 		// Extract conversation key from URL
 		const uri = window.location.pathname.split('/').slice(2, 3)
 		if (uri.length === 1) {
+			console.log('extract conversation key from url')
 			setConversationMessages([])
 			setConversationKey(uri[0])
 			setBlockerId(0)
@@ -95,6 +96,7 @@ const Chat = () => {
 			setIsConversationLoaded(false)
 		}
 	}, [currentLocation.pathname])
+
 
 	useEffect(() => {
 		const onWebSocketOpen = () => {
@@ -112,9 +114,9 @@ const Chat = () => {
 		const onWebSocketClose = () => {
 			// console.log('WebSocket disconnected')
 			webSocketRef.current = null
-			setTimeout(initializeWebSocket, 3000)
+			setTimeout(initializeWebSocket, 1000)
 		}
-
+		
 		const onWebSocketMessage = (e) => {
 			console.log('WebSocket message received')
 			const data = JSON.parse(e.data)
@@ -129,7 +131,7 @@ const Chat = () => {
 					},
 				])
 			} else if (data.event === 'block') {
-				console.log('socket: ', data.blocker_id)
+				// console.log('socket: ', data.blocker_id)
 				setBlockerId(data.blocker_id)
 				if (data.blocker_id)
 					setAreFriends(false)
@@ -138,6 +140,7 @@ const Chat = () => {
 
 		const initializeWebSocket = () => {
 			if (!webSocketRef.current) {
+				console.log('initialize Websocket')
 				// console.log(window.location.protocol)
 				const ws = new WebSocket(`wss://${window.location.hostname}/ws/chat/`)
 				webSocketRef.current = ws
@@ -166,21 +169,21 @@ const Chat = () => {
 	}, [isConversationLoaded, conversationKey])
 
 	useEffect(() => {
+		
 		const fetchConversationDetails = async () => {
+			console.log('fetch conversation messages')
 			try {
-				if (conversationKey) {
-					const response = await axios.get(`${API_CHAT}${conversationKey}/`, {
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: getAuthHeaders().Authorization,
-						},
-					})
-					setReciver_id(response.data.user_infos[0].id)
-					setRecipientInfo(response.data.user_infos[0])
-					const messages = response.data.messages ? response.data.messages : []
-					setConversationMessages(messages)
-					setrecipientProfileImage(response.data.user_infos[0].profile_picture)
-				}
+				const response = await axios.get(`${API_CHAT}${conversationKey}/`, {
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: getAuthHeaders().Authorization,
+					},
+				})
+				setReceiver_id(response.data.user_infos[0].id)
+				setRecipientInfo(response.data.user_infos[0])
+				const messages = response.data.messages ? response.data.messages : []
+				setConversationMessages(messages)
+				setrecipientProfileImage(response.data.user_infos[0].profile_picture)
 			} catch (error) {
 				console.error('Error fetching user infos:', error)
 				navigate('/404')
@@ -202,6 +205,7 @@ const Chat = () => {
 		let ws = webSocketRef.current
 
 		if (ws && ws.readyState === WebSocket.OPEN) {
+			console.log('send message')
 			const value = messageInputRef.current.value.trim()
 
 			if (value !== '') {
@@ -214,7 +218,6 @@ const Chat = () => {
 					})
 				)
 				messageInputRef.current.value = ''
-				// handleSubmit()
 			}
 		}
 	}
@@ -247,9 +250,6 @@ const Chat = () => {
 					className='tb:w-[65.8%] flex flex-col items-center max-tb:border border-primary overflow-hidden
 						rounded-2xl tb:h-chat h-chat-ms bg-[rgba(27,22,17,0.5)]'
 				>
-					{
-						console.log('reciver_id -----> ', reciver_id)
-					}
 					{recipientInfo ? (
 						<>
 							{/* Chat Header */}
@@ -261,7 +261,7 @@ const Chat = () => {
 								recipientInfo={recipientInfo}
 								currentLoggedInUserId={currentLoggedInUserId}
 								recipientProfileImage={recipientProfileImage}
-								reciver_id={reciver_id}
+								receiver_id={receiver_id}
 							/>
 
 							{/* Chat Messages */}

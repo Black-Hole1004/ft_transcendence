@@ -41,6 +41,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 	}
 
 	const handleConversationSelect = () => {
+		console.log('user')
 		let conversation_key = `${Math.min(currentLoggedInUserId, user_id)}_${Math.max(currentLoggedInUserId, user_id)}`
 
 		setBlockerId(0)
@@ -50,6 +51,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 		})
 		navigate(`/chat/${conversation_key}`)
 	}
+
 	return (
 		<div
 			id={user_id}
