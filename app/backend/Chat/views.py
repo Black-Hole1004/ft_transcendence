@@ -38,12 +38,11 @@ def getUserInfos(request, conversation_key):
 
     if len(ids) != 2 or not all(id.isdigit() for id in ids) or request.user.id not in map(int, ids):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
-    # print('ids: ', ids)
+
     if int(ids[0]) > int(ids[1]):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
     user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
-    # print('user_id: ', user_id)
-    # print('request.user.id: ', request.user.id)
+
 
     user_infos = User.objects.filter(id=user_id)
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
@@ -69,7 +68,7 @@ def getUserInfos(request, conversation_key):
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def getSearchedUsers(request, user):
-    users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)
+    users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)[:10]
 
     search_serializer = SearchResultSerializer(users, context={'request': request}, many=True)
 
@@ -91,10 +90,11 @@ def getFriendshipStatus(request, conversation_key):
     is_friend_to = FriendShip.objects.filter(user_from=user2, user_to=user1).exists()
 
     status = is_friend_to or is_friend_from
-    
+
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
-    
-    return Response({
+    response = {
         'status': status,
-        'blocked_by': conversation.blocked_by
-    })
+    }
+    if conversation:
+        response['blocked_by'] = conversation.blocked_by
+    return Response(response)

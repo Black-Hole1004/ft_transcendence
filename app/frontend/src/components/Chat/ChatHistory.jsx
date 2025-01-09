@@ -19,7 +19,7 @@ function ChatHistory({
 	const [conversations, setConversations] = useState([])
 	const [small, setSmall] = useState(window.innerWidth < 768)
 
-	window.addEventListener('resize', () => {
+	window.addEventListener('resize', () => { // add cleanup
 		setSmall(window.innerWidth < 768)
 	})
 
@@ -31,7 +31,9 @@ function ChatHistory({
 	}, [conversationKey])
 
 	const { getAuthHeaders } = useAuth()
+
 	useEffect(() => {
+		console.log('get conversations')
 		const getConversations = async () => {
 			try {
 				const response = await axios.get(API_CHAT, {
@@ -41,8 +43,10 @@ function ChatHistory({
 					},
 				})
 				if (response.data) {
+					if (response.data.conversations.length) {
+						setConversations(response.data.conversations)
+					}
 					setCurrentLoggedInUserId(response.data.id)
-					setConversations(response.data.conversations)
 				}
 			} catch (error) {
 				console.error('Error fetching conversations:', error)
@@ -54,6 +58,7 @@ function ChatHistory({
 
 	useEffect(() => {
 		const getUsers = async () => {
+			console.log('search')
 			try {
 				if (searchText.length > 0) {
 					const response = await axios.get(`${API_CHAT}search/${searchText}/`, {
@@ -74,8 +79,9 @@ function ChatHistory({
 				console.error('Error fetching users:', error)
 			}
 		}
-
-		getUsers()
+		if (searchText.length > 0) {
+			getUsers()
+		}
 	}, [searchText])
 
 	return (

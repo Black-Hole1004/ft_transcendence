@@ -1,49 +1,9 @@
 import './CustomTournament.css'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from '../../components/Home/Buttons/Button'
-
-const ModeCard = ({ mode, handleGameModeSelect }) => {
-	return (
-		<div
-			className='relative mode-card text-primary border border-primary rounded flex-1
-			overflow-hidden hover:text-transparent aspect-video bg-primary bg-opacity-90 transition ease-in duration-300'
-		>
-			<img
-				src='assets/images/remote.webp'
-				className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 brightness-[60%] select-none pointer-events-none'
-				alt=''
-			/>
-			<p
-				className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-			pt-1 mode-title  font-dreamscape'
-			>
-				{mode === 'remote' ? 'Remote Tournament' : 'Local Tournament'}
-			</p>
-			<div
-				className='overlay absolute left-0 bottom-0 w-full h-0 bg-gradient-to-b from-transparent to-[#0b0b0b]
-			text-primary flex flex-col items-center justify-center text-center opacity-0 transition-all duration-500 ease-in-out'
-			>
-				<p className='mode-title font-dreamscape-sans'>
-					{mode === 'remote' ? 'Remote Tournament' : 'Local Tournament'}
-				</p>
-				<p className='mode-description mb-8'>
-					{mode === 'remote' ? 'Play online with others.' : 'Play on the same device.'}
-				</p>
-				<Button
-					onClick={() => handleGameModeSelect(mode)}
-					className='rounded-md border-border font-medium buttons-text start-battle'
-				>
-					Start Tournament
-				</Button>
-			</div>
-		</div>
-	)
-}
 
 const CustomTournament = () => {
 	const [backgroundId, setBackgroundId] = useState(1)
-	const [step, setStep] = useState(1)
 	const xp = 6231
 	const navigate = useNavigate()
 

@@ -131,7 +131,7 @@
 	width: clamp(1.25rem, 1.172vw + 0.5rem, 2.375rem);
 }
 
-.points p {
+.points p, .date {
 	font-size: clamp(0.375rem, 0.391vw + 0.125rem, 0.75rem);
 }
 
