@@ -208,10 +208,10 @@ const Chat = () => {
 		let ws = webSocketRef.current
 
 		if (ws && ws.readyState === WebSocket.OPEN) {
-			console.log('send message')
 			const value = messageInputRef.current.value.trim()
-
+			
 			if (value !== '') {
+				console.log('send message')
 				ws.send(
 					JSON.stringify({
 						sender: currentLoggedInUserId,
