@@ -9,7 +9,8 @@ const RemotePongTable = ({
 	isGameOver,
 	pausesRemaining,
 	pausingPlayer,
-	backgroundId
+	backgroundId,
+	opponentDisconnected,
 }) => {
 	const canvasRef = useRef(null);
 	const containerRef = useRef(null);
@@ -210,7 +211,7 @@ const RemotePongTable = ({
 						className='text-[100px] font-dreamscape text-center leading-[1.01] game-paused
 					absolute transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
 					>
-						GAME PAUSED
+						{opponentDisconnected ? 'OPPONENT DISCONNECTED...' : 'GAME PAUSED'}
 					</p>
 				</div>
 			)}

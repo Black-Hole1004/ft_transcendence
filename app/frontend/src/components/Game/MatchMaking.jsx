@@ -100,8 +100,6 @@ const Matchmaking = () => {
                 return
             }
 
-            const backgroundId = location.state?.backgroundId || 1
-
             // get the countdown from the server
             if (data.countdown !== undefined) {
                 setCountdown(data.countdown);

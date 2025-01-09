@@ -14,20 +14,24 @@ function GameModes() {
 					mode={'tournaments'}
 				></Mode>
 			</Link>
+			<Link to={'/custom'} state={{ mode: 'training' }}>
 				<Mode
 					image={'training.webp'}
 					title={'right-[10%]'}
 					className={'right-0 w-[42%]'}
 					mode={'training'}
-				></Mode>
-			<Link to={'/custom'}>
+				/>
+			</Link>
+
+			<Link to={'/custom'} state={{ mode: '1vs1' }}>
 				<Mode
 					image={'1vs1.webp'}
 					title={'right-[30%]'}
 					className={'right-0 w-[53%] lg:bottom-2 lp:bottom-4 tb:bottom-3 ml:bottom-2 ms:bottom-1'}
 					mode={'1 vs 1'}
-				></Mode>
+				/>
 			</Link>
+
 		</div>
 	)
 }

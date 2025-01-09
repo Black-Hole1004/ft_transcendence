@@ -129,6 +129,10 @@ class GameWebSocket {
                 game_paused: this.handleGamePaused.bind(this),
                 game_resumed: this.handleGameResumed.bind(this),
                 
+                pause_timeout_warning: this.handlePauseTimeoutWarning.bind(this),
+                player_temporary_disconnect: this.handleTemporaryDisconnect.bind(this),
+                player_reconnected: this.handlePlayerReconnected.bind(this),
+
                 game_restarted: this.handleGameRestarted.bind(this),
 
                 player_disconnected: this.handlePlayerDisconnected.bind(this),
@@ -216,6 +220,20 @@ class GameWebSocket {
         this.callbacks.error?.(new Error(data.message));
     }
 
+    handlePauseTimeoutWarning(data) {
+        console.log('Handling pause timeout warning:', data);
+        this.callbacks.pause_timeout_warning?.(data);
+    }
+    
+    handleTemporaryDisconnect(data) {
+        console.log('Handling temporary disconnect:', data);
+        this.callbacks.player_temporary_disconnect?.(data);
+    }
+    
+    handlePlayerReconnected(data) {
+        console.log('Handling player reconnected:', data);
+        this.callbacks.player_reconnected?.(data);
+    }
 
     // Send methods
     send(data) {
