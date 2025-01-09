@@ -13,6 +13,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
+from core.settings import HOSTNAME
 
 
 
@@ -82,7 +83,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 access_token = str(refresh.access_token)
                 refresh_token = str(refresh)
                 redirect_url = (
-                    f"https://localhost/dashboard?"
+                    f"https://{HOSTNAME}/dashboard?"
                     f"access_token={access_token}&"
                     f"refresh_token={refresh_token}"
                 )

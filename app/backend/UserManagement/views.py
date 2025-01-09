@@ -463,7 +463,8 @@ class UsersListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        users = User.objects.all()
+        users = User.objects.all().limit(100)
+        # limit to 100 users
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 

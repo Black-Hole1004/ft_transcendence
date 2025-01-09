@@ -18,7 +18,8 @@ import sys
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+HOSTNAME = os.environ.get('HOSTNAME_ENV', 'localhost')
+PORT = os.environ.get('PORT_ENV', '443')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -240,9 +241,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = [
-    'localhost',
+    f'{HOSTNAME}:{PORT}',
     '127.0.0.1',
     'localhost',
+    f'{HOSTNAME}',
+    f'{HOSTNAME}:{PORT}',
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -254,8 +257,8 @@ AUTHENTICATION_BACKENDS = (
 
 
 
-LOGIN_REDIRECT_URL = 'https://localhost/Dashboard'
-LOGOUT_REDIRECT_URL = 'https://localhost/'
+LOGIN_REDIRECT_URL = f'https://{HOSTNAME}:{PORT}/Dashboard'
+LOGOUT_REDIRECT_URL = f'https://{HOSTNAME}:{PORT}/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
@@ -280,11 +283,11 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Goog
 
 SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
 SOCIAL_AUTH_INTRA42_SECRET = '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'
-SOCIAL_AUTH_INTRA42_REDIRECT_URI = 'https://localhost/api/social-auth/complete/intra42/'
+SOCIAL_AUTH_INTRA42_REDIRECT_URI = f'https://{HOSTNAME}:{PORT}/api/social-auth/complete/intra42/'
 
 # SOCIAL_AUTH_INTRA42_KEY='u-s4t2ud-872f8a9cf89c265c8218ceaaa21de65f3b6b1cadf6d0e816c010c02d3aadc711'
 # SOCIAL_AUTH_INTRA42_SECRET='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'
-# SOCIAL_AUTH_INTRA42_REDIRECT_URI='https://localhost/api/social-auth/complete/intra42/'
+# SOCIAL_AUTH_INTRA42_REDIRECT_URI='https://{HOSTNAME}/api/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
@@ -310,7 +313,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
 
 # Add this if you're using social-auth-app-django
 SOCIAL_AUTH_ALLOWED_REDIRECT_HOSTS = [
-    'localhost:5173',
+    f'{HOSTNAME}:5173',
     '10.12.2.9:5173',
 ]
 
@@ -322,10 +325,10 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 
 CORS_ALLOW_ALL_ORIGINS = False  # Don't use this in production
 CORS_ALLOWED_ORIGINS = [
-    "https://localhost",
-    "http://localhost",
-    "http://localhost:5173",
-    "https://localhost:5173",
+    f"https://{HOSTNAME}:{PORT}",
+    f"http://{HOSTNAME}:{PORT}",
+    f"http://{HOSTNAME}:5173",
+    f"https://{HOSTNAME}:5173",
     "https://api.intra.42.fr",
 ] # todo: to be changed in production
 CORS_ALLOW_CREDENTIALS = True
