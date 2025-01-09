@@ -73,8 +73,8 @@ const ComponentPath = () => {
 					<Route path='/matchmaking' element={<MatchMaking />} />
 
 
-					<Route path="/2fa" element={<TwoFactorAuth />} />
 				</Route>
+				<Route path="/2fa" element={<TwoFactorAuth />} />
 				<Route path="*" element={<NotFound />} />
 				
 			</Routes>

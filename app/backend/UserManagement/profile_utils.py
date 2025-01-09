@@ -70,6 +70,7 @@ def handle_password_change(user, user_data):
 
     return True
 
+
 def generate_new_tokens(user):
     """Generate new tokens for the user."""
     refresh = RefreshToken.for_user(user)

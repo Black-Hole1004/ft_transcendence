@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'channels_redis',
     'rest_framework.authtoken',
     'game',
-    'Chat'
+    'Chat',
+    'anymail'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -224,6 +225,7 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),  # This means the Authorization header will look like: Authorization: Bearer <token>
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
+    'ACCESS_TOKEN_CLASS': 'core.serializers.CustomAccessToken',
 }
 
 SESSION_COOKIE_SAMESITE = 'None'
@@ -328,3 +330,14 @@ CORS_ALLOWED_ORIGINS = [
 ] # todo: to be changed in production
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
+
+
+### testing email sending
+EMAIL_BACKEND = "anymail.backends.mailersend.EmailBackend"
+ANYMAIL = {
+    # (exact settings here depend on your ESP...)
+    "MAILERSEND_API_TOKEN": "mlsn.602c49127399650d60173d3c3cc7b33c84f33847fe28154afe2f87369479cf68",
+    # "MAILERSEND_SENDER_DOMAIN": 'starserve.com',  # your MailerSend domain, if needed
+}
+DEFAULT_FROM_EMAIL = "starserveteam@trial-7dnvo4dxpmng5r86.mlsender.net"  # if you don't already have this in settings
+SERVER_EMAIL = "your-server@example.com"  # ditto (default from-email for Django errors)

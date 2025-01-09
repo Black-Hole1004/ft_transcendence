@@ -1,0 +1,132 @@
+policies:
+  default:
+    triggers:
+    - appsec-default-log-trigger
+    mode: prevent-learn
+    practices:
+    - webapp-default-practice
+    custom-response: appsec-default-web-user-response
+  specific-rules: []
+
+practices:
+  - name: webapp-default-practice
+    openapi-schema-validation:
+      configmap: []
+      override-mode: prevent-learn
+    snort-signatures:
+      configmap: []
+      override-mode: prevent-learn
+    web-attacks:
+      max-body-size-kb: 1000000
+      max-header-size-bytes: 102400
+      max-object-depth: 40
+      max-url-size-bytes: 32768
+      minimum-confidence: high
+      override-mode: prevent-learn
+      protections:
+        csrf-protection: inactive
+        error-disclosure: inactive
+        non-valid-http-methods: false
+        open-redirect: inactive
+    anti-bot:
+      injected-URIs: []
+      validated-URIs: []
+      override-mode: prevent-learn
+
+log-triggers:
+  - name: appsec-default-log-trigger
+    access-control-logging:
+      allow-events: false
+      drop-events: true
+    additional-suspicious-events-logging:
+      enabled: true
+      minimum-severity: high
+      response-body: false
+    appsec-logging:
+      all-web-requests: false
+      detect-events: true
+      prevent-events: true
+    extended-logging:
+      http-headers: false
+      request-body: false
+      url-path: false
+      url-query: false
+    log-destination:
+      cloud: true
+      stdout:
+        format: json
+
+custom-responses:
+  - name: appsec-default-web-user-response
+    mode: response-code-only
+    http-response-code: 403
+
+# policies:
+#   default:
+#     triggers:
+#       - appsec-default-log-trigger
+#     mode: prevent-only  # Changed from 'prevent-learn' to 'prevent-only' to fully prevent attacks
+#     practices:
+#       - webapp-default-practice
+#     custom-response: appsec-default-web-user-response
+#   specific-rules: []
+
+# practices:
+#   - name: webapp-default-practice
+#     openapi-schema-validation:
+#       configmap: []
+#       override-mode: prevent-only  # Changed from 'prevent-learn' to 'prevent-only' to prevent attacks
+#     snort-signatures:
+#       configmap: []
+#       override-mode: prevent-only  # Changed from 'prevent-learn' to 'prevent-only' to prevent attacks
+#     web-attacks:
+#       max-body-size-kb: 1000000
+#       max-header-size-bytes: 102400
+#       max-object-depth: 40
+#       max-url-size-bytes: 32768
+#       minimum-confidence: high
+#       override-mode: prevent-only  # Changed from 'prevent-learn' to 'prevent-only' to prevent attacks
+#       protections:
+#         csrf-protection: active  # Enabled CSRF protection
+#         error-disclosure: inactive
+#         non-valid-http-methods: true  # Protect against invalid HTTP methods
+#         open-redirect: active  # Enable protection against open redirects
+#     anti-bot:
+#       injected-URIs: []  # You may configure these if required
+#       validated-URIs: []  # You may configure these if required
+#       override-mode: prevent-only  # Changed from 'prevent-learn' to 'prevent-only' to prevent attacks
+
+#     # New section for rate-limiting
+#     rate-limiting:
+#       enabled: true  # Enable rate limiting
+#       requests-per-minute: 100  # Limit requests to 100 per minute per IP (adjust as needed)
+#       block-period-seconds: 60  # Block offending IPs for 60 seconds
+#       exceed-response-code: 429  # Use HTTP 429 Too Many Requests for rate-limited requests
+
+# log-triggers:
+#   - name: appsec-default-log-trigger
+#     access-control-logging:
+#       allow-events: false
+#       drop-events: true
+#     additional-suspicious-events-logging:
+#       enabled: true
+#       minimum-severity: medium  # Changed from 'high' to 'medium' to log all events of medium severity and above
+#       response-body: false
+#     appsec-logging:
+#       all-web-requests: true  # Log all web requests
+#       detect-events: true
+#       prevent-events: true
+#     extended-logging:
+#       http-headers: true  # Enable logging of HTTP headers
+#       request-body: true  # Enable logging of request body
+#       url-path: true  # Enable logging of URL path
+#       url-query: true  # Enable logging of URL query parameters
+#     log-destination:
+#       cloud: true
+#       stdout:
+#         format: json
+
+# custom-responses:
+#   - name: appsec-default-web-user-response
+#     mode: response-code-only
+#     http-response-code: 403  # Return HTTP 403 Forbidden for blocked requests
