@@ -7,7 +7,6 @@ import ProgressBar from '../../components/Profile/ProgressBar'
 import AboutSection from '../../components/Profile/AboutSection'
 import UserStatsGraph from '../../components/Profile/UserStatsGraph'
 import useAuth from '../../context/AuthContext'
-import { useLocation } from 'react-router-dom'
 
 const USER_API = import.meta.env.VITE_USER_API
 const BASE_URL = import.meta.env.VITE_BASE_URL
@@ -17,7 +16,7 @@ import { useParams } from 'react-router-dom'
 const Profile = () => {
 	const { username_fetched } = useParams();
 	console.log(username_fetched);
-	const { authTokens, logout, getAuthHeaders } = useAuth()
+	const { getAuthHeaders } = useAuth()
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
 

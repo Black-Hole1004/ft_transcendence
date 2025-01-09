@@ -66,7 +66,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 						? profile_picture
 						: BASE_URL + profile_picture
 				}
-				className='chat-history-image rounded-full object-cover ring-1 ring-primary select-none'
+				className='chat-history-image aspect-square rounded-full object-cover ring-1 ring-primary select-none'
 				alt='user image'
 			/>
 			<div className='font-medium tb:w-[80%]'>
@@ -89,7 +89,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 			{search && (
 				<img
 					src='/assets/images/Achievements/celestial-master.png'
-					className='select-none search-badge max-tb:hidden'
+					className='select-none aspect-square object-cover search-badge max-tb:hidden'
 				/>
 			)}
 		</div>

@@ -71,30 +71,33 @@ const Chat = () => {
 				})
 				const blocker = response.data.blocked_by === null ? 0 : response.data.blocked_by
 				setAreFriends(response.data.status)
-				setBlockerId(response.data.blocked_by)
+				setBlockerId(blocker)
 			} catch (error) {
 				console.error('Error fetching friendship status:', error)
 			}
 		}
-
+		
 		if (conversationKey) {
 			friendshipStatus()
 		}
 	}, [conversationKey])
 
-
+	
 	useEffect(() => {
 		// Extract conversation key from URL
-		const uri = window.location.pathname.split('/').slice(2, 3)
+		const uri = window.location.pathname.split('/').slice(2, 4)
 		if (uri.length === 1) {
 			console.log('extract conversation key from url')
 			setConversationMessages([])
 			setConversationKey(uri[0])
 			setBlockerId(0)
 			setIsConversationLoaded(true)
+		} else if (uri.length > 1) {
+			navigate('/404')
 		} else {
 			setIsConversationLoaded(false)
 		}
+
 	}, [currentLocation.pathname])
 
 

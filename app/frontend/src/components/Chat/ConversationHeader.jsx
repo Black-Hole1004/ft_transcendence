@@ -29,8 +29,8 @@ const ConversationHeader = ({
 	recipientProfileImage,
 	receiver_id,
 }) => {
-	console.log('header blockerId: ', blockerId)
-	console.log('areFriends: ', areFriends)
+	// console.log('header blockerId: ', blockerId)
+	// console.log('areFriends: ', areFriends)
 
 	const handleBlock = () => {
 		setBlockerId(currentLoggedInUserId)
@@ -102,13 +102,13 @@ const ConversationHeader = ({
 		}
 	}
 // ------------------------------
-
+	console.log('blocker id: ', blockerId)
 return (
 	<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-30'>
 		<div className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3'>
 			<img
 				src={`${recipientProfileImage}`}
-				className='chat-history-image object-cover rounded-full ring-1 ring-primary select-none'
+				className='chat-history-image aspect-square object-cover rounded-full ring-1 ring-primary select-none'
 				alt='user image'
 			/>
 			<div>
