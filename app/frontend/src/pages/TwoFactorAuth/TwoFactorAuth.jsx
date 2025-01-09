@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode'
 import Cookies from 'js-cookie'
 
 import { useAlert } from '../../components/AlertContext'
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
 
 
 
@@ -47,7 +48,7 @@ const TwoFactorAuth = () => {
 				otp += element.value
 			});
 
-			const response = await fetch('https://localhost/api/user/2fa/verify/', {
+			const response = await fetch(`${HOSTNAME}/api/user/2fa/verify/`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
