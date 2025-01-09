@@ -263,7 +263,7 @@ class LoginView(APIView):
                 password = data.get('password')
                 user = authenticate(request, email=email, password=password)
 
-                if user.is_2fa_enabled:
+                if user is not None and user.is_2fa_enabled:
                     # Generate and send OTP to the user's email
                     otp = Twofa.generate_otp(user)
                     todo: Twofa.sendMail(otp=otp, email=user.email)
