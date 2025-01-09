@@ -3,6 +3,7 @@
 all: up
 
 up:
+	@rm -rf $( ls | grep -v local | grep -v advanced)
 	docker-compose up --build 
 
 ssl:
