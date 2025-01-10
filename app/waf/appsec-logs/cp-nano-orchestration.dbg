@@ -1,0 +1,133 @@
+[readAgentDetails@agent_details.cc:95                         | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON File stream
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-10T14:25:41.938328: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-10T14:25:41.938690: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-10T14:25:41.939131: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-10T14:25:41.939471: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-10T14:25:41.939893: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-10T14:25:41.944743: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-10T14:25:41.945302: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-10T14:25:41.945975: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-10T14:25:41.949237: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-10T14:25:41.949722: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-10T14:25:41.957142: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-10T14:25:41.957456: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-10T14:25:41.957882: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-10T14:25:41.958625: : readAgentDetails@agent_details.cc:95                       | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[2025-01-10T14:25:41.959439: : loadAccessToken@agent_details.cc:330                       | ###] Failed to open session token file: /etc/cp/data/data3.a
+[2025-01-10T14:25:41.960960: : readAgentDetails@agent_details.cc:95                       | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[2025-01-10T14:25:41.964144: : readAgentDetails@agent_details.cc:95                       | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[2025-01-10T14:25:41.964604: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-10T14:25:41.965368: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-10T14:25:41.969024: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-10T14:25:41.969570: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-10T14:25:41.970023: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-10T14:25:41.973439: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-10T14:25:41.973786: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-10T14:25:41.974117: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-10T14:25:41.974905: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-10T14:25:41.976547: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-10T14:25:41.976925: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-10T14:25:41.977551: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationStatus
+[2025-01-10T14:25:41.978770: : init@components_list_impl.h:126                            | ---] Initializing component: PackageHandler
+[2025-01-10T14:25:41.979265: : init@components_list_impl.h:126                            | ---] Initializing component: Downloader
+[2025-01-10T14:25:41.979816: : init@components_list_impl.h:126                            | ---] Initializing component: ServiceController
+[2025-01-10T14:25:41.982020: : init@components_list_impl.h:126                            | ---] Initializing component: ManifestController
+[2025-01-10T14:25:41.984009: : init@components_list_impl.h:126                            | ---] Initializing component: UpdateCommunication
+[2025-01-10T14:25:41.985884: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetailsReporter
+[2025-01-10T14:25:41.987624: : handleAttrPersistence@agent_details_reporter.cc:100        | ###] Failed to open attributes Persistence file. Operation: load, Path /etc/cp/conf/reportedAttrBackup.json
+[2025-01-10T14:25:41.988413: : init@components_list_impl.h:126                            | ---] Initializing component: DetailsResolver
+[2025-01-10T14:25:41.988754: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationComp
+[2025-01-10T14:25:42.014235: : readAgentDetails@agent_details.cc:95                       | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[2025-01-10T14:25:42.026494: : setOpenSSLCerts@orchestration_comp.cc:1862                 | ###] Failed to load OpenSSL default certificate authority. Error: no OpenSSL directory found
+[2025-01-10T14:25:42.041662: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationTools
+[2025-01-10T14:25:42.042683: : init@components_list_impl.h:126                            | ---] Initializing component: HealthChecker
+[2025-01-10T14:25:42.043184: : init@components_list_impl.h:126                            | ---] Initializing component: HealthCheckManager
+[2025-01-10T14:25:42.044586: : init@components_list_impl.h:126                            | ---] Initializing component: LocalPolicyMgmtGenerator
+[2025-01-10T14:25:42.045040: : init@components_list_impl.h:126                            | ---] Initializing component: ExternalSdkServer
+[2025-01-10T14:25:42.045367: : init@components_list_impl.h:126                            | ---] Initializing component: ServiceHealthStatus
+[2025-01-10T14:25:42.045784: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-10T14:25:42.047155: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 7777. Accepting: loopback connections
+[2025-01-10T14:25:42.062663: : <7> tryToBioConnect@connection.cc:479                      | ###] Connection to: 127.0.0.1:7778 failed and won't retry. Error: error:0200206F:system library:connect:Connection refused
+[2025-01-10T14:25:42.063608: : <7> connectToHost@connection.cc:521                        | ###] Connection to: 127.0.0.1:7778 failed and will be suspended for 60 seconds
+[2025-01-10T14:25:42.064125: : <7> establishConnection@connection.cc:193                  | ###] Failed to connect to host: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-10T14:25:42.064438: : <7> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-10T14:25:42.064841: : <7> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-10T14:25:42.065769: : <7> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-10T14:25:42.068015: : <9> loadAccessToken@agent_details.cc:330                   | ###] Failed to open session token file: /etc/cp/data/data3.a
+[2025-01-10T14:25:42.087773: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/orchestration/orchestration.policy
+[2025-01-10T14:25:42.088185: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: orchestration
+[2025-01-10T14:25:42.100463: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/registration-data/registration-data.policy
+[2025-01-10T14:25:42.100825: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: registration-data
+[2025-01-10T14:25:42.143730: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-10T14:25:42.446296: : <26> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -1, error response: Access token is missing.
+[2025-01-10T14:25:42.446962: : <26> executeHealthCheck@health_check_manager.cc:253        | ###] Failed to send periodic health check patch to the fog
+[2025-01-10T14:25:42.447701: : <26> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Health check manager periodic check
+[2025-01-10T14:25:43.081042: : <29> getAccessToken@fog_authenticator.cc:308               | ---] New access token was saved
+[2025-01-10T14:25:43.083591: : <29> operator()@fog_authenticator.cc:612                   | ---] New token was received, expiration time: 3600
+[2025-01-10T14:25:44.233860: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-10T14:25:51.570564: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-10T14:25:54.992663: : <25> setDelayedUpgradeTime@orchestration_comp.cc:1495      | ---] Setting upgrade delay time to 30 minutes from now.
+[2025-01-10T14:25:55.030086: : <30> sendRegistrationData@orchestration_comp.cc:1606       | ---] Sending registration data
+[2025-01-10T14:25:55.031757: : <31> getRegistrationToken@fog_authenticator.cc:361         | ---] Registration token has been loaded from container environment
+[2025-01-10T14:25:55.034545: : <31> registerLocalAgentToFog@fog_authenticator.cc:380      | ---] Start local agent registration to the fog
+[2025-01-10T14:25:55.343635: : <25> serialize@new_appsec_linux_policy.cc:83               | ---] Loading Appsec V1Beta2 Linux Policy
+[2025-01-10T14:25:55.347618: : <25> proccesSingleAppsecPolicy@policy_maker_utils.cc:1749  | ---] Failed to retrieve AppSec local policy with version: v1beta2, Trying version: v1beta1
+[2025-01-10T14:25:55.446862: : <25> handlePolicyUpdate@orchestration_comp.cc:429          | ---] There is a new policy file.
+[2025-01-10T14:25:55.448667: : <25> downloadAttributeFile@downloader.cc:385               | ---] Downloading file. File: policy
+[2025-01-10T14:25:55.449807: : <25> downloadAttributeFile@downloader.cc:391               | ---] Download completed. File: policy
+[2025-01-10T14:25:55.481877: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/accessControlV2/accessControlV2.policy
+[2025-01-10T14:25:55.486133: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: accessControlV2
+[2025-01-10T14:25:55.518417: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/exceptions/exceptions.policy
+[2025-01-10T14:25:55.521242: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: exceptions
+[2025-01-10T14:25:55.533409: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/fileSecurity/fileSecurity.policy
+[2025-01-10T14:25:55.534121: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: fileSecurity
+[2025-01-10T14:25:55.558189: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/ips/ips.policy
+[2025-01-10T14:25:55.559401: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: ips
+[2025-01-10T14:25:55.573166: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/rules/rules.policy
+[2025-01-10T14:25:55.573917: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: rules
+[2025-01-10T14:25:55.593037: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/snort/snort.policy
+[2025-01-10T14:25:55.596126: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: snort
+[2025-01-10T14:25:55.607119: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/triggers/triggers.policy
+[2025-01-10T14:25:55.607863: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: triggers
+[2025-01-10T14:25:55.617217: : <25> updateServiceConfigurationFile@service_controller.cc:1116 | ---] Successfully updated policy file: /etc/cp/conf/waap/waap.policy
+[2025-01-10T14:25:55.618437: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: waap
+[2025-01-10T14:25:55.653475: : <25> handlePolicyUpdate@orchestration_comp.cc:598          | ---] Policy update report was successfully sent to fog
+[2025-01-10T14:25:55.656506: : <25> preformCheckUpdate@orchestration_comp.cc:1480         | ---] Check update process completed successfully, new check will be every: 30 seconds
+[2025-01-10T14:25:55.682914: : <31> registerLocalAgentToFog@fog_authenticator.cc:402      | ###] Failed in local agent registertion to the fog. Error: Usage:
+--online_mode|--offline_mode|--standalone  : Orchestration mode (Required)
+--force                                     : force mode change (Optional)
+--token  <token>                             : Token (Required for online mode, optional otherwise)
+--fog    <fog URL>                           : Fog Address (Optional)
+--ignore <ignore packages list>             : List of ignored packages
+
+[2025-01-10T14:26:55.641563: : <31> getRegistrationToken@fog_authenticator.cc:361         | ---] Registration token has been loaded from container environment
+[2025-01-10T14:26:55.642643: : <31> registerLocalAgentToFog@fog_authenticator.cc:380      | ---] Start local agent registration to the fog
+[2025-01-10T14:26:55.801324: : <31> registerLocalAgentToFog@fog_authenticator.cc:402      | ###] Failed in local agent registertion to the fog. Error: Usage:
+--online_mode|--offline_mode|--standalone  : Orchestration mode (Required)
+--force                                     : force mode change (Optional)
+--token  <token>                             : Token (Required for online mode, optional otherwise)
+--fog    <fog URL>                           : Fog Address (Optional)
+--ignore <ignore packages list>             : List of ignored packages
+
+[2025-01-10T14:27:55.766158: : <31> getRegistrationToken@fog_authenticator.cc:361         | ---] Registration token has been loaded from container environment
+[2025-01-10T14:27:55.767750: : <31> registerLocalAgentToFog@fog_authenticator.cc:380      | ---] Start local agent registration to the fog
+[2025-01-10T14:27:55.948892: : <31> registerLocalAgentToFog@fog_authenticator.cc:402      | ###] Failed in local agent registertion to the fog. Error: Usage:
+--online_mode|--offline_mode|--standalone  : Orchestration mode (Required)
+--force                                     : force mode change (Optional)
+--token  <token>                             : Token (Required for online mode, optional otherwise)
+--fog    <fog URL>                           : Fog Address (Optional)
+--ignore <ignore packages list>             : List of ignored packages
+
+[2025-01-10T14:28:55.931750: : <31> getRegistrationToken@fog_authenticator.cc:361         | ---] Registration token has been loaded from container environment
+[2025-01-10T14:28:55.932635: : <31> registerLocalAgentToFog@fog_authenticator.cc:380      | ---] Start local agent registration to the fog
+[2025-01-10T14:28:56.091405: : <31> registerLocalAgentToFog@fog_authenticator.cc:402      | ###] Failed in local agent registertion to the fog. Error: Usage:
+--online_mode|--offline_mode|--standalone  : Orchestration mode (Required)
+--force                                     : force mode change (Optional)
+--token  <token>                             : Token (Required for online mode, optional otherwise)
+--fog    <fog URL>                           : Fog Address (Optional)
+--ignore <ignore packages list>             : List of ignored packages
+

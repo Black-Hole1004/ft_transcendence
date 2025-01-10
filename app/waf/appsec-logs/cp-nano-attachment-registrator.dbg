@@ -1,0 +1,103 @@
+[readAgentDetails@agent_details.cc:95                         | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON Debug stream
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-10T14:25:41.944095: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-10T14:25:41.944671: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-10T14:25:41.945018: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-10T14:25:41.945624: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-10T14:25:41.945958: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-10T14:25:41.951304: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-10T14:25:41.951755: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-10T14:25:41.952066: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-10T14:25:41.952397: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-10T14:25:41.952868: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-10T14:25:41.962945: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-10T14:25:41.964045: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-10T14:25:41.964618: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-10T14:25:41.968842: : readAgentDetails@agent_details.cc:95                       | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[2025-01-10T14:25:41.970124: : loadAccessToken@agent_details.cc:330                       | ###] Failed to open session token file: /etc/cp/data/data3.a
+[2025-01-10T14:25:41.972460: : readAgentDetails@agent_details.cc:95                       | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[2025-01-10T14:25:41.974346: : readAgentDetails@agent_details.cc:95                       | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[2025-01-10T14:25:41.974965: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-10T14:25:41.976788: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-10T14:25:41.977688: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-10T14:25:41.978865: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-10T14:25:41.979566: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-10T14:25:41.980070: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-10T14:25:41.981402: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-10T14:25:41.982072: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-10T14:25:41.983007: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-10T14:25:41.983843: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-10T14:25:41.984733: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-10T14:25:41.985504: : init@components_list_impl.h:126                            | ---] Initializing component: AttachmentRegistrator
+[2025-01-10T14:25:41.986192: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-10T14:25:41.987872: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 8124. Accepting: loopback connections
+[2025-01-10T14:25:42.004605: : <7> tryToBioConnect@connection.cc:479                      | ###] Connection to: 127.0.0.1:7777 failed and won't retry. Error: error:0200206F:system library:connect:Connection refused
+[2025-01-10T14:25:42.005091: : <7> connectToHost@connection.cc:521                        | ###] Connection to: 127.0.0.1:7777 failed and will be suspended for 60 seconds
+[2025-01-10T14:25:42.005450: : <7> establishConnection@connection.cc:193                  | ###] Failed to connect to host: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-10T14:25:42.005825: : <7> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-10T14:25:42.006139: : <7> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-10T14:25:42.006552: : <7> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-10T14:25:42.007551: : <7> tryToBioConnect@connection.cc:479                      | ###] Connection to: 127.0.0.1:7778 failed and won't retry. Error: error:0200206F:system library:connect:Connection refused
+[2025-01-10T14:25:42.007798: : <7> connectToHost@connection.cc:521                        | ###] Connection to: 127.0.0.1:7778 failed and will be suspended for 60 seconds
+[2025-01-10T14:25:42.008116: : <7> establishConnection@connection.cc:193                  | ###] Failed to connect to host: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-10T14:25:42.008445: : <7> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-10T14:25:42.008769: : <7> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-10T14:25:42.009163: : <7> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-10T14:25:42.010074: : <9> readAgentDetails@agent_details.cc:95                   | ###] Agent details file does not exist. File: /etc/cp/conf/agent_details.json
+[2025-01-10T14:25:42.010843: : <9> loadAccessToken@agent_details.cc:330                   | ###] Failed to open session token file: /etc/cp/data/data3.a
+[2025-01-10T14:25:42.024445: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-10T14:25:42.025080: : <10> sendLog@debug_stream.cc:33                            | ---] {
+    "eventTime": "2025-01-10T14:25:41.986",
+    "eventName": "Check Point Nano-service started",
+    "eventSeverity": "Info",
+    "eventPriority": "Medium",
+    "eventType": "Event Driven",
+    "eventLevel": "Log",
+    "eventLogLevel": "info",
+    "eventAudience": "Security",
+    "eventAudienceTeam": "",
+    "eventFrequency": 0,
+    "eventTags": [
+        "Informational"
+    ],
+    "eventSource": {
+        "agentId": "Unknown",
+        "eventTraceId": "",
+        "eventSpanId": "",
+        "issuingEngineVersion": "1.1.20-open-source",
+        "serviceName": "Attachment Registration Manager"
+    },
+    "eventData": {
+        "logIndex": 1,
+        "serviceName": "Attachment Registration Manager"
+    }
+}
+[2025-01-10T14:25:44.000337: : <4> establishConnection@connection.cc:187                  | ###] Failed to set socket: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.000829: : <4> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.001389: : <4> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.001820: : <4> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.007459: : <4> establishConnection@connection.cc:187                  | ###] Failed to set socket: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.007944: : <4> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.008560: : <4> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.008886: : <4> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.014606: : <4> establishConnection@connection.cc:187                  | ###] Failed to set socket: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.015003: : <4> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.015475: : <4> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.015935: : <4> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.021803: : <4> establishConnection@connection.cc:187                  | ###] Failed to set socket: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.022637: : <4> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.023804: : <4> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.024233: : <4> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.029972: : <4> establishConnection@connection.cc:187                  | ###] Failed to set socket: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.030423: : <4> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.030789: : <4> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.031034: : <4> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.031839: : <4> writeToDisk@messaging_buffer_comp.cc:353               | ###] Failed to open file for writing. File: /var/log/nano_agent/event_buffer//cp-nano-attachment-registrator.input
+[2025-01-10T14:25:44.037589: : <4> establishConnection@connection.cc:187                  | ###] Failed to set socket: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.037875: : <4> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.038453: : <4> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.038863: : <4> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: Failed to set TLS host name extension. Host: 
+[2025-01-10T14:25:44.039643: : <4> writeToDisk@messaging_buffer_comp.cc:353               | ###] Failed to open file for writing. File: /var/log/nano_agent/event_buffer//cp-nano-attachment-registrator.input

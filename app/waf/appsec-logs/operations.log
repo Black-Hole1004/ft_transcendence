@@ -1,0 +1,5 @@
+
+2025.01.10-14.25.55 :  /usr/sbin/open-appsec-ctl --set-mode --online_mode --token --fog https://inext-agents.cloud.ngen.checkpoint.com
+2025.01.10-14.26.55 :  /usr/sbin/open-appsec-ctl --set-mode --online_mode --token --fog https://inext-agents.cloud.ngen.checkpoint.com
+2025.01.10-14.27.55 :  /usr/sbin/open-appsec-ctl --set-mode --online_mode --token --fog https://inext-agents.cloud.ngen.checkpoint.com
+2025.01.10-14.28.56 :  /usr/sbin/open-appsec-ctl --set-mode --online_mode --token --fog https://inext-agents.cloud.ngen.checkpoint.com

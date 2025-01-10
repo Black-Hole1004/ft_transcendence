@@ -123,7 +123,7 @@ const Settings = () => {
 	const [new_password, setNewPassword] = useState('')
 	const [confirm_password, setConfirmPassword] = useState('')
 
-	const { authTokens, logout, getAuthHeaders } = useAuth()
+	const { getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
 
 	function clearAllCookies() {
@@ -524,7 +524,7 @@ const Settings = () => {
 									Enable Two-factor Authentication
 								</Button>
 								<button
-									className='rounded-md border-red-600 font-regular buttons-text remove-button border 
+									className='rounded border-red-600 font-regular buttons-text remove-button border 
 								transition duration-300 select-none bg-red-600 bg-opacity-10 hover:bg-red-600 active:bg-red-700'
 									// onClick={deleteAccount}
 									onClick={openDeleteDialog}

@@ -1,0 +1,4 @@
+{"orchestration": { "fog-address":"https://inext-agents.cloud.ngen.checkpoint.com", 
+"pulling-interval":30, 
+"error-pulling-interval":30},
+"registration-data": { "email-address": "", "registered-server": ""}}

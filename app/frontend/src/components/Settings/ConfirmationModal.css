@@ -4,7 +4,4 @@
 
 .dialog-shape {
 	width: clamp(18.125rem, 22.566vw + 13.894rem, 50rem);
-	padding-top: clamp(2.5rem, 0.885vw + 2.334rem, 3.75rem);
-	padding-left: clamp(0.75rem, 0.531vw + 0.65rem, 1.5rem);
-
 }

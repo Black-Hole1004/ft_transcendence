@@ -211,23 +211,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
             conversation_key,
             other_participant_id
         )
-        saved_message = await self.save_message(
-            conversation = conversation,
-            sender_id = data['sender'],
-            content = data['message']
-        )
+        if not conversation.blocked_by:
+            saved_message = await self.save_message(
+                conversation = conversation,
+                sender_id = data['sender'],
+                content = data['message']
+            )
 
-        # Broadcast message to group
-        await self.channel_layer.group_send(
-            self.chat_room_name, {
-                'type': 'chat.message',
-                'event': 'message',
-                'message': data['message'],
-                'sender': data['sender'],
-                'id': saved_message.id,
-                'timestamp': saved_message.sent_datetime.isoformat(),
-            }
-        )
+            # Broadcast message to group
+            await self.channel_layer.group_send(
+                self.chat_room_name, {
+                    'type': 'chat.message',
+                    'event': 'message',
+                    'message': data['message'],
+                    'sender': data['sender'],
+                    'id': saved_message.id,
+                    'timestamp': saved_message.sent_datetime.isoformat(),
+                }
+            )
 
 
     async def _handle_block(self, data, conversation_key, other_participant_id):

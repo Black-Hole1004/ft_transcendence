@@ -69,7 +69,7 @@ const Chat = () => {
 						Authorization: getAuthHeaders().Authorization,
 					},
 				})
-				const blocker = response.data.blocked_by === null ? 0 : response.data.blocked_by
+				const blocker = response.data.blocked_by == null ? 0 : response.data.blocked_by
 				setAreFriends(response.data.status)
 				setBlockerId(blocker)
 			} catch (error) {
