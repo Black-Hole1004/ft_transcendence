@@ -1,4 +1,5 @@
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
+// const HOSTNAME = import.meta.env.HOSTNAME
 
 class GameWebSocket {
     constructor() {
@@ -23,13 +24,14 @@ class GameWebSocket {
         this.playerNumber = playerNumber;
         this.userId = userId;
 
+        const HOSTNAME = VITE_BASE_URL.replace('https://', '');
         if (this.reconnectTimeout) {
             clearTimeout(this.reconnectTimeout);
             this.reconnectTimeout = null;
         }
 
         try {
-            const wsUrl = `wss://localhost/ws/game/${gameId}/`;
+            const wsUrl = `wss://${HOSTNAME}/ws/game/${gameId}/`;
             console.log('Attempting to connect to:', wsUrl);
 
             if (this.socket) {

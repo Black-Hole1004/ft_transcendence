@@ -4,11 +4,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    
-    # # Game queries
-    # path('history/', views.get_game_history, name='game_history'),
-    
-    # # Game actions for debugging purposes
-    # path('debug/game/<int:game_id>/', views.check_game_session, name='check_game'),
-    # path('debug/active-games/', views.list_active_games, name='list_active_games'),
+
+    path('pending-game-invites/', views.get_pending_game_invites, name='pending-game-invites'),
 ]

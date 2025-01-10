@@ -1,8 +1,9 @@
 import './ConfirmationModal.css'
 
-const ConfirmationModal = ({ dialogRef, closeDialog, setTwoFactorAuthEnabled }) => {
+const ConfirmationModal = ({ dialogRef, closeDialog, setTwoFactorAuthEnabled, send2faAxiosRequest}) => {
 	const handleDisable = () => {
 		setTwoFactorAuthEnabled(false)
+		send2faAxiosRequest(false)
 		closeDialog()
 	}
 

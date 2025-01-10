@@ -1,6 +1,5 @@
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout
@@ -22,14 +21,12 @@ from django.http import HttpResponseRedirect
 from itertools import chain
 
 from django.core.files.uploadedfile import UploadedFile
-from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 from .models import User
 import os
 import jwt
 from django.conf import settings
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -52,7 +49,7 @@ from .profile_utils import (
     remove_profile_picture,
     update_profile_picture,
     handle_password_change,
-    generate_new_tokens
+    generate_new_tokens,
 )
 
 from .models import UserSession
@@ -69,7 +66,6 @@ from django.db import transaction
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from django.db import connections
 from django.conf import settings
 from datetime import datetime
@@ -80,71 +76,143 @@ import socket
 from rest_framework.exceptions import ValidationError
 from django.db.models import Sum
 from django.db.models.functions import TruncDate, ExtractHour, ExtractMinute, ExtractSecond
-
-{
-    "data": [
-        {
-            "date": "2024-12-26",
-            "total_time_spent": "P0DT00H14M35.466212S",
-            "total_time_spent_seconds": 875.466212,
-            "total_time_spent_minutes": 14.591103533333333
-        }
-    ]
-}
-
-{
-    "data": [
-        {
-            "date": "2024-12-26",
-            "total_time_spent_minutes": 7.166666666666667
-        }
-    ]
-}
-
+import pyotp
+from django.core.mail import EmailMultiAlternatives
+from datetime import timedelta
+from django.utils import timezone
 
 User = get_user_model()
-#todo: (DELETE THIS LATER) simple view to test permissions control and jwt decoding
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-@csrf_exempt  # Disable CSRF for this view for testing purposes
-def decode_jwt(request):
-    try:
-        # get jwt from bearer
-        token = request.headers['Authorization'].split(' ')[1]
-        print(f"Token: {token}")
-        # Decode the JWT without verification (to get the payload/body)
-        payload = jwt.decode(
-            token, 
-            key=settings.SECRET_KEY,  # Use your Django secret key here
-            algorithms=["HS256"]      # Algorithm used for signing
-        )
-        # return payload
-        response = JsonResponse({
-                    'jwt': payload,
-                    'message': 'User authenticated successfully'
-                })
-        return response
-    except jwt.ExpiredSignatureError:
-        return JsonResponse({"error": "Token has expired"})
-    except jwt.InvalidTokenError:
-        return JsonResponse({"error": "Invalid token"})
-
-def decode_jwt_info(token):
-    try:
-        # Decode the JWT without verification (to get the payload/body)
-        payload = jwt.decode(
-            token, 
-            key=settings.SECRET_KEY,  # Use your Django secret key here
-            algorithms=["HS256"]      # Algorithm used for signing
-        )
-        return payload
-    except jwt.ExpiredSignatureError:
-        return {"error": "Token has expired"}
-    except jwt.InvalidTokenError:
-        return {"error": "Invalid token"}
 
 
+class Activate2faView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request):
+        user = request.user
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        two_fa_status = data.get('2fa_status')
+        if two_fa_status == False:
+            user.is_2fa_enabled = False
+            user.otp_secret = -1
+            user.otp_expiry = None
+            user.otp_attempts = 0
+            user.save()
+        elif two_fa_status == True:
+            user.is_2fa_enabled = True
+            user.save()
+        return Response({'message': '2fa status updated successfully'}, status=200)
+
+
+# msg.track_clicks = True
+class Twofa():
+    def sendMail(otp, email):
+        try:
+            msg = EmailMultiAlternatives(
+                subject="[StarServe] OTP Verification",
+                body=f"Your OTP code is {otp}. It will expire in 5 minutes.",
+                from_email="<BlackHole@trial-7dnvo4dxpmng5r86.mlsender.net>",
+                to=[f"StarServe <{email}>"])
+            msg.send()
+            return Response({'message': 'Email sent successfully'}, status=200)
+        except Exception as e:
+            return Response({'error': str(e)}, status=500)
+    
+    def generate_otp(user):
+        try:
+            # Generate a random OTP using pyotp
+            otp_secret = pyotp.random_base32()[0:16]
+
+            # Set OTP expiry to 5 minutes from now
+            otp_expiry = timezone.now() + timedelta(minutes=5)
+
+            # Print the variables for debugging
+            totp = pyotp.TOTP(otp_secret)
+            otp = totp.now()
+            print(f"Generated OTP: {otp}")
+            print(f"OTP Expiry: {otp_expiry}")
+
+            # Store OTP secret and expiry time on the user model
+            print(f"Storing OTP Secret: {otp}")
+            user.otp_verified = False
+            user.otp_secret = otp
+            print(f"OTP: {otp}")
+            user.otp_expiry = otp_expiry
+            user.save()
+
+            # Send OTP to the user's email
+            # send_mail(otp, user.email)  # Uncomment this to send email in production
+            
+            return otp
+        except Exception as e:
+            print(f"Error generating OTP: {e}")
+            return None
+
+    def verify_otp(user, otp):
+        try:
+            # Check if OTP is expired
+            if user.otp_expiry < timezone.now():
+                print(f"OTP expired: {user.otp_expiry} < {timezone.now()}")
+                return False
+
+            # todo: totp = pyotp.TOTP(user.otp_secret)
+            # todo: verified = totp.verify(otp)
+            if otp == user.otp_secret:
+                print("OTP Verified Successfully!")
+                # Clear the OTP secret and expiry
+                user.otp_secret = -1
+                user.otp_expiry = None
+                user.otp_verified = True
+                user.otp_attempts = 0
+                user.save()
+                return True
+            else:
+                user.otp_attempts += 1
+                user.save()
+                print(f"OTP Failed. Attempts: {user.otp_attempts}")
+                return False
+        except Exception as e:
+            print(f"Error verifying OTP: {e}")
+            return False
+
+class Verify2faView(APIView):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+            password = data.get('password')
+            otp = int(data.get('otp'))
+            user = authenticate(request, email=email, password=password)
+            if not user:
+                return JsonResponse({'error': 'not user False'}, status=400)
+            elif user.otp_verified:
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+                response = JsonResponse({
+                    'access_token': access_token,
+                    'refresh_token': refresh_token,
+                    'message': 'User already verified 2fa'
+                }, status=200)
+                return response
+            elif user.otp_attempts >= 3:
+                return JsonResponse({'error': 'Too many attempts'}, status=400)
+            elif Twofa.verify_otp(user, otp):
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+                response = JsonResponse({
+                    'access_token': access_token,
+                    'refresh_token': refresh_token,
+                    'message': 'User Verified 2fa successfully'
+                }, status=200)
+                return response
+            else:
+                return JsonResponse({'error': 'False'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
 
 
@@ -173,14 +241,6 @@ class RegisterView(APIView):
             return JsonResponse(form.errors, status=400)
 
 
-
-def generate_random_username():
-    prefix = 'moha_'
-    suffix = str(uuid.uuid4())[:8]
-    return prefix + suffix
-
-
-
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
@@ -194,23 +254,6 @@ def getRoutes(request):
 
     return Response(routes)
 
-
-def display_text(request):
-    text = request.GET.get('text', '')
-    return HttpResponse(f'Text: {text}')
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def check_user_password(request):
-    print(f"Request data: {request.data}")
-    user = request.user
-    password = request.data.get('password')
-    if user.check_password(password):
-        return Response({'message': 'Password is correct.'})
-    else:
-        return Response({'error': 'Incorrect password.'}, status=status.HTTP_400_BAD_REQUEST)
-
-
 class LoginView(APIView):
     def post(self, request):
         if request.method == 'POST':
@@ -220,6 +263,11 @@ class LoginView(APIView):
                 password = data.get('password')
                 user = authenticate(request, email=email, password=password)
 
+                if user is not None and user.is_2fa_enabled:
+                    # Generate and send OTP to the user's email
+                    otp = Twofa.generate_otp(user)
+                    todo: Twofa.sendMail(otp=otp, email=user.email)
+                    return JsonResponse({'message': f'OTP sent to your email: {user.email}', "Twofa_enabled" : True}, status=200)
                 if user is not None:
                     user.status = 'online'
                     user.save()
@@ -227,14 +275,14 @@ class LoginView(APIView):
                     friends = async_to_sync(self.get_user_friends)(user)
                     notify_friends(user, friends)
 
-                    print(f"User logged in ------> {user.email}")
                     refresh = RefreshToken.for_user(user)
                     access_token = str(refresh.access_token)
                     refresh_token = str(refresh)
                     response = JsonResponse({
                         'access_token': access_token,
                         'refresh_token': refresh_token,
-                        'message': 'User authenticated successfully'
+                        'message': 'User authenticated successfully',
+                        'Twofa_enabled': False
                     })
                     return response
                 else:
@@ -242,7 +290,7 @@ class LoginView(APIView):
             except json.JSONDecodeError:
                 return JsonResponse({'error': 'Invalid JSON'}, status=400)
         else:
-            return render(request, 'login.html')
+            return JsonResponse({'error': 'Method not allowed'}, status=405)
 
     @database_sync_to_async
     def get_user_friends(self, user):
@@ -278,25 +326,6 @@ class LogoutView(APIView):
         friends = list(set(friends_from + friends_to))
         return friends
 
-class UserStatusView(APIView):
-    permission_classes = [IsAuthenticated]
-    
-    def get(self, request):
-        return Response({'status': request.user.status})
-
-    def post(self, request):
-        print(f"Request data: {request.data}")
-        user = request.user
-        status = request.data.get('status', 'online')
-        
-        valid_statuses = ['online', 'offline', 'ingame']
-        if status not in valid_statuses:
-            return Response({'error': 'Invalid status'}, status=400)
-        
-        user.status = status
-        user.save()
-        return Response({'status': 'success'})
-
 
 
 
@@ -307,9 +336,8 @@ class UserProfileView(APIView):
 
     def get(self, request):
         try:
-            payload = decode_jwt_info(request.headers['Authorization'].split(' ')[1])
-            user_id = payload['user_id']
-            user = User.objects.get(id=user_id)
+            user = request.user
+            user = User.objects.get(id=user.id);
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user)
@@ -359,8 +387,10 @@ class UserProfileView(APIView):
                     return Response({'error': 'Invalid mobile number'}, status=status.HTTP_400_BAD_REQUEST)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
-            updated_user = serializer.save()
+            if '2fa_status' in user_data:
+                update_2fa_status(user, user_data['2fa_status'])
 
+            updated_user = serializer.save()
             # If password was changed, generate new tokens
             new_tokens = None
             if 'new_password' in user_data:
@@ -433,7 +463,8 @@ class UsersListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        users = User.objects.all()
+        users = User.objects.all().limit(100)
+        # limit to 100 users
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
@@ -550,100 +581,6 @@ class FriendShipRequestListView(APIView):
         return Response(serializer.data, status=200)
 
 
-# Tournament views for creating and managing tournaments
-class TournamentView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        tournaments = Tournament.objects.all()
-        serializer = TournamentSerializer(tournaments, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        print(f"Request data =====> {request.data}")
-        with transaction.atomic():
-            users = request.data.get('users', [])
-            print(f"Users =========> {users}")
-
-
-            if len(users) != 4:
-                return Response(
-                    {'error': 'Invalid number of users'}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            tournament = Tournament.objects.create(
-                name = request.data.get('name', 'Tournament'),
-            )
-
-            for idx, user_id in enumerate(users, 1):
-                TournamentParticipant.objects.create(
-                    tournament=tournament,
-                    user_id=user_id,
-                    seed=idx
-                )
-            
-            Match.objects.create(
-                tournament=tournament,
-                player1_id=users[0],
-                player2_id=users[3],
-                round_number=1
-            )
-
-            Match.objects.create(
-                tournament=tournament,
-                player1_id=users[1],
-                player2_id=users[2],
-                round_number=1
-            )
-
-            tournament.status = 'IN_PROGRESS'
-            tournament.save()
-
-            serializer = TournamentSerializer(tournament)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-class TournamentDetailView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get_objects(self, pk):
-        try:
-            return Tournament.objects.get(pk=pk)
-        except Tournament.DoesNotExist:
-            raise None
-    
-    def get(self, request, pk):
-        tournament = self.get_objects(pk)
-        if tournament is None:
-            return Response(
-                {'error': 'Tournament not found'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-        serializer = TournamentSerializer(tournament)
-        return Response(serializer.data)
-    
-    def put(self, request, pk):
-        tournament = self.get_objects(pk)
-        if tournament is None:
-            return Response(
-                {'error': 'Tournament not found'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-        serializer = TournamentSerializer(tournament, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, pk):
-        tournament = self.get_objects(pk)
-        if tournament is None:
-            return Response(
-                {'error': 'Tournament not found'}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
-        tournament.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class HealthCheckView(APIView):
     """

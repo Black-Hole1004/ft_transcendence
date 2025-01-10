@@ -3,6 +3,9 @@ import UserFriendsList from './UserFriendsList'
 import useAuth from '../../../context/AuthContext'
 import { useSocket } from '../../Layout/Layout'
 import { use } from 'react'
+// import HOSTNAME FROM .env from frontend/.env
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
+
 
 
 function FriendsList() {
@@ -16,7 +19,7 @@ function FriendsList() {
 	const get_all_users = async () => {
 		console.log('-----------------> get_all_users')
 		try {
-			const response = await fetch('https://localhost/api/users/', {
+			const response = await fetch(`${VITE_BASE_URL}/api/users/`, {
 				method: 'GET',
 				headers: getAuthHeaders(),
 			})

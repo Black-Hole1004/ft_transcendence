@@ -70,6 +70,10 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json()
             if (response.ok) {
                 console.log('Login successful', data)
+                if (data.Twofa_enabled === true) {
+                    navigate('/2fa', { state: { email: email, password: password } })
+                    return ;
+                }
                 setAuthTokens(data)
                 setUser(jwtDecode(data.access_token))
                 
@@ -110,7 +114,7 @@ export const AuthProvider = ({ children }) => {
                 handleSubmit('success', 'Registration successful')
             } else {
                 console.log('registartion failed', data)
-                handleSubmit('error', data.password2)
+                handleSubmit('error', data.password2 || data.email)
             }
         } catch (error) {
             console.error('error', error)

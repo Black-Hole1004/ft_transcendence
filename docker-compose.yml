@@ -17,8 +17,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    ports:
-      - "5432:5432"
+      - POSTGRES_INITDB_ARGS="--max_connections=200"
     volumes:
       - ./app/data/postgresql:/var/lib/postgresql/data
     networks:
@@ -34,8 +33,6 @@ services:
   backend:
     container_name: backend
     build: app/backend/.
-    ports:
-      - "8000:8000"
     env_file:
       - app/backend/.env
     environment:
@@ -49,7 +46,7 @@ services:
     volumes:
       - ./app/backend:/app/backend
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
+      test: ["CMD", "curl", "-f", "http://${HOSTNAME}:8000/api/health/"]
       start_period: 45s
       interval: 5s
       timeout: 30s
@@ -59,8 +56,6 @@ services:
   frontend:
     container_name: frontend
     build: app/frontend/.
-    # ports:
-    #   - "5173:5173"
     networks:
       - ft_transcendence_network
     volumes:
@@ -75,8 +70,6 @@ services:
   redis:
     container_name: redis
     image: redis:7
-    ports:
-      - "6379:6379"
     networks:
       - ft_transcendence_network
     volumes:
@@ -86,123 +79,175 @@ services:
         condition: service_healthy
     restart: always
 
-  # Nginx
-  nginx:
-    container_name: nginx
-    image: nginx
-    ports:
-      - "80:80"   # Map HTTP port
-      - "443:443" # Map HTTPS port
+  appsec-agent:
+      image: ghcr.io/openappsec/agent:${APPSEC_VERSION}
+      container_name: appsec-agent
+      environment:
+        - SHARED_STORAGE_HOST=appsec-shared-storage
+        - LEARNING_HOST=appsec-smartsync
+        - TUNING_HOST=appsec-tuning-svc
+        - https_proxy=${APPSEC_HTTPS_PROXY}
+        - user_email=${USER_EMAIL}
+        - AGENT_TOKEN=${APPSEC_AGENT_TOKEN}
+        - autoPolicyLoad=${APPSEC_AUTO_POLICY_LOAD}
+        - registered_server="StarServe AppSec"
+      ipc: shareable
+      volumes:
+        - ${APPSEC_CONFIG}:/etc/cp/conf
+        - ${APPSEC_DATA}:/etc/cp/data
+        - ${APPSEC_LOGS}:/var/log/nano_agent
+        - ${APPSEC_LOCALCONFIG}:/ext/appsec
+        - ${APPSEC_ADVANCED_AI}:/advanced-model/open-appsec-advanced-model.tgz:rw
+      command: /cp-nano-agent
+      restart: always
+  appsec-nginx:
+    image: ghcr.io/openappsec/nginx-attachment:${APPSEC_VERSION}
+    container_name: appsec-nginx
+    ipc: service:appsec-agent
     volumes:
-      # SSL certificate generation script
-      - ./app/nginx/tools/generate_ssl.sh:/app/nginx/tools/generate_ssl.sh
-
-      # SSL certificates folder
-      - ./app/nginx/ssl_certificates:/etc/nginx/ssl
-
-      # Nginx configuration file
-      - ./app/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
-
-      # Backend profile pictures directory
-      - ./app/backend/profile_pictures:/app/backend/profile_pictures
-      
-      - ./app/backend/badges:/app/backend/badges
-
-      # Nginx logs directory
-      - ./app/nginx/logs:/var/log/nginx
+      - ${NGINX_CONF_FILE}:/etc/nginx/conf.d/starserve.conf
+      - ./app/nginx/tools/generate_ssl.sh:/app/generate_ssl.sh
+    user: root
     command: >
       sh -c "
-        chmod +x /app/nginx/tools/generate_ssl.sh &&
-        /app/nginx/tools/generate_ssl.sh &&
+        apk update && apk add openssl  || ls -la /app/generate_ssl.sh &&
+        chmod +x /app/generate_ssl.sh &&
+        sh /app/generate_ssl.sh &&
         nginx -g 'daemon off;'
       "
     networks:
-      - ft_transcendence_network # Attach to the shared network
+      - ft_transcendence_network
     depends_on:
       - backend
       - frontend
-    restart: always # Automatically restart if the container stops
-    # healthcheck:
-    #   # Check if Nginx is responding on HTTP
-    #   test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
-    #   interval: 30s # Run the health check every 30 seconds
-    #   timeout: 10s  # Time to wait for a response
-    #   retries: 3    # Number of retries before marking unhealthy
-  
+    ports:
+      # - "80:80"
+      - "443:443"
+
+  appsec-smartsync:
+    profiles:
+      - standalone
+    image: ghcr.io/openappsec/smartsync:${APPSEC_VERSION}
+    container_name: appsec-smartsync
+    environment:
+      - SHARED_STORAGE_HOST=appsec-shared-storage
+    depends_on:
+      - appsec-shared-storage
+  appsec-shared-storage:
+    profiles:
+      - standalone
+    image: ghcr.io/openappsec/smartsync-shared-files:${APPSEC_VERSION}
+    container_name: appsec-shared-storage
+    ipc: service:appsec-agent
+    # user: root
+    volumes:
+      - ${SMART_SYNC_STORAGE}:/db:z
+    networks:
+      - ft_transcendence_network
+  appsec-tuning-svc:
+    profiles:
+      - standalone
+    image: ghcr.io/openappsec/smartsync-tuning:${APPSEC_VERSION}
+    container_name: appsec-tuning-svc
+    environment:
+      - SHARED_STORAGE_HOST=appsec-shared-storage
+      - QUERY_DB_PASSWORD=${DB_PASSWORD}
+      - QUERY_DB_HOST=${DB_HOST}
+      - QUERY_DB_USER=${DB_USER}
+    volumes:
+      - ${APPSEC_CONFIG}:/etc/cp/conf
+    depends_on:
+      - appsec-shared-storage
+      - appsec-db
+    networks:
+      - ft_transcendence_network
+  appsec-db:
+    profiles:
+      - standalone
+    image: postgres
+    container_name: appsec-db
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER} 
+    volumes:
+      - ${POSTGRES_STORAGE}:/var/lib/postgresql/data
+    networks:
+      - ft_transcendence_network
 
   #setup for elasticsearch
   # comment this :
-  # setup:
-  #   container_name: setup
-  #   build: ./app/elk/setup/.
-  #   volumes:
-  #     - certs:/usr/share/elasticsearch/config/certs
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   networks:
-  #     - ft_transcendence_network
-  #   env_file:
-  #     - .env
-  #   healthcheck:
-  #     test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
-  #     interval: 1s
-  #     timeout: 5s
-  #     retries: 120
+  setup:
+    container_name: setup
+    build: ./app/elk/setup/.
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - ft_transcendence_network
+    env_file:
+      - .env
+    healthcheck:
+      test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
+      interval: 1s
+      timeout: 5s
+      retries: 120
   
 
-  # # Elasticsearch
-  # elasticsearch:
-  #   container_name: elasticsearch
-  #   depends_on:
-  #     setup:
-  #       condition: service_healthy
-  #   build: ./app/elk/elasticsearch/.
-  #   volumes:
-  #     - certs:/usr/share/elasticsearch/config/certs
-  #     - ./app/data/elasticsearch:/usr/share/elasticsearch/data
-  #   ports:
-  #     - '9200:9200'
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - ft_transcendence_network
-  #   mem_limit: ${MEM_LIMIT}
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   restart: always
+  # Elasticsearch
+  elasticsearch:
+    container_name: elasticsearch
+    depends_on:
+      setup:
+        condition: service_healthy
+    build: ./app/elk/elasticsearch/.
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - ./app/data/elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+    env_file:
+      - .env
+    networks:
+      - ft_transcendence_network
+    mem_limit: ${MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
 
-  # # Kibana
-  # kibana:
-  #   container_name: kibana
-  #   depends_on:
-  #     setup:
-  #       condition: service_healthy
-  #   build: ./app/elk/kibana/.
-  #   volumes:
-  #     - certs:/usr/share/kibana/config/certs
-  #     - ./app/data/kibana:/usr/share/kibana/data
-  #   ports:
-  #     - '5601:5601'
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - ft_transcendence_network
-  #   mem_limit: ${MEM_LIMIT}
-  #   restart: always
+  # Kibana
+  kibana:
+    container_name: kibana
+    depends_on:
+      setup:
+        condition: service_healthy
+    build: ./app/elk/kibana/.
+    volumes:
+      - certs:/usr/share/kibana/config/certs
+      - ./app/data/kibana:/usr/share/kibana/data
+    ports:
+      - '5601:5601'
+    env_file:
+      - .env
+    networks:
+      - ft_transcendence_network
+    mem_limit: ${MEM_LIMIT}
+    restart: always
 
-  # # Logstash
-  # logstash:
-  #   container_name: logstash
-  #   depends_on:
-  #     setup:
-  #       condition: service_healthy
-  #   build: ./app/elk/logstash/.
-  #   volumes:
-  #     - certs:/usr/share/logstash/certs
-  #     - ./app/nginx/logs/access.log:/usr/share/logstash/nginx/access.log
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - ft_transcendence_network  
-  #   restart: always
+  # Logstash
+  logstash:
+    container_name: logstash
+    depends_on:
+      setup:
+        condition: service_healthy
+    build: ./app/elk/logstash/.
+    volumes:
+      - certs:/usr/share/logstash/certs
+      - ./app/nginx/logs/access.log:/usr/share/logstash/nginx/access.log
+    env_file:
+      - .env
+    networks:
+      - ft_transcendence_network  
+    restart: always
