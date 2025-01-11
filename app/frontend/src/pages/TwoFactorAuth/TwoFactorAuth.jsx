@@ -23,11 +23,22 @@ const TwoFactorAuth = () => {
 	const clickEvent = (current, next) => {
 		if (current?.value.length) {
 			const isDigit = current.value.charCodeAt(0) >= 48 && current.value.charCodeAt(0) <= 57
-
+			
 			if (isDigit) {
 				document.getElementById(next).focus()
 			} else {
 				current.value = ''
+			}
+		}
+	}
+
+	const clearInput = (key, current, prev) => {
+		if (key === 'Backspace') {
+			if (current?.value.length) {
+				current.value = ''
+			} else {
+				if (prev)
+					document.getElementById(prev).focus()
 			}
 		}
 	}
@@ -40,6 +51,7 @@ const TwoFactorAuth = () => {
 
 
 	const verifyOtp = async () => {
+		console.log('here')
 		try {
 			let otp = ''
 			const inputs = document.getElementsByTagName('input')
@@ -99,21 +111,24 @@ const TwoFactorAuth = () => {
 							maxLength={1}
 							className='inputs text-center border border-border rounded bg-[rgb(183,170,156,8%)]'
 							onChange={(e) => clickEvent(e.target, 'second')}
-						/>
+							onKeyDown={(e) => clearInput(e.key, e.target, null)}
+							/>
 						<input
 							id='second'
 							type='text'
 							maxLength={1}
 							className='inputs text-center border border-border rounded bg-[rgb(183,170,156,8%)]'
 							onChange={(e) => clickEvent(e.target, 'third')}
-						/>
+							onKeyDown={(e) => clearInput(e.key, e.target, 'first')}
+							/>
 						<input
 							id='third'
 							type='text'
 							maxLength={1}
 							className='inputs text-center border border-border rounded bg-[rgb(183,170,156,8%)]'
 							onChange={(e) => clickEvent(e.target, 'fourth')}
-						/>
+							onKeyDown={(e) => clearInput(e.key, e.target, 'second')}
+							/>
 						<div className='bg-primary tb:h-3 h-2 mx-2 self-center rounded-sm sep'></div>
 						<input
 							id='fourth'
@@ -121,24 +136,24 @@ const TwoFactorAuth = () => {
 							maxLength={1}
 							className='inputs text-center border border-border rounded bg-[rgb(183,170,156,8%)] '
 							onChange={(e) => clickEvent(e.target, 'fifth')}
-						/>
+							onKeyDown={(e) => clearInput(e.key, e.target, 'third')}
+							/>
 						<input
 							id='fifth'
 							type='text'
 							maxLength={1}
 							className='inputs text-center border border-border rounded bg-[rgb(183,170,156,8%)] '
 							onChange={(e) => clickEvent(e.target, 'sixth')}
-						/>
+							onKeyDown={(e) => clearInput(e.key, e.target, 'fourth')}
+							/>
 						<input
 							id='sixth'
 							type='text'
 							maxLength={1}
 							className='inputs text-center border border-border rounded bg-[rgb(183,170,156,8%)]'
+							onKeyDown={(e) => clearInput(e.key, e.target, 'fifth')}
 						/>
 					</div>
-					<p className='font-regular paragraph py-3'>
-						Didn’t get a code? <a className='font-heavy'>Click to resend</a>
-					</p>
 					<button
 						onClick={verifyOtp}
 						className='verify border border-border text-primary font-medium select-none py-2 px-10 my-10 self-center

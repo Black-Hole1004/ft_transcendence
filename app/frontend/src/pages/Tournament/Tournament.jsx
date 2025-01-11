@@ -115,7 +115,7 @@ const Tournament = () => {
 			setShowChampionCelebration(true)
 			setTimeout(() => {
 				setShowChampionCelebration(false)
-			}, 5000000)
+			}, 5000)
 		}
 	}, [finalWinner, tournamentState])
 
@@ -192,7 +192,7 @@ const Tournament = () => {
 
 	return (
 		<section className='flex-1 parent tournament self-center w-[96%] max-lp:flex max-lp:flex-col max-lp:gap-10'>
-			{!showChampionCelebration && !finalWinner && (
+			{showChampionCelebration && finalWinner && (
 				<>
 					<Confetti
 						style={{

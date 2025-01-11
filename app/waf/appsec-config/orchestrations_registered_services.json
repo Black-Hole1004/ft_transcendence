@@ -3,7 +3,7 @@
         "1": {
             "Service name": "cp-nano-http-transaction-handler",
             "Service ID": "1",
-            "Service port": 12003,
+            "Service port": 12000,
             "Relevant configs": [
                 "snort",
                 "rules",
@@ -22,7 +22,7 @@
         "2": {
             "Service name": "cp-nano-http-transaction-handler",
             "Service ID": "2",
-            "Service port": 12005,
+            "Service port": 12003,
             "Relevant configs": [
                 "snort",
                 "rules",
@@ -60,7 +60,7 @@
         "4": {
             "Service name": "cp-nano-http-transaction-handler",
             "Service ID": "4",
-            "Service port": 12004,
+            "Service port": 12001,
             "Relevant configs": [
                 "snort",
                 "rules",
@@ -79,7 +79,7 @@
         "5": {
             "Service name": "cp-nano-http-transaction-handler",
             "Service ID": "5",
-            "Service port": 12000,
+            "Service port": 12005,
             "Relevant configs": [
                 "snort",
                 "rules",
@@ -98,7 +98,7 @@
         "6": {
             "Service name": "cp-nano-http-transaction-handler",
             "Service ID": "6",
-            "Service port": 12001,
+            "Service port": 12004,
             "Relevant configs": [
                 "snort",
                 "rules",

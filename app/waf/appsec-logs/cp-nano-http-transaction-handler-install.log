@@ -8,3 +8,44 @@ chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
 chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
 Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
 Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Sat Jan 11 15:10:55 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Sat Jan 11 15:28:39 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Sat Jan 11 19:05:37 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Unregistering /etc/cp/HttpTransactionHandler/k8s-log-file-handler.sh (pid=783)
+sh: can't kill pid 783: No such process
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Sat Jan 11 19:08:27 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.

@@ -186,8 +186,8 @@ const UserProfile = () => {
 						<h1 className='lg:pl-40 lp:pl-28'>match history</h1>
 					</div>
 					<div
-						className='match-history flex-1 flex mtb:flex-row flex-col
-							justify-end max-lp:self-center mb-3'
+						className={`match-history flex-1 flex mtb:flex-row flex-col
+						${matchHistory.length ? 'lp:justify-end' : ''} mtb:justify-around justify-center mb-3`}
 					>
 						<div className='flex flex-col items-center lp:gap-3 gap-2 lp:self-end self-center'>
 							<p className='titles lp:self-center self-start font-medium'>
