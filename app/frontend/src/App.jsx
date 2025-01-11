@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import OauthHandler from './utils/OauthHandler'
 import ComponentPath from './utils/ComponentPath'

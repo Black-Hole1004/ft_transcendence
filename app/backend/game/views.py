@@ -14,7 +14,7 @@ import jwt
 from django.conf import settings
 from django.db import models
 from django.shortcuts import get_object_or_404
-
+from .models import GameInvitations
 # views for the game
 
 # this function is used to get the user from the jwt token
@@ -43,6 +43,9 @@ def get_user_from_token(request):
     except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
         return None
 
+
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def end_game(request, game_id):
@@ -69,6 +72,7 @@ def end_game(request, game_id):
             status=status.HTTP_400_BAD_REQUEST
         )
 
+
 @api_view(['GET'])
 def list_active_games(request):
     """List all active game sessions"""
@@ -86,3 +90,37 @@ def list_active_games(request):
         'active_games_count': len(games_info),
         'games': games_info
     })
+    
+    
+    
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_pending_game_invites(request):
+    """Get active game invitations for user"""
+    try:
+        
+        active_invites = GameInvitations.objects.filter(
+            receiver=request.user,
+            status=GameInvitations.Status.PENDING
+        )
+        
+        
+        invites_data = [{
+            'type': 'game_invite',
+            'invitation_id': invite.id,
+            'from_user': invite.sender.username,
+            'profile_picture': invite.sender.profile_picture.url if invite.sender.profile_picture else None,
+            'sender_id': invite.sender.id,
+            'created_at': invite.created_at.timestamp()
+        } for invite in active_invites]
+        
+        
+        return Response(invites_data)
+        
+    except Exception as e:
+        print(f"Error in get_pending_game_invites: {str(e)}")
+        return Response(
+            {'error': str(e)}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )

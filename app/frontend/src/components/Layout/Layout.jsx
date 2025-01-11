@@ -171,18 +171,19 @@ function Layout() {
 			// Add new handling for game invites
 			switch (data.type) {
 				case 'game_invite':
-					// Add invite to notifications
+					// invite to notifications
 					setNotifications((prevNotifications) => [
 						...prevNotifications,
 						{
-							// id: data.invitation_id,
 							type: 'game_invite',
 							from_user: data.sender.username,
 							profile_picture: data.sender.profile_picture,
 							sender_id: data.sender.id,
 							invitation_id: data.invitation_id,
+							created_at: data.created_at, // i will use this to show the time of the notification
 						},
 					])
+
 					break
 				case 'invite_failed':
 					// Handle notification when receiver is offline/in game
@@ -208,12 +209,13 @@ function Layout() {
 						return
 					}
 					if (is_sender) {
-						triggerAlert('success', `${data.receiver.username} accepted your game invitation`)
-					}
-					else {
+						triggerAlert(
+							'success',
+							`${data.receiver.username} accepted your game invitation`
+						)
+					} else {
 						triggerAlert('success', `Starting game...`)
 					}
-
 
 					navigate('/matchmaking', {
 						state: {
@@ -229,7 +231,32 @@ function Layout() {
 					const is_sender_ = data.sender.id === data.user.id
 					// Show decline notification
 					if (is_sender_) {
-						triggerAlert('info', `${data.receiver.username} declined your game invitation`)
+						triggerAlert(
+							'info',
+							`${data.receiver.username} declined your game invitation`
+						)
+					}
+					break
+
+				case 'game_invite_expired':
+					// Remove the expired invitation from notifications
+					setNotifications((prevNotifications) =>
+						prevNotifications.filter(
+							(notification) => notification.invitation_id !== data.invitation_id
+						)
+					)
+					// Show expiration message
+					triggerAlert('info', 'Game invitation expired')
+					break
+
+				case 'error':
+					if (data.message.includes('expired')) {
+						// Remove the expired invitation from notifications
+						setNotifications((prevNotifications) =>
+							prevNotifications.filter(
+								(notification) => notification.invitation_id !== data.invitation_id
+							)
+						)
 					}
 					break
 
@@ -307,7 +334,6 @@ function Layout() {
 	return (
 		<SocketContext.Provider value={sockets}>
 			<div className='relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'>
-				
 				<Header
 					user_data={user_data}
 					notifications={notifications}

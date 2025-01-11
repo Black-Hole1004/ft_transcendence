@@ -50,7 +50,6 @@
 
 .chat-history-image {
 	width: clamp(2.5rem, 1.327vw + 2.251rem, 4.375rem);
-	height: clamp(2.5rem, 1.327vw + 2.251rem, 4.375rem);
 }
 
 .user-nickname {
@@ -106,7 +105,6 @@
 
 .message-image {
 	width: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
-	height: clamp(1.25rem, 0.442vw + 1.167rem, 1.875rem);
 }
 
 .message-content {
@@ -128,7 +126,6 @@
 
 .search-badge {
 	width: clamp(1.875rem, 0.558vw + 1.607rem, 2.5rem);
-	height: clamp(1.875rem, 0.558vw + 1.607rem, 2.5rem);
 }
 
 

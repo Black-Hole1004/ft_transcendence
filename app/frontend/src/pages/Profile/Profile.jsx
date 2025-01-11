@@ -7,7 +7,6 @@ import ProgressBar from '../../components/Profile/ProgressBar'
 import AboutSection from '../../components/Profile/AboutSection'
 import UserStatsGraph from '../../components/Profile/UserStatsGraph'
 import useAuth from '../../context/AuthContext'
-import { useLocation } from 'react-router-dom'
 
 const USER_API = import.meta.env.VITE_USER_API
 const BASE_URL = import.meta.env.VITE_BASE_URL
@@ -17,9 +16,9 @@ import { useParams } from 'react-router-dom'
 const Profile = () => {
 	const { username_fetched } = useParams();
 	console.log(username_fetched);
-	const { authTokens, logout, getAuthHeaders } = useAuth()
+	const { getAuthHeaders } = useAuth()
 	const containerRef = useRef(null)
-	const [width, setWidth] = useState(0)
+	const [width, setWidth] = useState(window.innerWidth)
 
 	const [stats, setStats] = useState({
 		total_games: 0,
@@ -62,19 +61,9 @@ const Profile = () => {
 	console.log(achievement);
 
 	
-	useEffect(() => {
-		const calculateWidth = () => {
-			if (containerRef.current) {
-				const containerWidth = containerRef.current.getBoundingClientRect().width
-				setWidth(containerWidth)
-			}
-		}
-		calculateWidth()
-		window.addEventListener('resize', calculateWidth)
-		return () => {
-			window.removeEventListener('resize', calculateWidth)
-		}
-	}, [])
+	window.addEventListener('resize', () => {
+		setWidth(window.innerWidth)
+	})
 
 	const [first_name, setFirst_name] = useState('')
 	const [last_name, setLast_name] = useState('')
@@ -193,13 +182,11 @@ const Profile = () => {
 						<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
 					</div>
 					<div className='flex-1 flex items-center justify-center'>
-							<img
-								src={`${BASE_URL}${achievement.current.image}`}
-								className='hover:scale-[1.05] transition duration-500 select-none'
-								alt='achievement badge'
-								/>
-								<div>
-						</div>
+						<img
+							src={`${BASE_URL}${achievement.current.image}`}
+							className='hover:scale-[1.05] transition duration-500 select-none'
+							alt='achievement badge'
+						/>
 						<div className='flex flex-col gap-6'>
 							<div>
 								<p className='font-dreamscape-sans text-level text-center achievement-title'>

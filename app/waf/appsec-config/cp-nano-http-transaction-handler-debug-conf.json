@@ -1,0 +1,26 @@
+{
+    "Debug": [
+        {
+            "Streams": [
+                {
+                    "D_ALL": "Info",
+                    "Output": "/var/log/nano_agent/cp-nano-http-transaction-handler.dbg"
+                },
+                {
+                    "D_ALL": "Error",
+                    "Output": "FOG"
+                }
+            ]
+        }
+    ],
+    "HTTP manager": {
+        "debug context": {
+            "clientIp": "",
+            "listeningIp": "",
+            "listeningPort": 0,
+            "uriPrefix": "",
+            "httpMethod": "",
+            "hostName": ""
+        }
+    }
+}

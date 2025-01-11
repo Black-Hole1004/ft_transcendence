@@ -1,0 +1,4 @@
+Opening debug file. File path: /var/log/nano_agent/cp-nano-orchestration.dbg
+Successfully opened debug file. File path: /var/log/nano_agent/cp-nano-orchestration.dbg
+sh: dmidecode: not found
+sh: openssl: not found

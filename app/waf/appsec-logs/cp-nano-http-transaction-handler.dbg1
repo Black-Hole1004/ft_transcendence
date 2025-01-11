@@ -1,0 +1,53 @@
+[Fri Jan 10 14:26:03 UTC 2025][addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-10T14:26:03.760069: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-10T14:26:03.760493: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-10T14:26:03.760773: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-10T14:26:03.761098: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-10T14:26:03.761383: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-10T14:26:03.764758: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-10T14:26:03.765524: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-10T14:26:03.765859: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-10T14:26:03.766454: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-10T14:26:03.766924: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-10T14:26:03.769991: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-10T14:26:03.773065: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-10T14:26:03.773698: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-10T14:26:03.777052: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-10T14:26:03.777547: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-10T14:26:03.777932: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-10T14:26:03.778366: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-10T14:26:03.778766: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-10T14:26:03.779227: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-10T14:26:03.779671: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-10T14:26:03.780085: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-10T14:26:03.780587: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-10T14:26:03.781087: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-10T14:26:03.781643: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-10T14:26:03.782228: : init@components_list_impl.h:126                            | ---] Initializing component: Table
+[2025-01-10T14:26:03.782628: : init@components_list_impl.h:126                            | ---] Initializing component: NginxAttachment
+[2025-01-10T14:26:03.783855: : init@nginx_attachment.cc:263                               | ---] Successfully initialized NGINX Attachment
+[2025-01-10T14:26:03.784154: : init@components_list_impl.h:126                            | ---] Initializing component: GradualDeployment
+[2025-01-10T14:26:03.784884: : init@components_list_impl.h:126                            | ---] Initializing component: HttpManager
+[2025-01-10T14:26:03.785364: : init@components_list_impl.h:126                            | ---] Initializing component: Layer-7 Access Control
+[2025-01-10T14:26:03.785857: : init@components_list_impl.h:126                            | ---] Initializing component: RateLimit
+[2025-01-10T14:26:03.786339: : init@components_list_impl.h:126                            | ---] Initializing component: WaapComponent
+[2025-01-10T14:26:04.996727: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ScannerDetector'
+[2025-01-10T14:26:04.998149: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ConfidenceCalculator'
+[2025-01-10T14:26:04.998892: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-10T14:26:04.999704: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ConfidenceCalculator'
+[2025-01-10T14:26:05.000457: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-10T14:26:05.042349: : registerStaticResource@nginx_attachment.cc:364             | ###] Failed to write the static resource to the shared memory. Resource name: cp-ab.js, static resource's path: /etc/cp/conf/waap/cp-ab.js
+[2025-01-10T14:26:05.043240: : registerStaticResource@nginx_attachment.cc:364             | ###] Failed to write the static resource to the shared memory. Resource name: cp-csrf.js, static resource's path: /etc/cp/conf/waap/cp-csrf.js
+[2025-01-10T14:26:05.043790: : init@components_list_impl.h:126                            | ---] Initializing component: IPSComp
+[2025-01-10T14:26:05.044492: : init@components_list_impl.h:126                            | ---] Initializing component: KeywordComp
+[2025-01-10T14:26:05.045037: : init@components_list_impl.h:126                            | ---] Initializing component: GeoLocation
+[2025-01-10T14:26:05.046255: : initGeoDbObj@geo_location.cc:109                           | ###] maxMindDB error: Error opening the specified MaxMind DB file
+[2025-01-10T14:26:05.046920: : init@components_list_impl.h:126                            | ---] Initializing component: HttpGeoFilter
+[2025-01-10T14:26:05.049529: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-10T14:26:05.050145: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 12003. Accepting: loopback connections
+[2025-01-10T14:26:05.076472: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-10T14:26:05.077007: : <10> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 1
+[2025-01-10T14:26:07.238254: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-10T14:26:18.882646: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages

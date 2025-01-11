@@ -17,6 +17,7 @@ from .models import FriendShip
 from game.models import GameInvitations
 from collections import defaultdict
 from django.core.exceptions import ValidationError
+import asyncio
 
 import logging as log
 
@@ -137,6 +138,10 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                 sender=self.user,
                 receiver_id=receiver_id
             )
+            created_at = invitation.created_at.timestamp()
+            
+            # Set up expiration task
+            asyncio.create_task(self.handle_invitation_expiration(invitation.id))
             
             await self.channel_layer.group_send(
                 f'friend_request_{receiver_id}',
@@ -145,6 +150,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                     'data': {
                         'type': 'game_invite',
                         'invitation_id': invitation.id,
+                        'created_at': created_at,
                         'sender': {
                             'id': self.user.id,
                             'username': self.user.username,
@@ -156,6 +162,59 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
 
         except Exception as e:
             print(f"Error handling game invite: {e}")
+
+    # handle automatic expiration of game invitation-------------------------------------------------------
+    async def handle_invitation_expiration(self, invitation_id):
+        """Handle invitation expiration after 60 seconds"""
+        await asyncio.sleep(60)  # Wait 60 seconds
+        
+        try:
+            # Get invitation using database_sync_to_async
+            invitation = await self.get_game_invitation(invitation_id)
+            
+            # Only expire if still pending
+            if invitation.status == GameInvitations.Status.PENDING:
+                # Update status using database_sync_to_async
+                invitation = await self.expire_game_invitation(invitation.id)
+                
+                # Notify both users about expiration
+                notification_data = await self.prepare_expiration_notification(invitation)
+                
+                for user_id in [invitation.sender.id, invitation.receiver.id]:
+                    await self.channel_layer.group_send(
+                        f'friend_request_{user_id}',
+                        {
+                            'type': 'game_invite_notification',
+                            'data': notification_data
+                        }
+                    )
+                        
+        except Exception as e:
+            print(f"Error handling invitation expiration: {e}")
+
+    @database_sync_to_async
+    def expire_game_invitation(self, invitation_id):
+        """Update invitation status to expired"""
+        invitation = GameInvitations.objects.get(id=invitation_id)
+        invitation.status = GameInvitations.Status.EXPIRED
+        invitation.save()
+        return invitation
+
+    @database_sync_to_async
+    def prepare_expiration_notification(self, invitation):
+        """Prepare notification data in sync context"""
+        return {
+            'type': 'game_invite_expired',
+            'invitation_id': invitation.id,
+            'sender': {
+                'id': invitation.sender.id,
+                'username': invitation.sender.username,
+            },
+            'receiver': {
+                'id': invitation.receiver.id,
+                'username': invitation.receiver.username,
+            }
+        }
 
     @database_sync_to_async
     def get_receiver_status(self, receiver_id):
@@ -209,9 +268,14 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def accept_game_invite(self, invitation):
         """Handle invitation acceptance"""
-        # Update invitation status
+        # Verify current user is intended recipient
         if (invitation.receiver.id != self.user.id):
             raise ValidationError("Not authorized to accept this invitation !!!")
+        
+        #  validate the invitation hasn't expired
+        if invitation.status == GameInvitations.Status.EXPIRED:
+            raise ValidationError("Cannot accept expired invitation")
+        # Update invitation status
         invitation.status = GameInvitations.Status.ACCEPTED
         invitation.save()
         # get the status of the sender (online or offline)
@@ -278,7 +342,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             )
 
         except ValidationError as e:
-            # Notify unauthorized user who tried to accept
+            # Notify the user who's accepting the invite
             await self.send(json.dumps({
                 'type': 'error',
                 'message': str(e)
@@ -303,6 +367,10 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         if invitation.receiver.id != self.user.id:
             raise ValidationError("Not authorized to decline this invitation")
 
+        # Validate the invitation hasn't expired
+        if invitation.status == GameInvitations.Status.EXPIRED:
+            raise ValidationError("Cannot decline expired invitation")
+        
         # Update invitation status
         invitation.status = GameInvitations.Status.DECLINED
         invitation.save()

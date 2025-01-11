@@ -1,5 +1,6 @@
 // src/services/MatchmakingService.js
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
+// const HOSTNAME = import.meta.env.HOSTNAME
 
 class MatchmakingService {
 	constructor() {
@@ -26,8 +27,9 @@ class MatchmakingService {
 		if (this.socket) {
 			this.socket.close()
 		}
+		const HOSTNAME = VITE_BASE_URL.replace('https://', '')
 
-		this.socket = new WebSocket(`wss://localhost/ws/matchmaking/?user_id=${userId}`)
+		this.socket = new WebSocket(`wss://${HOSTNAME}/ws/matchmaking/?user_id=${userId}`)
 
 		this.socket.onopen = () => {
 			console.log('Connected to matchmaking service')

@@ -22,8 +22,8 @@ const GameOverPopup = ({ winner, onQuit, onProceed }) => (
 	<>
 		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
 		<div
-			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20
-			flex flex-col justify-center items-center bg-secondary bg-opacity-60 border-1.5 border-primary rounded-xl gameoverpopup'
+			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20
+			flex flex-col justify-center items-center gameoverpopup'
 		>
 			{winner ? (
 				<h1 className='font-dreamscape'>VICTORY ACHIEVED</h1>
@@ -49,8 +49,7 @@ const GameOverPopup = ({ winner, onQuit, onProceed }) => (
 				<button
 					onClick={onQuit}
 					className='font-dreamscape bg-primary text-secondary py-3 flex-1 rounded
-					hover:scale-[1.01] hover:brightness-100 transition-all duration-300 ease-in-out
-					hover:outline hover:outline-offset-2 hover:outline-2 hover:outline-primary'
+					hover:scale-[1.03] hover:brightness-100 transition-all duration-300 ease-in-out'
 				>
 					Quit The Tournament
 				</button>

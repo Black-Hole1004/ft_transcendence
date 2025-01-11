@@ -29,8 +29,8 @@ export const AuthProvider = ({ children }) => {
                 // trim double quotes from the token with trim
                 let TrimmedAccess = accessToken.replace(/^"|"$|"/g, ''); 
                 let TrimmedRefresh = refreshToken.replace(/^"|"$|"/g, '');
-                console.log('access_token:', TrimmedAccess);
-                console.log('refresh_token:', TrimmedRefresh);
+                // console.log('access_token:', TrimmedAccess);
+                // console.log('refresh_token:', TrimmedRefresh);
                 return {
                     access_token: TrimmedAccess,
                     refresh_token: TrimmedRefresh,
@@ -70,6 +70,10 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json()
             if (response.ok) {
                 console.log('Login successful', data)
+                if (data.Twofa_enabled === true) {
+                    navigate('/2fa', { state: { email: email, password: password } })
+                    return ;
+                }
                 setAuthTokens(data)
                 setUser(jwtDecode(data.access_token))
                 
