@@ -1,0 +1,23 @@
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 22:54:06 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 22:57:23 UTC 2025]
+
+Installation completed successfully.
+Starting Pre-installation test of Check Point Attachment Registrator Nano service installation package [Sat Jan 11 22:58:04 UTC 2025]
+
+Successfully finished pre-installation test for Check Point Attachment Registrator Nano service installation package [Sat Jan 11 22:58:04 UTC 2025]
+
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 22:58:05 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=822
+16614)
+sh: can't kill pid 16614: No such process
+Installation completed successfully.
+Starting Post-installation test of Check Point Attachment Registrator Nano service installation package [Sat Jan 11 22:58:06 UTC 2025]
+
+Successfully finished post-installation test for Check Point Attachment Registrator Nano service installation package [Sat Jan 11 22:58:06 UTC 2025]
+
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 22:59:47 UTC 2025]
+
+Installation completed successfully.

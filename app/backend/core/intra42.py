@@ -14,7 +14,7 @@ from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
 import os
-
+from core.settings import HOSTNAME
 
 class Intra42OAuth2(BaseOAuth2):
     

@@ -1,0 +1,115 @@
+[Sat Jan 11 23:00:24 UTC 2025][addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-11T23:00:24.145988: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-11T23:00:24.147267: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-11T23:00:24.148256: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-11T23:00:24.148810: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-11T23:00:24.149344: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-11T23:00:24.155052: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-11T23:00:24.155746: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-11T23:00:24.156698: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-11T23:00:24.157454: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-11T23:00:24.158238: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-11T23:00:24.177173: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-11T23:00:24.180268: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-11T23:00:24.181166: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-11T23:00:24.186858: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-11T23:00:24.187927: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-11T23:00:24.190004: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-11T23:00:24.190982: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-11T23:00:24.191932: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-11T23:00:24.192552: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-11T23:00:24.193048: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-11T23:00:24.193459: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-11T23:00:24.194693: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-11T23:00:24.195521: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-11T23:00:24.195995: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-11T23:00:24.196560: : init@components_list_impl.h:126                            | ---] Initializing component: Table
+[2025-01-11T23:00:24.197461: : init@components_list_impl.h:126                            | ---] Initializing component: NginxAttachment
+[2025-01-11T23:00:24.199831: : init@nginx_attachment.cc:263                               | ---] Successfully initialized NGINX Attachment
+[2025-01-11T23:00:24.200542: : init@components_list_impl.h:126                            | ---] Initializing component: GradualDeployment
+[2025-01-11T23:00:24.202033: : init@components_list_impl.h:126                            | ---] Initializing component: HttpManager
+[2025-01-11T23:00:24.202966: : init@components_list_impl.h:126                            | ---] Initializing component: Layer-7 Access Control
+[2025-01-11T23:00:24.203670: : init@components_list_impl.h:126                            | ---] Initializing component: RateLimit
+[2025-01-11T23:00:24.204522: : init@components_list_impl.h:126                            | ---] Initializing component: WaapComponent
+[2025-01-11T23:00:25.916020: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ScannerDetector'
+[2025-01-11T23:00:26.923089: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ConfidenceCalculator'
+[2025-01-11T23:00:26.925380: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-11T23:00:26.927167: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ConfidenceCalculator'
+[2025-01-11T23:00:26.929216: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-11T23:00:26.972896: : registerStaticResource@nginx_attachment.cc:364             | ###] Failed to write the static resource to the shared memory. Resource name: cp-ab.js, static resource's path: /etc/cp/conf/waap/cp-ab.js
+[2025-01-11T23:00:26.976334: : registerStaticResource@nginx_attachment.cc:364             | ###] Failed to write the static resource to the shared memory. Resource name: cp-csrf.js, static resource's path: /etc/cp/conf/waap/cp-csrf.js
+[2025-01-11T23:00:26.977289: : init@components_list_impl.h:126                            | ---] Initializing component: IPSComp
+[2025-01-11T23:00:26.978172: : init@components_list_impl.h:126                            | ---] Initializing component: KeywordComp
+[2025-01-11T23:00:26.978940: : init@components_list_impl.h:126                            | ---] Initializing component: GeoLocation
+[2025-01-11T23:00:26.981272: : initGeoDbObj@geo_location.cc:109                           | ###] maxMindDB error: Error opening the specified MaxMind DB file
+[2025-01-11T23:00:26.981841: : init@components_list_impl.h:126                            | ---] Initializing component: HttpGeoFilter
+[2025-01-11T23:00:26.982374: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-11T23:00:26.983307: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 12004. Accepting: loopback connections
+[2025-01-11T23:00:27.010334: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-11T23:00:27.011258: : <10> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 4
+[2025-01-11T23:00:29.163011: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-11T23:00:40.639895: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-11T23:01:05.138515: : <37> load@triggers_config.cc:205                           | ###] Failed to parse the extendLoggingMinSeverityfield: 'high'
+[2025-01-11T23:01:05.140999: : <37> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON File stream
+[2025-01-11T23:01:05.153903: : <37> loadUserLimitsPolicy@WaapConfigBase.cc:282            | ---] [USER LIMITS] policy loaded:
+[Policy] urlMaxSize: 32768  httpHeaderMaxSize: 102400  httpBodyMaxSize: 1024000000  maxObjectDepth: 40  httpIllegalMethodsAllowed: false
+[2025-01-11T23:01:05.167251: : <37> loadUserLimitsPolicy@WaapConfigBase.cc:282            | ---] [USER LIMITS] policy loaded:
+[Policy] urlMaxSize: 32768  httpHeaderMaxSize: 102400  httpBodyMaxSize: 1024000000  maxObjectDepth: 40  httpIllegalMethodsAllowed: false
+[2025-01-11T23:01:05.182957: : <37> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: /var/log/nano_agent/cp-nano-http-transaction-handler.log4
+[2025-01-11T23:01:05.183881: : <37> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON FOG stream
+[2025-01-11T23:01:05.185222: : <37> initGeoDbObj@geo_location.cc:109                      | ###] maxMindDB error: Error opening the specified MaxMind DB file
+[2025-01-11T23:02:49.151977: : <25> registerAttachmentProcess@nginx_attachment.cc:540     | ---] Successfully registered attachment
+[2025-01-11T23:02:49.164114: : <39> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.173601: : <39> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='ScannerDetector'
+[2025-01-11T23:02:49.176231: : <39> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='ConfidenceCalculator'
+[2025-01-11T23:02:49.180184: : <39> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-11T23:02:49.189458: : <39> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='ConfidenceCalculator'
+[2025-01-11T23:02:49.335216: : <39> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-11T23:02:49.492478: : <39> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Nginx Attachment inspection handler
+[2025-01-11T23:02:49.510731: : <41> getSharedStorageHost@TuningDecision.cc:184            | ---] shared storage host is set to appsec-shared-storage
+[2025-01-11T23:02:49.522696: : <41> tryToBioConnect@connection.cc:479                     | ###] Connection to: appsec-shared-storage:80 failed and won't retry. Error: error:2008F002:BIO routines:BIO_lookup_ex:system lib
+[2025-01-11T23:02:49.525570: : <41> connectToHost@connection.cc:521                       | ###] Connection to: appsec-shared-storage:80 failed and will be suspended for 60 seconds
+[2025-01-11T23:02:49.537730: : <41> establishConnection@connection.cc:193                 | ###] Failed to connect to host: appsec-shared-storage:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.540104: : <41> establishNewConnection@connection_comp.cc:104         | ###] Failed to establish connection. Error: appsec-shared-storage:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.552374: : <41> getConnection@messaging_comp.cc:107                   | ###] Failed to establish connection. Error: appsec-shared-storage:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.553846: : <41> sendMessage@messaging_comp.cc:123                     | ###] Failed to get connection. Error: Failed to establish connection. Error: appsec-shared-storage:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.561618: : <50> tryToBioConnect@connection.cc:479                     | ###] Connection to: appsec-tuning-svc:80 failed and won't retry. Error: error:2008F002:BIO routines:BIO_lookup_ex:system lib
+[2025-01-11T23:02:49.569696: : <50> connectToHost@connection.cc:521                       | ###] Connection to: appsec-tuning-svc:80 failed and will be suspended for 60 seconds
+[2025-01-11T23:02:49.570433: : <50> establishConnection@connection.cc:193                 | ###] Failed to connect to host: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.573884: : <50> establishNewConnection@connection_comp.cc:104         | ###] Failed to establish connection. Error: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.586270: : <50> getConnection@messaging_comp.cc:107                   | ###] Failed to establish connection. Error: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.587378: : <50> sendMessage@messaging_comp.cc:123                     | ###] Failed to get connection. Error: Failed to establish connection. Error: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.588598: : <50> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -1, error response: Failed to establish connection. Error: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:02:49.600846: : <51> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.601624: : <52> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.602752: : <53> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.604148: : <54> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.616505: : <43> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Indicators/Confidence/remote, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.617428: : <43> getRemoteProcessedFilesList@Serializator.cc:774       | ###] Failed to get the list of files
+[2025-01-11T23:02:49.618056: : <43> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Indicators/Confidence/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.618694: : <43> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/4/Indicators/Confidence/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.619427: : <43> getProcessedFilesList@Serializator.cc:844             | ###] Failed to get the list of files
+[2025-01-11T23:02:49.620232: : <43> pullProcessedData@ConfidenceCalculator.cc:230         | !!!] Failed to get the remote state
+[2025-01-11T23:02:49.620964: : <45> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Indicators/Trust/remote, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.621590: : <45> getRemoteProcessedFilesList@Serializator.cc:774       | ###] Failed to get the list of files
+[2025-01-11T23:02:49.622138: : <45> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Indicators/Trust/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.622798: : <45> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/4/Indicators/Trust/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.624226: : <45> getProcessedFilesList@Serializator.cc:844             | ###] Failed to get the list of files
+[2025-01-11T23:02:49.624923: : <47> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Type/Confidence/remote, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.625804: : <47> getRemoteProcessedFilesList@Serializator.cc:774       | ###] Failed to get the list of files
+[2025-01-11T23:02:49.626402: : <47> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Type/Confidence/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.627299: : <47> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/4/Type/Confidence/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.627944: : <47> getProcessedFilesList@Serializator.cc:844             | ###] Failed to get the list of files
+[2025-01-11T23:02:49.628476: : <47> pullProcessedData@ConfidenceCalculator.cc:230         | !!!] Failed to get the remote state
+[2025-01-11T23:02:49.629050: : <49> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Type/Trust/remote, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.629606: : <49> getRemoteProcessedFilesList@Serializator.cc:774       | ###] Failed to get the list of files
+[2025-01-11T23:02:49.630165: : <49> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Type/Trust/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.630839: : <49> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/4/Type/Trust/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:02:49.631524: : <49> getProcessedFilesList@Serializator.cc:844             | ###] Failed to get the list of files
+[2025-01-11T23:02:50.096541: : <39> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.350915: : <39> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.575382: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-11T23:02:50.850695: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-11T23:02:56.009311: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages

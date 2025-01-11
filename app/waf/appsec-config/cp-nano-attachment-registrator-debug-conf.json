@@ -1,0 +1,16 @@
+{
+    "Debug": [
+        {
+            "Streams": [
+                {
+                    "D_ALL": "Info",
+                    "Output": "/var/log/nano_agent/cp-nano-attachment-registrator.dbg"
+                },
+                {
+                    "D_ALL": "Error",
+                    "Output": "FOG"
+                }
+            ]
+        }
+    ]
+}
