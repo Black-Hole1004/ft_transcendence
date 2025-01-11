@@ -115,7 +115,15 @@ class CustomGoogleOAuth2(GoogleOAuth2):
             'email': 'email',
             'is_logged_with_oauth': 'is_logged_with_oauth',
         }
-        
+
+        max_lengths = {
+            'username': 10,
+            'first_name': 10,
+            'last_name': 10,
+            'display_name': 10,
+        }
+
+
         for google_field, model_field in google_field_mapping.items():
             google_value = google_data.get(google_field)
             if not google_value:
@@ -135,6 +143,11 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 current_value = getattr(user, model_field, None)
                 if current_value:  # Don't update if user has set a value
                     continue
+
+            # Check for max length
+            if model_field in max_lengths:
+                max_length = max_lengths[model_field]
+                google_value = google_value[:max_length]
             
             
             # Update the field if we haven't skipped it
@@ -142,6 +155,10 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 self.update_profile_picture(user, google_value)
             else:
                 setattr(user, model_field, google_value)
+            
+        user.save()
+
+
 
     def update_profile_picture(self, user, picture_url):
         """Update profile picture if not customized"""

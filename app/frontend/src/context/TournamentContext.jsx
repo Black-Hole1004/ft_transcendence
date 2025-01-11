@@ -10,12 +10,24 @@ export const TournamentProvider = ({ children }) => {
     const [tournamentData, setTournamentData] = useState(null);
 
 
+    // Add scores state
+    const [tournamentScores, setTournamentScores] = useState({
+        semifinal1: { player1Score: null, player2Score: null },
+        semifinal2: { player1Score: null, player2Score: null },
+        final: { player1Score: null, player2Score: null }
+    })
+
     const resetTournament = () => {
         setSemiFinal1winner(null);
         setSemiFinal2winner(null);
         setFinalWinner(null);
         setTournamentState('not_started');
         setTournamentData(null);
+        setTournamentScores({
+            semifinal1: { player1Score: null, player2Score: null },
+            semifinal2: { player1Score: null, player2Score: null },
+            final: { player1Score: null, player2Score: null }
+        })
     }
 
     const value = {
@@ -29,7 +41,9 @@ export const TournamentProvider = ({ children }) => {
         setTournamentState,
         tournamentData,
         setTournamentData,
-        resetTournament
+        resetTournament,
+        tournamentScores,
+        setTournamentScores
     };
 
     const cleanup = () => {
@@ -40,7 +54,7 @@ export const TournamentProvider = ({ children }) => {
         return () => cleanup
     }, []);
 
-    
+
 
     return (
         <TournamentContext.Provider value={value}>

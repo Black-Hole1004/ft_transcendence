@@ -29,8 +29,6 @@ export const AuthProvider = ({ children }) => {
                 // trim double quotes from the token with trim
                 let TrimmedAccess = accessToken.replace(/^"|"$|"/g, ''); 
                 let TrimmedRefresh = refreshToken.replace(/^"|"$|"/g, '');
-                // console.log('access_token:', TrimmedAccess);
-                // console.log('refresh_token:', TrimmedRefresh);
                 return {
                     access_token: TrimmedAccess,
                     refresh_token: TrimmedRefresh,
@@ -85,7 +83,7 @@ export const AuthProvider = ({ children }) => {
             }
             else {
                 console.log('Login failed', data)
-                handleSubmit('error', data.error)
+                handleSubmit('error', data.detail)
             }
         } catch (error) {
             console.error('error', error)

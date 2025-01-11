@@ -176,7 +176,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -253,8 +252,6 @@ AUTHENTICATION_BACKENDS = (
     'core.intra42.Intra42OAuth2',  # Custom Intra42 backend
     'django.contrib.auth.backends.ModelBackend',  # Default authentication
 )
-
-
 
 
 LOGIN_REDIRECT_URL = f'https://{HOSTNAME}:{PORT}/Dashboard'

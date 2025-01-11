@@ -230,23 +230,14 @@ class RegisterView(APIView):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         dummy = generate_random_username()
-        # check if username is already taken
-        if User.objects.filter(username=dummy).exists():
-            return JsonResponse({'error': 'Username already taken'}, status=400)
-        # check if email is already taken
-        if User.objects.filter(email=data.get('email')).exists():
-            return JsonResponse({'error': 'Email already taken'}, status=400)
-        # check length of username
         if len(dummy) > 10:
             dummy = dummy[:10]
         data.update({'username': dummy})
-        print('data ----------->', data)
         if len(data.get('username')) > 10:
             data['username'] = data['username'][:10]
         form = UserCreationForm(data)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
+            form.save()
             return JsonResponse({'message': 'User created successfully'}, status=201)
         else:
             return JsonResponse(form.errors, status=400)

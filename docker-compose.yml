@@ -177,24 +177,24 @@ services:
 
   #setup for elasticsearch
   # comment this :
-  setup:
-    container_name: setup
-    build: ./app/elk/setup/.
-    volumes:
-      - certs:/usr/share/elasticsearch/config/certs
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - ft_transcendence_network
-    env_file:
-      - .env
-    healthcheck:
-      test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
-      interval: 1s
-      timeout: 5s
-      retries: 120
+  # setup:
+  #   container_name: setup
+  #   build: ./app/elk/setup/.
+  #   volumes:
+  #     - certs:/usr/share/elasticsearch/config/certs
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   networks:
+  #     - ft_transcendence_network
+  #   env_file:
+  #     - .env
+  #   healthcheck:
+  #     test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
+  #     interval: 1s
+  #     timeout: 5s
+  #     retries: 120
   
 
-  # Elasticsearch
+  # # Elasticsearch
   # elasticsearch:
   #   container_name: elasticsearch
   #   depends_on:

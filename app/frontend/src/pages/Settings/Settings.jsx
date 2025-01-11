@@ -216,12 +216,12 @@ const Settings = () => {
 		const userProfileData = new FormData()
 
 		if (!user) return userProfileData
-		userProfileData.append('first_name', first_name || '')
-		userProfileData.append('last_name', last_name || '')
+		userProfileData.append('first_name', first_name.length > 10 ? first_name.slice(0, 10) : first_name || '')
+		userProfileData.append('last_name', last_name.length > 10 ? last_name.slice(0, 10) : last_name || '')
 		userProfileData.append('email', email || '')
 		userProfileData.append('mobile_number', mobile_number || '')
-		userProfileData.append('username', username || '')
-		userProfileData.append('display_name', display_name || '')
+		userProfileData.append('username', username.length > 10 ? username.slice(0, 10) : username || '')
+		userProfileData.append('display_name', display_name.length > 10 ? display_name.slice(0, 10) : display_name || '')
 		userProfileData.append('bio', bio || '')
 		userProfileData.append('password', password || '')
 		userProfileData.append('new_password', new_password || '')
@@ -490,7 +490,7 @@ const Settings = () => {
 											name='bio'
 											id='bio'
 											placeholder={bio}
-											maxLength={'250'}
+											maxLength={'150'}
 											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
 										max-ms:w-full outline-none placeholders placeholder:text-border transition-all duration-300'
 											onChange={handleInputChange}

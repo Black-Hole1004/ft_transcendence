@@ -14,6 +14,7 @@ def remove_profile_picture(user):
     # user.is_custom_profile_picture = False
     user.save()
 
+
 def update_profile_picture(user, profile_picture):
     """Update the user's profile picture."""
     if profile_picture:
