@@ -1,0 +1,97 @@
+Starting installation of Check Point Cache service [Fri Jan 10 14:13:28 UTC 2025]
+
+Installation completed successfully.
+Successfully finished pre-installation test for Check Point Cache service installation package [Fri Jan 10 14:45:00 UTC 2025]
+
+Starting installation of Check Point Cache service [Fri Jan 10 14:45:01 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=883
+49046)
+sh: can't kill pid 49046: No such process
+Installation completed successfully.
+Successfully finished post-installation test for Check Point Cache service installation package [Fri Jan 10 14:45:03 UTC 2025]
+
+Starting installation of Check Point Cache service [Fri Jan 10 18:09:27 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=557)
+sh: can't kill pid 557: No such process
+Installation completed successfully.
+Starting installation of Check Point Cache service [Fri Jan 10 18:45:41 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Fri Jan 10 21:28:55 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Fri Jan 10 21:30:45 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=552)
+sh: can't kill pid 552: No such process
+Installation completed successfully.
+Starting installation of Check Point Cache service [Fri Jan 10 21:34:44 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=556)
+sh: can't kill pid 556: No such process
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:08:06 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:21:48 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:24:38 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:28:39 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:42:08 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:47:24 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:55:03 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=558)
+sh: can't kill pid 558: No such process
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:58:04 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:01:22 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:05:31 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=559)
+sh: can't kill pid 559: No such process
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:09:45 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:12:44 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=859
+9300)
+sh: can't kill pid 9300: No such process
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:16:53 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:20:07 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:22:53 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=853
+10118)
+sh: can't kill pid 10118: No such process
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:28:29 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 16:26:11 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=552)
+sh: can't kill pid 552: No such process
+Installation completed successfully.

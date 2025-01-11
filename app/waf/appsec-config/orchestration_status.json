@@ -1,0 +1,32 @@
+{
+    "Last update attempt": "2025-01-10T15:48:27.521432",
+    "Last update status": "Succeeded ",
+    "Last update": "2025-01-10T15:48:27.621323",
+    "Last manifest update": "2025-01-10T14:44:55.474746",
+    "Policy version": "0af540a5b155d8b01826f46ea583ee2a95445486f4c0f11109c3847bd8ef623d",
+    "Last policy update": "2025-01-10T14:44:55.474746",
+    "Last settings update": "None",
+    "Upgrade mode": "None",
+    "Fog address": "https://inext-agents.cloud.ngen.checkpoint.com",
+    "Registration status": "Failed. Reason: Warning: Agent/Gateway failed to receive access token. Contact Check Point support.",
+    "Registration details": {
+        "Name": "c5db63ae4c00",
+        "Type": "Docker",
+        "Platform": "alpine",
+        "Architecture": "x86_64"
+    },
+    "Agent ID": "cb1f7029-5c48-4ba6-872f-0b30d7631054",
+    "Profile ID": "88c10df0-f9b1-5013-7b17-c3949a04e481",
+    "Tenant ID": "d62213d2-7dda-4b14-9003-b0a407809f91",
+    "Manifest status": "Succeeded ",
+    "Service policy": {
+        "accessControlV2": "/etc/cp/conf/accessControlV2/accessControlV2.policy",
+        "exceptions": "/etc/cp/conf/exceptions/exceptions.policy",
+        "fileSecurity": "/etc/cp/conf/fileSecurity/fileSecurity.policy",
+        "ips": "/etc/cp/conf/ips/ips.policy",
+        "registration-data": "/etc/cp/conf/registration-data/registration-data.policy",
+        "snort": "/etc/cp/conf/snort/snort.policy",
+        "waap": "/etc/cp/conf/waap/waap.policy"
+    },
+    "Service settings": {}
+}

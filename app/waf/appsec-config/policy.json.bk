@@ -1,0 +1,209 @@
+{
+    "accessControlV2": {
+        "rulebase": {
+            "accessControl": [],
+            "traditionalFirewall": [],
+            "l4firewall": [],
+            "rateLimit": []
+        }
+    },
+    "waap": {
+        "WAAP": {
+            "WebAPISecurity": [],
+            "WebApplicationSecurity": [
+                {
+                    "context": "All()",
+                    "webAttackMitigation": true,
+                    "webAttackMitigationSeverity": "High",
+                    "webAttackMitigationAction": "Balanced",
+                    "webAttackMitigationMode": "Prevent",
+                    "practiceAdvancedConfig": {
+                        "httpHeaderMaxSize": 102400,
+                        "httpIllegalMethodsAllowed": 0,
+                        "httpRequestBodyMaxSize": 1000000,
+                        "jsonMaxObjectDepth": 40,
+                        "urlMaxSize": 32768
+                    },
+                    "csrfProtection": "Disabled",
+                    "openRedirect": "Disabled",
+                    "errorDisclosure": "Disabled",
+                    "practiceId": "5e6a2e26-70ac-4580-98fb-5246fef54d4e",
+                    "practiceName": "local_policy/webapp-default-practice",
+                    "assetId": "Any",
+                    "assetName": "Any",
+                    "ruleId": "Any",
+                    "ruleName": "Any",
+                    "schemaValidation": false,
+                    "schemaValidation_v2": "Disabled",
+                    "oas": [],
+                    "schemaValidationEnforceLevel": "fullSchema",
+                    "triggers": [
+                        {
+                            "$triggerType": "log",
+                            "id": "b60af19e-172a-4e09-803b-25d1091de6bf",
+                            "name": "local_policy/appsec-default-log-trigger",
+                            "log": {
+                                "context": "triggerId(b60af19e-172a-4e09-803b-25d1091de6bf)",
+                                "triggerName": "local_policy/appsec-default-log-trigger",
+                                "triggerType": "log",
+                                "verbosity": "Standard",
+                                "acAllow": false,
+                                "acDrop": true,
+                                "complianceViolations": false,
+                                "complianceWarnings": false,
+                                "extendLoggingMinSeverity": "high",
+                                "extendLogging": true,
+                                "logToAgent": true,
+                                "logToCef": false,
+                                "logToCloud": false,
+                                "logTolocalTuning": false,
+                                "logToSyslog": false,
+                                "responseBody": false,
+                                "responseCode": false,
+                                "tpDetect": true,
+                                "tpPrevent": true,
+                                "webBody": false,
+                                "webHeaders": false,
+                                "webRequests": false,
+                                "webUrlPath": false,
+                                "webUrlQuery": false,
+                                "urlForSyslog": ":514",
+                                "urlForCef": ":0",
+                                "formatLoggingOutput": false
+                            }
+                        }
+                    ],
+                    "applicationUrls": "http://*:*",
+                    "overrides": [],
+                    "trustedSources": [
+                        {
+                            "id": "ba6b48cd-2afa-4722-a9e2-875b2433e144",
+                            "name": "",
+                            "numOfSources": 0,
+                            "sourcesIdentifiers": [],
+                            "parameterType": "TrustedSource"
+                        }
+                    ],
+                    "waapParameters": [],
+                    "botProtection": false,
+                    "antiBot": {
+                        "injected": [],
+                        "validated": []
+                    },
+                    "botProtection_v2": "Detect"
+                }
+            ]
+        }
+    },
+    "triggers": {
+        "rulebase": {
+            "log": [
+                {
+                    "context": "triggerId(b60af19e-172a-4e09-803b-25d1091de6bf)",
+                    "triggerName": "local_policy/appsec-default-log-trigger",
+                    "triggerType": "log",
+                    "verbosity": "Standard",
+                    "acAllow": false,
+                    "acDrop": true,
+                    "complianceViolations": false,
+                    "complianceWarnings": false,
+                    "extendLoggingMinSeverity": "high",
+                    "extendLogging": true,
+                    "logToAgent": true,
+                    "logToCef": false,
+                    "logToCloud": false,
+                    "logTolocalTuning": false,
+                    "logToSyslog": false,
+                    "responseBody": false,
+                    "responseCode": false,
+                    "tpDetect": true,
+                    "tpPrevent": true,
+                    "webBody": false,
+                    "webHeaders": false,
+                    "webRequests": false,
+                    "webUrlPath": false,
+                    "webUrlQuery": false,
+                    "urlForSyslog": ":514",
+                    "urlForCef": ":0",
+                    "formatLoggingOutput": false
+                }
+            ],
+            "webUserResponse": [
+                {
+                    "context": "triggerId(fca80fb6-5feb-47f3-8f1f-f13364ca99ed)",
+                    "triggerName": "local_policy/appsec-default-web-user-response",
+                    "details level": "response-code-only",
+                    "response body": "",
+                    "response code": 403,
+                    "response title": ""
+                }
+            ]
+        }
+    },
+    "rules": {
+        "rulebase": {
+            "rulesConfig": [
+                {
+                    "assetId": "Any",
+                    "assetName": "Any",
+                    "ruleId": "Any",
+                    "ruleName": "Any",
+                    "context": "All()",
+                    "priority": 1,
+                    "isCleanup": false,
+                    "parameters": [],
+                    "practices": [
+                        {
+                            "practiceId": "5e6a2e26-70ac-4580-98fb-5246fef54d4e",
+                            "practiceName": "local_policy/webapp-default-practice",
+                            "practiceType": "WebApplication"
+                        }
+                    ],
+                    "triggers": [
+                        {
+                            "triggerId": "b60af19e-172a-4e09-803b-25d1091de6bf",
+                            "triggerName": "local_policy/appsec-default-log-trigger",
+                            "triggerType": "log"
+                        },
+                        {
+                            "triggerId": "fca80fb6-5feb-47f3-8f1f-f13364ca99ed",
+                            "triggerName": "local_policy/appsec-default-web-user-response",
+                            "triggerType": "WebUserResponse"
+                        }
+                    ],
+                    "zoneId": "",
+                    "zoneName": ""
+                }
+            ],
+            "usersIdentifiers": []
+        }
+    },
+    "ips": {
+        "IPS": {
+            "IpsProtections": []
+        }
+    },
+    "exceptions": {
+        "rulebase": {
+            "exception": [
+                {
+                    "context": "Any()",
+                    "exceptions": []
+                }
+            ]
+        }
+    },
+    "snort": {
+        "IPSSnortSigs": {
+            "VersionId": "LocalVersion",
+            "SnortProtections": [],
+            "protections": []
+        }
+    },
+    "fileSecurity": {
+        "FileSecurity": {
+            "FileSecurityProtections": []
+        }
+    },
+    "version": "0af540a5b155d8b01826f46ea583ee2a95445486f4c0f11109c3847bd8ef623d"
+}

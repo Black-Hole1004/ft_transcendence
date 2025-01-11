@@ -53,3 +53,5 @@ channels_redis
 
 pyotp
 django-anymail[mailersend]
+
+hvac

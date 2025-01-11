@@ -1,0 +1,103 @@
+Starting installation of Check Point Attachment Registrator Nano service [Fri Jan 10 14:13:27 UTC 2025]
+
+Installation completed successfully.
+Starting Pre-installation test of Check Point Attachment Registrator Nano service installation package [Fri Jan 10 14:45:05 UTC 2025]
+
+Successfully finished pre-installation test for Check Point Attachment Registrator Nano service installation package [Fri Jan 10 14:45:05 UTC 2025]
+
+Starting installation of Check Point Attachment Registrator Nano service [Fri Jan 10 14:45:06 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=856
+49997)
+sh: can't kill pid 49997: No such process
+Installation completed successfully.
+Starting Post-installation test of Check Point Attachment Registrator Nano service installation package [Fri Jan 10 14:45:07 UTC 2025]
+
+Successfully finished post-installation test for Check Point Attachment Registrator Nano service installation package [Fri Jan 10 14:45:07 UTC 2025]
+
+Starting installation of Check Point Attachment Registrator Nano service [Fri Jan 10 18:09:26 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=397)
+sh: can't kill pid 397: No such process
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Fri Jan 10 18:45:40 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Fri Jan 10 21:28:55 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Fri Jan 10 21:30:43 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=392)
+sh: can't kill pid 392: No such process
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Fri Jan 10 21:34:43 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=396)
+sh: can't kill pid 396: No such process
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 14:08:05 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=394)
+sh: can't kill pid 394: No such process
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 14:21:48 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 14:24:37 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 14:28:39 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=402)
+sh: can't kill pid 402: No such process
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 14:42:07 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 14:47:23 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=406)
+sh: can't kill pid 406: No such process
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 14:55:03 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 14:58:04 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 15:01:21 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 15:05:30 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 15:09:45 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 15:12:43 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=823
+9140)
+sh: can't kill pid 9140: No such process
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 15:16:53 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 15:20:06 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 15:22:52 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=823
+9958)
+sh: can't kill pid 9958: No such process
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 15:28:28 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Sat Jan 11 16:26:09 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=392)
+sh: can't kill pid 392: No such process
+Installation completed successfully.
