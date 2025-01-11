@@ -26,7 +26,10 @@ const Tournament = () => {
 		tournamentData,
 		setTournamentData,
 		resetTournament,
+		tournamentScores
 	} = useTournament()
+
+
 
 	// Destructure data only if it exists
 	const [showChampionCelebration, setShowChampionCelebration] = useState(false)
@@ -46,6 +49,7 @@ const Tournament = () => {
 
 	const [showWarning, setShowWarning] = useState(false)
 
+	// Update navigation to include score handling
 	const startSemiFinal1 = () => {
 		setShowWarning(true)
 		setTimeout(() => {
@@ -64,7 +68,7 @@ const Tournament = () => {
 				},
 			})
 			setTournamentState('semifinal1')
-		}, 3000) // 3 seconds delay
+		}, 3000)
 	}
 
 	const startSemiFinal2 = () => {
@@ -115,7 +119,7 @@ const Tournament = () => {
 			setShowChampionCelebration(true)
 			setTimeout(() => {
 				setShowChampionCelebration(false)
-			}, 5000000)
+			}, 5000)
 		}
 	}, [finalWinner, tournamentState])
 
@@ -184,6 +188,11 @@ const Tournament = () => {
 		}
 	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState])
 
+
+
+
+
+
 	if (!tournamentData) {
 		return <Loader />
 	}
@@ -192,7 +201,7 @@ const Tournament = () => {
 
 	return (
 		<section className='flex-1 parent tournament self-center w-[96%] max-lp:flex max-lp:flex-col max-lp:gap-10'>
-			{!showChampionCelebration && !finalWinner && (
+			{showChampionCelebration && finalWinner && (
 				<>
 					<Confetti
 						style={{
@@ -235,7 +244,7 @@ const Tournament = () => {
 			<div className='tournament-description'>
 				<h1
 					className='font-dreamscape drop-shadow-[0_2px_10px_rgba(251,251,238,0.8)]'
-					>
+				>
 					CELESTIAL PONG CLASH
 				</h1>
 				<p className='description text-primary font-regular'>
@@ -250,15 +259,27 @@ const Tournament = () => {
 			<div className='tournament-history flex flex-col items-center gap-5 max-lp:order-last'>
 				<h3 className='font-dreamscape-sans text-light round shadow'>SEMIFINAL</h3>
 				{/* {Match 1 } */}
-				<Match player1={player1.name} player2={player2.name} />
-				{/* {Match 2 } */}
-				<Match player1={player3.name} player2={player4.name} />
+				<Match
+					player1={player1?.name}
+					player2={player2?.name}
+					score1={tournamentScores.semifinal1.player1Score}
+					score2={tournamentScores.semifinal1.player2Score}
+				/>
+				<Match
+					player1={player3?.name}
+					player2={player4?.name}
+					score1={tournamentScores.semifinal2.player1Score}
+					score2={tournamentScores.semifinal2.player2Score}
+				/>
 				<h3 className='font-dreamscape-sans text-light round shadow'>FINAL</h3>
-				{/* {Match 3 } */}
-				<Match player1={semiFinal1winner?.name} player2={semiFinal2winner?.name} />
+				<Match
+					player1={semiFinal1winner?.name}
+					player2={semiFinal2winner?.name}
+					score1={tournamentScores.final.player1Score}
+					score2={tournamentScores.final.player2Score}
+				/>
 				<Button
-					className={`rounded font-medium round w-full max-w-[500px] py-3 mb-10
-					bg-[rgb(183,170,156,8%)] transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]`}
+					className={`rounded font-medium round w-full max-w-[500px] py-3 mb-10 bg-[rgb(183,170,156,8%)] transition duration-200 ease-in hover:bg-[rgb(183,170,156,30%)]`}
 					onClick={handleTournamentAction}
 					type='submit'
 				>
@@ -318,7 +339,7 @@ const Tournament = () => {
 						style={{
 							borderRight: `2px solid ${!semiFinal1winner ? '#646464' : semiFinal1winner?.name === player1.name ? player1.color : 'none'}`,
 						}}
-						></div>
+					></div>
 					<div className='flex-1'
 						style={{
 							borderLeft: `2px solid ${semiFinal1winner?.name === player2.name ? player2.color : 'none'}`,
@@ -364,7 +385,7 @@ const Tournament = () => {
 						backgroundPosition: 'center',
 						filter: `${!semiFinal1winner ? 'brightness(.6)' : ''}`,
 					}}
-					>{semiFinal1winner ? semiFinal1winner.name : 'unknown'}</div>
+				>{semiFinal1winner ? semiFinal1winner.name : 'unknown'}</div>
 				<div className='winner-match2 flex items-center justify-center text-center text-primary
 					bg-border bg-opacity-20 rounded-md min-h-20 font-dreamscape-sans overflow-hidden'
 					style={{
@@ -374,7 +395,7 @@ const Tournament = () => {
 						backgroundPosition: 'center',
 						filter: `${!semiFinal2winner ? 'brightness(.6)' : ''}`,
 					}}
-					>{semiFinal2winner ? semiFinal2winner.name : 'unknown'}</div>
+				>{semiFinal2winner ? semiFinal2winner.name : 'unknown'}</div>
 
 				<div className='match3-part1 flex justify-center'>
 					<div className='w-2/5'
@@ -388,19 +409,19 @@ const Tournament = () => {
 							borderRight: `2px solid ${finalWinner && finalWinner?.name === semiFinal2winner?.name ? semiFinal2winner?.color : '#646464'}`,
 							borderTop: `2px solid ${finalWinner && finalWinner?.name === semiFinal2winner?.name ? semiFinal2winner?.color : '#646464'}`
 						}}
-						></div>
+					></div>
 				</div>
 				<div className='match3-part2 flex'>
 					<div className='flex-1'
 						style={{
 							borderRight: `2px solid ${!finalWinner ? '#646464' : finalWinner?.name === semiFinal1winner?.name ? semiFinal1winner?.color : 'none'}`,
 						}}
-						></div>
+					></div>
 					<div className='flex-1'
 						style={{
 							borderLeft: `2px solid ${finalWinner?.name === semiFinal2winner?.name ? semiFinal2winner?.color : 'none'}`,
 						}}
-						></div>
+					></div>
 				</div>
 
 				<div className='relative winner flex items-center justify-center text-primary
@@ -430,15 +451,15 @@ const Tournament = () => {
 }
 export default Tournament
 
-const Match = ({ player1, player2 }) => {
+const Match = ({ player1, player2, score1, score2 }) => {
 	return (
 		<div className='round relative w-full lp:h-20 h-14 bg-border bg-opacity-20 rounded-md flex justify-between items-center leading-none max-w-[500px]'>
 			<div className='flex-1 flex justify-around'>
 				<p className='font-dreamscape-sans'>{player1}</p>
-				<p className='font-dreamscape'>7</p>
+				<p className='font-dreamscape'>{score1 ?? '-'}</p>
 			</div>
 			<div className='flex-1 flex justify-around'>
-				<p className='font-dreamscape'>2</p>
+				<p className='font-dreamscape'>{score2 ?? '-'}</p>
 				<p className='font-dreamscape-sans'>{player2}</p>
 			</div>
 

@@ -101,7 +101,8 @@ const ConversationHeader = ({
 			console.error('Error:', error)
 		}
 	}
-// ------------------------------
+
+	
 return (
 	<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-30'>
 		<div className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3'>

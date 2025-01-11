@@ -19,6 +19,7 @@ const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 						className='inputs border border-border rounded bg-[rgb(183,170,156,8%)] placeholder:text-border
 						text-primary placeholder:font-regular placeholders outline-none w-[90%] transition-all duration-300'
 						required
+						maxLength='15'
 					/>
 				</div>
 				<div className='flex flex-col ml:w-[30%] w-[50%] max-ml:ml-2'>

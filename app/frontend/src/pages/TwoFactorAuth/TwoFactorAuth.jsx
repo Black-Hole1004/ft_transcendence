@@ -8,6 +8,7 @@ import Cookies from 'js-cookie'
 
 import { useAlert } from '../../components/AlertContext'
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
+const HOSTNAME = VITE_BASE_URL
 
 
 
@@ -74,8 +75,9 @@ const TwoFactorAuth = () => {
                 navigate('/dashboard')
 				console.log("===============> ", data)
 			} else {
-				console.log('Login failed', data)
+				console.log('Login failed----------->', data)
 				handleSubmit('error', 'Something went wrong')
+				console.log('Login failed----------->', data)
 			}
 		}
 		catch (error) {

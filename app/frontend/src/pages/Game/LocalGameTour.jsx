@@ -20,7 +20,7 @@ const SuddenDeathMessage = () => (
 // --smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onQuit, onProceed }) => (
 	<>
-		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
+		<div className='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
 		<div
 			className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20
 			flex flex-col justify-center items-center gameoverpopup'
@@ -68,7 +68,7 @@ const GameOverPopup = ({ winner, onQuit, onProceed }) => (
 const LocalGame = () => {
 	const navigate = useNavigate()
 	// code ahaloui added
-	const { setSemiFinal1winner, setSemiFinal2winner, setFinalWinner, setTournamentState, resetTournament, setTournamentData } =
+	const { setSemiFinal1winner, setSemiFinal2winner, setFinalWinner, setTournamentState, resetTournament, setTournamentData, tournamentScores, setTournamentScores } =
 		useTournament()
 	const [isSuddenDeath, setIsSuddenDeath] = useState(false)
 
@@ -109,6 +109,12 @@ const LocalGame = () => {
 		if (isSuddenDeath) {
 			const scoringPlayer = player === 1 ? player1 : player2
 			setFirstPlayerToScore(scoringPlayer)
+
+			if (player === 1) {
+				setPlayer1Score((prevScore) => prevScore + 1)
+			} else if (player === 2) {
+				setPlayer2Score((prevScore) => prevScore + 1)
+			}
 			handleTournamentWinner(scoringPlayer) // Directly handle winner
 			return
 		}
@@ -157,17 +163,31 @@ const LocalGame = () => {
 	// Update handleProceed for tournament flow
 	const handleProceed = () => {
 		setShowProceedPopup(false)
+		// Update scores in context before navigation
+		setTournamentScores(prev => ({
+			...prev,
+			[tournamentRound]: {
+				player1Score: player1Score,
+				player2Score: player2Score
+			}
+		}))
+
 		navigate('/Tournament', {
 			replace: true,
-			isFromGame: true,
 		})
 	}
 
 	const quitTournament = () => {
-		resetTournament() // ADDED
-		setTournamentData(null) // ADDED
+		setTournamentScores(prev => ({
+			...prev,
+			[tournamentRound]: {
+				player1Score: player1Score,
+				player2Score: player2Score
+			}
+		}))
 
-		setShowProceedPopup(false)
+		resetTournament()
+		setTournamentData(null)
 		navigate('/dashboard')
 	}
 
@@ -181,6 +201,16 @@ const LocalGame = () => {
 			setIsPaused(false)
 			setFirstPlayerToScore(null)
 			return
+		}
+
+		// Handle sudden death scoring
+		if (isSuddenDeath && firstPlayerToScore) {
+			// In sudden death, update final scores based on who scored first
+			if (firstPlayerToScore === player1) {
+				setPlayer1Score(prev => prev + 1)
+			} else {
+				setPlayer2Score(prev => prev + 1)
+			}
 		}
 
 		handleTournamentWinner(winner)

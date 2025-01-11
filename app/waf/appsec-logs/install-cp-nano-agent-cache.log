@@ -1,3 +1,20 @@
 Starting installation of Check Point Cache service [Fri Jan 10 14:25:40 UTC 2025]
 
 Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:35:02 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 14:48:48 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 15:17:31 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 17:08:59 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Cache service [Sat Jan 11 17:28:42 UTC 2025]
+
+Unregistering /etc/cp/agentCache/cp-nano-agent-cache (pid=553)
+sh: can't kill pid 553: No such process
+Installation completed successfully.

@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import F, Sum
 from django.db.models.functions import TruncDate
 from django.db.models import ExpressionWrapper, fields
+from django.core.validators import MaxLengthValidator
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -111,11 +112,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
 
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=10, blank=True)
-    last_name = models.CharField(max_length=10, blank=True)
+    first_name = models.CharField(max_length=20, blank=True)
+    last_name = models.CharField(max_length=20, blank=True)
     status = models.CharField(max_length=8, choices=status_choices, default='offline')
     is_staff = models.BooleanField(default=False)
-    username = models.CharField(max_length=10, unique=True)
+    username = models.CharField(max_length=25, unique=True)
     mobile_number = models.CharField(max_length=15, default='', blank=True,
     validators=[RegexValidator(regex='^\+?1?\d{9,15}$', message='Phone number must be entered in the format: +999999999. Up to 15 digits allowed.')])
     display_name = models.CharField(max_length=10, default='', blank=True)

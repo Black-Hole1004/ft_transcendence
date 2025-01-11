@@ -15,7 +15,7 @@ const MatchWarning = ({ player1Name, player2Name }) => {
 	}, [countdown]);
 	return (
 		<>
-			<div class='fixed inset-0 bg-black bg-opacity-70 z-10'></div>
+			<div className='fixed inset-0 bg-black bg-opacity-70 z-10'></div>
 			<div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary z-20">
 				<div className="flex flex-col items-center gap-3 text-center animate-bounce">
 					<h3 className="font-heavy text-2xl mb-5 text-light">Match Starting in {countdown}...</h3>
