@@ -2,18 +2,44 @@ import Button from '../../Home/Buttons/Button'
 import useAuth from '../../../context/AuthContext'
 import { useAlert } from '../../AlertContext'
 import { useSocket } from '../../Layout/Layout'
+import { useState, useEffect } from 'react'
 
 const SEND_FRIEND_REQUEST = import.meta.env.VITE_SEND_FRIEND_REQUEST
 const BASE_URL = import.meta.env.VITE_BASE_URL
+const CHECK_BLOCKED_STATUS = import.meta.env.VITE_CHECK_BLOCKED_STATUS // Add this environment variable
 
 function UserFriendsList({ user_friend, user_profile_picture }) {
     const { getAuthHeaders } = useAuth()
     const { triggerAlert } = useAlert()
     const { socket_notification, sendGameInvite } = useSocket()
 
+    const [isBlocked, setIsBlocked] = useState(false);
+
+    useEffect(() => {
+        // Check if the user is blocked when the component mounts
+        const fetchBlockedStatus = async () => {
+            try {
+                const response = await fetch(
+                    `${CHECK_BLOCKED_STATUS}?user_id=${user_friend.id}`,
+                    {
+                        method: 'GET',
+                        headers: getAuthHeaders(),
+                    }
+                );
+                const data = await response.json();
+                console.log('Blocked status:', data);
+                setIsBlocked(data.is_blocked);
+            } catch (error) {
+                console.error('Error fetching blocked status:', error);
+            }
+        };
+        fetchBlockedStatus();
+    }, [user_friend.id]);
+
     const handleSubmit = (type, message) => {
         triggerAlert(type, message)
     }
+
 
     const handle_add_friend = async (id) => {
         if (!id) {
@@ -21,6 +47,11 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
             return
         }
         try {
+            // Check if the user is blocked
+            if (isBlocked) {
+                handleSubmit('error', 'Cannot send friend request - user is blocked')
+                return
+            }
             const response = await fetch(SEND_FRIEND_REQUEST, {
                 method: 'POST',
                 body: JSON.stringify({ user_to: id }),
@@ -54,10 +85,9 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
         }
     }
 
-    const handleInviteToGame = (userId) => {
+    const handleInviteToGame = async (userId) => {
         if (socket_notification?.readyState === WebSocket.OPEN) {
             sendGameInvite(userId);
-            // handleSubmit('success', 'Game invitation sent');
         } else {
             handleSubmit('error', 'Cannot send invite - connection error');
         }
@@ -118,8 +148,9 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                     <Button 
                         className={'font-medium add-friend-button rounded border border-border'}
                         onClick={() => handle_add_friend(user_friend.id)}
+                        disabled={isBlocked}
                     >
-                        Add Friend
+                        {isBlocked ? 'Blocked' : 'Add Friend'}
                     </Button>
                 )}
             </div>

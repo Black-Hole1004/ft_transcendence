@@ -53,13 +53,6 @@ const Settings = () => {
 		dialogRef.current.close()
 	}
 
-	// const handle2FAModal = () => {
-	// 	openDialog()
-	// }
-
-	// const handle2FAModal = () => {
-	// 	openDialog()
-	// }
 
 	const send2faAxiosRequest = (status) => {
 		axios
@@ -67,7 +60,6 @@ const Settings = () => {
 				.then((response) => {
 					if (response.status === 200) {
 						console.log('response ----->', response.data)
-						// openDialog()
 					}
 				})
 				.catch((error) => {
@@ -229,7 +221,7 @@ const Settings = () => {
 		if (selectedFile) {
 			if (selectedFile.size > 5 * 1024 * 1024) {
 				triggerAlert('error', 'Image size must be less than 5MB')
-				return userProfileData
+				return null
 			}
 			userProfileData.append('profile_picture', selectedFile)
 		} else if (removeImage) {
@@ -240,6 +232,7 @@ const Settings = () => {
 	const update_user = async () => {
 		console.log('--- update_user ---')
 		const userProfileData = create_form_data(user, selectedFile)
+		if (!userProfileData) return
 		console.log('userProfileData ----->', userProfileData)
 		axios
 			.put(USER_API, userProfileData, {

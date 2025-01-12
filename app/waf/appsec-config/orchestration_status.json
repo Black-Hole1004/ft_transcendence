@@ -8,7 +8,7 @@
     "Last settings update": "None",
     "Upgrade mode": "None",
     "Fog address": "https://inext-agents.cloud.ngen.checkpoint.com",
-    "Registration status": "Succeeded ",
+    "Registration status": "Failed. Reason: Warning: Agent/Gateway failed to receive access token. Contact Check Point support.",
     "Registration details": {
         "Name": "c0232555df89",
         "Type": "Docker",

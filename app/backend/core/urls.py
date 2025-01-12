@@ -63,6 +63,7 @@ urlpatterns = [
     path('api/health/', HealthCheckView.as_view(), name='healthCheck'),
     path('api/users/<str:profile_name>/', GetUserByUserName.as_view(), name='get-user-by-username'),
     path('api/users/<str:profile_name>/time-spent/', GetTimeSpentByUserName.as_view(), name='time-spent-by-username'),
+    path('api/check-blocked-status/', views.check_blocked_status, name='check-blocked-status'),
 ]
 
 # Add this to serve badges specifically

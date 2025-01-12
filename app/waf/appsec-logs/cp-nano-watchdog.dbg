@@ -154,3 +154,53 @@
 [2025-01-11T23:02:36@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 6 instances for family ''
 [2025-01-11T23:02:49@register] enter
 [2025-01-11T23:02:49@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 6 instances for family ''
+[2025-01-12T12:47:11@register] enter
+[2025-01-12T12:47:12@unregister] Warning! service '/etc/cp/attachmentRegistrator/cp-nano-attachment-registrator' is already un-registered
+[2025-01-12T12:47:12@register] enter
+[2025-01-12T12:47:12@register] The service /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator is running for the first time.
+[2025-01-12T12:47:12@unregister] Warning! service '/etc/cp/agentCache/cp-nano-agent-cache' is already un-registered
+[2025-01-12T12:47:12@register] enter
+[2025-01-12T12:47:12@register] The service /etc/cp/agentCache/cp-nano-agent-cache is running for the first time.
+[2025-01-12T12:47:17@trigger_restart_service] Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+[2025-01-12T12:47:17@unregister] Warning! service '/etc/cp/HttpTransactionHandler/k8s-log-file-handler.sh' is already un-registered
+[2025-01-12T12:47:17@register] enter
+[2025-01-12T12:47:17@register] The service /etc/cp/HttpTransactionHandler/k8s-log-file-handler.sh is running for the first time.
+[2025-01-12T12:47:18@main] Starting cp-nano-agent watchdog as container mode
+[2025-01-12T12:47:18@load_services] Respawn /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-12T12:47:18@run_service] Running the service: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-12T12:47:18@load_services] Respawn /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator
+[2025-01-12T12:47:18@run_service] Running the service: /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator
+[2025-01-12T12:47:18@load_services] Respawn /etc/cp/agentCache/cp-nano-agent-cache
+[2025-01-12T12:47:18@run_service] Running the service: /etc/cp/agentCache/cp-nano-agent-cache
+[2025-01-12T12:47:18@load_services] Respawn /etc/cp/HttpTransactionHandler/k8s-log-file-handler.sh
+[2025-01-12T12:47:18@run_service] Running the service: /etc/cp/HttpTransactionHandler/k8s-log-file-handler.sh
+[2025-01-12T12:47:19@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '1') is not-registered and not-running
+[2025-01-12T12:47:20@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '1') is not-registered and not-running
+[2025-01-12T12:47:20@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '2') is not-registered and not-running
+[2025-01-12T12:47:20@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '2') is not-registered and not-running
+[2025-01-12T12:47:20@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '3') is not-registered and not-running
+[2025-01-12T12:47:20@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '4') is not-registered and not-running
+[2025-01-12T12:47:21@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '4') is not-registered and not-running
+[2025-01-12T12:47:21@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '5') is not-registered and not-running
+[2025-01-12T12:47:21@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '5') is not-registered and not-running
+[2025-01-12T12:47:22@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '6') is not-registered and not-running
+[2025-01-12T12:47:22@get_service_status] service 'cp-nano-http-transaction-handler' (Family '', uid '6') is not-registered and not-running
+[2025-01-12T12:48:00@register] enter
+[2025-01-12T12:48:00@register] The service /etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler is running for the first time.
+[2025-01-12T12:48:00@register] The service /etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler is running for the first time.
+[2025-01-12T12:48:04@run_volatile_service] Running the service: /etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler ( : 1)
+[2025-01-12T12:48:04@run_volatile_service] Running the service: /etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler ( : 2)
+[2025-01-12T13:25:04@register] enter
+[2025-01-12T13:25:04@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 2 instances for family ''
+[2025-01-12T13:25:04@register] enter
+[2025-01-12T13:25:04@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 2 instances for family ''
+[2025-01-12T13:25:07@register] enter
+[2025-01-12T13:25:08@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 2 instances for family ''
+[2025-01-12T13:25:08@register] enter
+[2025-01-12T13:25:08@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 2 instances for family ''
+[2025-01-12T13:25:11@register] enter
+[2025-01-12T13:25:11@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 2 instances for family ''
+[2025-01-12T13:25:25@register] enter
+[2025-01-12T13:25:25@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 2 instances for family ''
+[2025-01-12T13:25:31@register] enter
+[2025-01-12T13:25:31@register] Service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler' already registered with 2 instances for family ''
