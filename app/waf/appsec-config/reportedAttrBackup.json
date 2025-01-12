@@ -1,8 +1,0 @@
-{
-    "attributes": {
-        "AppSecModelVersion": "Simple model, V1.0",
-        "kernel_version": "5.15.49-linuxkit",
-        "os_release": "Alpine Linux v3.20",
-        "report_timestamp": "1736695128"
-    }
-}

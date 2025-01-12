@@ -6,8 +6,8 @@ all: up
 up:
 	echo $(HOSTNAME)
 	sed -i '' 's#://[^/]*#://$(HOSTNAME)#g' app/frontend/.env
-	cat app/frontend/.env
-	@rm -rf "$( ls app/waf/ | grep -v local | grep -v advanced | grep -v retrieve | grep -v tuning | grep -v db)" ./app/waf/postgres-data ./app/waf/smartsync-storage
+	@# cat app/frontend/.env
+	@rm -rf $(ls app/waf/ | grep -Ev 'local|advanced|tuning|tools|db' | sed 's|^|app/waf/|')
 	@rm -rf ./app/db/postgres/*
 	docker-compose up --build
 
