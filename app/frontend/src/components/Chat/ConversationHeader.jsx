@@ -1,7 +1,10 @@
 import { useAlert } from "../AlertContext"
 import { useSocket } from '../Layout/Layout'
-import useAuth from '../../context/AuthContext.jsx'
+
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+
+import useAuth from '../../context/AuthContext.jsx'
 
 const Button = ({ onClick, children }) => {
 	return (
@@ -29,14 +32,13 @@ const ConversationHeader = ({
 	recipientProfileImage,
 	receiver_id,
 }) => {
-	// console.log('header blockerId: ', blockerId)
-	// console.log('areFriends: ', areFriends)
+
+	const navigate = useNavigate()
 
 	const handleBlock = () => {
 		setBlockerId(currentLoggedInUserId)
 		setAreFriends(false)
 	}
-
 
 	// add by ahaloui -----------------
 	const { triggerAlert } = useAlert()
@@ -53,6 +55,10 @@ const ConversationHeader = ({
             handleSubmit('error', 'Cannot send invite - connection error');
         }
     };
+
+	const handleUserClick = (profile_name) => {
+		navigate(`/users/${profile_name}`);
+	};
 
 	const handleSubmit = (type, message) => {
 		triggerAlert(type, message)
@@ -105,7 +111,8 @@ const ConversationHeader = ({
 	
 return (
 	<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-30'>
-		<div className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3'>
+		<div onClick={() => handleUserClick(recipientInfo.username)}
+			className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3 cursor-pointer'>
 			<img
 				src={`${recipientProfileImage}`}
 				className='chat-history-image aspect-square object-cover rounded-full ring-1 ring-primary select-none'
@@ -113,7 +120,7 @@ return (
 			/>
 			<div>
 				<p className='font-heavy friend-name text-primary'>
-					{`${recipientInfo.first_name} ${recipientInfo.last_name}`}
+					{`${recipientInfo.username}`}
 				</p>
 				<div className='flex items-center gap-0.5'>
 					<div
