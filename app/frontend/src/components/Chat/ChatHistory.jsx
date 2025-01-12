@@ -23,6 +23,14 @@ function ChatHistory({
 		setSmall(window.innerWidth < 768)
 	})
 
+	const handleChange = (e) => {
+		setSearchText(e.target.value)
+
+		if (e.target.value === '') {
+			setSearchResult(null)
+		}
+	}
+
 	useEffect(() => {
 		if (searchRef.current) {
 			setSearchText('')
@@ -101,7 +109,7 @@ function ChatHistory({
 						ref={searchRef}
 						autoComplete='off'
 						value={searchText}
-						onChange={(e) => setSearchText(e.target.value)}
+						onChange={handleChange}
 						name='search for friends'
 						placeholder='Search for friends...'
 						className='font-medium bg-transparent text-primary outline-none search

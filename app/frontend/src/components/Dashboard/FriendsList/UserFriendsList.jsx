@@ -116,7 +116,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                 {/* Add friend button for non-friends */}
                 {!user_friend.is_friend && (
                     <Button 
-                        className={'font-medium add-friend-button rounded border border-border'}
+                        className={'font-medium invite-button px-2 py-1 rounded border border-border'}
                         onClick={() => handle_add_friend(user_friend.id)}
                     >
                         Add Friend
