@@ -14,9 +14,9 @@
                 {
                     "context": "All()",
                     "webAttackMitigation": true,
-                    "webAttackMitigationSeverity": "High",
-                    "webAttackMitigationAction": "Balanced",
-                    "webAttackMitigationMode": "Prevent",
+                    "webAttackMitigationSeverity": "Transparent",
+                    "webAttackMitigationAction": "Transparent",
+                    "webAttackMitigationMode": "Learn",
                     "practiceAdvancedConfig": {
                         "httpHeaderMaxSize": 102400,
                         "httpIllegalMethodsAllowed": 0,
@@ -27,8 +27,8 @@
                     "csrfProtection": "Disabled",
                     "openRedirect": "Disabled",
                     "errorDisclosure": "Disabled",
-                    "practiceId": "0c19882c-ddc9-4668-a295-8aa3d13d79c5",
-                    "practiceName": "local_policy/webapp-default-practice",
+                    "practiceId": "35026d26-8385-49c8-9b35-9eb6c63cce61",
+                    "practiceName": "local_policy/appsec-best-practice",
                     "assetId": "Any",
                     "assetName": "Any",
                     "ruleId": "Any",
@@ -40,11 +40,11 @@
                     "triggers": [
                         {
                             "$triggerType": "log",
-                            "id": "5a0a6a48-8e62-4c6d-8616-ccd7287cef98",
-                            "name": "local_policy/appsec-default-log-trigger",
+                            "id": "12a0bccb-fb95-4728-8fc1-215367550035",
+                            "name": "local_policy/appsec-log-trigger",
                             "log": {
-                                "context": "triggerId(5a0a6a48-8e62-4c6d-8616-ccd7287cef98)",
-                                "triggerName": "local_policy/appsec-default-log-trigger",
+                                "context": "triggerId(12a0bccb-fb95-4728-8fc1-215367550035)",
+                                "triggerName": "local_policy/appsec-log-trigger",
                                 "triggerType": "log",
                                 "verbosity": "Standard",
                                 "acAllow": false,
@@ -77,7 +77,7 @@
                     "overrides": [],
                     "trustedSources": [
                         {
-                            "id": "5902d79a-fd87-4bbb-ba27-c38bdfdfcdc5",
+                            "id": "51a2b724-35d1-4c40-b339-43f4c328b316",
                             "name": "",
                             "numOfSources": 0,
                             "sourcesIdentifiers": [],
@@ -99,8 +99,8 @@
         "rulebase": {
             "log": [
                 {
-                    "context": "triggerId(5a0a6a48-8e62-4c6d-8616-ccd7287cef98)",
-                    "triggerName": "local_policy/appsec-default-log-trigger",
+                    "context": "triggerId(12a0bccb-fb95-4728-8fc1-215367550035)",
+                    "triggerName": "local_policy/appsec-log-trigger",
                     "triggerType": "log",
                     "verbosity": "Standard",
                     "acAllow": false,
@@ -130,8 +130,8 @@
             ],
             "webUserResponse": [
                 {
-                    "context": "triggerId(ad902c9e-e8b5-4501-ac2a-08bfeadcb370)",
-                    "triggerName": "local_policy/appsec-default-web-user-response",
+                    "context": "triggerId(a6b450c2-9f0b-42b1-804b-bca82327cd02)",
+                    "triggerName": "local_policy/403-forbidden",
                     "details level": "response-code-only",
                     "response body": "",
                     "response code": 403,
@@ -154,20 +154,20 @@
                     "parameters": [],
                     "practices": [
                         {
-                            "practiceId": "0c19882c-ddc9-4668-a295-8aa3d13d79c5",
-                            "practiceName": "local_policy/webapp-default-practice",
+                            "practiceId": "35026d26-8385-49c8-9b35-9eb6c63cce61",
+                            "practiceName": "local_policy/appsec-best-practice",
                             "practiceType": "WebApplication"
                         }
                     ],
                     "triggers": [
                         {
-                            "triggerId": "5a0a6a48-8e62-4c6d-8616-ccd7287cef98",
-                            "triggerName": "local_policy/appsec-default-log-trigger",
+                            "triggerId": "12a0bccb-fb95-4728-8fc1-215367550035",
+                            "triggerName": "local_policy/appsec-log-trigger",
                             "triggerType": "log"
                         },
                         {
-                            "triggerId": "ad902c9e-e8b5-4501-ac2a-08bfeadcb370",
-                            "triggerName": "local_policy/appsec-default-web-user-response",
+                            "triggerId": "a6b450c2-9f0b-42b1-804b-bca82327cd02",
+                            "triggerName": "local_policy/403-forbidden",
                             "triggerType": "WebUserResponse"
                         }
                     ],
@@ -205,5 +205,5 @@
             "FileSecurityProtections": []
         }
     },
-    "version": "0af540a5b155d8b01826f46ea583ee2a95445486f4c0f11109c3847bd8ef623d"
+    "version": "74da59c86b72cd4ac435d73b59ff71d8f4d067de229c726f5fe26ec962ddc56b"
 }

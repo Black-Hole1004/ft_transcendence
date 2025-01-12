@@ -77,9 +77,10 @@ from rest_framework.exceptions import ValidationError
 from django.db.models import Sum
 from django.db.models.functions import TruncDate, ExtractHour, ExtractMinute, ExtractSecond
 import pyotp
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, EmailMessage, get_connection
 from datetime import timedelta
 from django.utils import timezone
+from mailersend import emails
 
 User = get_user_model()
 
@@ -108,17 +109,33 @@ class Activate2faView(APIView):
 
 # msg.track_clicks = True
 class Twofa():
-    def sendMail(otp, email):
-        try:
-            msg = EmailMultiAlternatives(
-                subject="[StarServe] OTP Verification",
-                body=f"Your OTP code is {otp}. It will expire in 5 minutes.",
-                from_email="<BlackHole@trial-7dnvo4dxpmng5r86.mlsender.net>",
-                to=[f"StarServe <{email}>"])
-            msg.send()
-            return Response({'message': 'Email sent successfully'}, status=200)
-        except Exception as e:
-            return Response({'error': str(e)}, status=500)
+    def sendMail(otp, email, username):
+        api_key = settings.MAILERSEND_API_KEY
+
+        mailer = emails.NewEmail(api_key)
+
+        # define an empty dict to populate with mail values
+        mail_body = {}
+        mail_from = {
+            "name": "starserveTeam",
+            "email": "starserveteam@starserve.me",
+        }
+
+        recipients = [
+            {
+                "name": username,
+                "email": email,
+            }
+        ]
+
+        mailer.set_mail_from(mail_from, mail_body)
+        mailer.set_mail_to(recipients, mail_body)
+        mailer.set_subject("StarServe 2fa Verification", mail_body)
+        mailer.set_html_content(f"This is your OTP: <h3>{otp}</h3>", mail_body)
+        mailer.set_plaintext_content("Have a good day !", mail_body)
+
+        # using print() will also return status code and data
+        mailer.send(mail_body)
     
     def generate_otp(user):
         try:
@@ -266,7 +283,7 @@ class LoginView(APIView):
                 if user is not None and user.is_2fa_enabled:
                     # Generate and send OTP to the user's email
                     otp = Twofa.generate_otp(user)
-                    todo: Twofa.sendMail(otp=otp, email=user.email)
+                    Twofa.sendMail(otp=otp, email=user.email, username=user.username)
                     return JsonResponse({'message': f'OTP sent to your email: {user.email}', "Twofa_enabled" : True}, status=200)
                 if user is not None:
                     user.status = 'online'

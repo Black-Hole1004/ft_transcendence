@@ -3,5 +3,10 @@ __pycache__/
 *.pyc
 app/nginx/logs/
 app/nginx/ssl_certificates/
-app/data
-auto.py
+app/data/
+app/waf/appsec-config/
+app/waf/appsec-data/
+app/waf/appsec-logs/
+app/waf/postgres-data/
+app/waf/smartsync-storage/
+app/vault/.env

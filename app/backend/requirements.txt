@@ -55,3 +55,4 @@ pyotp
 django-anymail[mailersend]
 
 hvac
+mailersend

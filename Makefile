@@ -1,27 +1,27 @@
-.PHONY: all up build updetached down prune scan
+.PHONY: all up build updetached down prune scan re
 
-HOSTNAME := e2r9p7.1337.ma
+HOSTNAME := localhost
 all: up
 
 up:
 	echo $(HOSTNAME)
 	sed -i '' 's#://[^/]*#://$(HOSTNAME)#g' app/frontend/.env
 	cat app/frontend/.env
-	@rm -rf $( ls | grep -v local | grep -v advanced)
-	docker-compose up --build 
+	@rm -rf "$( ls app/waf/ | grep -v local | grep -v advanced | grep -v retrieve | grep -v tuning | grep -v db)" ./app/waf/postgres-data ./app/waf/smartsync-storage
+	@rm -rf ./app/db/postgres/*
+	docker-compose up --build
+
+re: down up
 
 ssl:
 	bash app/nginx/tools/generate_ssl.sh
-
-build:
-	docker-compose up --build
 
 updetached:
 	docker-compose up -d
 
 down:
 	docker-compose down
-	@rm -rf ./app/postgres_data/*
+	@rm -rf ./app/data/*
 
 prune:
 	docker system prune -af --volumes --force

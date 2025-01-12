@@ -20,8 +20,8 @@ with open('/tmp/token.txt', 'r') as f:
     f.close()
 vault_url = os.environ.get('VAULT_ADDR')
 
-print(root_token)
-print(vault_url)
+# print(root_token)
+# print(vault_url)
 
 def put_vault_secret(token, secret_path, secret_data):
     """
@@ -67,7 +67,7 @@ def get_vault_secret(token, secret_path):
         
         # Fetch the secret
         secret = client.secrets.kv.read_secret_version(path=secret_path)
-        print(secret)
+        # print(secret)
         # Return the data part of the secret
         return secret['data']['data']  # Adjust based on your secret engine version
 
@@ -84,7 +84,11 @@ PORT = os.environ.get('PORT_ENV', '443')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_vault_secret(root_token, 'django')['SECRET_KEY']
-print(SECRET_KEY)
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = get_vault_secret(root_token, 'django')['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = get_vault_secret(root_token, 'django')['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
+SOCIAL_AUTH_INTRA42_KEY = get_vault_secret(root_token, 'django')['SOCIAL_AUTH_INTRA42_KEY']
+SOCIAL_AUTH_INTRA42_SECRET = get_vault_secret(root_token, 'django')['SOCIAL_AUTH_INTRA42_SECRET']
+SOCIAL_AUTH_INTRA42_REDIRECT_URI = f'https://{HOSTNAME}:{PORT}/api/social-auth/complete/intra42/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -195,14 +199,22 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 #for postgres
+POSTGRES_DB = get_vault_secret(root_token, 'postgres')['POSTGRES_DB']
+POSTGRES_USER = get_vault_secret(root_token, 'postgres')['POSTGRES_USER']
+POSTGRES_PASSWORD = get_vault_secret(root_token, 'postgres')['POSTGRES_PASSWORD']
+POSTGRES_HOST = get_vault_secret(root_token, 'postgres')['POSTGRES_HOST']
+POSTGRES_PORT = 5432
+
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': os.environ.get('POSTGRES_PORT'),
+        'NAME': POSTGRES_DB,
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': POSTGRES_HOST,
+        'PORT': POSTGRES_PORT,
     }
 }
 
@@ -334,16 +346,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1041204309614-ngvt7ta2vjueskg7s2r5otjd3u9lf48a.apps.googleusercontent.com'  # Google Client ID
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'  # Google Client Secret
-
-
-#todo: Creds should be changed in production
-
-
-SOCIAL_AUTH_INTRA42_KEY = 'u-s4t2ud-b29d47541d40bc9c695d1adafe2ef21c151aadb9f701a88e31e3b29d8407fff2'
-SOCIAL_AUTH_INTRA42_SECRET = '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'
-SOCIAL_AUTH_INTRA42_REDIRECT_URI = f'https://{HOSTNAME}:{PORT}/api/social-auth/complete/intra42/'
 
 # SOCIAL_AUTH_INTRA42_KEY='u-s4t2ud-872f8a9cf89c265c8218ceaaa21de65f3b6b1cadf6d0e816c010c02d3aadc711'
 # SOCIAL_AUTH_INTRA42_SECRET='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'
@@ -394,13 +396,10 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
 
-
+MAILERSEND_SMTP_USERNAME = get_vault_secret(root_token, 'smtp')['SMTP_USER']
+MAILERSEND_API_KEY=get_vault_secret(root_token, 'emails')['EMAIL_API_KEY']
+# MAILERSEND_SMTP_PASSWORD = get_vault_secret(root_token, 'smtp')['SMTP_PASSWORD']
+MAILERSEND_SMTP_HOST = get_vault_secret(root_token, 'smtp')['SMTP_HOST']
+MAILERSEND_SMTP_PORT = 587
 ### testing email sending
 EMAIL_BACKEND = "anymail.backends.mailersend.EmailBackend"
-ANYMAIL = {
-    # (exact settings here depend on your ESP...)
-    "MAILERSEND_API_TOKEN": "mlsn.602c49127399650d60173d3c3cc7b33c84f33847fe28154afe2f87369479cf68",
-    # "MAILERSEND_SENDER_DOMAIN": 'starserve.com',  # your MailerSend domain, if needed
-}
-DEFAULT_FROM_EMAIL = "starserveteam@trial-7dnvo4dxpmng5r86.mlsender.net"  # if you don't already have this in settings
-SERVER_EMAIL = "your-server@example.com"  # ditto (default from-email for Django errors)

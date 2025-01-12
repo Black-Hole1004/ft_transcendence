@@ -49,8 +49,7 @@ const TwoFactorAuth = () => {
 			const sixth = document.getElementById('sixth').value
 
 			const otp = first + second + third + fourth + fifth + sixth
-
-			const response = await fetch(`${HOSTNAME}/api/user/2fa/verify/`, {
+			const response = await fetch(`${VITE_BASE_URL}/api/user/2fa/verify/`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

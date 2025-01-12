@@ -14,17 +14,14 @@ volumes:
         device: /Users/ahmaymou/ft_transcendence/app/vault
 
 services:
-  # PostgreSQL Database
   ft_transcendence_db:
+    build:
+      context: ./app/db
+      dockerfile: Dockerfile  # Path to the custom Dockerfile
     container_name: ft_transcendence_db
-    image: postgres:14
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_MAX_CONNECTIONS=200
-    volumes:
-      - ./app/data/postgresql:/var/lib/postgresql/data
+      - POSTGRES_DB=${POSTGRES_DB}
     networks:
       - ft_transcendence_network
     healthcheck:
@@ -33,6 +30,12 @@ services:
       interval: 5s
       timeout: 30s
     restart: always
+    volumes:
+      - ./app/db/postgres:/var/lib/postgresql/data
+      - ./app/vault/token.txt:/tmp/token.txt
+    depends_on:
+      vault:
+        condition: service_healthy
 
   # Django Backend
   backend:
@@ -99,23 +102,28 @@ services:
         - TUNING_HOST=appsec-tuning-svc
         - https_proxy=${APPSEC_HTTPS_PROXY}
         - user_email=${USER_EMAIL}
-        - AGENT_TOKEN=${APPSEC_AGENT_TOKEN}
         - autoPolicyLoad=${APPSEC_AUTO_POLICY_LOAD}
-        - registered_server="StarServe AppSec"
+        - registered_server="StarServe App"
       ipc: shareable
       volumes:
         - ${APPSEC_CONFIG}:/etc/cp/conf
         - ${APPSEC_DATA}:/etc/cp/data
         - ${APPSEC_LOGS}:/var/log/nano_agent
         - ${APPSEC_LOCALCONFIG}:/ext/appsec
-        - ${RUNNING_SCRIPT}:/ext/retriveFromVault.sh
+        - ${RUNNING_SCRIPT_RETRIEVE}:/ext/retrieveFromVault.sh
         - ./app/vault/token.txt:/tmp/token.txt
         - ${APPSEC_ADVANCED_AI}:/advanced-model/open-appsec-advanced-model.tgz:rw
-      command: /cp-nano-agent
+      # command: >
+      #   sh -c "
+      #     chmod +x /ext/retrieveFromVault.sh &&
+      #     sh /ext/retrieveFromVault.sh
+      #   "
       restart: always
       depends_on:
         vault:
           condition: service_healthy
+      networks:
+        - ft_transcendence_network
   appsec-nginx:
     image: ghcr.io/openappsec/nginx-attachment:${APPSEC_VERSION}
     container_name: appsec-nginx
@@ -126,7 +134,7 @@ services:
     user: root
     command: >
       sh -c "
-        apk update && apk add openssl  || ls -la /app/generate_ssl.sh &&
+        apk update && apk add openssl || ls -la /app/generate_ssl.sh &&
         chmod +x /app/generate_ssl.sh &&
         sh /app/generate_ssl.sh &&
         nginx -g 'daemon off;'
@@ -163,50 +171,99 @@ services:
   appsec-tuning-svc:
     profiles:
       - standalone
-    image: ghcr.io/openappsec/smartsync-tuning:${APPSEC_VERSION}
+    build:
+      context: ./app/waf/appsec-tuning-svc
+      dockerfile: Dockerfile  # Path to the custom Dockerfile
     container_name: appsec-tuning-svc
     environment:
       - SHARED_STORAGE_HOST=appsec-shared-storage
-      - QUERY_DB_PASSWORD=${DB_PASSWORD}
-      - QUERY_DB_HOST=${DB_HOST}
-      - QUERY_DB_USER=${DB_USER}
+      # - QUERY_DB_PASSWORD=${DB_PASSWORD}
+      # - QUERY_DB_HOST=${DB_HOST}
+      # - QUERY_DB_USER=${DB_USER}
     volumes:
       - ${APPSEC_CONFIG}:/etc/cp/conf
+      - ./app/vault/token.txt:/tmp/token.txt
     depends_on:
       - appsec-shared-storage
       - appsec-db
+      - vault
     networks:
       - ft_transcendence_network
   appsec-db:
     profiles:
       - standalone
-    image: postgres
+    build:
+      context: ./app/waf/appsec-db
+      dockerfile: Dockerfile  # Path to the custom Dockerfile
     container_name: appsec-db
     restart: always
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_USER=${DB_USER} 
     volumes:
       - ${POSTGRES_STORAGE}:/var/lib/postgresql/data
+      # - ${RUNNING_SCRIPT_FETCH}:/usr/local/bin/fetchData.sh  # Mount the script
+      - ./app/vault/token.txt:/tmp/token.txt
     networks:
       - ft_transcendence_network
+    depends_on:
+      vault:
+        condition: service_healthy
+
+  #   depends_on:
+  #     vault:
+  #       condition: service_healthy
+  # appsec-tuning-svc:
+  #   profiles:
+  #     - standalone
+  #   build:
+  #     context: ./app/waf/appsec-tuning-svc
+  #     dockerfile: Dockerfile  # Path to the custom Dockerfile
+  #   volumes:
+  #     - ${APPSEC_CONFIG}:/etc/cp/conf
+  #     - ${RUNNING_SCRIPT_FETCH}:/etc/cp/conf/fetch-secrets.sh  # Mount the script
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   depends_on:
+  #     - appsec-shared-storage
+  #     - appsec-db
+  #   networks:
+  #     - ft_transcendence_network
+
+  # appsec-db:
+  #   profiles:
+  #     - standalone
+  #   build:
+  #     context: ./app/waf/appsec-db
+  #     dockerfile: Dockerfile  # Path to the custom Dockerfile
+  #   container_name: appsec-db
+  #   restart: always
+  #   volumes:
+  #     - ${POSTGRES_STORAGE}:/var/lib/postgresql/data
+  #     - ${RUNNING_SCRIPT_FETCH}:/etc/cp/conf/fetch-secrets.sh  # Mount the script
+  #     - ./app/vault/token.txt:/tmp/token.txt      
+  #   networks:
+  #     - ft_transcendence_network
 
 ############ VAULT ############
   vault:
     container_name: vault
     build: ./app/vault/.
-    ports:
-      - "8200:8200"
-      - "8201:8201"
+    # ports:
+    #   - "8200:8200"
+    #   - "8201:8201"
     volumes:
       - ./app/vault/token.txt:/tmp/token.txt
+      - ./app/vault/unseal_key1.txt:/tmp/unseal_key1.txt
+      - ./app/vault/unseal_key2.txt:/tmp/unseal_key2.txt
+      - ./app/vault/unseal_key3.txt:/tmp/unseal_key3.txt
     env_file:
       - ./app/vault/.env
     healthcheck:
-      test: ["CMD", "sleep", "15"]
-      interval: 10s
-      timeout: 30s
+      test: [
+        "CMD",
+        "wget", "-qO-", "http://localhost:8200/v1/sys/health?standby=false&sealed=false"
+      ]
+      interval: 15s
       retries: 5
+      start_period: 10s
+      timeout: 10s
     networks:
       - ft_transcendence_network
 

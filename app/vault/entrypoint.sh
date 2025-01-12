@@ -45,14 +45,23 @@ vault operator unseal $UNSEAL_KEY1
 vault operator unseal $UNSEAL_KEY2
 vault operator unseal $UNSEAL_KEY3
 
-# Enable KV secrets engine (if not already enabled)
-VAULT_TOKEN=$VAULT_TOKEN vault secrets enable -path=secret kv-v2
-VAULT_TOKEN=$VAULT_TOKEN vault kv put --mount=secret django SECRET_KEY=$DJANGO_SECRET_KEY
-VAULT_TOKEN=$VAULT_TOKEN vault kv put --mount=secret waf_api_key AGENT_TOKEN=$WAF_API_KEY
 
+# Enable KV secrets engine (if not already enabled)
+vault login $VAULT_TOKEN
+vault secrets enable -path=secret kv-v2
+vault kv put --mount=secret django SECRET_KEY=$DJANGO_SECRET_KEY SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=$SOCIAL_AUTH_GOOGLE_OAUTH2_KEY SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=$SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET SOCIAL_AUTH_INTRA42_KEY=$SOCIAL_AUTH_INTRA42_KEY SOCIAL_AUTH_INTRA42_SECRET=$SOCIAL_AUTH_INTRA42_SECRET
+vault kv put --mount=secret waf_api_key AGENT_TOKEN=$WAF_API_KEY
+vault kv put --mount=secret postgres POSTGRES_DB=$POSTGRES_DB POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_HOST=$POSTGRES_HOST POSTGRES_PORT=$POSTGRES_PORT
+vault kv put --mount=secret elasticsearch ELASTIC_PASSWORD=$ELASTIC_PASSWORD KIBANA_PASSWORD=$KIBANA_PASSWORD
+vault kv put --mount=secret appsec APPSEC_DB_PASSWORD=$APPSEC_DB_PASSWORD APPSEC_DB_USER=$APPSEC_DB_USER APPSEC_DB_HOST=$APPSEC_DB_HOST
+vault kv put --mount=secret emails EMAIL_API_KEY=$EMAIL_API_KEY
+vault kv put --mount=secret smtp SMTP_HOST=$SMTP_HOST SMTP_USER=$SMTP_USER SMTP_PASSWORD=$SMTP_PASSWORD
 # Kill the Vault server running in the background (it was started earlier in nohup)
 # pkill vault
 echo $ROOT_TOKEN > /tmp/token.txt
+echo $UNSEAL_KEY1 > /tmp/unseal_key1.txt
+echo $UNSEAL_KEY2 > /tmp/unseal_key2.txt
+echo $UNSEAL_KEY3 > /tmp/unseal_key3.txt
 # Run Vault in the foreground (this is required for the container to keep running)
 # vault server -config=/etc/vault.d/vault-config.hcl
 
