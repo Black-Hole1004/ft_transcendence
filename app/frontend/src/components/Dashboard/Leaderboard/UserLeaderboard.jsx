@@ -21,7 +21,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture }) {
 				<img
 					src={getProfilePicture(profilePicture)}
 					alt={nickname}
-					className='h-[76%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
+					className='h-[70%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
 					onError={(e) => {
 						e.target.src = '/assets/images/default-avatar.png';
 					}}

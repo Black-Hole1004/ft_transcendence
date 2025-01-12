@@ -75,7 +75,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                 />
                 <img
                     src={user_friend.profile_picture}
-                    className='h-[76%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
+                    className='h-[70%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
                     alt='user-image'
                     loading='eager'
                 />

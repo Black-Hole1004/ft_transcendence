@@ -342,16 +342,16 @@ const Settings = () => {
 	return (
 		<>
 			<section className='flex justify-center'>
-				<div className='s max-tb:h-auto card-margin w-full border border-primary rounded-3xl'>
+				<div className='s max-tb:h-auto card-margin w-full border border-primary rounded-3xl bg-[rgba(27,22,17,0.5)]'>
 					<div className='flex items-center card-header sections-ml'>
 						<h1 className='font-dreamscape-sans text-primary leading-[1]'>Settings</h1>
 					</div>
 					<div className='h-0.5 separators'></div>
 					<div
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
-						xl:gap-[110px] lg:gap-[80px] tb:gap-[20px] max-tb:gap-y-3'
+						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start parts'>
+						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Profile Picture</p>
 							<p className='text-light'>
 								Must be JPEG, PNG, or GIF and cannot exceed 5MB.
@@ -399,7 +399,7 @@ const Settings = () => {
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start parts '>
+						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Personal Settings</p>
 							<p className='text-light'>
 								Change identifying details for your account.
@@ -452,7 +452,7 @@ const Settings = () => {
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start parts '>
+						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Profile Settings</p>
 							<p className='text-light '>
 								Edit your display name, bio, and other public details.
@@ -506,7 +506,7 @@ const Settings = () => {
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start parts '>
+						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Security Settings</p>
 							<p className='text-light'>
 								Update your password and enable two-factor authentication for added
