@@ -470,3 +470,448 @@
 --fog    <fog URL>                           : Fog Address (Optional)
 --ignore <ignore packages list>             : List of ignored packages
 
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-12T09:56:38.074996: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-12T09:56:38.076363: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-12T09:56:38.077913: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-12T09:56:38.079115: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-12T09:56:38.080605: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-12T09:56:38.101200: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-12T09:56:38.102035: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-12T09:56:38.104779: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-12T09:56:38.107395: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-12T09:56:38.111472: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-12T09:56:38.141588: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-12T09:56:38.144885: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-12T09:56:38.147336: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-12T09:56:38.163759: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-12T09:56:38.167362: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-12T09:56:38.170401: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-12T09:56:38.175271: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-12T09:56:38.176930: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-12T09:56:38.180957: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-12T09:56:38.182804: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-12T09:56:38.183755: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-12T09:56:38.185454: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-12T09:56:38.186541: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-12T09:56:38.189790: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-12T09:56:38.190917: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationStatus
+[2025-01-12T09:56:38.208365: : loadFromFile@orchestration_status.cc:508                   | ---] Orchestration status loaded from file. File: /etc/cp/conf/orchestration_status.json
+[2025-01-12T09:56:38.359929: : init@components_list_impl.h:126                            | ---] Initializing component: PackageHandler
+[2025-01-12T09:56:38.373342: : init@components_list_impl.h:126                            | ---] Initializing component: Downloader
+[2025-01-12T09:56:38.374417: : init@components_list_impl.h:126                            | ---] Initializing component: ServiceController
+[2025-01-12T09:56:38.395793: : init@components_list_impl.h:126                            | ---] Initializing component: ManifestController
+[2025-01-12T09:56:38.398124: : init@components_list_impl.h:126                            | ---] Initializing component: UpdateCommunication
+[2025-01-12T09:56:38.400156: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetailsReporter
+[2025-01-12T09:56:38.408232: : init@components_list_impl.h:126                            | ---] Initializing component: DetailsResolver
+[2025-01-12T09:56:38.409035: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationComp
+[2025-01-12T09:56:38.491100: : setOpenSSLCerts@orchestration_comp.cc:1862                 | ###] Failed to load OpenSSL default certificate authority. Error: no OpenSSL directory found
+[2025-01-12T09:56:38.549930: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationTools
+[2025-01-12T09:56:38.550533: : init@components_list_impl.h:126                            | ---] Initializing component: HealthChecker
+[2025-01-12T09:56:38.551170: : init@components_list_impl.h:126                            | ---] Initializing component: HealthCheckManager
+[2025-01-12T09:56:38.552406: : init@components_list_impl.h:126                            | ---] Initializing component: LocalPolicyMgmtGenerator
+[2025-01-12T09:56:38.553580: : init@components_list_impl.h:126                            | ---] Initializing component: ExternalSdkServer
+[2025-01-12T09:56:38.555534: : init@components_list_impl.h:126                            | ---] Initializing component: ServiceHealthStatus
+[2025-01-12T09:56:38.556264: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-12T09:56:38.557120: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 7777. Accepting: loopback connections
+[2025-01-12T09:56:38.637057: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: accessControlV2
+[2025-01-12T09:56:38.643712: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: exceptions
+[2025-01-12T09:56:38.650723: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: fileSecurity
+[2025-01-12T09:56:38.656328: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: ips
+[2025-01-12T09:56:38.663547: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: rules
+[2025-01-12T09:56:38.668651: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: snort
+[2025-01-12T09:56:38.673405: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: triggers
+[2025-01-12T09:56:38.676509: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: waap
+[2025-01-12T09:56:38.731881: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 1
+[2025-01-12T09:56:38.778095: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 2
+[2025-01-12T09:56:38.823798: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 3
+[2025-01-12T09:56:38.885983: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 4
+[2025-01-12T09:56:38.929396: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 5
+[2025-01-12T09:56:38.975481: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 6
+[2025-01-12T09:56:40.029973: : <26> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Health check manager periodic check
+[2025-01-12T09:56:40.048450: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-12T09:56:40.050699: : <10> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 
+[2025-01-12T09:56:40.255829: : <26> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Health check manager periodic check
+[2025-01-12T09:56:40.760164: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T09:56:41.775253: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T09:57:23.787411: : <25> getExecOutputAndCode@shell_cmd.cc:89                  | ###] Reached timeout while executing shell command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator
+[2025-01-12T09:57:23.802013: : <25> isServiceActive@service_controller.cc:144             | ###] Retrying to execute service status check via watchdog API after getting timeout. Service name: cp-nano-attachment-registrator, Watchdog command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator, retry number: 1
+[2025-01-12T09:57:38.706678: : <35> doCall@service_controller.cc:86                       | ---] Request for service reconfiguration successfully accomplished. Reconf ID: 7, Service Name: Attachment Registration Manager
+[2025-01-12T09:57:40.338138: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T09:57:51.254554: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 30 seconds
+[2025-01-12T09:58:00.434566: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T09:58:20.529956: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T09:58:21.246286: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 30 seconds
+[2025-01-12T09:58:40.716386: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T09:58:51.241442: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T09:59:00.823393: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T09:59:20.893177: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T09:59:41.070722: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T09:59:51.203880: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T10:00:01.209608: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:00:21.304917: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:00:41.414093: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:00:51.165787: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T10:01:01.515278: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:01:04.397878: : <20> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Write Orchestration status file
+[2025-01-12T10:01:21.591381: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:01:41.670413: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:01:51.128636: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T10:02:01.785999: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:02:21.871552: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:02:41.947104: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:02:51.096940: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T10:03:02.046580: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:03:22.235278: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:03:42.311175: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:03:51.062429: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T10:04:02.437924: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:04:22.524252: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:04:42.605040: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:04:51.028921: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T10:05:02.724359: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:05:22.807307: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:05:42.895972: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:05:50.986805: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:06:03.012390: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:06:23.096212: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:06:39.387089: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:06:39.557087: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:06:43.176830: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:07:03.270514: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:07:23.345404: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:07:43.426444: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:08:03.547560: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:08:23.627333: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:08:43.706464: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:09:03.802503: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:09:23.905197: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:09:43.986633: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:10:04.077107: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:10:24.156988: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:10:44.234311: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:10:50.781888: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:11:04.321643: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:11:24.426619: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:11:44.518193: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:12:04.594971: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:12:24.709947: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:12:44.803633: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:13:04.876212: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:13:24.968177: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:13:45.056994: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:14:05.128559: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:14:25.232007: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:14:45.302646: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:15:05.386240: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:15:25.482121: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:15:45.564315: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:15:50.570151: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:16:05.658209: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:16:25.797918: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:16:37.984426: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:16:38.227257: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:16:46.063377: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:17:06.128459: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:17:26.235379: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:17:46.306922: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:18:06.388037: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:18:26.530664: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:18:46.630295: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:19:06.706543: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:19:26.806345: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:19:46.885894: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:20:07.000363: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:20:27.122117: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:20:47.196025: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:20:50.357812: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:21:07.271120: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:21:27.363557: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:21:47.442582: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:22:07.534929: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:22:27.645672: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:22:47.727220: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:23:07.826562: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:23:27.927569: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:23:47.979413: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:24:08.072813: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:24:28.181513: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:24:48.266802: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:25:08.380700: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:25:28.480183: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:25:48.564520: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:25:50.160772: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:26:08.652926: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:26:28.758942: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:26:38.166740: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:26:38.395868: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:26:48.867121: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:27:06.096945: : <3> getExecOutputAndCode@shell_cmd.cc:89                   | ###] Reached timeout while executing shell command: if [ -s /var/log/nano_agent/event_buffer//cp-nano-orchestration.input ] && [ ! -s /var/log/nano_agent/event_buffer//cp-nano-orchestration.output ];then mv /var/log/nano_agent/event_buffer//cp-nano-orchestration.input /var/log/nano_agent/event_buffer//cp-nano-orchestration.output;fi
+[2025-01-12T10:27:06.099430: : <3> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: A-sync messaging routine
+[2025-01-12T10:27:08.935160: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:27:29.085917: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:27:49.210609: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:28:09.288990: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:28:29.399170: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:28:49.641219: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:29:09.745081: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:29:29.839088: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:29:49.908524: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:30:09.987214: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:30:30.101377: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:30:49.959090: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:30:50.176850: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:31:10.261140: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:31:30.363141: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:31:50.436035: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:32:10.520388: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:32:30.665770: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:32:50.735735: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:33:10.809685: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:33:31.175493: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:33:51.278243: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:34:11.352773: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:34:31.459915: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:34:51.686337: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:35:11.782529: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:35:32.025991: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:35:49.745171: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:35:52.348716: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:36:12.433359: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:36:32.530477: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:36:37.974363: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:36:38.165579: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:36:52.606417: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:37:12.684607: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:37:32.781570: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:37:52.861631: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:38:12.946336: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:38:33.049749: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:38:53.146021: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:39:13.212894: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:39:33.324620: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:39:53.486184: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:40:13.561298: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:40:33.636485: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:40:49.529019: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:40:53.760303: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:41:13.846365: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:41:33.930567: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:41:54.034998: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:42:14.123990: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:42:34.207422: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:42:54.304480: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:43:14.384081: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:43:34.450879: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:43:54.551424: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:44:14.631194: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:44:34.723702: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:44:54.839982: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:45:14.917434: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:45:34.989905: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:45:49.318704: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:45:55.103058: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:46:15.490821: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:46:35.320716: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:46:37.929198: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:46:38.099653: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:46:55.413895: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:47:15.493886: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:47:35.570119: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:47:55.675734: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:48:15.746814: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:48:35.822635: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:48:55.921010: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:49:16.004702: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:49:36.083286: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:49:56.192526: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:50:16.288296: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:50:36.350935: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:50:49.115613: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:50:56.472972: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:51:16.568217: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:51:36.651944: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:51:56.754470: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:52:16.876445: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:52:36.954004: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:52:57.051347: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:53:17.132570: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:53:37.202998: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:53:57.307795: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:54:17.385705: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:54:37.467968: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:54:57.559852: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:55:17.647010: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:55:37.723061: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:55:48.907614: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T10:55:57.815229: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:56:17.885169: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:56:37.544219: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:56:37.761851: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:56:37.952444: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:56:57.967127: : <36> receiveData@connection.cc:582                         | ###] Connection closed by peer
+[2025-01-12T10:56:58.183198: : <36> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Fog communication token periodic update
+[2025-01-12T10:56:58.272784: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:57:18.353797: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:57:38.429507: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:57:58.543595: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:58:18.621477: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:58:36.865667: : <9> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Load access token
+[2025-01-12T10:58:38.692510: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:58:58.786240: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:59:18.859718: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:59:38.937689: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T10:59:59.038546: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:00:09.817537: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Automatic Policy Loading
+[2025-01-12T11:00:19.111218: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:00:39.187431: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:00:48.705221: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T11:00:59.296690: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:01:19.385313: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:01:39.459589: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:01:59.570368: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:02:19.643335: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:02:39.736675: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:02:59.855181: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-12T11:12:20.520552: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-12T11:12:20.521664: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-12T11:12:20.528787: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-12T11:12:20.531747: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-12T11:12:20.532540: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-12T11:12:20.537285: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-12T11:12:20.542254: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-12T11:12:20.543713: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-12T11:12:20.547456: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-12T11:12:20.552571: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-12T11:12:20.560324: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-12T11:12:20.561939: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-12T11:12:20.563520: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-12T11:12:20.573192: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-12T11:12:20.575438: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-12T11:12:20.580162: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-12T11:12:20.583212: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-12T11:12:20.586510: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-12T11:12:20.589774: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-12T11:12:20.592630: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-12T11:12:20.594030: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-12T11:12:20.596904: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-12T11:12:20.598301: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-12T11:12:20.601803: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-12T11:12:20.602737: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationStatus
+[2025-01-12T11:12:20.619090: : loadFromFile@orchestration_status.cc:508                   | ---] Orchestration status loaded from file. File: /etc/cp/conf/orchestration_status.json
+[2025-01-12T11:12:20.667052: : init@components_list_impl.h:126                            | ---] Initializing component: PackageHandler
+[2025-01-12T11:12:20.671544: : init@components_list_impl.h:126                            | ---] Initializing component: Downloader
+[2025-01-12T11:12:20.672590: : init@components_list_impl.h:126                            | ---] Initializing component: ServiceController
+[2025-01-12T11:12:20.682187: : init@components_list_impl.h:126                            | ---] Initializing component: ManifestController
+[2025-01-12T11:12:20.686741: : init@components_list_impl.h:126                            | ---] Initializing component: UpdateCommunication
+[2025-01-12T11:12:20.689370: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetailsReporter
+[2025-01-12T11:12:21.698287: : init@components_list_impl.h:126                            | ---] Initializing component: DetailsResolver
+[2025-01-12T11:12:21.700418: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationComp
+[2025-01-12T11:12:21.727461: : setOpenSSLCerts@orchestration_comp.cc:1862                 | ###] Failed to load OpenSSL default certificate authority. Error: no OpenSSL directory found
+[2025-01-12T11:12:21.763127: : init@components_list_impl.h:126                            | ---] Initializing component: OrchestrationTools
+[2025-01-12T11:12:21.764009: : init@components_list_impl.h:126                            | ---] Initializing component: HealthChecker
+[2025-01-12T11:12:21.765026: : init@components_list_impl.h:126                            | ---] Initializing component: HealthCheckManager
+[2025-01-12T11:12:21.766402: : init@components_list_impl.h:126                            | ---] Initializing component: LocalPolicyMgmtGenerator
+[2025-01-12T11:12:21.767399: : init@components_list_impl.h:126                            | ---] Initializing component: ExternalSdkServer
+[2025-01-12T11:12:21.768069: : init@components_list_impl.h:126                            | ---] Initializing component: ServiceHealthStatus
+[2025-01-12T11:12:21.769171: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-12T11:12:21.770736: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 7777. Accepting: loopback connections
+[2025-01-12T11:12:21.815155: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: accessControlV2
+[2025-01-12T11:12:21.818370: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: exceptions
+[2025-01-12T11:12:21.822381: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: fileSecurity
+[2025-01-12T11:12:21.826219: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: ips
+[2025-01-12T11:12:21.831736: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: rules
+[2025-01-12T11:12:21.837282: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: snort
+[2025-01-12T11:12:21.845747: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: triggers
+[2025-01-12T11:12:21.849742: : <25> updateServiceConfiguration@service_controller.cc:884  | ---] Successfully updated policy file. Policy name: waap
+[2025-01-12T11:12:21.892963: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 1
+[2025-01-12T11:12:21.945299: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 2
+[2025-01-12T11:12:21.995497: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 3
+[2025-01-12T11:12:22.041050: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 4
+[2025-01-12T11:12:22.077391: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 5
+[2025-01-12T11:12:22.117018: : <25> sendSignalForServices@service_controller.cc:985       | ###] Erasing details regarding inactive service 6
+[2025-01-12T11:12:22.288112: : <26> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Health check manager periodic check
+[2025-01-12T11:12:22.314978: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-12T11:12:22.315816: : <10> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 
+[2025-01-12T11:12:22.518876: : <26> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Health check manager periodic check
+[2025-01-12T11:12:23.953953: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T11:12:24.831844: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T11:12:41.089935: : <25> getExecOutputAndCode@shell_cmd.cc:89                  | ###] Reached timeout while executing shell command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator
+[2025-01-12T11:12:41.094274: : <25> isServiceActive@service_controller.cc:144             | ###] Retrying to execute service status check via watchdog API after getting timeout. Service name: cp-nano-attachment-registrator, Watchdog command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator, retry number: 1
+[2025-01-12T11:12:41.499274: : <25> getExecOutputAndCode@shell_cmd.cc:89                  | ###] Reached timeout while executing shell command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator
+[2025-01-12T11:12:41.500117: : <25> isServiceActive@service_controller.cc:144             | ###] Retrying to execute service status check via watchdog API after getting timeout. Service name: cp-nano-attachment-registrator, Watchdog command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator, retry number: 2
+[2025-01-12T11:12:52.102756: : <25> getExecOutputAndCode@shell_cmd.cc:89                  | ###] Reached timeout while executing shell command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator
+[2025-01-12T11:12:52.121313: : <25> isServiceActive@service_controller.cc:144             | ###] Retrying to execute service status check via watchdog API after getting timeout. Service name: cp-nano-attachment-registrator, Watchdog command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator, retry number: 1
+[2025-01-12T11:12:53.129701: : <25> getExecOutputAndCode@shell_cmd.cc:89                  | ###] Reached timeout while executing shell command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator
+[2025-01-12T11:12:53.200214: : <25> isServiceActive@service_controller.cc:144             | ###] Retrying to execute service status check via watchdog API after getting timeout. Service name: cp-nano-attachment-registrator, Watchdog command: /etc/cp/watchdog/cp-nano-watchdog --status --verbose --service cp-nano-attachment-registrator, retry number: 2
+[2025-01-12T11:13:21.344811: : <35> doCall@service_controller.cc:86                       | ---] Request for service reconfiguration successfully accomplished. Reconf ID: 7, Service Name: Attachment Registration Manager
+[2025-01-12T11:13:22.507766: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:13:33.429305: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 30 seconds
+[2025-01-12T11:13:42.612293: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:14:02.691721: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:14:03.420721: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 30 seconds
+[2025-01-12T11:14:22.760324: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:14:33.412066: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T11:14:42.916787: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:15:03.001984: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:15:23.094488: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:15:33.383030: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T11:15:43.190575: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:16:03.288581: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:16:23.364843: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:16:27.382209: : <3> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: A-sync messaging routine
+[2025-01-12T11:16:33.354174: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T11:16:43.531623: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:17:03.676325: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:17:22.745509: : <3> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: A-sync messaging routine
+[2025-01-12T11:17:23.761239: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:17:33.323356: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T11:17:43.863038: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:18:03.959426: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:18:24.034273: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:18:24.797505: : <20> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Write Orchestration status file
+[2025-01-12T11:18:33.282786: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T11:18:44.127983: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:19:04.216869: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:19:09.975490: : <20> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Write Orchestration status file
+[2025-01-12T11:19:24.296305: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:19:33.254943: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T11:19:44.389883: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:19:50.177729: : <20> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Write Orchestration status file
+[2025-01-12T11:20:04.463479: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:20:24.545696: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:20:33.241175: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 60 seconds
+[2025-01-12T11:20:44.666992: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:21:04.759378: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:21:24.840871: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:21:33.203974: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T11:21:44.957224: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:22:05.156010: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:22:22.734642: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T11:22:22.935225: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T11:22:25.264453: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:22:45.375804: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:23:05.461986: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:23:25.534953: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:23:45.630866: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:24:05.725029: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:24:25.822723: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:24:45.919116: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:25:06.002865: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:25:26.089896: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:25:46.182296: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:26:06.302592: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:26:26.386133: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:26:32.987224: : <25> run@orchestration_comp.cc:1525                        | ###] Orchestration not started yet. Status: Failed to get access token. Next attempt to start the orchestration will be in: 300 seconds
+[2025-01-12T11:26:46.501869: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:27:06.579863: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:27:26.654848: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:27:46.758540: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:28:06.833930: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:28:26.917942: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.
+[2025-01-12T11:28:47.026385: : <36> operator()@fog_authenticator.cc:618                   | ###] Failed to receive access token. Error: Failed to get access token.

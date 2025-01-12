@@ -109,7 +109,7 @@ const UserProfile = () => {
 					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'
 			>
 				<div
-					className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
+					className={`${width >= 1024 ? 'user-info-lp' : 'bg-[rgba(27,22,17,0.5)] border border-primary rounded-xl'}
 						lp:self-start max-ms:w-full flex flex-col`}
 				>
 					<div className='font-dreamscape text-primary cards-title text-center relative'>
@@ -141,7 +141,7 @@ const UserProfile = () => {
 					<UserStatsGraph profile_name={profile_name} />
 				</div>
 				{/* RANK: Achievement information and progress */}
-				<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
+				<div className={`${width >= 1024 ? 'rank-card-lp' : 'bg-[rgba(27,22,17,0.5)] border border-primary rounded-xl'}
 						bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}>
 					<div className='font-dreamscape text-primary cards-title text-center'>
 						<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
@@ -179,7 +179,7 @@ const UserProfile = () => {
 
 				{/* MATCH HISTORY : 5 recent matches */}
 				<div
-					className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
+					className={`${width >= 1024 ? 'match-history-lp' : 'bg-[rgba(27,22,17,0.5)] border border-primary rounded-xl'}
 						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
 				>
 					<div className='font-dreamscape text-primary cards-title text-center'>

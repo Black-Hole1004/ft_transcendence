@@ -538,3 +538,573 @@
 [2025-01-11T23:02:28.349562: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
 [2025-01-11T23:02:28.350816: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
 [2025-01-11T23:02:36.693505: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON Debug stream
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-12T09:56:38.074887: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-12T09:56:38.076039: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-12T09:56:38.077771: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-12T09:56:38.079016: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-12T09:56:38.080505: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-12T09:56:38.098982: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-12T09:56:38.100099: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-12T09:56:38.101124: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-12T09:56:38.102204: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-12T09:56:38.105153: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-12T09:56:38.118493: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-12T09:56:38.120507: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-12T09:56:38.142656: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-12T09:56:38.163990: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-12T09:56:38.166131: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-12T09:56:38.167556: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-12T09:56:38.172193: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-12T09:56:38.176532: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-12T09:56:38.177870: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-12T09:56:38.181154: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-12T09:56:38.183110: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-12T09:56:38.186096: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-12T09:56:38.188473: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-12T09:56:38.195878: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-12T09:56:38.201107: : init@components_list_impl.h:126                            | ---] Initializing component: AttachmentRegistrator
+[2025-01-12T09:56:38.208359: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-12T09:56:38.210975: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 8124. Accepting: loopback connections
+[2025-01-12T09:56:38.267442: : <7> tryToBioConnect@connection.cc:479                      | ###] Connection to: 127.0.0.1:7777 failed and won't retry. Error: error:0200206F:system library:connect:Connection refused
+[2025-01-12T09:56:38.268700: : <7> connectToHost@connection.cc:521                        | ###] Connection to: 127.0.0.1:7777 failed and will be suspended for 60 seconds
+[2025-01-12T09:56:38.273223: : <7> establishConnection@connection.cc:193                  | ###] Failed to connect to host: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-12T09:56:38.274470: : <7> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-12T09:56:38.275673: : <7> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-12T09:56:38.278303: : <7> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-12T09:56:38.280201: : <7> tryToBioConnect@connection.cc:479                      | ###] Connection to: 127.0.0.1:7778 failed and won't retry. Error: error:0200206F:system library:connect:Connection refused
+[2025-01-12T09:56:38.282459: : <7> connectToHost@connection.cc:521                        | ###] Connection to: 127.0.0.1:7778 failed and will be suspended for 60 seconds
+[2025-01-12T09:56:38.284031: : <7> establishConnection@connection.cc:193                  | ###] Failed to connect to host: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-12T09:56:38.284822: : <7> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-12T09:56:38.285553: : <7> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-12T09:56:38.286109: : <7> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-12T09:56:38.306352: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-12T09:56:38.309083: : <10> sendLog@debug_stream.cc:33                            | ---] {
+    "eventTime": "2025-01-12T09:56:38.207",
+    "eventName": "Check Point Nano-service started",
+    "eventSeverity": "Info",
+    "eventPriority": "Medium",
+    "eventType": "Event Driven",
+    "eventLevel": "Log",
+    "eventLogLevel": "info",
+    "eventAudience": "Security",
+    "eventAudienceTeam": "",
+    "eventFrequency": 0,
+    "eventTags": [
+        "Informational"
+    ],
+    "eventSource": {
+        "agentId": "e2026b08-ddcb-4512-bbd7-4f0d168a55ed",
+        "eventTraceId": "",
+        "eventSpanId": "",
+        "issuingEngineVersion": "1.1.20-open-source",
+        "serviceName": "Attachment Registration Manager"
+    },
+    "eventData": {
+        "logIndex": 1,
+        "serviceName": "Attachment Registration Manager"
+    }
+}
+[2025-01-12T09:56:38.382234: : <10> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 
+[2025-01-12T09:56:40.044982: : <25> getAllTenants@tenant_manager.cc:256                   | ###] Failed to get all active tenants. Error: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:40.053346: : <25> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: A-Synchronize reload configuraion
+[2025-01-12T09:56:40.054294: : <26> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:40.055165: : <26> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:40.055907: : <26> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:40.084013: : <25> load@triggers_config.cc:205                           | ###] Failed to parse the extendLoggingMinSeverityfield: 'high'
+[2025-01-12T09:56:40.085365: : <25> openLogFile@file_stream.cc:101                        | ---] Empty log file name, no log file will be written
+[2025-01-12T09:56:40.086523: : <25> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON File stream
+[2025-01-12T09:56:40.102609: : <25> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 
+[2025-01-12T09:56:40.103312: : <25> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON Debug stream
+[2025-01-12T09:56:40.103848: : <25> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON FOG stream
+[2025-01-12T09:56:40.105190: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:40.106017: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:40.106784: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:40.452205: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T09:56:41.147508: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T09:56:41.155279: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:41.157277: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:41.158561: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:42.160994: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:42.161815: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:42.163331: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:43.166860: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:43.168149: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:43.168774: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:44.180380: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:44.181254: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:44.182221: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:45.185352: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:45.185976: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:45.186618: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:46.191228: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:46.191708: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:46.192178: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:47.200553: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:47.205984: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:47.207963: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:48.221692: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:48.223244: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:48.224485: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:49.234110: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:49.237547: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:49.238545: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:50.246570: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:50.261983: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:50.262903: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:51.274124: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:51.274757: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:51.275296: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:52.278628: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:52.279536: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:52.280315: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:53.285723: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:53.286967: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:53.287815: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:54.293228: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:54.294397: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:54.295371: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:55.307979: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:55.309406: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:55.310590: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:56.315021: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:56.316414: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:56.316808: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:57.319844: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:57.320714: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:57.321603: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:58.325017: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:58.326211: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:58.326904: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:56:59.337100: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:59.338422: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:56:59.339323: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:00.348879: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:00.349567: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:00.350254: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:01.357680: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:01.358493: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:01.359176: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:02.366712: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:02.367490: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:02.368895: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:03.372180: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:03.372836: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:03.373933: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:04.386896: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:04.388283: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:04.388998: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:05.374017: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:05.374995: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:05.375792: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:06.382570: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:06.383352: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:06.384094: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:07.385363: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:07.386179: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:07.386840: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:08.390553: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:08.391641: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:08.392677: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:09.396311: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:09.397477: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:09.399738: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:10.404525: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:10.406493: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:10.407976: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:11.419733: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:11.421478: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:11.422169: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:12.426312: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:12.427034: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:12.427590: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:13.434938: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:13.435892: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:13.436594: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:14.444226: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:14.445027: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:14.445678: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:15.452253: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:15.452918: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:15.453557: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:16.465274: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:16.467151: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:16.467761: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:17.472026: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:17.473418: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:17.474549: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:18.477505: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:18.478139: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:18.478982: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:19.488195: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:19.490455: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:19.491216: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:20.501960: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:20.503033: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:20.503844: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:21.512245: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:21.513178: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:21.513794: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:22.523113: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:22.524177: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:22.524727: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:23.539140: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:23.544497: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:23.547794: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:24.597048: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:24.598601: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:24.599735: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:25.604079: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:25.604980: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:25.605708: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:26.607152: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:26.608103: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:26.608775: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:27.613884: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:27.614926: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:27.615935: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:28.625141: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:28.625871: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:28.626371: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:29.630289: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:29.631211: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:29.632971: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:30.638397: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:30.639457: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:30.640217: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:31.655612: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:31.656668: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:31.657595: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:32.672332: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:32.673497: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:32.674395: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:33.682727: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:33.683855: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:33.684523: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:34.689273: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:34.690584: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:34.691384: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:35.684663: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:35.685726: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:35.686443: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:36.687492: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:36.689072: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:36.689704: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:57:37.690728: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:37.691934: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T09:57:37.692778: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T09:59:57.779526: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T09:59:57.780937: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T09:59:57.957450: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T09:59:58.218132: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T09:59:58.219093: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T09:59:58.328587: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T10:04:39.106518: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T10:06:38.217024: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:06:38.512547: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:15:19.352500: : <3> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: A-sync messaging routine
+[2025-01-12T10:16:38.653127: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:16:38.907994: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:26:38.299401: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:26:38.473033: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:31:30.623156: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T10:36:37.669870: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:36:37.844848: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:46:37.216463: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:46:37.384319: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:56:36.818916: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T10:56:37.102330: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T10:58:37.173795: : <3> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: A-sync messaging routine
+[2025-01-12T11:03:20.027893: : <2> run@mainloop.cc:352                                    | ---] Mainloop ended - stopping all routines
+[2025-01-12T11:03:20.314501: : <2> fini@components_list_impl.h:135                        | ---] Finalizing component: AttachmentRegistrator
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON Debug stream
+[addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-12T11:12:20.520087: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-12T11:12:20.521009: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-12T11:12:20.527174: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-12T11:12:20.528375: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-12T11:12:20.529765: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-12T11:12:20.536854: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-12T11:12:20.538280: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-12T11:12:20.539416: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-12T11:12:20.540792: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-12T11:12:20.541771: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-12T11:12:20.554130: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-12T11:12:20.555811: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-12T11:12:20.556706: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-12T11:12:20.573247: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-12T11:12:20.575432: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-12T11:12:20.576949: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-12T11:12:20.578330: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-12T11:12:20.582728: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-12T11:12:20.584382: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-12T11:12:20.585797: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-12T11:12:20.586510: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-12T11:12:20.588719: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-12T11:12:20.593828: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-12T11:12:20.595411: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-12T11:12:20.596665: : init@components_list_impl.h:126                            | ---] Initializing component: AttachmentRegistrator
+[2025-01-12T11:12:20.597930: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-12T11:12:20.600762: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 8124. Accepting: loopback connections
+[2025-01-12T11:12:20.625148: : <7> tryToBioConnect@connection.cc:479                      | ###] Connection to: 127.0.0.1:7777 failed and won't retry. Error: error:0200206F:system library:connect:Connection refused
+[2025-01-12T11:12:20.628210: : <7> connectToHost@connection.cc:521                        | ###] Connection to: 127.0.0.1:7777 failed and will be suspended for 60 seconds
+[2025-01-12T11:12:20.631113: : <7> establishConnection@connection.cc:193                  | ###] Failed to connect to host: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-12T11:12:20.632512: : <7> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-12T11:12:20.634136: : <7> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-12T11:12:20.636375: : <7> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: 127.0.0.1:7777. There won't be a retry attempt.
+[2025-01-12T11:12:20.641199: : <7> tryToBioConnect@connection.cc:479                      | ###] Connection to: 127.0.0.1:7778 failed and won't retry. Error: error:0200206F:system library:connect:Connection refused
+[2025-01-12T11:12:20.642480: : <7> connectToHost@connection.cc:521                        | ###] Connection to: 127.0.0.1:7778 failed and will be suspended for 60 seconds
+[2025-01-12T11:12:20.643791: : <7> establishConnection@connection.cc:193                  | ###] Failed to connect to host: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-12T11:12:20.644910: : <7> establishNewConnection@connection_comp.cc:104          | ###] Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-12T11:12:20.646497: : <7> getConnection@messaging_comp.cc:107                    | ###] Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-12T11:12:20.647501: : <7> sendMessage@messaging_comp.cc:123                      | ###] Failed to get connection. Error: Failed to establish connection. Error: 127.0.0.1:7778. There won't be a retry attempt.
+[2025-01-12T11:12:20.665907: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-12T11:12:20.669831: : <10> sendLog@debug_stream.cc:33                            | ---] {
+    "eventTime": "2025-01-12T11:12:20.597",
+    "eventName": "Check Point Nano-service started",
+    "eventSeverity": "Info",
+    "eventPriority": "Medium",
+    "eventType": "Event Driven",
+    "eventLevel": "Log",
+    "eventLogLevel": "info",
+    "eventAudience": "Security",
+    "eventAudienceTeam": "",
+    "eventFrequency": 0,
+    "eventTags": [
+        "Informational"
+    ],
+    "eventSource": {
+        "agentId": "e2026b08-ddcb-4512-bbd7-4f0d168a55ed",
+        "eventTraceId": "",
+        "eventSpanId": "",
+        "issuingEngineVersion": "1.1.20-open-source",
+        "serviceName": "Attachment Registration Manager"
+    },
+    "eventData": {
+        "logIndex": 1,
+        "serviceName": "Attachment Registration Manager"
+    }
+}
+[2025-01-12T11:12:20.712368: : <10> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 
+[2025-01-12T11:12:21.696680: : <10> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Logging Fog stream messaging
+[2025-01-12T11:12:22.169972: : <25> getAllTenants@tenant_manager.cc:256                   | ###] Failed to get all active tenants. Error: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:22.175030: : <26> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:22.175846: : <26> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:22.176672: : <26> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:22.216517: : <25> load@triggers_config.cc:205                           | ###] Failed to parse the extendLoggingMinSeverityfield: 'high'
+[2025-01-12T11:12:22.217405: : <25> openLogFile@file_stream.cc:101                        | ---] Empty log file name, no log file will be written
+[2025-01-12T11:12:22.217813: : <25> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON File stream
+[2025-01-12T11:12:22.231507: : <25> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 
+[2025-01-12T11:12:22.232084: : <25> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON Debug stream
+[2025-01-12T11:12:22.233004: : <25> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON FOG stream
+[2025-01-12T11:12:22.235942: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:22.236805: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:22.237465: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:22.790516: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T11:12:23.244945: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:23.246635: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:23.249693: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:23.518197: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-12T11:12:24.261216: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:24.261860: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:24.262385: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:25.274465: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:25.275523: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:25.276486: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:26.283021: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:26.283779: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:26.284301: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:27.343853: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:27.392456: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:27.395714: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:28.401594: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:28.402125: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:28.402665: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:29.407269: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:29.407915: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:29.408419: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:30.409712: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:30.410758: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:30.411314: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:31.424206: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:31.425023: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:31.426920: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:32.432021: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:32.432882: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:32.433601: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:33.436523: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:33.437188: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:33.437672: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:34.439525: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:34.440532: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:34.441129: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:35.449593: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:35.456095: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:35.456742: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:36.469100: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:36.470009: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:36.470598: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:37.478203: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:37.478925: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:37.479938: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:38.487347: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:38.489067: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:38.489810: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:39.501960: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:39.502769: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:39.503360: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:40.540242: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:40.541735: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:40.542735: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:41.550157: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:41.577088: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:41.587630: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:42.603629: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:42.605838: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:42.606486: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:43.615540: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:43.617670: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:43.618628: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:44.640159: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:44.643763: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:44.645273: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:45.650079: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:45.650932: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:45.651527: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:46.658541: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:46.659778: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:46.660417: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:47.448166: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:47.673533: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:47.674651: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:47.675402: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:48.684477: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:48.710818: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:48.711487: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:49.336515: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:49.717416: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:49.724172: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:49.728291: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:50.723396: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:50.724449: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:50.725542: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:51.700058: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:52.366785: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:52.390045: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:52.580352: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:52.605065: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:52.608529: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:52.614576: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:53.485434: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:53.493046: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:53.496458: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:53.800204: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:53.801796: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:53.803158: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:54.060756: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:54.061753: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:54.065400: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:54.195350: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:54.198683: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:54.238695: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:54.385562: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:54.396864: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:54.399235: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:54.609212: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:54.611838: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:54.612544: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:54.829881: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:54.839434: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:54.843033: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:54.944853: : <22> writeData@socket_is.cc:98                             | ###] Failed to send data, Error: Broken pipe
+[2025-01-12T11:12:54.952740: : <22> replyWithRelevantHandler@attachment_registrator.cc:131 | ###] Failed to send handler path size to attachment
+[2025-01-12T11:12:54.954769: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:12:54.955506: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:54.957136: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:54.957844: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:55.966731: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:55.967420: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:55.967833: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:56.970536: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:56.974560: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:56.979942: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:57.991126: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:57.992619: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:57.993359: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:12:59.007244: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:59.008126: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:12:59.008963: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:00.014285: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:00.016762: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:00.018140: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:00.949233: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:13:01.021339: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:01.023467: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:01.028111: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:02.037506: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:02.041167: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:02.042402: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:03.049273: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:03.050502: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:03.051211: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:04.064362: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:04.065234: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:04.066104: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:05.079843: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:05.080566: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:05.081168: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:06.087242: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:06.088199: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:06.088900: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:07.106013: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:07.111935: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:07.113844: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:08.129820: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:08.131712: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:08.132535: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:09.146691: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:09.147485: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:09.147880: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:10.166482: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:10.167729: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:10.168559: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:11.176186: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:11.177156: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:11.177884: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:12.185687: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:12.186512: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:12.187141: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:13.216121: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:13.219724: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:13.222578: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:14.246982: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:14.252311: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:14.258394: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:15.293507: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:15.294454: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:15.295073: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:16.298082: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:16.301753: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:16.303926: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:17.308547: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:17.309863: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:17.310649: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:18.317916: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:18.318904: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:18.319633: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:19.325962: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:19.326986: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:19.327688: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:13:20.313356: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:20.314907: : <25> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-12T11:13:20.317116: : <25> sendOrchestatorReloadStatusMsg@config.cc:274          | ###] Unsuccessful attempt to send configuration reload status
+[2025-01-12T11:15:37.310393: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:15:44.538543: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Attachment's registration handler
+[2025-01-12T11:18:26.638028: : <3> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: A-sync messaging routine
+[2025-01-12T11:22:21.747065: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-12T11:22:21.952614: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages

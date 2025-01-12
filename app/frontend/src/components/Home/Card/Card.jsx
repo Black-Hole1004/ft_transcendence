@@ -130,7 +130,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					{isSigningIn ? (
 						<div className='w-full flex flex-col items-center welcome-message'>
 							<h1 className='sign-in-title'>Welcome back!</h1>
-							<p className='sign-in-phrases'>Sign in to access your dashboard .</p>
+							<p className='sign-in-phrases'>Sign in to access your dashboard.</p>
 						</div>
 					) : (
 						<h1 className='sign-in-title text-center create-account'>

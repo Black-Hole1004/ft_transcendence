@@ -84,7 +84,7 @@ function FriendsList() {
 
 	return (
 		<div
-			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border
+			className='flex flex-col items-center lg:w-fl-ldr-custom w-full mtb:h-card h-[350px] rounded-xl border
 			transition duration-300 border-[rgba(255,206,157,.2)] hover:border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]
 			hover:drop-shadow-[0_0_20px_rgba(255,206,157,0.2)]'
 		>
