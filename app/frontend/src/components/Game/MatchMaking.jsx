@@ -39,11 +39,6 @@ const Matchmaking = () => {
 		// Cancel any ongoing matchmaking before starting new one
 		matchmakingService.cancelSearch() // CAUSES ERROR
 
-		// Add this event listener
-		matchmakingService.on('otherTabMatchmaking', () => {
-			console.log('Matchmaking in progress in another tab')
-			setStatus('other_tab_active')
-		})
 
 		matchmakingService.connect(currentUserId)
 

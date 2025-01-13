@@ -120,6 +120,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         try:
             receiver_id = data.get('receiver_id')
             receiver_status = await self.get_receiver_status(receiver_id)
+            sender_tab_id = data.get('senderTabId')  # Add this line
 
             if receiver_status != 'online':
                 await self.channel_layer.group_send(
@@ -136,7 +137,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
 
             invitation = await self.create_game_invitation(
                 sender=self.user,
-                receiver_id=receiver_id
+                receiver_id=receiver_id,
             )
             created_at = invitation.created_at.timestamp()
             
@@ -151,6 +152,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                         'type': 'game_invite',
                         'invitation_id': invitation.id,
                         'created_at': created_at,
+                        'senderTabId' : sender_tab_id,
                         'sender': {
                             'id': self.user.id,
                             'username': self.user.username,
@@ -236,10 +238,11 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         """Handle response to game invitation"""
         invitation_id = data.get('invitation_id')
         response = data.get('response')
+        accepting_tab_id = data.get('acceptingTabId')  # Get from request
         
         invitation = await self.get_game_invitation(invitation_id)
         if response == 'accept':
-            await self.handle_invitation_acceptance(invitation)
+            await self.handle_invitation_acceptance(invitation, accepting_tab_id)
         else:
             await self.handle_invitation_decline(invitation)
             
@@ -266,7 +269,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
 
 
     @database_sync_to_async
-    def accept_game_invite(self, invitation):
+    def accept_game_invite(self, invitation, accepting_tab_id):
         """Handle invitation acceptance"""
         # Verify current user is intended recipient
         if (invitation.receiver.id != self.user.id):
@@ -291,6 +294,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         notification_data = {
             'type': 'game_invite_accepted',
             'invitation_id': invitation.id,
+            'acceptingTabId': accepting_tab_id,
             'sender': {  # Details of the person who sent the invite
                 'status' : status,
                 'id': invitation.sender.id,
@@ -312,11 +316,11 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             "data": notification_data
         }
 
-    async def handle_invitation_acceptance(self, invitation):
+    async def handle_invitation_acceptance(self, invitation, accepting_tab_id):
         """Asynchronous wrapper to handle game invitation acceptance"""
         try:
             # Call the sync-to-async wrapped function
-            result = await self.accept_game_invite(invitation)
+            result = await self.accept_game_invite(invitation, accepting_tab_id)
             
             # Send notifications if acceptance was successful
             await self.channel_layer.group_send(

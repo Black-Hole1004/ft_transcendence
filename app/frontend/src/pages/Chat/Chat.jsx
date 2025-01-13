@@ -10,7 +10,6 @@ import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
 import ConversationHeader from '../../components/Chat/ConversationHeader.jsx'
 
-// import { useAlert } from '../../components/AlertContext'
 import useAuth from '../../context/AuthContext.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT

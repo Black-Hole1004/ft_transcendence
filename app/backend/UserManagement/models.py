@@ -92,7 +92,7 @@ class Achievement:
                 break
         # If no interval found (xp >= 10000)
         else:
-            current_threshold = thresholds[-1]
+            current_threshold = 8000
             next_threshold = thresholds[-1]
         # Calculate progress
         progress = xp - current_threshold

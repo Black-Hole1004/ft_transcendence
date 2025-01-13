@@ -72,7 +72,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 					{username}
 				</p>
 				{search ? (
-					<p className='text-level last-message max-tb:hidden'>{badge_info.name}</p>
+					<p className='text-level last-message max-tb:hidden'>{badge_info?.name}</p>
 				) : (
 					conversation.last_message &&
 					<div className='flex text-light max-tb:hidden last-message'>
@@ -86,7 +86,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 			</div>
 			{search && (
 				<img
-					src={badge_info.image}
+					src={badge_info?.image}
 					className='select-none search-badge max-tb:hidden'
 				/>
 			)}

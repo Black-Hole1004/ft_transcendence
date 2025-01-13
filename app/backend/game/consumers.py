@@ -46,8 +46,8 @@ GAME_SETTINGS = {
     'PAUSE_LIMIT': 3,        # Number of pauses allowed per player
     'PAUSE_TIMEOUT': 20,     # Auto-resume after 20 seconds
     'MAX_DELTA_TIME': 0.004, # Cap for time step in seconds (1/240)
-    'PHYSICS_UPDATE_RATE': 160,  # Updates per second
-    'BROADCAST_RATE': 65,       # Broadcasts per second
+    'PHYSICS_UPDATE_RATE': 120,  # Updates per second
+    'BROADCAST_RATE': 50,       # Broadcasts per second
 }
 
 class GamePhysics:
@@ -1133,12 +1133,16 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             # Get badges 
             winner_badge = Achievement.get_badge(winner.xp) # {name, xp, image}
-            print("winner_badge: xorn", winner_badge)
             loser_badge = Achievement.get_badge(loser.xp)
             
             # get progession data
-            progress_data = Achievement.get_badge_progress(winner.xp) # percentage progress to next badge
-            winner_badge.update(progress_data) # add progress data to badge {curren_xp_treshold, next_xp_threshold, progress_percentage}
+            progress_data_winner = Achievement.get_badge_progress(winner.xp) # percentage progress to next badge
+            progress_data_loser = Achievement.get_badge_progress(loser.xp)
+            winner_badge.update(progress_data_winner) # add progress data to badge {curren_xp_treshold, next_xp_threshold, progress_percentage}
+            loser_badge.update(progress_data_loser)
+            
+            print(f"Winner badge: {winner_badge}")
+            print(f"Loser badge: {loser_badge}")
         
             # Send comprehensive game end data
             await self.channel_layer.group_send(

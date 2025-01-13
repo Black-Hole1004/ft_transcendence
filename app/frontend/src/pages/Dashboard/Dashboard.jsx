@@ -57,6 +57,7 @@ const Dashboard = () => {
 				}
 				// Only try to parse as JSON if it's actually JSON
 				const leaderboardData = JSON.parse(responseText);
+				console.log('leaderboard data:', leaderboardData);
 				setLeaderboardData(leaderboardData.users);
 				
 

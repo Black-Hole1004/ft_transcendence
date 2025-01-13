@@ -7,33 +7,7 @@ class MatchmakingService {
 		this.callbacks = {}
 		this.handleMessage = this.handleMessage.bind(this)
 		this.currentUserId = null
-		this.tabId = this.generateTabId()
-
-        this.setupTabCoordination();
 	}
-
-	generateTabId() {
-        if (!sessionStorage.getItem('tabId')) {
-            sessionStorage.setItem('tabId', Math.random().toString(36).substr(2, 9));
-        }
-        return sessionStorage.getItem('tabId');
-    }
-
-	setupTabCoordination() {
-        // Listen for messages from other tabs
-        window.addEventListener('storage', (event) => {
-            if (event.key === 'activeMatchmakingTab') {
-                const activeTab = JSON.parse(event.newValue);
-                if (activeTab && activeTab.timestamp > Date.now() - 1000) {
-                    if (activeTab.tabId !== this.tabId) {
-                        // Another tab is handling matchmaking
-                        this.close();
-                        this.callbacks.onOtherTabMatchmaking?.();
-                    }
-                }
-            }
-        });
-    }
 
 	isConnected() {
         return this.socket?.readyState === WebSocket.OPEN;
@@ -42,92 +16,40 @@ class MatchmakingService {
 	close() {
 		if (this.socket?.readyState === WebSocket.OPEN) {
 			this.socket.close(1000, 'Normal closure')
-			localStorage.removeItem('activeMatchmakingTab');
 		}
 	}
 
-	// connect(userId) {
-	// 	this.currentUserId = userId
-
-	// 	// Close the existing connection if it exists
-	// 	if (this.socket) {
-	// 		this.socket.close()
-	// 	}
-
-	// 	this.socket = new WebSocket(`wss://localhost/ws/matchmaking/?user_id=${userId}`)
-
-	// 	this.socket.onopen = () => {
-	// 		console.log('Connected to matchmaking service')
-	// 		this.callbacks.onConnect?.()
-	// 	}
-
-	// 	this.socket.onmessage = this.handleMessage
-	// 	this.socket.onclose = () => {
-	// 		console.log('Disconnected from matchmaking service')
-	// 		this.callbacks.onDisconnect?.()
-	// 		// Clear the stored user ID on disconnect
-	// 		this.currentUserId = null
-	// 	}
-	// 	this.socket.onerror = (error) => console.error('Matchmaking error:', error)
-	// }
 	connect(userId) {
-        // Check if another tab is already handling matchmaking
-        const activeTab = JSON.parse(localStorage.getItem('activeMatchmakingTab'));
-        if (activeTab && activeTab.timestamp > Date.now() - 1000 && activeTab.tabId !== this.tabId) {
-            this.callbacks.onOtherTabMatchmaking?.();
-            return;
-        }
+		this.currentUserId = userId
 
-        this.currentUserId = userId;
+		// Close the existing connection if it exists
+		if (this.socket) {
+			this.socket.close()
+		}
 
-        // Close existing connection if any
-        if (this.socket) {
-            this.socket.close();
-        }
+		this.socket = new WebSocket(`wss://localhost/ws/matchmaking/?user_id=${userId}`)
 
-        // Mark this tab as active for matchmaking
-        localStorage.setItem('activeMatchmakingTab', JSON.stringify({
-            tabId: this.tabId,
-            timestamp: Date.now()
-        }));
+		this.socket.onopen = () => {
+			console.log('Connected to matchmaking service')
+			this.callbacks.onConnect?.()
+		}
 
-        this.socket = new WebSocket(`wss://localhost/ws/matchmaking/?user_id=${userId}&tab_id=${this.tabId}`);
-
-        this.socket.onopen = () => {
-            console.log('Connected to matchmaking service');
-            this.callbacks.onConnect?.();
-        };
-
-        this.socket.onmessage = this.handleMessage;
-        this.socket.onclose = () => {
-            console.log('Disconnected from matchmaking service');
-            this.callbacks.onDisconnect?.();
-            this.currentUserId = null;
-            
-            // Clean up active tab marker if this was the active tab
-            const activeTab = JSON.parse(localStorage.getItem('activeMatchmakingTab'));
-            if (activeTab && activeTab.tabId === this.tabId) {
-                localStorage.removeItem('activeMatchmakingTab');
-            }
-        };
-    }
+		this.socket.onmessage = this.handleMessage
+		this.socket.onclose = () => {
+			console.log('Disconnected from matchmaking service')
+			this.callbacks.onDisconnect?.()
+			// Clear the stored user ID on disconnect
+			this.currentUserId = null
+		}
+		this.socket.onerror = (error) => console.error('Matchmaking error:', error)
+	}
 
 	handleMessage(event) {
 		try {
 			const data = JSON.parse(event.data)
 			console.log('Received message:', data)
-			
-            if (data.type === 'match_found' && data.tabId !== this.tabId) {
-                // Another tab handled the match
-                this.close();
-                return;
-            }
-
 
 			switch (data.type) {
-				case 'otherTabMatchmaking':  // Add this case
-					this.callbacks.onOtherTabMatchmaking = callback;
-					break
 				case 'status':
 					this.callbacks.onStatus?.(data)
 					break

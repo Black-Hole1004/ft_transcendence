@@ -77,6 +77,17 @@ function Layout() {
 		}
 	}
 
+	// Add near the top with your other state declarations
+	const [activeGameTabId] = useState(
+		sessionStorage.getItem('tabId') || Math.random().toString(36).substr(2, 9)
+	)
+
+	// Add this useEffect after your other useEffects
+	useEffect(() => {
+		// Store tab ID in sessionStorage when tab opens
+		sessionStorage.setItem('tabId', activeGameTabId)
+	}, [])
+
 	useEffect(() => {
 		if (!authTokens?.access_token) {
 			logout() // Redirect to login
@@ -192,42 +203,63 @@ function Layout() {
 					triggerAlert('error', data.message)
 					break
 
-				case 'game_invite_accepted':
-					// check if the sneder is online or not before sending the notification and navigate to the game
-					const is_sender = data.sender.id === data.user.id
-
-					if (data.sender.status === 'offline') {
-						triggerAlert(
-							'info',
-							`${data.sender.username} is offline, you cannot play with them now`
-						)
-						return
-					}
-					if (data.sender.status == 'ingame') {
-						triggerAlert(
-							'info',
-							`${data.sender.username} is in a game, try again later`
-						)
-						return
-					}
-					if (is_sender) {
-						triggerAlert(
-							'success',
-							`${data.receiver.username} accepted your game invitation`
-						)
-					} else {
-						triggerAlert('success', `Starting game...`)
-					}
-
-					navigate('/matchmaking', {
-						state: {
-							backgroundId: 1,
-							currentUser: data.user, // The current user (sender or receiver)
-							isDirectMatch: true,
-							invitationId: data.invitation_id,
-						},
-					})
-					break
+					case 'game_invite_accepted':
+						// Determine user roles and tab status
+						const is_sender = data.sender.id === data.user.id;
+						const isAcceptingTab = data.acceptingTabId === activeGameTabId;
+						
+						// Get the stored sender tab ID if this is the sender
+						const storedSenderTabId = localStorage.getItem('gameSenderTab');
+						const isSenderTab = is_sender && (storedSenderTabId === activeGameTabId);
+					
+						console.log('Navigation check:', {
+							is_sender,
+							isAcceptingTab,
+							isSenderTab,
+							activeGameTabId,
+							storedSenderTabId,
+							acceptingTabId: data.acceptingTabId
+						});
+					
+						// Status checks
+						if (data.sender.status === 'offline') {
+							triggerAlert('info', `${data.sender.username} is offline`);
+							return;
+						}
+						if (data.sender.status === 'ingame') {
+							triggerAlert('info', `${data.sender.username} is in a game`);
+							return;
+						}
+					
+						// Show appropriate message
+						if (is_sender) {
+							triggerAlert('success', `${data.receiver.username} accepted your invitation`);
+						} else {
+							triggerAlert('success', 'Starting game...');
+						}
+					
+						// Navigation logic - Only navigate in the correct tab
+						if ((is_sender && isSenderTab) || (!is_sender && isAcceptingTab)) {
+							console.log('Navigating to matchmaking in tab:', activeGameTabId);
+							
+							localStorage.setItem('activeGame', JSON.stringify({
+								gameId: data.invitation_id,
+								activeTabId: activeGameTabId,
+								timestamp: Date.now()
+							}));
+					
+							navigate('/matchmaking', {
+								state: {
+									backgroundId: 1,
+									currentUser: data.user,
+									isDirectMatch: true,
+									invitationId: data.invitation_id,
+								},
+							});
+						} else {
+							console.log('Not navigating in this tab');
+						}
+						break;
 
 				case 'game_invite_declined':
 					const is_sender_ = data.sender.id === data.user.id
@@ -301,6 +333,7 @@ function Layout() {
 					type: 'game_invite_response',
 					invitation_id: invitationId,
 					response: response,
+					acceptingTabId: activeGameTabId, // Add this line to send the tab ID with the response
 				})
 			)
 		}
@@ -309,10 +342,16 @@ function Layout() {
 	// Add function to send game invites from anywhere in the app (e.g. chat)
 	const sendGameInvite = (receiverId) => {
 		if (socket_notification?.readyState === WebSocket.OPEN) {
+			
+			// Store the sender's tab ID when sending the invite
+			const senderTabId = sessionStorage.getItem('tabId');
+			localStorage.setItem('gameSenderTab', senderTabId);
+
 			socket_notification.send(
 				JSON.stringify({
 					type: 'game_invite',
 					receiver_id: receiverId,
+					senderTabId: senderTabId, //  send the tab ID with the invite
 				})
 			)
 			triggerAlert('success', 'Game invitation sent successfullyy')

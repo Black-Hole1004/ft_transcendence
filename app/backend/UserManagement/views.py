@@ -630,25 +630,75 @@ def get_current_profile_stats(request):
         }, status=500)
 
 # leaderboard-------------------------------------------------------------
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_leaderboard(request):
+#     try:
+#         # Get top 20 users ordered by XP
+#         top_users = User.objects.order_by('-xp')[:20]
+        
+#         # Prepare user data with achievements
+#         leaderboard_data = []
+#         for user in top_users:
+#             # Get user's current achievement based on XP
+#             achievement = Achievement.get_badge(user.xp)
+            
+#             leaderboard_data.append({
+#                 'id': user.id,
+#                 'username': user.username,
+#                 'xp': user.xp,
+#                 'profile_picture': user.profile_picture.url if user.profile_picture else None,
+#                 'achievement': achievement  # This already includes name and image
+#             })
+        
+#         return Response({
+#             'users': leaderboard_data
+#         })
+        
+#     except Exception as e:
+#         return Response({
+#             'error': str(e)
+#         }, status=500)
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_leaderboard(request):
     try:
-        # Get top 20 users ordered by XP
+        current_user = request.user
         top_users = User.objects.order_by('-xp')[:20]
-        
-        # Prepare user data with achievements
         leaderboard_data = []
+        current_user_in_top = False
+        
         for user in top_users:
             # Get user's current achievement based on XP
             achievement = Achievement.get_badge(user.xp)
             
-            leaderboard_data.append({
+            # Create the user data dictionary with all basic fields
+            user_data = {
                 'id': user.id,
                 'username': user.username,
                 'xp': user.xp,
                 'profile_picture': user.profile_picture.url if user.profile_picture else None,
-                'achievement': achievement  # This already includes name and image
+                'achievement': achievement
+            }
+            
+            # If this is the current user, mark it and set the flag
+            if user.id == current_user.id:
+                current_user_in_top = True
+                user_data['is_current_user'] = True  # Add the flag here for top 20 users
+            
+            leaderboard_data.append(user_data)
+        
+        # If current user isn't in top 20, add them at the end
+        if not current_user_in_top:
+            achievement = Achievement.get_badge(current_user.xp)
+            leaderboard_data.append({
+                'id': current_user.id,
+                'username': current_user.username,
+                'xp': current_user.xp,
+                'profile_picture': current_user.profile_picture.url if current_user.profile_picture else None,
+                'achievement': achievement,
+                'is_current_user': True
             })
         
         return Response({
@@ -659,7 +709,8 @@ def get_leaderboard(request):
         return Response({
             'error': str(e)
         }, status=500)
-
+        
+        
 #achievements -------------------------------------------------------------------------------
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
