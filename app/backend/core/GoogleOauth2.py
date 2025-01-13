@@ -14,6 +14,7 @@ from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
 from core.settings import HOSTNAME
+from UserManagement.views import generate_random_username
 
 
 
@@ -65,6 +66,12 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                     if field in user_data:
                         setattr(user, field, user_data[field])
                 
+                # Handle duplicate username case
+                if user_data.get('username') and User.objects.filter(username=user_data['username']).exists():
+                    # If the desired username already exists, generate a random one
+                    temp_username = generate_random_username()
+                    setattr(user, 'username', temp_username)
+                    # user.has_custom_username = False  # Mark it as a temp username
                 # Set OAuth flag and status
                 user.is_logged_with_oauth = True
                 user.status = 'online'

@@ -28,5 +28,4 @@ fi
 export POSTGRES_PASSWORD=$PASS
 # export POSTGRES_USER=$USER
 # export POSTGRES_DB=$DB
-
 POSTGRES_PASSWORD=$PASS exec /usr/local/bin/docker-entrypoint.sh "postgres" "$@"

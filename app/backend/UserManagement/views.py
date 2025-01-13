@@ -234,7 +234,7 @@ class Verify2faView(APIView):
 
 
 def generate_random_username():
-    prefix = 'moha_'
+    prefix = 'Guest_'
     suffix = str(uuid.uuid4())[:8]
     return prefix + suffix
 

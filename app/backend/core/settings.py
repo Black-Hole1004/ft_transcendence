@@ -114,7 +114,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'game',
     'Chat',
-    'anymail'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -204,7 +203,6 @@ POSTGRES_USER = get_vault_secret(root_token, 'postgres')['POSTGRES_USER']
 POSTGRES_PASSWORD = get_vault_secret(root_token, 'postgres')['POSTGRES_PASSWORD']
 POSTGRES_HOST = get_vault_secret(root_token, 'postgres')['POSTGRES_HOST']
 POSTGRES_PORT = 5432
-
 
 
 DATABASES = {
