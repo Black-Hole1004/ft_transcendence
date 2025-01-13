@@ -4,3 +4,4 @@ __pycache__/
 app/nginx/logs/
 app/nginx/ssl_certificates/
 app/data
+auto.py

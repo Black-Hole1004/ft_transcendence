@@ -14,7 +14,7 @@ const Message = ({ index, currentLoggedInUserId, message, recipientProfileImage 
 			{currentLoggedInUserId !== senderId && (
 				<img
 					src={`${recipientProfileImage}`}
-					className='rounded-full object-cover ring-1 ring-primary message-image select-none'
+					className='rounded-full aspect-square object-cover ring-1 ring-primary message-image select-none'
 					alt='friend-image'
 				/>
 			)}

@@ -14,6 +14,7 @@ def remove_profile_picture(user):
     # user.is_custom_profile_picture = False
     user.save()
 
+
 def update_profile_picture(user, profile_picture):
     """Update the user's profile picture."""
     if profile_picture:
@@ -69,6 +70,7 @@ def handle_password_change(user, user_data):
             user.save()
 
     return True
+
 
 def generate_new_tokens(user):
     """Generate new tokens for the user."""

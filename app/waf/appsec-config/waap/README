@@ -1,0 +1,39 @@
+Welcome to open-appsec! This archive houses our advanced machine learning model, designed to enhance security and accuracy in production environments.
+
+-----------------------------------------------------
+Using the Advanced Model when Building New Agent Code
+-----------------------------------------------------
+1. Clone the open-appsec agent GitHub repository (https://github.com/openappsec/openappsec).
+2. Copy the files in this archive to the `components/security_apps/waap/resources` folder.
+3. Build the agent package or Docker by following the instructions in the GitHub repository README (https://github.com/openappsec/openappsec/blob/main/README.md).
+
+Your new agent will now incorporate the advanced model for improved performance.
+
+-------------------------------------------------
+Using the advanced model in my kubernetes cluster
+-------------------------------------------------
+1. Create a config map from the tgz file in the relevant namespace:
+   `kubectl create configmap advanced-model-config --from-file open-appsec-advanced-model.tgz -n <namespace>`  
+2. Restart open-appsec pods in the same namespace
+
+--------------------------------------
+Using the advanced model inside docker
+--------------------------------------
+1. Map this .tgz file into the appsec container to "/advanced-model/open-appsec-advanced-model.tgz" file inside the container.
+2. Run the container (if you already have a running agent container please rerun it) 
+
+--------------------------------------------------
+Using the advanced model in a linux embedded agent
+--------------------------------------------------
+1. Create a folder under the following path in the root directory: /advanced-model `mkdir -p /advanced-model`
+2. Copy the .tgz file into the folder you craeted /advanced-model/open-appsec-advanced-model.tgz `cp ./open-appsec-advanced-model.tgz /advanced-model/open-appsec-advanced-model.tgz`.
+3. Deploy the embedded agent
+4. if you already have an open-appsec agent:
+	a. Complete steps 1-3
+	b. Run `open-appsec-ctl --stop-agent`
+	c. Extract model to the relevant folder by running 
+	`tar -xzf /advanced-model/open-appsec-advanced-model.tgz -C /etc/cp/conf/waap`
+	d. Run `open-appsec-ctl --start-agent`
+
+Feel free to reach out to us at info@openappsec.io, if you have any questions or encounter issues during the process. We appreciate your commitment to enhancing security with open-appsec!
+The open-appsec advanced learning model is subject to the LICENSE available in the tgz.

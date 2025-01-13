@@ -13,7 +13,7 @@ const Footer = ({
 	const emojiPickerRef = useRef(null)
 	const emojiButtonRef = useRef(null)
 
-	window.addEventListener('resize', () => {
+	window.addEventListener('resize', () => { // add cleanup
 		setWidth(window.innerWidth)
 	})
 

@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import F, Sum
 from django.db.models.functions import TruncDate
 from django.db.models import ExpressionWrapper, fields
+from django.core.validators import MaxLengthValidator
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -114,15 +115,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
 
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
+    first_name = models.CharField(max_length=20, blank=True)
+    last_name = models.CharField(max_length=20, blank=True)
     status = models.CharField(max_length=8, choices=status_choices, default='offline')
     is_staff = models.BooleanField(default=False)
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=25, unique=True)
     mobile_number = models.CharField(max_length=15, default='', blank=True,
     validators=[RegexValidator(regex='^\+?1?\d{9,15}$', message='Phone number must be entered in the format: +999999999. Up to 15 digits allowed.')])
-    display_name = models.CharField(max_length=30, default='', blank=True)
-    bio = models.TextField(default='', blank=True)
+    display_name = models.CharField(max_length=10, default='', blank=True)
+    bio = models.TextField(max_length=150, default='', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/avatar.jpg')
     date_joined = models.DateField(auto_now_add=True)
     # added by tabi3a
@@ -140,6 +141,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+    is_2fa_enabled = models.BooleanField(default=False)
+
+    # 2fa fields
+    otp_secret = models.IntegerField(default=0)  # Store OTP secret
+    otp_expiry = models.DateTimeField(blank=True, null=True)  # OTP expiry time
+    otp_attempts = models.IntegerField(default=0)  # Track OTP attempts
+    otp_verified = models.BooleanField(default=False)  # Track OTP verification status
 
     objects = CustomUserManager()
 
@@ -220,7 +228,7 @@ class FriendShipRequest(models.Model):
 class Notification(models.Model):
     sender = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='sender')
     receiver = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='receiver')
-    message = models.TextField()
+    message = models.TextField(max_length=50)
     is_read =  models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

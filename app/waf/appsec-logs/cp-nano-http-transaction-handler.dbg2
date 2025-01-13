@@ -1,0 +1,222 @@
+[Sat Jan 11 23:00:23 UTC 2025][addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-11T23:00:23.940174: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-11T23:00:23.940944: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-11T23:00:23.941534: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-11T23:00:23.942349: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-11T23:00:23.943036: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-11T23:00:23.949068: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-11T23:00:23.949769: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-11T23:00:23.959971: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-11T23:00:23.963003: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-11T23:00:23.968073: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-11T23:00:23.986836: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-11T23:00:23.990687: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-11T23:00:23.992812: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-11T23:00:24.006811: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-11T23:00:24.008670: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-11T23:00:24.010359: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-11T23:00:24.011774: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-11T23:00:24.012755: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-11T23:00:24.014240: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-11T23:00:24.015047: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-11T23:00:24.017410: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-11T23:00:24.019084: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-11T23:00:24.020536: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-11T23:00:24.023735: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-11T23:00:24.024988: : init@components_list_impl.h:126                            | ---] Initializing component: Table
+[2025-01-11T23:00:24.026839: : init@components_list_impl.h:126                            | ---] Initializing component: NginxAttachment
+[2025-01-11T23:00:24.028624: : init@nginx_attachment.cc:263                               | ---] Successfully initialized NGINX Attachment
+[2025-01-11T23:00:24.030446: : init@components_list_impl.h:126                            | ---] Initializing component: GradualDeployment
+[2025-01-11T23:00:24.031707: : init@components_list_impl.h:126                            | ---] Initializing component: HttpManager
+[2025-01-11T23:00:24.032564: : init@components_list_impl.h:126                            | ---] Initializing component: Layer-7 Access Control
+[2025-01-11T23:00:24.033502: : init@components_list_impl.h:126                            | ---] Initializing component: RateLimit
+[2025-01-11T23:00:24.034032: : init@components_list_impl.h:126                            | ---] Initializing component: WaapComponent
+[2025-01-11T23:00:25.640555: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ScannerDetector'
+[2025-01-11T23:00:25.648207: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ConfidenceCalculator'
+[2025-01-11T23:00:25.663511: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-11T23:00:25.667268: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ConfidenceCalculator'
+[2025-01-11T23:00:25.676623: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-11T23:00:25.736646: : registerStaticResource@nginx_attachment.cc:364             | ###] Failed to write the static resource to the shared memory. Resource name: cp-ab.js, static resource's path: /etc/cp/conf/waap/cp-ab.js
+[2025-01-11T23:00:25.738023: : registerStaticResource@nginx_attachment.cc:364             | ###] Failed to write the static resource to the shared memory. Resource name: cp-csrf.js, static resource's path: /etc/cp/conf/waap/cp-csrf.js
+[2025-01-11T23:00:25.738506: : init@components_list_impl.h:126                            | ---] Initializing component: IPSComp
+[2025-01-11T23:00:25.739119: : init@components_list_impl.h:126                            | ---] Initializing component: KeywordComp
+[2025-01-11T23:00:25.739864: : init@components_list_impl.h:126                            | ---] Initializing component: GeoLocation
+[2025-01-11T23:00:25.741145: : initGeoDbObj@geo_location.cc:109                           | ###] maxMindDB error: Error opening the specified MaxMind DB file
+[2025-01-11T23:00:25.742761: : init@components_list_impl.h:126                            | ---] Initializing component: HttpGeoFilter
+[2025-01-11T23:00:25.743294: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-11T23:00:25.744923: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 12000. Accepting: loopback connections
+[2025-01-11T23:00:25.832633: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-11T23:00:25.839203: : <10> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 2
+[2025-01-11T23:00:27.944885: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-11T23:00:39.074266: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-11T23:01:00.327481: : <25> registerAttachmentProcess@nginx_attachment.cc:540     | ---] Successfully registered attachment
+[2025-01-11T23:01:00.338766: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:00.354828: : <36> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='ScannerDetector'
+[2025-01-11T23:01:00.357452: : <36> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='ConfidenceCalculator'
+[2025-01-11T23:01:00.360895: : <36> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-11T23:01:00.363711: : <36> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='ConfidenceCalculator'
+[2025-01-11T23:01:00.366684: : <36> SerializeToLocalAndRemoteSyncBase@Serializator.cc:418 | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='Any', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-11T23:01:00.438067: : <38> getSharedStorageHost@TuningDecision.cc:184            | ---] shared storage host is set to appsec-shared-storage
+[2025-01-11T23:01:00.508440: : <38> tryToBioConnect@connection.cc:479                     | ###] Connection to: appsec-shared-storage:80 failed and won't retry. Error: error:2008F002:BIO routines:BIO_lookup_ex:system lib
+[2025-01-11T23:01:00.509356: : <38> connectToHost@connection.cc:521                       | ###] Connection to: appsec-shared-storage:80 failed and will be suspended for 60 seconds
+[2025-01-11T23:01:00.510253: : <38> establishConnection@connection.cc:193                 | ###] Failed to connect to host: appsec-shared-storage:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.511110: : <38> establishNewConnection@connection_comp.cc:104         | ###] Failed to establish connection. Error: appsec-shared-storage:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.511920: : <38> getConnection@messaging_comp.cc:107                   | ###] Failed to establish connection. Error: appsec-shared-storage:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.512606: : <38> sendMessage@messaging_comp.cc:123                     | ###] Failed to get connection. Error: Failed to establish connection. Error: appsec-shared-storage:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.513360: : <40> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Indicators/Confidence/remote, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.514230: : <40> getRemoteProcessedFilesList@Serializator.cc:774       | ###] Failed to get the list of files
+[2025-01-11T23:01:00.514964: : <40> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Indicators/Confidence/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.515763: : <40> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/2/Indicators/Confidence/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.516543: : <40> getProcessedFilesList@Serializator.cc:844             | ###] Failed to get the list of files
+[2025-01-11T23:01:00.517267: : <40> pullProcessedData@ConfidenceCalculator.cc:230         | !!!] Failed to get the remote state
+[2025-01-11T23:01:00.518185: : <42> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Indicators/Trust/remote, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.519577: : <42> getRemoteProcessedFilesList@Serializator.cc:774       | ###] Failed to get the list of files
+[2025-01-11T23:01:00.520364: : <42> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Indicators/Trust/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.522315: : <42> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/2/Indicators/Trust/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.523092: : <42> getProcessedFilesList@Serializator.cc:844             | ###] Failed to get the list of files
+[2025-01-11T23:01:00.523918: : <44> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Type/Confidence/remote, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.524613: : <44> getRemoteProcessedFilesList@Serializator.cc:774       | ###] Failed to get the list of files
+[2025-01-11T23:01:00.525219: : <44> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Type/Confidence/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.525814: : <44> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/2/Type/Confidence/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.526518: : <44> getProcessedFilesList@Serializator.cc:844             | ###] Failed to get the list of files
+[2025-01-11T23:01:00.527413: : <44> pullProcessedData@ConfidenceCalculator.cc:230         | !!!] Failed to get the remote state
+[2025-01-11T23:01:00.528153: : <46> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Type/Trust/remote, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.528647: : <46> getRemoteProcessedFilesList@Serializator.cc:774       | ###] Failed to get the list of files
+[2025-01-11T23:01:00.529452: : <46> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/Type/Trust/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.530289: : <46> sendObject@i_serialize.h:165                          | ###] failed to send request to uri: /api/?list-type=2&prefix=d62213d2-7dda-4b14-9003-b0a407809f91/Any/2/Type/Trust/processed, error: [Status-code]: -2 - HTTP_SUSPEND, [Body]: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.531127: : <46> getProcessedFilesList@Serializator.cc:844             | ###] Failed to get the list of files
+[2025-01-11T23:01:00.596888: : <47> tryToBioConnect@connection.cc:479                     | ###] Connection to: appsec-tuning-svc:80 failed and won't retry. Error: error:2008F002:BIO routines:BIO_lookup_ex:system lib
+[2025-01-11T23:01:00.598027: : <47> connectToHost@connection.cc:521                       | ###] Connection to: appsec-tuning-svc:80 failed and will be suspended for 60 seconds
+[2025-01-11T23:01:00.598765: : <47> establishConnection@connection.cc:193                 | ###] Failed to connect to host: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.599442: : <47> establishNewConnection@connection_comp.cc:104         | ###] Failed to establish connection. Error: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.600864: : <47> getConnection@messaging_comp.cc:107                   | ###] Failed to establish connection. Error: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.602019: : <47> sendMessage@messaging_comp.cc:123                     | ###] Failed to get connection. Error: Failed to establish connection. Error: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.603012: : <47> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -1, error response: Failed to establish connection. Error: appsec-tuning-svc:80. There won't be a retry attempt.
+[2025-01-11T23:01:00.604423: : <48> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.605619: : <49> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.607140: : <50> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.608055: : <51> sendSyncMessageWithoutResponse@interface_impl.h:114   | ###] Received error from server. Status code: -2, error response: The connection is suspended due to consecutive message sending errors.
+[2025-01-11T23:01:00.813862: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:01.356933: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:01.927418: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:02.266722: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:03.030372: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:03.044245: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:03.107793: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:03.404446: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:03.581997: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:04.041482: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:04.150146: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:04.214398: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:04.306704: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:05.008791: : <54> load@triggers_config.cc:205                           | ###] Failed to parse the extendLoggingMinSeverityfield: 'high'
+[2025-01-11T23:01:05.011805: : <54> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON File stream
+[2025-01-11T23:01:05.028572: : <54> loadUserLimitsPolicy@WaapConfigBase.cc:282            | ---] [USER LIMITS] policy loaded:
+[Policy] urlMaxSize: 32768  httpHeaderMaxSize: 102400  httpBodyMaxSize: 1024000000  maxObjectDepth: 40  httpIllegalMethodsAllowed: false
+[2025-01-11T23:01:05.041029: : <54> loadUserLimitsPolicy@WaapConfigBase.cc:282            | ---] [USER LIMITS] policy loaded:
+[Policy] urlMaxSize: 32768  httpHeaderMaxSize: 102400  httpBodyMaxSize: 1024000000  maxObjectDepth: 40  httpIllegalMethodsAllowed: false
+[2025-01-11T23:01:05.043869: : <54> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: /var/log/nano_agent/cp-nano-http-transaction-handler.log2
+[2025-01-11T23:01:05.044580: : <54> addStream@logging.cc:107                              | ---] Successfully added log stream. Stream type: JSON FOG stream
+[2025-01-11T23:01:05.046384: : <54> initGeoDbObj@geo_location.cc:109                      | ###] maxMindDB error: Error opening the specified MaxMind DB file
+[2025-01-11T23:01:07.776249: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-11T23:01:12.540008: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:12.806405: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:12.883956: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:12.919729: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:12.945824: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:12.968739: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:13.042541: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:13.099250: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:13.114480: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:13.234056: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.106672: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.275695: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.312547: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.327511: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.398546: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.403569: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.427405: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.470199: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.480046: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.552965: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:14.569671: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:15.641223: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:17.594416: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:01:18.135761: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.610783: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.652760: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.675598: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.711952: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.737459: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.749474: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.786834: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.790436: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.812299: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:27.827936: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.066722: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.083880: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.090031: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.105401: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.112658: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.124303: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.165385: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.191991: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.571253: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.584696: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:28.735052: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:33.392006: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:33.397633: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:34.551465: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:34.787008: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.387423: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.453510: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.459053: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.483332: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.490527: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.507249: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.515913: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.646934: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.657502: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.861050: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.866809: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:36.898679: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:37.059691: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:37.084643: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:37.299732: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:37.313684: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:37.443747: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:37.473929: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:37.586269: : <36> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Nginx Attachment inspection handler
+[2025-01-11T23:02:38.265460: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:38.271012: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:38.439313: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:38.929411: : <36> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Nginx Attachment inspection handler
+[2025-01-11T23:02:41.514213: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:41.541805: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:48.873533: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:48.877031: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:48.970130: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.029861: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.057913: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.071792: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.477724: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.502184: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.541893: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.569090: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.764232: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.771550: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.910258: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.928048: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.936718: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:49.953098: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.043472: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.054769: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.084896: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.312020: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.577189: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.590252: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.615852: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.649717: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized
+[2025-01-11T23:02:50.877930: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.22.0.1, Error: Maxmind db is uninitialized

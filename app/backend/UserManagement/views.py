@@ -67,12 +67,14 @@ class RegisterView(APIView):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         dummy = generate_random_username()
+        if len(dummy) > 10:
+            dummy = dummy[:10]
         data.update({'username': dummy})
+        if len(data.get('username')) > 10:
+            data['username'] = data['username'][:10]
         form = UserCreationForm(data)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.username = generate_random_username()
-            user.save()
+            form.save()
             return JsonResponse({'message': 'User created successfully'}, status=201)
         else:
             return JsonResponse(form.errors, status=400)
@@ -100,6 +102,11 @@ class LoginView(APIView):
                 password = data.get('password')
                 user = authenticate(request, email=email, password=password)
 
+                if user is not None and user.is_2fa_enabled:
+                    # Generate and send OTP to the user's email
+                    otp = Twofa.generate_otp(user)
+                    todo: Twofa.sendMail(otp=otp, email=user.email)
+                    return JsonResponse({'message': f'OTP sent to your email: {user.email}', "Twofa_enabled" : True}, status=200)
                 if user is not None:
                     user.status = 'online'
                     user.save()
@@ -113,7 +120,8 @@ class LoginView(APIView):
                     response = JsonResponse({
                         'access_token': access_token,
                         'refresh_token': refresh_token,
-                        'message': 'User authenticated successfully'
+                        'message': 'User authenticated successfully',
+                        'Twofa_enabled': False
                     })
                     return response
                 else:
@@ -121,7 +129,7 @@ class LoginView(APIView):
             except json.JSONDecodeError:
                 return JsonResponse({'error': 'Invalid JSON'}, status=400)
         else:
-            return render(request, 'login.html')
+            return JsonResponse({'error': 'Method not allowed'}, status=405)
 
     @database_sync_to_async
     def get_user_friends(self, user):
@@ -218,8 +226,10 @@ class UserProfileView(APIView):
                     return Response({'error': 'Invalid mobile number'}, status=status.HTTP_400_BAD_REQUEST)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
-            updated_user = serializer.save()
+            if '2fa_status' in user_data:
+                update_2fa_status(user, user_data['2fa_status'])
 
+            updated_user = serializer.save()
             # If password was changed, generate new tokens
             new_tokens = None
             if 'new_password' in user_data:
@@ -292,7 +302,8 @@ class UsersListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        users = User.objects.all()
+        users = User.objects.all().limit(100)
+        # limit to 100 users
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 

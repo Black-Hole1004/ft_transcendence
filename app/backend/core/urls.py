@@ -15,6 +15,8 @@ from UserManagement.views import UsersListView
 from UserManagement.views import HealthCheckView
 from UserManagement.views import GetUserByUserName
 from UserManagement.views import GetTimeSpentByUserName
+from UserManagement.views import Activate2faView
+from UserManagement.views import Verify2faView
 
 from django.contrib import admin
 from django.urls import path, include
@@ -39,6 +41,8 @@ urlpatterns = [
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/user/', UserProfileView.as_view(), name='user-profile'),
+    path('api/user/2fa/', Activate2faView.as_view(), name='2fa-status'),
+    path('api/user/2fa/verify/', Verify2faView.as_view(), name='2fa-verify'),
 
     path('api/social-auth/', include('social_django.urls', namespace='social')),
     # added by tabi3a : check user existence

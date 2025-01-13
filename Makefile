@@ -1,8 +1,13 @@
 .PHONY: all up build updetached down prune scan
 
+HOSTNAME := localhost
 all: up
 
 up:
+	echo $(HOSTNAME)
+	sed -i '' 's#://[^/]*#://$(HOSTNAME)#g' app/frontend/.env
+	cat app/frontend/.env
+	@rm -rf $( ls | grep -v local | grep -v advanced)
 	docker-compose up --build 
 
 ssl:

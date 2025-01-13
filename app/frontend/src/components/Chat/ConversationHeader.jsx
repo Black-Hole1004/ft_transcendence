@@ -27,10 +27,10 @@ const ConversationHeader = ({
 	recipientInfo,
 	currentLoggedInUserId,
 	recipientProfileImage,
-	reciver_id,
+	receiver_id,
 }) => {
-	console.log('header blockerId: ', blockerId)
-	console.log('areFriends: ', areFriends)
+	// console.log('header blockerId: ', blockerId)
+	// console.log('areFriends: ', areFriends)
 
 	const handleBlock = () => {
 		setBlockerId(currentLoggedInUserId)
@@ -58,11 +58,11 @@ const ConversationHeader = ({
 		triggerAlert(type, message)
 	}
 	useEffect(() => {
-		// console.log('Receiver ID has changed:', reciver_id);
-		if (reciver_id) {
-			console.log('Receiver ID has changed:', reciver_id);
+		// console.log('Receiver ID has changed:', receiver_id);
+		if (receiver_id) {
+			console.log('Receiver ID has changed:', receiver_id);
 		}
-	}, [reciver_id])
+	}, [receiver_id])
 
 	const handle_add_friend = async (id) => {
 		if (!id) {
@@ -101,14 +101,14 @@ const ConversationHeader = ({
 			console.error('Error:', error)
 		}
 	}
-// ------------------------------
 
+	
 return (
 	<div className='chat-header flex justify-between items-center tb:h-[20%] h-[15%] w-full z-30'>
 		<div className='flex justify-center items-center lp:gap-4 gap-3 max-tb:my-3'>
 			<img
 				src={`${recipientProfileImage}`}
-				className='chat-history-image object-cover rounded-full ring-1 ring-primary select-none'
+				className='chat-history-image aspect-square object-cover rounded-full ring-1 ring-primary select-none'
 				alt='user image'
 			/>
 			<div>
@@ -147,8 +147,8 @@ return (
 			)}
 			{(blockerId === 0 || blockerId === null) &&
 				(areFriends
-				? <Button onClick={() => handleInviteToGame(reciver_id)}>Invite to Game</Button>
-				: <Button onClick={() => handle_add_friend(reciver_id)}>Add Friend</Button>
+				? <Button onClick={() => handleInviteToGame(receiver_id)}>Invite to Game</Button>
+				: <Button onClick={() => handle_add_friend(receiver_id)}>Add Friend</Button>
 			)}
 			{(blockerId === 0 || blockerId === null) && (
 				<Button onClick={handleBlock}>Block user</Button>

@@ -1,8 +1,10 @@
 function UserInfos({ recipientInfo, badge_info, recipientXp }) {
 	return (
-		<div className='border border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
-			flex lg:flex-col mtb:flex-row flex-col items-center max-lg:justify-around lg:pt-user-info-t bg-[rgba(27,22,17,0.5)]
-			lg:h-chat-user-info-lg lg:px-user-info-x-lg px-user-info-x-ms ms:py-user-info-y-ms gap-y-4'>
+		<div
+			className='border border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
+		flex lg:flex-col mtb:flex-row flex-col items-center max-lg:justify-around lg:pt-user-info-t bg-[rgba(27,22,17,0.5)]
+		lg:h-chat-user-info-lg lg:px-user-info-x-lg px-user-info-x-ms py-user-info-y-ms gap-y-4'
+		>
 			{recipientInfo ? (
 				<>
 					<div className="lg:w-full flex lg:flex-col gap-2 ml:flex-row flex-col text-start">
@@ -21,7 +23,7 @@ function UserInfos({ recipientInfo, badge_info, recipientXp }) {
 								</p>
 								<p className='text-light nickname'>@{`${recipientInfo.username}`}</p>
 							</div>
-							<div className='max-w-[400px] break-words'>
+							<div className='lg:w-full mtb:w-[400px] w-[290px] break-words'>
 								<p className='font-medium text-primary bio'>{`${recipientInfo.bio}`}</p>
 							</div>
 						</div>

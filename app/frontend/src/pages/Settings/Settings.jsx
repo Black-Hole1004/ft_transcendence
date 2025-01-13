@@ -61,6 +61,33 @@ const Settings = () => {
 	// 	openDialog()
 	// }
 
+	const send2faAxiosRequest = (status) => {
+		axios
+				.post(USER_API + '2fa/', { '2fa_status': status }, { headers: getAuthHeaders() })
+				.then((response) => {
+					if (response.status === 200) {
+						console.log('response ----->', response.data)
+						// openDialog()
+					}
+				})
+				.catch((error) => {
+					if (error.response) {
+						console.log('Error:', error.response.data)
+						const errorMessage = error.response.data?.error || 'Failed to enable 2FA'
+						triggerAlert('error', errorMessage)
+						console.error('Error:', errorMessage)
+					} else if (error.request) {
+						// Request was made but no response received
+						triggerAlert('error', 'No response from the server')
+						console.error('Error: No response from the server')
+					} else {
+						// Something happened while setting up the request
+						triggerAlert('error', error.message)
+						console.error('Error:', error.message)
+					}
+				})
+	}
+
 	const openDeleteDialog = () => {
 		if (deleteDialogRef.current) {
 			deleteDialogRef.current.showModal()
@@ -76,6 +103,8 @@ const Settings = () => {
 	const enableDesable2FA = () => {
 		if (!twoFactorAuthEnabled) {
 			setTwoFactorAuthEnabled(true)
+			// do axios call to enable 2FA `api/users/2fa/` using post request with json body {"2fa_status": true}
+			send2faAxiosRequest(true);
 		} else {
 			// console.log(twoFactorAuthEnabled)
 			openDialog()
@@ -123,7 +152,7 @@ const Settings = () => {
 	const [new_password, setNewPassword] = useState('')
 	const [confirm_password, setConfirmPassword] = useState('')
 
-	const { authTokens, logout, getAuthHeaders } = useAuth()
+	const { getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
 
 	function clearAllCookies() {
@@ -187,12 +216,12 @@ const Settings = () => {
 		const userProfileData = new FormData()
 
 		if (!user) return userProfileData
-		userProfileData.append('first_name', first_name || '')
-		userProfileData.append('last_name', last_name || '')
+		userProfileData.append('first_name', first_name.length > 10 ? first_name.slice(0, 10) : first_name || '')
+		userProfileData.append('last_name', last_name.length > 10 ? last_name.slice(0, 10) : last_name || '')
 		userProfileData.append('email', email || '')
 		userProfileData.append('mobile_number', mobile_number || '')
-		userProfileData.append('username', username || '')
-		userProfileData.append('display_name', display_name || '')
+		userProfileData.append('username', username.length > 10 ? username.slice(0, 10) : username || '')
+		userProfileData.append('display_name', display_name.length > 10 ? display_name.slice(0, 10) : display_name || '')
 		userProfileData.append('bio', bio || '')
 		userProfileData.append('password', password || '')
 		userProfileData.append('new_password', new_password || '')
@@ -461,7 +490,7 @@ const Settings = () => {
 											name='bio'
 											id='bio'
 											placeholder={bio}
-											maxLength={'250'}
+											maxLength={'150'}
 											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
 										max-ms:w-full outline-none placeholders placeholder:text-border transition-all duration-300'
 											onChange={handleInputChange}
@@ -524,7 +553,7 @@ const Settings = () => {
 									Enable Two-factor Authentication
 								</Button>
 								<button
-									className='rounded-md border-red-600 font-regular buttons-text remove-button border 
+									className='rounded border-red-600 font-regular buttons-text remove-button border 
 								transition duration-300 select-none bg-red-600 bg-opacity-10 hover:bg-red-600 active:bg-red-700'
 									// onClick={deleteAccount}
 									onClick={openDeleteDialog}
@@ -560,6 +589,7 @@ const Settings = () => {
 				dialogRef={dialogRef}
 				closeDialog={closeDialog}
 				setTwoFactorAuthEnabled={setTwoFactorAuthEnabled}
+				send2faAxiosRequest={send2faAxiosRequest}
 			/>
 			<DeleteConfirmationModal
 				dialogRef={deleteDialogRef}

@@ -14,7 +14,7 @@ from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
 import os
-
+from core.settings import HOSTNAME
 
 class Intra42OAuth2(BaseOAuth2):
     
@@ -126,7 +126,7 @@ class Intra42OAuth2(BaseOAuth2):
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
             refresh_token = str(refresh)
-            redirect_url = f"https://localhost/dashboard?access_token={access_token}&refresh_token={refresh_token}"
+            redirect_url = f"https://{HOSTNAME}/dashboard?access_token={access_token}&refresh_token={refresh_token}"
             return HttpResponseRedirect(redirect_url)
 
         else:
