@@ -107,7 +107,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			className={`max-ml:mb-0 ml:w-card-custom max-w-full w-screen
 			${isSigningIn ? 'h-[570px]' : 'h-[600px]'}
 			${isSigningIn ? 'ml:h-signin-card-custom' : 'ml:h-signup-card-custom'} overflow-y-hidden
-			ml:border-1.5 border border-b-0 border-primary rounded bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
+			ml:border-1.5 border border-b-0 border-primary rounded-md bg-secondary backdrop:bg-backdrop-40 backdrop:backdrop-blur-sm`}
 		>
 
 			<div className='m-2'>
@@ -130,7 +130,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 					{isSigningIn ? (
 						<div className='w-full flex flex-col items-center welcome-message'>
 							<h1 className='sign-in-title'>Welcome back!</h1>
-							<p className='sign-in-phrases'>Sign in to access your dashboard .</p>
+							<p className='sign-in-phrases'>Sign in to access your dashboard.</p>
 						</div>
 					) : (
 						<h1 className='sign-in-title text-center create-account'>

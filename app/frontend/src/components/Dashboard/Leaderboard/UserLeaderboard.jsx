@@ -1,13 +1,6 @@
 import React from 'react';
 
 function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture }) {
-	// Helper to truncate long usernames
-	const truncateUsername = (username) => {
-		if (username.length > 13) {
-			return username.substring(0, 12) + '...';
-		}
-		return username;
-	};
 
 	const getAchievementImage = (achievementName) => {
 		const formattedName = achievementName.toLowerCase().replace(/\s+/g, '-');
@@ -28,13 +21,13 @@ function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture }) {
 				<img
 					src={getProfilePicture(profilePicture)}
 					alt={nickname}
-					className='h-[76%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
+					className='h-[70%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
 					onError={(e) => {
 						e.target.src = '/assets/images/default-avatar.png';
 					}}
 				/>
 				<div className='flex flex-wrap items-center overflow-hidden'>
-					<p className='text-primary nickname-size leading-[1] truncate mr-1'>{truncateUsername(nickname)}</p>
+					<p className='text-primary nickname-size leading-[1] truncate mr-1'>{nickname}</p>
 					<p className='text-achievement achievement-name'>{achievement}</p>
 				</div>
 			</div>

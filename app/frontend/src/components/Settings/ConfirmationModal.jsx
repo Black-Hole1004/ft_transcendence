@@ -13,6 +13,17 @@ const ConfirmationModal = ({ dialogRef, closeDialog, setTwoFactorAuthEnabled, se
 			ref={dialogRef}
 			className={`dialog-shape max-w-full text-primary
 			bg-transparent backdrop:bg-[rgba(0,0,0,.6)] backdrop:backdrop-blur-md`}
+			onClick={(e) => {
+				const dialogDimensions = e.currentTarget.getBoundingClientRect();
+				if (
+				e.clientX < dialogDimensions.left ||
+				e.clientX > dialogDimensions.right ||
+				e.clientY < dialogDimensions.top ||
+				e.clientY > dialogDimensions.bottom
+				) {
+				closeDialog();
+				}
+			}}
 		>
 			<div className='flex flex-col gap-8'>
 				<div className='flex flex-col gap-1'>

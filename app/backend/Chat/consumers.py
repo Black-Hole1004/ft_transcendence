@@ -2,7 +2,7 @@ import json
 
 from django.db.models import Q
 from .models import Message, Conversation
-from UserManagement.models import FriendShip
+from UserManagement.models import FriendShip, FriendShipRequest
 
 import jwt
 from django.conf import settings
@@ -170,8 +170,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             # Remove friendship if blocked
             if blocker_id > 0:
-                is_friend_from = FriendShip.objects.filter(user_from=self.user, user_to=self.other_participant).delete()
-                is_friend_to = FriendShip.objects.filter(user_from=self.other_participant, user_to=self.user).delete()
+                FriendShip.objects.filter(user_from=self.user, user_to=self.other_participant).delete()
+                FriendShip.objects.filter(user_from=self.other_participant, user_to=self.user).delete()
+                FriendShipRequest.objects.filter(user_from=self.user, user_to=self.other_participant).delete()
+                FriendShipRequest.objects.filter(user_from=self.other_participant, user_to=self.user).delete()
 
             # Save the updated conversation
             conversation.save()

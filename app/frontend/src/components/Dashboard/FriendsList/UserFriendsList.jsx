@@ -105,7 +105,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                 />
                 <img
                     src={user_friend.profile_picture}
-                    className='h-[76%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
+                    className='h-[70%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
                     alt='user-image'
                     loading='eager'
                 />
@@ -146,7 +146,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                 {/* Add friend button for non-friends */}
                 {!user_friend.is_friend && (
                     <Button 
-                        className={'font-medium add-friend-button rounded border border-border'}
+                        className={'font-medium invite-button px-2 py-1 rounded border border-border'}
                         onClick={() => handle_add_friend(user_friend.id)}
                         disabled={isBlocked}
                     >

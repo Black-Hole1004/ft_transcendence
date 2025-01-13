@@ -353,7 +353,7 @@ export const AlertWrapper = () => {
 		if (showAlert) {
 			const timer = setTimeout(() => {
 				dismissAlert()
-			}, 3000)
+			}, 3200)
 			return () => clearTimeout(timer)
 		}
 	}, [showAlert, dismissAlert])
