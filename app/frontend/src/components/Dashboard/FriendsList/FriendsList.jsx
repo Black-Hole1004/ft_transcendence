@@ -17,7 +17,6 @@ function FriendsList() {
 	const { socket_notify, socket_friends } = useSocket();
 
 	const get_all_users = async () => {
-		console.log('-----------------> get_all_users')
 		try {
 			const response = await fetch(`${VITE_BASE_URL}/api/users/`, {
 				method: 'GET',
@@ -36,7 +35,6 @@ function FriendsList() {
 
 
 	useEffect(() => {
-		console.log('-----------------> useEffect')
 		get_all_users()
 	}, [])
 

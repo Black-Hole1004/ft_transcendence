@@ -31,7 +31,6 @@ class CustomGoogleOAuth2(GoogleOAuth2):
         'profile_picture': 'has_custom_profile_picture',
         'first_name': None,
         'last_name': None,
-        'display_name': None,
         'bio': None,
         'mobile_number': None,
     }
@@ -67,6 +66,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 
                 # Set OAuth flag and status
                 user.is_logged_with_oauth = True
+                user.is_logged_with_oauth_for_2fa = True
                 user.status = 'online'
                 user.save()
                 
@@ -108,7 +108,6 @@ class CustomGoogleOAuth2(GoogleOAuth2):
     def update_user_fields(self, user, google_data):
         """Update user fields while respecting customizations"""
         google_field_mapping = {
-            'name': 'display_name',
             'given_name': 'first_name',
             'family_name': 'last_name',
             'picture': 'profile_picture',
@@ -120,7 +119,6 @@ class CustomGoogleOAuth2(GoogleOAuth2):
             'username': 10,
             'first_name': 10,
             'last_name': 10,
-            'display_name': 10,
         }
 
 

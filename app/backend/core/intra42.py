@@ -118,6 +118,7 @@ class Intra42OAuth2(BaseOAuth2):
                     print(f'Error updating profile picture: {e}')
 
             user.is_logged_with_oauth = True
+            user.is_logged_with_oauth_for_2fa = True
             user.status = 'online'
             user.save()
             friends = async_to_sync(self.get_user_friends)(user)

@@ -36,6 +36,8 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
 				setNotifications((prevNotifications) =>
 					prevNotifications.filter((notification) => notification.id !== friendRequestId)
 				)
+				// close the notification dropdown after accepting a friend request
+				setIsNotificationOpen(false)
 				handleSubmit('success', data.message)
 			} else {
 				handleSubmit('error', data.message)
@@ -62,6 +64,7 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
 				setNotifications((prevNotifications) =>
 					prevNotifications.filter((notification) => notification.id !== friendRequestId)
 				)
+				setIsNotificationOpen(false)
 				handleSubmit('success', data.message)
 			} else {
 				handleSubmit('error', data.message)

@@ -53,39 +53,31 @@ const Settings = () => {
 		dialogRef.current.close()
 	}
 
-	// const handle2FAModal = () => {
-	// 	openDialog()
-	// }
-
-	// const handle2FAModal = () => {
-	// 	openDialog()
-	// }
 
 	const send2faAxiosRequest = (status) => {
 		axios
-				.post(USER_API + '2fa/', { '2fa_status': status }, { headers: getAuthHeaders() })
-				.then((response) => {
-					if (response.status === 200) {
-						console.log('response ----->', response.data)
-						// openDialog()
-					}
-				})
-				.catch((error) => {
-					if (error.response) {
-						console.log('Error:', error.response.data)
-						const errorMessage = error.response.data?.error || 'Failed to enable 2FA'
-						triggerAlert('error', errorMessage)
-						console.error('Error:', errorMessage)
-					} else if (error.request) {
-						// Request was made but no response received
-						triggerAlert('error', 'No response from the server')
-						console.error('Error: No response from the server')
-					} else {
-						// Something happened while setting up the request
-						triggerAlert('error', error.message)
-						console.error('Error:', error.message)
-					}
-				})
+			.post(USER_API + '2fa/', { '2fa_status': status }, { headers: getAuthHeaders() })
+			.then((response) => {
+				if (response.status === 200) {
+					console.log('response ----->', response.data)
+				}
+			})
+			.catch((error) => {
+				if (error.response) {
+					console.log('Error:', error.response.data)
+					const errorMessage = error.response.data?.error || 'Failed to enable 2FA'
+					triggerAlert('error', errorMessage)
+					console.error('Error:', errorMessage)
+				} else if (error.request) {
+					// Request was made but no response received
+					triggerAlert('error', 'No response from the server')
+					console.error('Error: No response from the server')
+				} else {
+					// Something happened while setting up the request
+					triggerAlert('error', error.message)
+					console.error('Error:', error.message)
+				}
+			})
 	}
 
 	const openDeleteDialog = () => {
@@ -128,12 +120,12 @@ const Settings = () => {
 		email: '',
 		mobile_number: '',
 		username: '',
-		display_name: '',
 		bio: '',
 		password: '',
 		new_password: '',
 		confirm_password: '',
 		profile_picture: '',
+		is_logged_with_oauth_for_2fa: false,
 	})
 
 	const [first_name, setFirst_name] = useState('')
@@ -141,7 +133,6 @@ const Settings = () => {
 	const [email, setEmail] = useState('')
 	const [mobile_number, setMobile_number] = useState('')
 	const [username, setUsername] = useState('')
-	const [display_name, setDisplay_name] = useState('')
 	const [bio, setBio] = useState('')
 	const [profile_picture, setProfile_picture] = useState('')
 	const [preview, setPreview] = useState(null)
@@ -203,7 +194,6 @@ const Settings = () => {
 		setEmail(user.email)
 		setMobile_number(user.mobile_number)
 		setUsername(user.username)
-		setDisplay_name(user.display_name)
 		setBio(user.bio)
 		setPassword(user.password)
 		setNewPassword(user.new_password)
@@ -221,7 +211,6 @@ const Settings = () => {
 		userProfileData.append('email', email || '')
 		userProfileData.append('mobile_number', mobile_number || '')
 		userProfileData.append('username', username.length > 10 ? username.slice(0, 10) : username || '')
-		userProfileData.append('display_name', display_name.length > 10 ? display_name.slice(0, 10) : display_name || '')
 		userProfileData.append('bio', bio || '')
 		userProfileData.append('password', password || '')
 		userProfileData.append('new_password', new_password || '')
@@ -229,7 +218,7 @@ const Settings = () => {
 		if (selectedFile) {
 			if (selectedFile.size > 5 * 1024 * 1024) {
 				triggerAlert('error', 'Image size must be less than 5MB')
-				return userProfileData
+				return null
 			}
 			userProfileData.append('profile_picture', selectedFile)
 		} else if (removeImage) {
@@ -240,6 +229,7 @@ const Settings = () => {
 	const update_user = async () => {
 		console.log('--- update_user ---')
 		const userProfileData = create_form_data(user, selectedFile)
+		if (!userProfileData) return
 		console.log('userProfileData ----->', userProfileData)
 		axios
 			.put(USER_API, userProfileData, {
@@ -298,9 +288,6 @@ const Settings = () => {
 			case 'username':
 				setUsername(value)
 				break
-			case 'display_name':
-				setDisplay_name(value)
-				break
 			case 'bio':
 				setBio(value)
 				break
@@ -337,7 +324,7 @@ const Settings = () => {
 		setRemoveImage(true)
 	}
 
-	// console.log('user ----->', user)
+	console.log('user ----->', user)
 
 	return (
 		<>
@@ -455,7 +442,7 @@ const Settings = () => {
 						<div className='font-regular sections-title tb:self-center self-start parts '>
 							<p className='text-primary'>Profile Settings</p>
 							<p className='text-light '>
-								Edit your display name, bio, and other public details.
+								Edit your username , bio, and other public details.
 							</p>
 						</div>
 						<div className='flex items-center'>
@@ -469,14 +456,6 @@ const Settings = () => {
 											placeholder={username}
 											onChange={handleInputChange}
 											value={username}
-										/>
-										<Input
-											id={'display_name'}
-											type={'text'}
-											label={'Display Name'}
-											placeholder={display_name}
-											onChange={handleInputChange}
-											value={display_name}
 										/>
 									</div>
 									<div className='flex flex-col'>
@@ -542,16 +521,22 @@ const Settings = () => {
 								/>
 							</div>
 							<div className='flex gap-4'>
-								<Button
-									className={
-										'rounded border border-border font-medium buttons-text remove-button'
-									}
-									type='submit'
-									onClick={enableDesable2FA}
-									disabled={twoFactorAuthEnabled}
-								>
-									Enable Two-factor Authentication
-								</Button>
+								{
+									(!user.is_logged_with_oauth_for_2fa) ? (
+										<Button
+											className={
+												'rounded border border-border font-medium buttons-text remove-button'
+											}
+											type='submit'
+											onClick={enableDesable2FA}
+											disabled={twoFactorAuthEnabled}
+										>
+											Enable Two-factor Authentication
+										</Button>
+									) : (
+										null
+									)
+								}
 								<button
 									className='rounded border-red-600 font-regular buttons-text remove-button border 
 								transition duration-300 select-none bg-red-600 bg-opacity-10 hover:bg-red-600 active:bg-red-700'

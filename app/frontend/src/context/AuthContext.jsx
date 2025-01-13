@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
             }
             else {
                 console.log('Login failed', data)
-                handleSubmit('error', data.detail)
+                handleSubmit('error', data.detail || data.email || data.password || data.error)
             }
         } catch (error) {
             console.error('error', error)

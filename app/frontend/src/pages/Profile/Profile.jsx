@@ -70,7 +70,6 @@ const Profile = () => {
 	const [email, setEmail] = useState('')
 	const [mobile_number, setMobile_number] = useState('')
 	const [username, setUsername] = useState('')
-	const [display_name, setDisplay_name] = useState('')
 	const [bio, setBio] = useState('')
 	const [profile_picture, setProfile_picture] = useState('')
 	const [date_joined_formatted, setDate_joined_formatted] = useState('')
@@ -82,7 +81,6 @@ const Profile = () => {
 		email: '',
 		mobile_number: '',
 		username: '',
-		display_name: '',
 		bio: '',
 		profile_picture: '',
 		date_joined_formatted: ''
@@ -127,7 +125,6 @@ const Profile = () => {
 		setEmail(user.email);
 		setMobile_number(user.mobile_number);
 		setUsername(user.username);
-		setDisplay_name(user.display_name);
 		setBio(user.bio);
 		setProfile_picture(user.profile_picture);
 		setDate_joined_formatted(user.date_joined_formatted);
@@ -161,7 +158,7 @@ const Profile = () => {
 						className='lp:ml-about-lp flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 						xl:gap-20 lg:gap-10 gap-3 max-lp:ml-0 mt-2'
 					>
-						<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} data_joined_formatted={date_joined_formatted} />
+						<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} bio={bio} data_joined_formatted={date_joined_formatted} />
 						<div className='flex flex-col items-center gap-2'>
 							<p className='titles max-mtb:self-start max-mtb:ml-3'>
 								Overall Progression

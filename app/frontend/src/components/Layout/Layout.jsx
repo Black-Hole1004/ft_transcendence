@@ -38,12 +38,12 @@ function Layout() {
 		email: '',
 		mobile_number: '',
 		username: '',
-		display_name: '',
 		bio: '',
 		password: '',
 		new_password: '',
 		confirm_password: '',
 		profile_picture: '',
+		is_logged_with_oauth_for_2fa: false,
 	})
 
 	const [first_name, setFirst_name] = useState('')
@@ -51,7 +51,8 @@ function Layout() {
 	const [email_, setEmail_] = useState('')
 	const [mobile_number, setMobile_number] = useState('')
 	const [username, setUsername] = useState('')
-	const [display_name, setDisplay_name] = useState('')
+	const [is_logged_with_oauth_for_2fa, setIs_logged_with_oauth_for_2fa] = useState(false)
+
 	const [bio, setBio] = useState('')
 	const [profile_picture, setProfile_picture] = useState('')
 
@@ -95,9 +96,9 @@ function Layout() {
 		setEmail_(user_data.email)
 		setMobile_number(user_data.mobile_number)
 		setUsername(user_data.username)
-		setDisplay_name(user_data.display_name)
 		setBio(user_data.bio)
 		setProfile_picture(user_data.profile_picture)
+		setIs_logged_with_oauth_for_2fa(user_data.is_logged_with_oauth_for_2fa)
 	}, [user_data])
 
 	const access_token = Cookies.get('access_token')

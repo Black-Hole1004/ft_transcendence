@@ -80,6 +80,8 @@ import pyotp
 from django.core.mail import EmailMultiAlternatives
 from datetime import timedelta
 from django.utils import timezone
+from django.db.models import Q
+from Chat.models import Conversation
 
 User = get_user_model()
 
@@ -1098,3 +1100,24 @@ def get_profile_stats(request, username):
         return Response({
             'error': str(e)
         }, status=500)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_blocked_status(request):
+    user = request.user
+    user_to_check_id = request.GET.get('user_id')
+
+    if not user_to_check_id:
+        return JsonResponse({'error': 'User ID not provided'}, status=400)
+
+    try:
+        # Check for any conversation where the user is blocked
+        is_blocked = Conversation.objects.filter(
+            (Q(user1_id=user) & Q(user2_id_id=user_to_check_id) & Q(blocked_by=user.id)) |
+            (Q(user1_id_id=user_to_check_id) & Q(user2_id=user) & Q(blocked_by=user_to_check_id))
+        ).exists()
+
+        return JsonResponse({'is_blocked': is_blocked})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
