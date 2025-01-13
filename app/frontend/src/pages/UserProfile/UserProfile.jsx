@@ -213,6 +213,7 @@ const UserProfile = () => {
 									currentPlayer={match.current_player}
 									opponent={match.opponent}
 									result={match.result}
+									startTime={match.start_time}
 								/>
 							))}
 						</div>

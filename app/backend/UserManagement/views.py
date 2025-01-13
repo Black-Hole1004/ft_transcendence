@@ -1,87 +1,56 @@
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth import logout
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login, logout as django_logout, get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from .forms import UserCreationForm
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-from rest_framework_simplejwt.tokens import RefreshToken
-import json
-import uuid
-from rest_framework import status
-from .serializers import UserSerializer
-from django.contrib.auth import logout as django_logout
-
+from django.utils import timezone
+from django.db import transaction, connections, IntegrityError
+from django.db.models import Count, Q, Sum
+from django.db.models.functions import TruncDate, ExtractHour, ExtractMinute, ExtractSecond
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from rest_framework.decorators import parser_classes
-
-from django.http import HttpResponseRedirect
-from itertools import chain
-
-from django.core.files.uploadedfile import UploadedFile
+from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-
-from .models import User
-import os
-import jwt
-from django.conf import settings
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from rest_framework.authtoken.models import Token
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import status, generics
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
-from rest_framework.exceptions import ValidationError
+from rest_framework.authtoken.models import Token
+from itertools import chain
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from channels.db import database_sync_to_async
+from datetime import datetime
+import json
+import uuid
+import os
+import jwt
+import time
+import socket
+import redis
 
-from rest_framework import generics
-
-from django.db.models import Count, Q
-from .models import Achievement
+from .forms import UserCreationForm
+from .models import (
+    User,
+    UserSession,
+    FriendShipRequest,
+    FriendShip,
+    Achievement
+)
 from game.models import GameSessions
-
-from django.utils import timezone
-
-from django.contrib.auth import get_user_model
-from UserManagement.profile_utils import notify_friends
-
+from .serializers import (
+    UserSerializer,
+    FriendRequestSerializer,
+    HealthCheckSerializer
+)
 from .profile_utils import (
     remove_profile_picture,
     update_profile_picture,
     handle_password_change,
-    generate_new_tokens
+    generate_new_tokens,
+    notify_friends
 )
-
-from .models import UserSession
-from .models import FriendShipRequest
-from .models import FriendShip
-
-from .serializers import FriendRequestSerializer
-from django.db import IntegrityError
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
-from channels.db import database_sync_to_async
-
-from django.db import transaction
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.db import connections
-from django.conf import settings
-from datetime import datetime
-import redis
-from .serializers import HealthCheckSerializer
-import time
-import socket
-from rest_framework.exceptions import ValidationError
-from django.db.models import Sum
-from django.db.models.functions import TruncDate, ExtractHour, ExtractMinute, ExtractSecond
-User = get_user_model()
-
 
 
 def generate_random_username():
@@ -629,6 +598,7 @@ def get_current_profile_stats(request):
                     'score': opponent_score
                 },
                 'result': result,
+                'start_time': game.start_time.strftime('%m/%d/%Y %H:%M')
             }
             recent_matches.append(match_data)
 
@@ -926,6 +896,7 @@ def get_profile_stats(request, username):
                     'score': opponent_score
                 },
                 'result': result,
+                'start_time': game.start_time.strftime('%m/%d/%Y %H:%M')
             }
             recent_matches.append(match_data)
 

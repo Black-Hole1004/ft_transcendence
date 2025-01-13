@@ -85,16 +85,19 @@ class Achievement:
         # Find current level
         current_threshold = 0
         next_threshold = 2000
-        for i in range(len(thresholds)-1):
+        for i in range(len(thresholds) - 1):
             if thresholds[i] <= xp < thresholds[i+1]:
                 current_threshold = thresholds[i]
                 next_threshold = thresholds[i + 1]
                 break
-
+        # If no interval found (xp >= 10000)
+        else:
+            current_threshold = thresholds[-1]
+            next_threshold = thresholds[-1]
         # Calculate progress
         progress = xp - current_threshold
-        total_range = next_threshold - current_threshold
-        progress_percentage = (progress / total_range) * 100
+        total_range = (next_threshold - current_threshold)
+        progress_percentage = 100 if current_threshold == next_threshold else (progress / total_range) * 100
 
         return {
             'current_threshold': current_threshold,

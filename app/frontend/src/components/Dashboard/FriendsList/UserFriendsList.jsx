@@ -68,7 +68,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
             rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
             <div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[72%]'>
                 <img
-                    src='/assets/images/Achievements/celestial-master.png'
+                    src={user_friend.badge_image}
                     className='achievement-icon-fr select-none'
                     alt='achievement-icon'
                     loading='eager'
@@ -84,7 +84,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                         {user_friend.username}
                     </p>
                     <p className='text-achievement achievement-name '> 
-                        achievement test
+                        {user_friend.badge_name}
                     </p>
                 </div>
             </div>

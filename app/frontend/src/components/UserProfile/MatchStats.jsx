@@ -1,4 +1,4 @@
-function MatchStats({ currentPlayer, opponent, result }) {
+function MatchStats({ currentPlayer, opponent, result, startTime }) {
 	const getFullImageUrl = (path) => {
 		if (!path) return '/assets/images/default-avatar.png';
 		if (path.startsWith('http')) return path;
@@ -55,6 +55,9 @@ function MatchStats({ currentPlayer, opponent, result }) {
 
 			{/* Match Result */}
 			<div className='flex flex-col items-center justify-center result'>
+				<p className='font-dreamscape-sans text-border date'>
+					{startTime}
+				</p>
 				<p className={`font-dreamscape-sans ${getResultColorClass()}`}>
 					{result.toLowerCase()}
 				</p>

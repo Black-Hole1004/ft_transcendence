@@ -35,7 +35,7 @@ const RemoteGame = () => {
 	const [winner, setWinner] = useState(null)
 	const [loser, setLoser] = useState(null)
 
-	const [timeRemaining, setTimeRemaining] = useState(60)
+	const [timeRemaining, setTimeRemaining] = useState(120)
 
 	// Pause/Resume state
 	const [pausingPlayer, setPausingPlayer] = useState(null)

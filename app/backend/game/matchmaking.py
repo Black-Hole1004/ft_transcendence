@@ -7,6 +7,7 @@ from UserManagement.models import Achievement
 from django.core.cache import cache
 import time
 from django.contrib.auth import get_user_model
+from urllib.parse import parse_qs
 
 User = get_user_model()
 
@@ -14,9 +15,15 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     matchmaking_queue = {}
     direct_match_pairs = {}  # Store invitation_id -> first_user_data mapping
     
+    user_connections = {}
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.search_task = None  # this to track the search task (solved the issue with disconnect doesn't get called)
+        self.user_id = None
+        self.username = None
+        self.tab_id = None
+
     
     async def send_countdown(self, channel_name, match_data):
         """Send synchronized countdown before match starts"""
@@ -76,6 +83,13 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
             await self.close()
             return
         
+        
+        # Get tab ID from query params
+        query_string = self.scope['query_string'].decode()
+        params = parse_qs(query_string)
+        self.tab_id = params.get('tab_id', [None])[0]
+        
+        
         # Store important user data as instance variables
         self.user_id = user.id
         self.username = user.username
@@ -83,19 +97,34 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
         # Remove any existing connections for this user
         await self.remove_existing_user_connection()
         
-        # Store player info in matchmaking queue
-        self.matchmaking_queue[self.channel_name] = {
-            'searching': False,
-            'user_id': self.user_id,
-            'username': self.username,
-            'connected_at': time.time()
-        }
+        # Track this connection for the user
+        if self.user_id not in self.user_connections:
+            self.user_connections[self.user_id] = {}
+        self.user_connections[self.user_id][self.tab_id] = self.channel_name
+        
 
-        # Send connection confirmation
-        await self.send(json.dumps({
-            'type': 'status',
-            'message': f'Connected to matchmaking service as {self.username}'
-        }))
+        # Only add to matchmaking queue if no other connections exist for this user
+        if len(self.user_connections[self.user_id]) == 1:
+            self.matchmaking_queue[self.channel_name] = {
+                'searching': False,
+                'user_id': self.user_id,
+                'username': self.username,
+                'tab_id': self.tab_id,
+                'connected_at': time.time()
+            }
+            # Send connection confirmation
+            await self.send(json.dumps({
+                'type': 'status',
+                'message': f'Connected to matchmaking service as {self.username}'
+            }))
+            
+        else:
+            # Send message that another tab is already handling matchmaking
+            await self.send(json.dumps({
+                'type': 'error',
+                'message': 'Matchmaking already in progress in another tab'
+            }))
+            
 
     @database_sync_to_async
     def check_player_status(self, user_id):
@@ -166,20 +195,42 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
             }))
         
     
+    # async def disconnect(self, close_code):
+    #     """Handle WebSocket disconnection."""
+    #     print("Disconnecting from matchmaking service")
+    #     try:
+    #         # Cancel the search task if it exists
+    #         if self.search_task:
+    #             self.search_task.cancel()
+    #         if self.channel_name in self.matchmaking_queue:
+    #             player_info = self.matchmaking_queue[self.channel_name]
+    #             print(f"User {player_info['username']} disconnecting from matchmaking service")
+    #             player_info['searching'] = False
+    #             del self.matchmaking_queue[self.channel_name]
+    #     except Exception as e:
+    #         print(f"Error during disconnect: {e}")
     async def disconnect(self, close_code):
-        """Handle WebSocket disconnection."""
-        print("Disconnecting from matchmaking service")
+        """Handle WebSocket disconnection"""
         try:
-            # Cancel the search task if it exists
+            # Remove this connection from user's connections
+            if self.user_id in self.user_connections:
+                if self.tab_id in self.user_connections[self.user_id]:
+                    del self.user_connections[self.user_id][self.tab_id]
+                    
+                # If this was the last connection, cleanup user entirely
+                if not self.user_connections[self.user_id]:
+                    del self.user_connections[self.user_id]
+                    
+            # Remove from matchmaking queue if present
+            if self.channel_name in self.matchmaking_queue:
+                del self.matchmaking_queue[self.channel_name]
+                
             if self.search_task:
                 self.search_task.cancel()
-            if self.channel_name in self.matchmaking_queue:
-                player_info = self.matchmaking_queue[self.channel_name]
-                print(f"User {player_info['username']} disconnecting from matchmaking service")
-                player_info['searching'] = False
-                del self.matchmaking_queue[self.channel_name]
+                
         except Exception as e:
             print(f"Error during disconnect: {e}")
+
 
     async def remove_existing_user_connection(self):
         """Remove any existing connections for the current user"""
@@ -330,6 +381,11 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
     async def handle_direct_match(self, invitation_id, user_id):
         """Handle direct match from game invitation"""
         try:
+            # Only proceed if this is the active tab for this user
+            active_tab = list(self.user_connections[self.user_id].keys())[0]
+            if active_tab != self.tab_id:
+                return
+            
             current_user = await self.get_user_data(user_id)
             
             # Check if this invitation already has a waiting player
@@ -349,6 +405,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                 match_data_player1 = {
                     'type': 'direct_match',
                     'game_id': game.game_id,
+                    'tab_id': self.tab_id,
                     'invitation_id': invitation_id,
                     'player_number': 1,
                     'current_user': {
@@ -368,6 +425,7 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                 match_data_player2 = {
                     'type': 'direct_match',
                     'game_id': game.game_id,
+                    'tab_id': self.tab_id,
                     'invitation_id': invitation_id,
                     'player_number': 2,
                     'current_user': match_data_player1['opponent'],

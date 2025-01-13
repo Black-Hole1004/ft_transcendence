@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom'
 
 const Profile = () => {
 	const { username_fetched } = useParams();
-	console.log(username_fetched);
+	// console.log(username_fetched);
 	const { authTokens, logout, getAuthHeaders } = useAuth()
 	const containerRef = useRef(null)
 	const [width, setWidth] = useState(0)
@@ -44,7 +44,7 @@ const Profile = () => {
 				headers: getAuthHeaders()
 			});
 			const data = await response.json();
-			console.log('data: ', data)
+			// console.log('data: ', data)
 			if (response.ok) {
 				setStats(data.stats);
 				setAchievement(data.achievement);
@@ -57,9 +57,9 @@ const Profile = () => {
 		}
 	};
 
-	console.log(stats);
-	console.log(matchHistory);
-	console.log(achievement);
+	// console.log(stats);
+	// console.log('matchHistory ==> ', matchHistory);
+	// console.log(achievement);
 
 	
 	useEffect(() => {
@@ -109,7 +109,7 @@ const Profile = () => {
 			if (response.ok) {
 				return data
 			} else {
-				console.log('Failed to fetch user data')
+				// console.log('Failed to fetch user data')
 				// logout();
 				return null
 			}
@@ -144,7 +144,7 @@ const Profile = () => {
 		setDate_joined_formatted(user.date_joined_formatted);
 	}, [user]);
 
-	console.log('user --------->', user);
+	// console.log('user --------->', user);
 
 	/************************************************************************ */
 
@@ -252,6 +252,7 @@ const Profile = () => {
 									currentPlayer={match.current_player}
 									opponent={match.opponent}
 									result={match.result}
+									startTime={match.start_time}
 								/>
 							))}
 						</div>

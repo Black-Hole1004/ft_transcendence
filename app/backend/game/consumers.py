@@ -303,36 +303,38 @@ class GameConsumer(AsyncWebsocketConsumer):
             
             await self.accept()
             
-            # Check if this is a reconnection
-            if (self.game_state and 
-                self.game_state.disconnected_player == self.player_number and 
-                self.game_state.disconnect_time is not None and  # Add this check
-                time.time() - self.game_state.disconnect_time < self.RECONNECT_TIMEOUT):
+            # # Check if this is a reconnection
+            # if (self.game_state and 
+            #     self.game_state.disconnected_player == self.player_number and 
+            #     self.game_state.disconnect_time is not None and  # Add this check
+            #     time.time() - self.game_state.disconnect_time < self.RECONNECT_TIMEOUT):
                 
-                # Clear disconnect state
-                self.game_state.disconnect_time = None
-                self.game_state.disconnected_player = None
+            #     print(f"Player {self.player_number} reconnected successfully : resuming game")
                 
-                # Restore player connection
-                if self.player_number == 1:
-                    self.game_state.player1_paddle['connected'] = True
-                else:
-                    self.game_state.player2_paddle['connected'] = True
+            #     # Clear disconnect state
+            #     self.game_state.disconnect_time = None
+            #     self.game_state.disconnected_player = None
+                
+            #     # Restore player connection
+            #     if self.player_number == 1:
+            #         self.game_state.player1_paddle['connected'] = True
+            #     else:
+            #         self.game_state.player2_paddle['connected'] = True
                     
-                self.game_state.connected_players += 1
+            #     self.game_state.connected_players += 1
                 
-                # Resume game if both players are connected
-                if self.game_state.connected_players == 2:
-                    self.game_state.is_paused = False
+            #     # Resume game if both players are connected
+            #     if self.game_state.connected_players == 2:
+            #         self.game_state.is_paused = False
                 
-                # Notify about reconnection
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        'type': 'player_reconnected',
-                        'player': self.player_number
-                    }
-                )
+            #     # Notify about reconnection
+            #     await self.channel_layer.group_send(
+            #         self.room_group_name,
+            #         {
+            #             'type': 'player_reconnected',
+            #             'player': self.player_number
+            #         }
+            #     )
             
             # Join room group
             await self.channel_layer.group_add(
@@ -411,7 +413,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             if (hasattr(self, 'game_state') and 
                 self.game_state.disconnected_player == self.player_number and 
                 not self.game_state.game_over):
-                
+                print(f"Player {self.player_number} did not reconnect in time => Ending game")
                 # If not reconnected, end the game
                 self.game_state.game_over = True
                 self.game_state.winner = 1 if self.player_number == 2 else 2
@@ -474,22 +476,84 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'message': str(e)
             }))
 
+    # async def handle_player_number_init(self, data):
+    #     """Handle player number initialization"""
+    #     try:
+    #         self.player_number = data.get('player_number')
+    #         print(f"player number initialization after reconnect: XORN {self.player_number}")
+    #         player_id = data.get('player_id') # player id (user id) from the matchmaking service (frontend)
+    #         print(f"Player number initialized: {self.player_number} and player_id: {player_id}")
+    #         if self.player_number == 1:
+    #             self.game_state.player1_id = player_id
+    #             self.game_state.player1_paddle['connected'] = True
+    #         else:
+    #             self.game_state.player2_id = player_id
+    #             self.game_state.player2_paddle['connected'] = True
+            
+    #         self.game_state.connected_players += 1
+            
+    #         # Just confirm player number was set
+    #         await self.send(json.dumps({
+    #             'type': 'player_number_confirmed',
+    #             'player_number': self.player_number
+    #         }))
+            
+    #     except Exception as e:
+    #         await self.send(json.dumps({
+    #             'type': 'error',
+    #             'message': f'Error initializing player number: {str(e)}'
+    #         }))
+    
     async def handle_player_number_init(self, data):
         """Handle player number initialization"""
         try:
             self.player_number = data.get('player_number')
-            player_id = data.get('player_id') # player id (user id) from the matchmaking service (frontend)
-            print(f"Player number initialized: {self.player_number} and player_id: {player_id}")
-            if self.player_number == 1:
-                self.game_state.player1_id = player_id
-                self.game_state.player1_paddle['connected'] = True
+            player_id = data.get('player_id')
+
+            # Check for reconnection first
+            if (self.game_state and 
+                self.game_state.disconnected_player == self.player_number and 
+                self.game_state.disconnect_time is not None and
+                time.time() - self.game_state.disconnect_time < self.RECONNECT_TIMEOUT):
+                                
+                # Clear disconnect state
+                self.game_state.disconnect_time = None
+                self.game_state.disconnected_player = None
+                
+                # Restore player connection
+                if self.player_number == 1:
+                    self.game_state.player1_id = player_id
+                    self.game_state.player1_paddle['connected'] = True
+                else:
+                    self.game_state.player2_id = player_id
+                    self.game_state.player2_paddle['connected'] = True
+                    
+                self.game_state.connected_players += 1
+                
+                # Resume game if both players are connected
+                if self.game_state.connected_players == 2:
+                    self.game_state.is_paused = False
+                
+                # Notify about reconnection
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'player_reconnected',
+                        'player': self.player_number
+                    }
+                )
             else:
-                self.game_state.player2_id = player_id
-                self.game_state.player2_paddle['connected'] = True
-            
-            self.game_state.connected_players += 1
-            
-            # Just confirm player number was set
+                # Normal connection logic
+                if self.player_number == 1:
+                    self.game_state.player1_id = player_id
+                    self.game_state.player1_paddle['connected'] = True
+                else:
+                    self.game_state.player2_id = player_id
+                    self.game_state.player2_paddle['connected'] = True
+                
+                self.game_state.connected_players += 1
+
+            # Send confirmation
             await self.send(json.dumps({
                 'type': 'player_number_confirmed',
                 'player_number': self.player_number
@@ -1069,6 +1133,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             # Get badges 
             winner_badge = Achievement.get_badge(winner.xp) # {name, xp, image}
+            print("winner_badge: xorn", winner_badge)
             loser_badge = Achievement.get_badge(loser.xp)
             
             # get progession data

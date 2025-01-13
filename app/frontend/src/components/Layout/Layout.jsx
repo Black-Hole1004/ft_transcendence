@@ -28,7 +28,7 @@ function Layout() {
 	const navigate = useNavigate()
 
 	const refreshUserData = () => {
-		console.log('------- Refreshing user data -------')
+		// console.log('------- Refreshing user data -------')
 		setRefreshData((prev) => prev + 1)
 	}
 
@@ -54,6 +54,8 @@ function Layout() {
 	const [display_name, setDisplay_name] = useState('')
 	const [bio, setBio] = useState('')
 	const [profile_picture, setProfile_picture] = useState('')
+	const [badge_name, setBadge_name] = useState('')
+	const [badge_image, setBadge_image] = useState('')
 
 	const fetchUser = async () => {
 		try {
@@ -107,15 +109,15 @@ function Layout() {
 		const newSocket = new WebSocket(WP_NOTIFY + '?access_token=' + access_token)
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from Notify Consumer ----')
+			// console.log('---- WebSocket Connected from Notify Consumer ----')
 		}
 		newSocket.onmessage = (event) => {
 			const data = JSON.parse(event.data)
-			console.log('WebSocket data:', data)
+			// console.log('WebSocket data:', data)
 		}
 
 		newSocket.onclose = (event) => {
-			console.log('WebSocket Closed form Notify Consumer:', event)
+			// console.log('WebSocket Closed form Notify Consumer:', event)
 		}
 
 		newSocket.onerror = (error) => {

@@ -14,18 +14,18 @@ function FriendsList() {
 	const { socket_notify, socket_friends } = useSocket();
 
 	const get_all_users = async () => {
-		console.log('-----------------> get_all_users')
+		// console.log('-----------------> get_all_users')
 		try {
 			const response = await fetch('https://localhost/api/users/', {
 				method: 'GET',
 				headers: getAuthHeaders(),
 			})
 			const data = await response.json()
-			console.log('data =====> []', data)
+			// console.log('data =====> []', data)
 			setUsers(data)
 		}
 		catch (error) {
-			console.log('data =====>error []')
+			// console.log('data =====>error []')
 			console.error('Error:', error)
 		}
 	}
@@ -33,7 +33,7 @@ function FriendsList() {
 
 
 	useEffect(() => {
-		console.log('-----------------> useEffect')
+		// console.log('-----------------> useEffect')
 		get_all_users()
 	}, [])
 
@@ -101,7 +101,7 @@ function FriendsList() {
 			<div className='w-[96%] overflow-y-auto users'>
 				{
 					filterUsers.map((user) => {
-						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} />
+						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} badge_image={user.badge_image} badge_name={user.badge_name} />
 					})
 				}
 			</div>
