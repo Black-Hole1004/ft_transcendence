@@ -11,5 +11,9 @@ __pycache__/
 ./app/waf/smartsync-storage/
 ./app/vault/.env
 ./app/db/postgres/
-/app/backend/UserManagement/migrations/000*
+./app/backend/UserManagement/migrations/000*
 !/app/backend/UserManagement/migrations/0001*
+./app/vault/token.txt
+./app/vault/unseal_key1.txt
+./app/vault/unseal_key2.txt
+./app/vault/unseal_key3.txt
