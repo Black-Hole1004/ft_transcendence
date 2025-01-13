@@ -90,7 +90,7 @@ const Chat = () => {
 			console.log('extract conversation key from url')
 			setConversationMessages([])
 			setConversationKey(uri[0])
-			setBlockerId(0)
+			// setBlockerId(0)
 			setIsConversationLoaded(true)
 		} else if (uri.length > 1) {
 			navigate('/404')

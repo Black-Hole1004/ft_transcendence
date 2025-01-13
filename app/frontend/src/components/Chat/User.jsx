@@ -57,7 +57,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 			id={user_id}
 			onClick={handleConversationSelect}
 			className={`flex max-tb:flex-col max-tb:justify-around items-center gap-2
-			tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg tb:px-user-div-px-tb
+			tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg tb:px-user-div-px-tb cursor-pointer
 				${search ? '' : selectedUserId === user_id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
 		>
 			<img

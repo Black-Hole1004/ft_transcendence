@@ -152,12 +152,12 @@ return (
 			{blockerId === currentLoggedInUserId && (
 					<Button onClick={() => setBlockerId(0)}>Unblock</Button>
 			)}
-			{(blockerId === 0 || blockerId === null) &&
+			{(blockerId === 0) &&
 				(areFriends
 				? <Button onClick={() => handleInviteToGame(receiver_id)}>Invite to Game</Button>
 				: <Button onClick={() => handle_add_friend(receiver_id)}>Add Friend</Button>
 			)}
-			{(blockerId === 0 || blockerId === null) && (
+			{(blockerId === 0) && (
 				<Button onClick={handleBlock}>Block user</Button>
 			)}
 		</div>

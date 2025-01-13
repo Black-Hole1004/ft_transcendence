@@ -93,20 +93,6 @@ const UserProfile = () => {
 		fetchData();
 	}, [profile_name]);
 
-	useEffect(() => {
-		if (!user)
-			return;
-		setFirst_name(user.first_name);
-		setLast_name(user.last_name);
-		setEmail(user.email);
-		setMobile_number(user.mobile_number);
-		setUsername(user.username);
-		setBio(user.bio);
-		setProfile_picture(user.profile_picture);
-		setDate_joined_formatted(user.date_joined_formatted);
-	}, [user]);
-
-	console.log('user --------->', user);
 	window.addEventListener('resize', () => { // add cleanup
 		setWidth(window.innerWidth)
 	})
@@ -194,7 +180,7 @@ const UserProfile = () => {
 				{/* MATCH HISTORY : 5 recent matches */}
 				<div
 					className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
-						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
+						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between overflow-hidden`}
 				>
 					<div className='font-dreamscape text-primary cards-title text-center'>
 						<h1 className='lg:pl-40 lp:pl-28'>match history</h1>

@@ -28,7 +28,7 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 				type={type}
 				placeholder={placeholder}
 				className='inputs border border-border rounded bg-[rgb(183,170,156,8%)] transition-all duration-300
-				placeholder:text-border placeholder:font-regular placeholders outline-none max-ms:w-[80%]'
+				placeholders outline-none max-ms:w-[80%] text-border'
 				onChange={onChange}
 				value={value || ''}
 			/>
@@ -271,6 +271,8 @@ const Settings = () => {
 
 	/**********************  Handle Input Change ************************/
 	const handleInputChange = (e) => {
+		console.log('here')
+		e.target.classList.replace('text-border', 'text-primary')
 		const { name, value } = e.target
 		switch (name) {
 			case 'first_name':
@@ -470,8 +472,8 @@ const Settings = () => {
 											id='bio'
 											placeholder={bio}
 											maxLength={'150'}
-											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
-										max-ms:w-full outline-none placeholders placeholder:text-border transition-all duration-300'
+											className='bio-input font-regular border border-border rounded bg-[rgb(183,170,156,8%)] min-h-5
+											text-border max-ms:w-full outline-none placeholders transition-all duration-300'
 											onChange={handleInputChange}
 											value={bio}
 										></textarea>
