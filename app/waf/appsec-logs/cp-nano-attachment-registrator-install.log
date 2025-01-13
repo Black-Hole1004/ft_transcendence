@@ -24,3 +24,14 @@ Installation completed successfully.
 Starting installation of Check Point Attachment Registrator Nano service [Sun Jan 12 12:47:11 UTC 2025]
 
 Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Mon Jan 13 13:05:48 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Mon Jan 13 14:02:38 UTC 2025]
+
+Installation completed successfully.
+Starting installation of Check Point Attachment Registrator Nano service [Mon Jan 13 14:15:19 UTC 2025]
+
+Unregistering /etc/cp/attachmentRegistrator/cp-nano-attachment-registrator (pid=396)
+sh: can't kill pid 396: No such process
+Installation completed successfully.
