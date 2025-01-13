@@ -565,15 +565,6 @@ const Settings = () => {
 					</div>
 					<div className='flex justify-end save-button my-3 tb:gap-2 gap-1'>
 						<Button
-							id={'resetButton'}
-							className={
-								'rounded border border-border font-medium buttons-text remove-button'
-							}
-							onClick={() => window.location.reload()}
-						>
-							Cancel
-						</Button>
-						<Button
 							className={
 								'rounded border border-border font-medium buttons-text remove-button'
 							}

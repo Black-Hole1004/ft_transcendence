@@ -57,7 +57,7 @@ const ConversationHeader = ({
     };
 
 	const handleUserClick = (profile_name) => {
-		navigate(`/users/${profile_name}`);
+		navigate(`/profile/${profile_name}`);
 	};
 
 	const handleSubmit = (type, message) => {

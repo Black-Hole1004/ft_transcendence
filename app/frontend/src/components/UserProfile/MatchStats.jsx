@@ -55,8 +55,11 @@ function MatchStats({ currentPlayer, opponent, result }) {
 
 			{/* Match Result */}
 			<div className='flex flex-col items-center justify-center result'>
+				<p className='font-dreamscape-sans text-border date'>
+					09-01-2025 14:21
+				</p>
 				<p className={`font-dreamscape-sans ${getResultColorClass()}`}>
-					{result.toLowerCase()}
+					{result}
 				</p>
 				<p className='font-dreamscape text-primary'>
 					{currentPlayer.score} - {opponent.score}

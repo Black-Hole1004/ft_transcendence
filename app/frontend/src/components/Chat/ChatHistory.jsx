@@ -30,10 +30,11 @@ function ChatHistory({
 			setSearchResult(null)
 		}
 	}
-
+	
 	useEffect(() => {
 		if (searchRef.current) {
 			setSearchText('')
+			setSearchResult(null)
 			searchRef.current.value = ''
 		}
 	}, [conversationKey])
@@ -101,7 +102,7 @@ function ChatHistory({
 				<div className='flex items-center border border-border rounded-xl pl-2.5 tb:w-[85%]'>
 					<img
 						src='/assets/images/icons/search-icon.png'
-						className='search-icon select-none'
+						className='search-icon'
 						alt='search-icon'
 					/>
 					<input

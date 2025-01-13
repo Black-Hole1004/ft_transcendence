@@ -9,7 +9,7 @@ const Leaderboard = ({ users }) => {
 	if (!users) return <Loader />;
 
 	const handleUserClick = (profile_name) => {
-		navigate(`/users/${profile_name}`);
+		navigate(`/profile/${profile_name}`);
 	};
 
 

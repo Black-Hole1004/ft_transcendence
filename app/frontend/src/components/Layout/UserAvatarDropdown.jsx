@@ -11,7 +11,7 @@ function UserAvatarDropdown({ setIsDropdownOpen, user_data }) {
 
 	return (
 		<>
-			<Link to={'/profile'}>
+			<Link to={`/profile/${user_data.username}`}>
 				<div onClick={closeDropdown} className='flex items-center gap-1'>
 					<img
 						src={`${BASE_URL}${user_data.profile_picture}`}
@@ -28,7 +28,7 @@ function UserAvatarDropdown({ setIsDropdownOpen, user_data }) {
 			</Link>
 			<div className='h-px w-[80%] bg-border self-center'></div>
 			<ul className='font-medium text-primary flex flex-col tb:gap-2.5 gap-1.5'>
-				<Link to={'/profile'}>
+				<Link to={`/profile/${user_data.username}`}>
 					<li
 						onClick={closeDropdown}
 						className='flex items-center gap-4 hover:brightness-150'

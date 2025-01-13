@@ -1,81 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Profile.css'
 import { Link } from 'react-router-dom'
-import MatchStats from '../../components/Profile/MatchStats'
-import ProfileBio from '../../components/Profile/ProfileBio'
-import ProgressBar from '../../components/Profile/ProgressBar'
-import AboutSection from '../../components/Profile/AboutSection'
-import UserStatsGraph from '../../components/Profile/UserStatsGraph'
+import MatchStats from '../../components/UserProfile/MatchStats'
+import ProfileBio from '../../components/UserProfile/ProfileBio'
+import ProgressBar from '../../components/UserProfile/ProgressBar'
+import AboutSection from '../../components/UserProfile/AboutSection'
+import UserStatsGraph from '../../components/UserProfile/UserStatsGraph'
 import useAuth from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
+import Loader from '../../components/Loader/Loader'
+
 
 const USER_API = import.meta.env.VITE_USER_API
 const BASE_URL = import.meta.env.VITE_BASE_URL
+const GET_USER_PROFILE_BY_USERNAME = import.meta.env.VITE_GET_USER_PROFILE_BY_USERNAME
 import { useParams } from 'react-router-dom'
 
 
-const Profile = () => {
-	const { username_fetched } = useParams();
-	console.log(username_fetched);
-	const { getAuthHeaders } = useAuth()
-	const containerRef = useRef(null)
-	const [width, setWidth] = useState(window.innerWidth)
+const UserProfile = () => {
+	const navigate = useNavigate();
+	const { profile_name } = useParams();
+	const { getAuthHeaders } = useAuth();
 
-	const [stats, setStats] = useState({
-		total_games: 0,
-		games_won: 0,
-		win_rate: 0,
-		xp: 0
-	});
-	const [matchHistory, setMatchHistory] = useState([]);
-	const [achievement, setAchievement] = useState({
-		current: {
-			name: '',
-			image: '',
-			current_threshold: 0,
-			next_threshold: 0,
-			progress_percentage: 0
-		},
-		overall_progress: 0
-	});
-	const fetchProfileStats = async () => {
-		try {
-			const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats`, {
-				headers: getAuthHeaders()
-			});
-			const data = await response.json();
-			console.log('data: ', data)
-			if (response.ok) {
-				setStats(data.stats);
-				setAchievement(data.achievement);
-				setMatchHistory(data.match_history);
-			} else {
-				setError(data.error || 'Failed to fetch profile stats');
-			}
-		} catch (error) {
-			console.error('Failed to fetch profile stats:', error);
-		}
-	};
-
-	console.log(stats);
-	console.log(matchHistory);
-	console.log(achievement);
-
-	
-	window.addEventListener('resize', () => {
-		setWidth(window.innerWidth)
-	})
-
-	const [first_name, setFirst_name] = useState('')
-	const [last_name, setLast_name] = useState('')
-	const [email, setEmail] = useState('')
-	const [mobile_number, setMobile_number] = useState('')
-	const [username, setUsername] = useState('')
-	const [display_name, setDisplay_name] = useState('')
-	const [bio, setBio] = useState('')
-	const [profile_picture, setProfile_picture] = useState('')
-	const [date_joined_formatted, setDate_joined_formatted] = useState('')
-
-
+	const containerRef = useRef(null);
+	const [width, setWidth] = useState(window.innerWidth);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState('');
 	const [user, setUser] = useState({
 		first_name: '',
 		last_name: '',
@@ -85,97 +35,113 @@ const Profile = () => {
 		display_name: '',
 		bio: '',
 		profile_picture: '',
-		date_joined_formatted: ''
-	})
+		date_joined_formatted: '',
+	});
+	const [stats, setStats] = useState({
+		total_games: 0,
+		games_won: 0,
+		win_rate: 0,
+		xp: 0,
+	});
+	const [matchHistory, setMatchHistory] = useState([]);
+	const [achievement, setAchievement] = useState({
+		current: {
+			name: '',
+			image: '',
+			current_threshold: 0,
+			next_threshold: 0,
+			progress_percentage: 0,
+		},
+		overall_progress: 0,
+	});
 
-	const fetchUser = async () => {
+	const fetchProfileStats = async () => {
 		try {
-			const response = await fetch(USER_API, {
-				method: 'GET',
+			const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/user/profile/stats/${profile_name}/`, {
 				headers: getAuthHeaders(),
-			})
-			const data = await response.json()
-			if (response.ok) {
-				return data
-			} else {
-				console.log('Failed to fetch user data')
-				// logout();
-				return null
-			}
+			});
+			if (!response.ok) throw new Error('Failed to fetch profile stats');
+			const data = await response.json();
+			setStats(data.stats);
+			setAchievement(data.achievement);
+			setMatchHistory(data.match_history);
 		} catch (error) {
-			console.log(error)
-			// logout();
-			return null
+			setError(error.message);
+			navigate(`/users/${profile_name}/not_found`);
 		}
-	}
+	};
+
+	const fetchUserByUserName = async () => {
+		try {
+			const response = await fetch(`${GET_USER_PROFILE_BY_USERNAME}${profile_name}/`, {
+				headers: getAuthHeaders(),
+			});
+			if (!response.ok) throw new Error('User not found');
+			const data = await response.json();
+			setUser(data);
+		} catch (error) {
+			setError(error.message);
+			navigate(`/users/${profile_name}/not_found`);
+		}
+	};
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const fetchedData = await fetchUser();
-			if (fetchedData)
-				setUser(fetchedData);
+			await Promise.all([fetchUserByUserName(), fetchProfileStats()]);
+			setLoading(false);
 		};
 		fetchData();
-		fetchProfileStats();
-	}, []);
+	}, [profile_name]);
 
-	useEffect(() => {
-		if (!user)
-			return;
-		setFirst_name(user.first_name);
-		setLast_name(user.last_name);
-		setEmail(user.email);
-		setMobile_number(user.mobile_number);
-		setUsername(user.username);
-		setDisplay_name(user.display_name);
-		setBio(user.bio);
-		setProfile_picture(user.profile_picture);
-		setDate_joined_formatted(user.date_joined_formatted);
-	}, [user]);
+	window.addEventListener('resize', () => { // add cleanup
+		setWidth(window.innerWidth)
+	})
 
-	console.log('user --------->', user);
+	if (loading) return <Loader />;
+	if (error) return <p>{error}</p>;
 
 	/************************************************************************ */
+
 	return (
 		<section ref={containerRef} className='flex justify-center'>
 			<div
 				className='lp:mt-20 my-10 relative flex flex-col max-lp:gap-y-3
-					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards w-[96%]'
+					lp:mx-container-x-lp mx-container-x-ms lp:h-profile-cards lp:w-profile-cards'
 			>
 				<div
-					className={`${width >= 1024 ? 'user-info-lp' : 'bg-[rgba(27,22,17,0.5)] border border-primary rounded-xl'}
+					className={`${width >= 1024 ? 'user-info-lp' : 'border border-primary rounded-xl'}
 						lp:self-start max-ms:w-full flex flex-col`}
 				>
 					<div className='font-dreamscape text-primary cards-title text-center relative'>
 						<Link to={'/dashboard'}>
 							<img
-								src='./assets/images/icons/arrow.svg'
+								src='../../../dist/assets/images/icons/arrow.svg'
 								className='arrow absolute left-[4%]'
 								alt='arrow icon'
 							/>
 						</Link>
 						<h1>profile</h1>
 					</div>
-					<ProfileBio src={`${BASE_URL}${profile_picture}`} bio={bio} />
+					<ProfileBio src={`${BASE_URL}${user.profile_picture}`} bio={user.bio} />
 					<div
 						className='lp:ml-about-lp flex font-medium mtb:flex-row flex-col lp:justify-start mtb:justify-around
 						xl:gap-20 lg:gap-10 gap-3 max-lp:ml-0 mt-2'
 					>
-						<AboutSection first_name={first_name} last_name={last_name} email={email} mobile_number={mobile_number} username={username} display_name={display_name} bio={bio} data_joined_formatted={date_joined_formatted} />
+						<AboutSection first_name={user.first_name} last_name={user.last_name} email={user.email} mobile_number={user.mobile_number} username={user.username} bio={user.bio} date_joined_formatted={user.date_joined_formatted} />
 						<div className='flex flex-col items-center gap-2'>
 							<p className='titles max-mtb:self-start max-mtb:ml-3'>
 								Overall Progression
 							</p>
-							<div className='progressbar justify-self-center aspect-square'>
+							<div className='progressbar justify-self-center'>
 								<ProgressBar value={achievement.overall_progress} />
 								{/* <AnimatedProgressBar targetProgress={achievement.current.progress_percentage} /> */}
 							</div>
 						</div>
 					</div>
-					<UserStatsGraph />
+					<UserStatsGraph profile_name={profile_name} />
 				</div>
 				{/* RANK: Achievement information and progress */}
-				<div className={`${width >= 1024 ? 'rank-card-lp' : 'bg-[rgba(27,22,17,0.5)] border border-primary rounded-xl'}
+				<div className={`${width >= 1024 ? 'rank-card-lp' : 'border border-primary rounded-xl'}
 						bg-no-repeat lp:absolute lp:right-0 lp:top-0 rank flex flex-col`}>
 					<div className='font-dreamscape text-primary cards-title text-center'>
 						<h1 className='lg:pl-20 lp:pl-14'>rank</h1>
@@ -213,7 +179,7 @@ const Profile = () => {
 
 				{/* MATCH HISTORY : 5 recent matches */}
 				<div
-					className={`${width >= 1024 ? 'match-history-lp ' : 'bg-[rgba(27,22,17,0.5)] border border-primary rounded-xl'}
+					className={`${width >= 1024 ? 'match-history-lp' : 'border border-primary rounded-xl'}
 						lp:absolute lp:bottom-0 lp:right-0 flex flex-col justify-between`}
 				>
 					<div className='font-dreamscape text-primary cards-title text-center'>
@@ -228,9 +194,11 @@ const Profile = () => {
 								Win Rate
 							</p>
 							<div className='win-rate justify-self-center aspect-square'>
-								<ProgressBar value={stats.win_rate}/>
+								<ProgressBar value={stats.win_rate} />
 							</div>
 						</div>
+
+
 						<div className='flex flex-col gap-1 max-mtb:self-center'>
 							{matchHistory.map((match, index) => (
 								<MatchStats
@@ -248,4 +216,5 @@ const Profile = () => {
 	)
 }
 
-export default Profile
+
+export default UserProfile
