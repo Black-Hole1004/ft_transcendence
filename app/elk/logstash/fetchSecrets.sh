@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Vault address and token
-apt-get update
+apt-get update -qq
 apt-get install jq curl -y -qq
 VAULT_ADDR="http://vault:8200"
 VAULT_TOKEN=$(head -n 1 /tmp/token.txt)
@@ -27,7 +27,4 @@ export KIBANA_PASSWORD=$KIBANA_PASSWORD
 # ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 # USER 1000
 echo "Starting the application..."
-# getent passwd | grep ':1000:'
-# change user to 1000:0
-su - logstash
 ELASTIC_PASSWORD=$ELASTIC_PASSWORD KIBANA_PASSWORD=$KIBANA_PASSWORD exec /usr/local/bin/docker-entrypoint "$@"

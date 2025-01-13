@@ -10,5 +10,6 @@ __pycache__/
 ./app/waf/postgres-data/
 ./app/waf/smartsync-storage/
 ./app/vault/.env
-./
-./app/backend/*/migrations/
+./app/db/postgres/
+/app/backend/UserManagement/migrations/000*
+!/app/backend/UserManagement/migrations/0001*

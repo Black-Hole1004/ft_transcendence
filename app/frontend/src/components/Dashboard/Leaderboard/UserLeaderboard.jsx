@@ -1,5 +1,5 @@
 
-function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture }) {
+function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture, isCurrentUser }) {
 
 	const getAchievementImage = (achievementName) => {
 		const formattedName = achievementName.toLowerCase().replace(/\s+/g, '-')

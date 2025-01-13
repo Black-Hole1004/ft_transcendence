@@ -7,4 +7,4 @@ COPY ./fetchSecrets.sh /usr/share/elasticsearch/fetchSecrets.sh
 USER root
 RUN chmod +x /usr/share/elasticsearch/fetchSecrets.sh
 
-CMD ["/usr/share/elasticsearch/fetchSecrets.sh"]
+ENTRYPOINT ["/usr/share/elasticsearch/fetchSecrets.sh"]
