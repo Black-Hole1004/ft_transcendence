@@ -1,4 +1,4 @@
-.PHONY: all up build updetached down prune scan
+.PHONY: all up build updetached down prune scan re
 
 HOSTNAME := localhost
 all: up
@@ -6,22 +6,23 @@ all: up
 up:
 	echo $(HOSTNAME)
 	sed -i '' 's#://[^/]*#://$(HOSTNAME)#g' app/frontend/.env
-	cat app/frontend/.env
-	@rm -rf $( ls | grep -v local | grep -v advanced)
-	docker-compose up --build 
+	sed -i '' 's#HOSTNAME_ENV=.*#HOSTNAME_ENV=$(HOSTNAME)#g' app/backend/.env
+	@# cat app/frontend/.env
+	@rm -rf $(ls app/waf/ | grep -Ev 'local|advanced|tuning|tools|db' | sed 's|^|app/waf/|')
+	@rm -rf ./app/db/postgres
+	docker-compose up --build
+
+re: down up
 
 ssl:
 	bash app/nginx/tools/generate_ssl.sh
-
-build:
-	docker-compose up --build
 
 updetached:
 	docker-compose up -d
 
 down:
 	docker-compose down
-	@rm -rf ./app/postgres_data/*
+	@rm -rf ./app/data/*
 
 prune:
 	docker system prune -af --volumes --force
