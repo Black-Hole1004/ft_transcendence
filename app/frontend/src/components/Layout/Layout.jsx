@@ -7,11 +7,13 @@ import useAuth from '../../context/AuthContext'
 import Cookies from 'js-cookie'
 import { createContext, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+// import Cookies from 'js-cookie'
 
 const USER_API = import.meta.env.VITE_USER_API
 const WP_NOTIFY = import.meta.env.VITE_WP_NOTIFY
 const WP_FRINEDS = import.meta.env.VITE_WP_FRINEDS
 const WP_NOTIFICATIONS = import.meta.env.VITE_WP_NOTIFICATIONS
+
 
 const SocketContext = createContext()
 export const useSocket = () => useContext(SocketContext)
@@ -70,6 +72,9 @@ function Layout() {
 				return data
 			} else {
 				console.log('Failed to fetch user data')
+				Cookies.remove('access_token')
+				Cookies.remove('refresh_token')
+				window.location.href = '/'; // Redirect to /
 				return null
 			}
 		} catch (error) {
