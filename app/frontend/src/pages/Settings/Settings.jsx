@@ -442,7 +442,7 @@ const Settings = () => {
 						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Profile Settings</p>
 							<p className='text-light '>
-								Edit your username , bio, and other public details.
+								Edit your username and other public details.
 							</p>
 						</div>
 						<div className='flex items-center'>
@@ -488,8 +488,7 @@ const Settings = () => {
 						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Security Settings</p>
 							<p className='text-light'>
-								Update your password and enable two-factor authentication for added
-								security.
+								{`Update your password, ${!user.is_logged_with_oauth_for_2fa ? 'enable two-factor authentication (2FA), ' : ''}or delete your account.`}
 							</p>
 						</div>
 						<div className='flex flex-col lp:gap-6 gap-4'>
