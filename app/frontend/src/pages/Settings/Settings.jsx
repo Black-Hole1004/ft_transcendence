@@ -10,7 +10,7 @@ import { useAlert } from '../../components/AlertContext'
 import ConfirmationModal from '../../components/Settings/ConfirmationModal'
 import Cookies from 'js-cookie'
 
-import DeleteConfirmationModal from './DeleteConfirmationModal'
+import DeleteConfirmationModal from '../../components/Settings/DeleteConfirmationModal'
 
 const USER_API = import.meta.env.VITE_USER_API
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
@@ -531,6 +531,7 @@ const Settings = () => {
 											type='submit'
 											onClick={enableDesable2FA}
 											disabled={twoFactorAuthEnabled}
+											from={'settings'}
 										>
 											Enable Two-factor Authentication
 										</Button>
