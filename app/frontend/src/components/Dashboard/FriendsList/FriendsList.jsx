@@ -23,11 +23,11 @@ function FriendsList() {
 				headers: getAuthHeaders(),
 			})
 			const data = await response.json()
-			console.log('data =====> []', data)
+			// console.log('data =====> []', data)
 			setUsers(data)
 		}
 		catch (error) {
-			console.log('data =====>error []')
+			// console.log('data =====>error []')
 			console.error('Error:', error)
 		}
 	}
@@ -102,7 +102,7 @@ function FriendsList() {
 			<div className='w-[96%] overflow-y-auto users'>
 				{
 					filterUsers.map((user) => {
-						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} />
+						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} badge_image={user.badge_image} badge_name={user.badge_name} />
 					})
 				}
 			</div>

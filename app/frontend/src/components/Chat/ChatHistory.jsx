@@ -12,6 +12,7 @@ function ChatHistory({
 	conversationMessages,
 	currentLoggedInUserId,
 	setCurrentLoggedInUserId,
+	badge_info,
 }) {
 	const searchRef = useRef(null)
 	const [searchText, setSearchText] = useState('')
@@ -120,7 +121,7 @@ function ChatHistory({
 			</div>
 			<div
 				className={`max-tb:flex max-tb:justify-center gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
-							 ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
+							${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				{(searchResult ? searchResult : conversations).map((conversation) => (
 					<User
@@ -131,6 +132,7 @@ function ChatHistory({
 					conversationKey={conversationKey}
 					setConversationKey={setConversationKey}
 					currentLoggedInUserId={currentLoggedInUserId}
+					badge_info={badge_info}
 					/>
 				))}
 			</div>

@@ -53,7 +53,6 @@ const Custom = () => {
 
 	const handleStart = () => {
 		if (mode === 'training') {
-			console.log('Training mode selected');
 			// For AI mode, go directly to AI setup
 			navigate('/ai-game-setup', { state: { backgroundId } });
 		} else {
@@ -67,8 +66,6 @@ const Custom = () => {
 		console.log('id: ', id)
 		// Only allow click if background is unlocked
 		setBackgroundId(id)
-		// if (xp / 1000 >= id || id === 1) {
-		// }
 	}
 
 	const handleGameModeSelect = (mode) => {

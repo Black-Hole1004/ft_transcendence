@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
-function User({ setBlockerId, currentLoggedInUserId, search, conversation, conversationKey, setConversationKey }) {
+function User({ setBlockerId, currentLoggedInUserId, search, conversation, conversationKey, setConversationKey, badge_info }) {
 	const navigate = useNavigate()
 
 	// console.log(currentLoggedInUserId)
@@ -74,7 +74,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 					{username}
 				</p>
 				{search ? (
-					<p className='text-level last-message max-tb:hidden'>celestial master</p>
+					<p className='text-level last-message max-tb:hidden'>{badge_info?.name}</p>
 				) : (
 					conversation.last_message &&
 					<div className='flex text-light max-tb:hidden last-message'>
@@ -88,7 +88,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 			</div>
 			{search && (
 				<img
-					src='/assets/images/Achievements/celestial-master.png'
+					src={badge_info?.image}
 					className='select-none aspect-square object-cover search-badge max-tb:hidden'
 				/>
 			)}

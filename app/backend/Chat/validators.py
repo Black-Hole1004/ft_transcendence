@@ -7,3 +7,4 @@ class ConversationValidator:
     @staticmethod
     def get_other_participant_id(participant_ids: list, current_user_id: int) -> bool:
         return participant_ids[1] if participant_ids[0] == current_user_id else participant_ids[0]
+    

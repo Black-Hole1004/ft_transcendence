@@ -46,8 +46,8 @@ GAME_SETTINGS = {
     'PAUSE_LIMIT': 3,        # Number of pauses allowed per player
     'PAUSE_TIMEOUT': 20,     # Auto-resume after 20 seconds
     'MAX_DELTA_TIME': 0.004, # Cap for time step in seconds (1/240)
-    'PHYSICS_UPDATE_RATE': 160,  # Updates per second
-    'BROADCAST_RATE': 65,       # Broadcasts per second
+    'PHYSICS_UPDATE_RATE': 120,  # Updates per second
+    'BROADCAST_RATE': 50,       # Broadcasts per second
 }
 
 class GamePhysics:
@@ -70,32 +70,62 @@ class GamePhysics:
             ball['velocityY'] = abs(ball['velocityY'])  # Reflect downward
 
         
+    def check_paddle_collision(self, ball, paddle):
+        """
+        Check if ball collides with paddle, distinguishing between surface and edge hits.
+        Returns: 
+            - None: No collision
+            - "surface": Hit on paddle surface
+            - "edge": Hit on paddle edge
+        """
+        # First check if ball is within paddle's x-range
+        if (ball['x'] - ball['radius'] <= paddle['x'] + paddle['width'] and
+            ball['x'] + ball['radius'] >= paddle['x']):
+            
+            # Calculate how far the ball's center is from paddle edges
+            distance_from_top = abs(ball['y'] - paddle['y'])
+            distance_from_bottom = abs(ball['y'] - (paddle['y'] + paddle['height']))
+            
+            # If ball center is within paddle height, it's a surface hit
+            if ball['y'] >= paddle['y'] and ball['y'] <= paddle['y'] + paddle['height']:
+                return "surface"
+                
+            # If ball is very close to top or bottom edge
+            elif distance_from_top <= ball['radius'] or distance_from_bottom <= ball['radius']:
+                # Only count as edge hit if ball is moving towards paddle
+                moving_towards_paddle = ((ball['velocityX'] > 0 and paddle['x'] > CANVAS_WIDTH/2) or
+                                    (ball['velocityX'] < 0 and paddle['x'] < CANVAS_WIDTH/2))
+                if moving_towards_paddle:
+                    return "edge"
+        
+        return None
+
     def handle_paddle_collision(self, ball, paddle):
-        """Handle paddle collisions with high-angle bounces and minimal paddle influence."""
-        # Calculate hit position relative to paddle center
+        """Handle paddle collisions differently based on collision type"""
+        collision_type = self.check_paddle_collision(ball, paddle)
+        
+        if collision_type == "edge":
+            # For edge hits, let the ball pass through by not modifying velocities
+            return False
+            
+        # For surface hits, use existing bounce logic
         paddle_center = paddle['y'] + PADDLE_CONFIG['HEIGHT'] / 2
         hit_pos = paddle_center - ball['y']
         normalized_hit = max(-1, min(1, hit_pos / (PADDLE_CONFIG['HEIGHT'] / 2)))
         
-        # Calculate incoming angle and force high-angle bounce
         incoming_angle = math.atan2(ball['velocityY'], ball['velocityX'])
-        
-        # Force angle to be close to maximum (±60 degrees)
         max_angle = BALL_CONFIG['MAX_BOUNCE_RADIANS']
-        forced_angle = math.copysign(max_angle * 0.7, incoming_angle)  # 70% of max angle
+        forced_angle = math.copysign(max_angle * 0.7, incoming_angle)
         
-        # Minimal paddle influence (20%)
         paddle_influence = normalized_hit * (max_angle * 0.3)
         final_angle = forced_angle + paddle_influence
         
-        # Calculate new speed
         current_speed = math.sqrt(ball['velocityX']**2 + ball['velocityY']**2)
         new_speed = min(
             current_speed * BALL_CONFIG['SPEED_INCREMENT'], 
             BALL_CONFIG['MAX_SPEED']
         )
         
-        # Update velocities with high-angle bounce
         ball['velocityX'] = -math.copysign(
             math.cos(final_angle) * new_speed,
             ball['velocityX']
@@ -109,15 +139,16 @@ class GamePhysics:
             ball['x'] = paddle['x'] + paddle['width'] + ball['radius'] + OFFSET_MARGIN
         else:
             ball['x'] = paddle['x'] - ball['radius'] - OFFSET_MARGIN
+        
+        return True
 
-
-
-    def check_paddle_collision(self, ball, paddle):
-        """Check if ball collides with paddle"""
-        return (ball['x'] - ball['radius'] <= paddle['x'] + paddle['width'] and
-                ball['x'] + ball['radius'] >= paddle['x'] and
-                ball['y'] + ball['radius'] >= paddle['y'] and
-                ball['y'] - ball['radius'] <= paddle['y'] + paddle['height'])
+    # def check_paddle_collision(self, ball, paddle):
+    #     """Check if ball collides with paddle"""
+    #     return (ball['x'] - ball['radius'] <= paddle['x'] + paddle['width'] and
+    #             ball['x'] + ball['radius'] >= paddle['x'] and
+    #             ball['y'] + ball['radius'] >= paddle['y'] and
+    #             ball['y'] - ball['radius'] <= paddle['y'] + paddle['height'])
+    
 
     def check_wall_collision(self, ball):
         """Check and handle wall collisions"""
@@ -169,6 +200,10 @@ class GameState:
         
         self.player1_id = None # player id from the matchmaking service to track players
         self.player2_id = None # player id from the matchmaking service to track players
+        
+        self.disconnect_time = None          # Will store the timestamp when a player disconnects
+        self.disconnected_player = None      # Will store which player number disconnected (1 or 2)
+
         
         # pause/resume  management system
         GAME_SETTINGS['PAUSE_LIMIT'] = 3 # number of pauses allowed for player
@@ -230,6 +265,7 @@ class GameState:
 class GameConsumer(AsyncWebsocketConsumer):
     # Class variable to store game states
     game_states = {}
+    RECONNECT_TIMEOUT = 10
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -267,7 +303,40 @@ class GameConsumer(AsyncWebsocketConsumer):
             
             await self.accept()
             
-            # Join room group of the game id e.g : 'game_123'
+            # # Check if this is a reconnection
+            # if (self.game_state and 
+            #     self.game_state.disconnected_player == self.player_number and 
+            #     self.game_state.disconnect_time is not None and  # Add this check
+            #     time.time() - self.game_state.disconnect_time < self.RECONNECT_TIMEOUT):
+                
+            #     print(f"Player {self.player_number} reconnected successfully : resuming game")
+                
+            #     # Clear disconnect state
+            #     self.game_state.disconnect_time = None
+            #     self.game_state.disconnected_player = None
+                
+            #     # Restore player connection
+            #     if self.player_number == 1:
+            #         self.game_state.player1_paddle['connected'] = True
+            #     else:
+            #         self.game_state.player2_paddle['connected'] = True
+                    
+            #     self.game_state.connected_players += 1
+                
+            #     # Resume game if both players are connected
+            #     if self.game_state.connected_players == 2:
+            #         self.game_state.is_paused = False
+                
+            #     # Notify about reconnection
+            #     await self.channel_layer.group_send(
+            #         self.room_group_name,
+            #         {
+            #             'type': 'player_reconnected',
+            #             'player': self.player_number
+            #         }
+            #     )
+            
+            # Join room group
             await self.channel_layer.group_add(
                 self.room_group_name,
                 self.channel_name
@@ -286,7 +355,6 @@ class GameConsumer(AsyncWebsocketConsumer):
             }))
             
         except Exception as e:
-            # print(f"Error in connect: {str(e)}")
             traceback.print_exc()
             await self.close()
 
@@ -294,9 +362,14 @@ class GameConsumer(AsyncWebsocketConsumer):
         """Handle WebSocket disconnection"""
         try:
             if self.game_state:
-                #skip everything if game is over
+                # Skip everything if game is over
                 if self.game_state.game_over:
                     return
+
+                # Store disconnect info
+                self.game_state.disconnect_time = time.time()
+                self.game_state.disconnected_player = self.player_number
+                    
                 # Update player connection status
                 if self.player_number == 1:
                     await self.update_user_status(self.game_state.player1_id, 'online')
@@ -308,31 +381,46 @@ class GameConsumer(AsyncWebsocketConsumer):
                 self.game_state.connected_players -= 1
                 self.game_state.is_paused = True
                 
-                # Notify remaining player
-                await self.channel_layer.group_send (
+                # Notify remaining player about temporary disconnect
+                await self.channel_layer.group_send(
                     self.room_group_name,
                     {
-                        'type': 'player_disconnected',
+                        'type': 'player_temporary_disconnect',
                         'player': self.player_number,
-                        'remaining_players': self.game_state.connected_players
+                        'reconnect_timeout': self.RECONNECT_TIMEOUT
                     }
                 )
             
-            # Leave room group
-            if hasattr(self, 'room_group_name'):
-                await self.channel_layer.group_discard(
-                    self.room_group_name,
-                    self.channel_name
-                )
+                # Leave room group
+                if hasattr(self, 'room_group_name'):
+                    await self.channel_layer.group_discard(
+                        self.room_group_name,
+                        self.channel_name
+                    )
 
-            # Handle game over if one player disconnects to always consider the disconnected player as the loser with 0 score and the other player as the winner with 3 score
-            if self.game_state and self.game_state.connected_players <= 1:
-                self.game_state.game_over = True
-                self.game_state.winner = 1 if self.player_number == 2 else 2
-                await self.handle_game_over()
+                # Start reconnection timer
+                asyncio.create_task(self.wait_for_reconnect())
             
         except Exception as e:
             print(f"Error in disconnect: {str(e)}")
+
+    async def wait_for_reconnect(self):
+        """Wait for player to reconnect before ending game"""
+        try:
+            await asyncio.sleep(self.RECONNECT_TIMEOUT)
+            
+            # Check if player has reconnected
+            if (hasattr(self, 'game_state') and 
+                self.game_state.disconnected_player == self.player_number and 
+                not self.game_state.game_over):
+                print(f"Player {self.player_number} did not reconnect in time => Ending game")
+                # If not reconnected, end the game
+                self.game_state.game_over = True
+                self.game_state.winner = 1 if self.player_number == 2 else 2
+                await self.handle_game_over()
+                
+        except Exception as e:
+            print(f"Error in wait_for_reconnect: {str(e)}")
 
     def get_game_state_dict(self):
         """Get current game state"""
@@ -388,22 +476,84 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'message': str(e)
             }))
 
+    # async def handle_player_number_init(self, data):
+    #     """Handle player number initialization"""
+    #     try:
+    #         self.player_number = data.get('player_number')
+    #         print(f"player number initialization after reconnect: XORN {self.player_number}")
+    #         player_id = data.get('player_id') # player id (user id) from the matchmaking service (frontend)
+    #         print(f"Player number initialized: {self.player_number} and player_id: {player_id}")
+    #         if self.player_number == 1:
+    #             self.game_state.player1_id = player_id
+    #             self.game_state.player1_paddle['connected'] = True
+    #         else:
+    #             self.game_state.player2_id = player_id
+    #             self.game_state.player2_paddle['connected'] = True
+            
+    #         self.game_state.connected_players += 1
+            
+    #         # Just confirm player number was set
+    #         await self.send(json.dumps({
+    #             'type': 'player_number_confirmed',
+    #             'player_number': self.player_number
+    #         }))
+            
+    #     except Exception as e:
+    #         await self.send(json.dumps({
+    #             'type': 'error',
+    #             'message': f'Error initializing player number: {str(e)}'
+    #         }))
+    
     async def handle_player_number_init(self, data):
         """Handle player number initialization"""
         try:
             self.player_number = data.get('player_number')
-            player_id = data.get('player_id') # player id (user id) from the matchmaking service (frontend)
-            print(f"Player number initialized: {self.player_number} and player_id: {player_id}")
-            if self.player_number == 1:
-                self.game_state.player1_id = player_id
-                self.game_state.player1_paddle['connected'] = True
+            player_id = data.get('player_id')
+
+            # Check for reconnection first
+            if (self.game_state and 
+                self.game_state.disconnected_player == self.player_number and 
+                self.game_state.disconnect_time is not None and
+                time.time() - self.game_state.disconnect_time < self.RECONNECT_TIMEOUT):
+                                
+                # Clear disconnect state
+                self.game_state.disconnect_time = None
+                self.game_state.disconnected_player = None
+                
+                # Restore player connection
+                if self.player_number == 1:
+                    self.game_state.player1_id = player_id
+                    self.game_state.player1_paddle['connected'] = True
+                else:
+                    self.game_state.player2_id = player_id
+                    self.game_state.player2_paddle['connected'] = True
+                    
+                self.game_state.connected_players += 1
+                
+                # Resume game if both players are connected
+                if self.game_state.connected_players == 2:
+                    self.game_state.is_paused = False
+                
+                # Notify about reconnection
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'player_reconnected',
+                        'player': self.player_number
+                    }
+                )
             else:
-                self.game_state.player2_id = player_id
-                self.game_state.player2_paddle['connected'] = True
-            
-            self.game_state.connected_players += 1
-            
-            # Just confirm player number was set
+                # Normal connection logic
+                if self.player_number == 1:
+                    self.game_state.player1_id = player_id
+                    self.game_state.player1_paddle['connected'] = True
+                else:
+                    self.game_state.player2_id = player_id
+                    self.game_state.player2_paddle['connected'] = True
+                
+                self.game_state.connected_players += 1
+
+            # Send confirmation
             await self.send(json.dumps({
                 'type': 'player_number_confirmed',
                 'player_number': self.player_number
@@ -986,8 +1136,13 @@ class GameConsumer(AsyncWebsocketConsumer):
             loser_badge = Achievement.get_badge(loser.xp)
             
             # get progession data
-            progress_data = Achievement.get_badge_progress(winner.xp) # percentage progress to next badge
-            winner_badge.update(progress_data) # add progress data to badge {curren_xp_treshold, next_xp_threshold, progress_percentage}
+            progress_data_winner = Achievement.get_badge_progress(winner.xp) # percentage progress to next badge
+            progress_data_loser = Achievement.get_badge_progress(loser.xp)
+            winner_badge.update(progress_data_winner) # add progress data to badge {curren_xp_treshold, next_xp_threshold, progress_percentage}
+            loser_badge.update(progress_data_loser)
+            
+            print(f"Winner badge: {winner_badge}")
+            print(f"Loser badge: {loser_badge}")
         
             # Send comprehensive game end data
             await self.channel_layer.group_send(
@@ -1151,3 +1306,16 @@ class GameConsumer(AsyncWebsocketConsumer):
             'state': event['state']
         }))
     
+    async def player_temporary_disconnect(self, event):
+        """Handle temporary disconnect message"""
+        await self.send(text_data=json.dumps({
+            'type': 'player_temporary_disconnect',
+            'player': event['player']
+        }))
+
+    async def player_reconnected(self, event):
+        """Handle player reconnected message"""
+        await self.send(text_data=json.dumps({
+            'type': 'player_reconnected',
+            'player': event['player']
+        }))
