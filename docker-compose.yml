@@ -234,6 +234,7 @@ services:
       timeout: 10s
     networks:
       - ft_transcendence_network
+    restart: always
 
   #setup for elasticsearch
   # comment this :
