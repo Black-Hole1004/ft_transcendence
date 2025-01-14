@@ -49,7 +49,6 @@ const GameOverPopup = ({ winner, onRestart, onClose }) => (
 			</div>
 		</div>
 
-
 	</>
 )
 
@@ -57,9 +56,10 @@ const AIGame = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
 
-	// Get simplified game settings from location state
-	const { mode, difficulty, backgroundId } = location.state || {}
+	const backgroundId = location.state?.backgroundId || 3
 
+	const [difficulty, setDifficulty] = useState('easy')
+	
 	// State management
 	const [isPaused, setIsPaused] = useState(false)
 	const [isGameOver, setIsGameOver] = useState(false)
