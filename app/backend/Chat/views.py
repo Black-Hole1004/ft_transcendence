@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from Chat.models import Conversation, Message
+from Chat.models import Conversation, Message, BlockedUser
 from UserManagement.models import User, FriendShip
 from .serializers import ConversationSerializer, UserInfosSerializer, MessageSerializer, SearchResultSerializer
 
@@ -98,3 +98,46 @@ def getFriendshipStatus(request, conversation_key):
     if conversation:
         response['blocked_by'] = conversation.blocked_by
     return Response(response)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_blocked_users(request):
+    try:
+        # Get users that the current user has blocked
+        blocked_by_user =  BlockedUser.objects.filter(
+            blocker=request.user
+        ).select_related('blocked').values(
+            'blocked__id',
+            'blocked__username',
+            'blocked_at'
+        )
+
+        # Get users who have blocked the current user
+        blocked_current_user = BlockedUser.objects.filter(
+            blocked=request.user
+        ).select_related('blocker').values(
+            'blocker__id',
+            'blocker__username',
+            'blocked_at'
+        )
+
+        # Combine both lists into one unified list
+        blocked_users = list(blocked_by_user) + [
+            {
+                'blocked__id': user['blocker__id'],
+                'blocked__username': user['blocker__username'],
+                'blocked_at': user['blocked_at']
+            }
+            for user in blocked_current_user
+        ]
+        
+        return Response({
+            'status': 'success',
+            'blocked_users': list(blocked_users)
+        })
+    except Exception as e:
+        return Response({
+            'status': 'error',
+            'message': str(e)
+        }, status=400)

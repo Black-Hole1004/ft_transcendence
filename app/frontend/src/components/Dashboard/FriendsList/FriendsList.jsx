@@ -7,12 +7,14 @@ import { use } from 'react'
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
 
 
-
+const BLOCKED_USERS = 'https://localhost/api/chat/blocked/blocked-users/'
 function FriendsList() {
 	const [users, setUsers] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
 	const { getAuthHeaders } = useAuth()
 	const { profile_picture } = useSocket()
+
+	const [blockedUsers, setBlockedUsers] = useState([]);
 
 	const { socket_notify, socket_friends } = useSocket();
 
@@ -32,11 +34,26 @@ function FriendsList() {
 		}
 	}
 
-
-
 	useEffect(() => {
 		get_all_users()
 	}, [])
+
+	useEffect(() => {
+        const fetchBlockedStatus = async () => {
+            try {
+                const response = await fetch(BLOCKED_USERS, {
+                    method: 'GET',
+                    headers: getAuthHeaders(),
+                });
+                const data = await response.json();
+				console.log('blocked users --------------->', data.blocked_users);
+                setBlockedUsers(data.blocked_users);
+            } catch (error) {
+                console.error('Error fetching blocked status:', error);
+            }
+        };
+        fetchBlockedStatus();
+    }, []);
 
 	const filterUsers = users?.filter((user) => 
 		user.username.toLowerCase().startsWith(searchQuery.toLowerCase())
@@ -102,7 +119,7 @@ function FriendsList() {
 			<div className='w-[96%] overflow-y-auto users'>
 				{
 					filterUsers.map((user) => {
-						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} />
+						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} blockedUsers={blockedUsers} />
 					})
 				}
 			</div>

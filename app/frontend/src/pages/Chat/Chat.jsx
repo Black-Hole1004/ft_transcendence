@@ -242,7 +242,6 @@ const Chat = () => {
 					conversationMessages={conversationMessages}
 					currentLoggedInUserId={currentLoggedInUserId}
 					setCurrentLoggedInUserId={setCurrentLoggedInUserId}
-					
 				/>
 
 				{/* Separator */}

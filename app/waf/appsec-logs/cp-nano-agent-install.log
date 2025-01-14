@@ -689,3 +689,499 @@ destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does no
 [2025-01-13T19:27:45]    Install cp-nano-agent service file
 [2025-01-13T19:27:45]    Restart cp-nano-agent service
 [2025-01-13T19:27:45]    Upgrade completed successfully
+[2025-01-13T20:25:44]    Copy cp-agent-info tool
+[2025-01-13T20:25:44]    Copy cp-nano-package-list
+[2025-01-13T20:25:44]    cp: -r not specified; omitting directory 'EULA.txt'
+[2025-01-13T20:25:44]    cp: -r not specified; omitting directory 'Licenses-for-Third-Party-Components.txt'
+[2025-01-13T20:25:45]    
+Starting upgrading of open-appsec Nano Agent [Mon Jan 13 20:25:44 UTC 2025]
+[2025-01-13T20:25:45]    ./orchestration_package.sh: line 444: /etc/cp/watchdog/cp-nano-watchdog: not found
+[2025-01-13T20:25:45]    Upgrade to latest
+[2025-01-13T20:25:45]    Copying cp-nano-agent binary file to folder: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T20:25:45]    Copy source md5:
+140d11d26751e3065bbaf5d2ae100f2d  ./bin/orchestration_comp
+Copy destination md5:
+destination '/etc/cp/orchestration/cp-nano-orchestration' does not exist.
+[2025-01-13T20:25:45]    Destination md5, after the copy:
+140d11d26751e3065bbaf5d2ae100f2d  /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T20:25:45]    Copy source md5:
+606e350a2be817f414910f44e560050f  open-appsec-cloud-mgmt
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt' does not exist.
+[2025-01-13T20:25:45]    Destination md5, after the copy:
+606e350a2be817f414910f44e560050f  /etc/cp/scripts/open-appsec-cloud-mgmt
+[2025-01-13T20:25:45]    Copy source md5:
+b30c5daa98068c49451811e28f09e30d  open-appsec-cloud-mgmt-k8s
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt-k8s' does not exist.
+[2025-01-13T20:25:45]    Destination md5, after the copy:
+b30c5daa98068c49451811e28f09e30d  /etc/cp/scripts/open-appsec-cloud-mgmt-k8s
+[2025-01-13T20:25:45]    Copy source md5:
+77237bbce924c7ae20fa8791b4fd5ed8  open-appsec-ctl.sh
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-ctl.sh' does not exist.
+[2025-01-13T20:25:45]    Destination md5, after the copy:
+77237bbce924c7ae20fa8791b4fd5ed8  /etc/cp/scripts/open-appsec-ctl.sh
+[2025-01-13T20:25:45]    ln: failed to create symbolic link '/etc/cp/conf/local_policy.yaml': File exists
+[2025-01-13T20:25:45]    Copy source md5:
+cb54f53385c4a0089ea1bcdd16cf1604  ./scripts/cp-nano-makefile-generator.sh
+Copy destination md5:
+destination '/etc/cp/scripts/cp-nano-makefile-generator.sh' does not exist.
+[2025-01-13T20:25:45]    Destination md5, after the copy:
+cb54f53385c4a0089ea1bcdd16cf1604  /etc/cp/scripts/cp-nano-makefile-generator.sh
+[2025-01-13T20:25:45]    Copy source md5:
+d740449dea568696660a62fce0fb35bd  scripts/get-cloud-metadata.sh
+Copy destination md5:
+destination '/etc/cp/scripts/get-cloud-metadata.sh' does not exist.
+[2025-01-13T20:25:45]    Destination md5, after the copy:
+d740449dea568696660a62fce0fb35bd  /etc/cp/scripts/get-cloud-metadata.sh
+[2025-01-13T20:25:45]    Installing the watchdog
+[2025-01-13T20:25:45]    Copy source md5:
+1bc243139e9b0af090d68b2259161dc9  watchdog/watchdog
+Copy destination md5:
+destination '/etc/cp/watchdog/cp-nano-watchdog' does not exist.
+[2025-01-13T20:25:45]    Destination md5, after the copy:
+1bc243139e9b0af090d68b2259161dc9  /etc/cp/watchdog/cp-nano-watchdog
+[2025-01-13T20:25:45]    Copy source md5:
+4e4f26afb12a89baa97ce831d20f7fd2  watchdog/wait-for-networking-inspection-modules.sh
+Copy destination md5:
+destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does not exist.
+[2025-01-13T20:25:45]    Destination md5, after the copy:
+4e4f26afb12a89baa97ce831d20f7fd2  /etc/cp/watchdog/wait-for-networking-inspection-modules.sh
+[2025-01-13T20:25:45]    Install cp-nano-agent service file
+[2025-01-13T20:25:45]    Restart cp-nano-agent service
+[2025-01-13T20:25:45]    Upgrade completed successfully
+[2025-01-13T21:06:31]    Copy cp-agent-info tool
+[2025-01-13T21:06:31]    Copy cp-nano-package-list
+[2025-01-13T21:06:31]    cp: -r not specified; omitting directory 'EULA.txt'
+[2025-01-13T21:06:31]    cp: -r not specified; omitting directory 'Licenses-for-Third-Party-Components.txt'
+[2025-01-13T21:06:31]    
+Starting upgrading of open-appsec Nano Agent [Mon Jan 13 21:06:31 UTC 2025]
+[2025-01-13T21:06:31]    ./orchestration_package.sh: line 444: /etc/cp/watchdog/cp-nano-watchdog: not found
+[2025-01-13T21:06:31]    Upgrade to latest
+[2025-01-13T21:06:31]    Copying cp-nano-agent binary file to folder: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T21:06:31]    Copy source md5:
+140d11d26751e3065bbaf5d2ae100f2d  ./bin/orchestration_comp
+Copy destination md5:
+destination '/etc/cp/orchestration/cp-nano-orchestration' does not exist.
+[2025-01-13T21:06:31]    Destination md5, after the copy:
+140d11d26751e3065bbaf5d2ae100f2d  /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T21:06:31]    Copy source md5:
+606e350a2be817f414910f44e560050f  open-appsec-cloud-mgmt
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt' does not exist.
+[2025-01-13T21:06:31]    Destination md5, after the copy:
+606e350a2be817f414910f44e560050f  /etc/cp/scripts/open-appsec-cloud-mgmt
+[2025-01-13T21:06:31]    Copy source md5:
+b30c5daa98068c49451811e28f09e30d  open-appsec-cloud-mgmt-k8s
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt-k8s' does not exist.
+[2025-01-13T21:06:31]    Destination md5, after the copy:
+b30c5daa98068c49451811e28f09e30d  /etc/cp/scripts/open-appsec-cloud-mgmt-k8s
+[2025-01-13T21:06:31]    Copy source md5:
+77237bbce924c7ae20fa8791b4fd5ed8  open-appsec-ctl.sh
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-ctl.sh' does not exist.
+[2025-01-13T21:06:31]    Destination md5, after the copy:
+77237bbce924c7ae20fa8791b4fd5ed8  /etc/cp/scripts/open-appsec-ctl.sh
+[2025-01-13T21:06:32]    ln: failed to create symbolic link '/etc/cp/conf/local_policy.yaml': File exists
+[2025-01-13T21:06:32]    Copy source md5:
+cb54f53385c4a0089ea1bcdd16cf1604  ./scripts/cp-nano-makefile-generator.sh
+Copy destination md5:
+destination '/etc/cp/scripts/cp-nano-makefile-generator.sh' does not exist.
+[2025-01-13T21:06:32]    Destination md5, after the copy:
+cb54f53385c4a0089ea1bcdd16cf1604  /etc/cp/scripts/cp-nano-makefile-generator.sh
+[2025-01-13T21:06:32]    Copy source md5:
+d740449dea568696660a62fce0fb35bd  scripts/get-cloud-metadata.sh
+Copy destination md5:
+destination '/etc/cp/scripts/get-cloud-metadata.sh' does not exist.
+[2025-01-13T21:06:32]    Destination md5, after the copy:
+d740449dea568696660a62fce0fb35bd  /etc/cp/scripts/get-cloud-metadata.sh
+[2025-01-13T21:06:32]    Installing the watchdog
+[2025-01-13T21:06:32]    Copy source md5:
+1bc243139e9b0af090d68b2259161dc9  watchdog/watchdog
+Copy destination md5:
+destination '/etc/cp/watchdog/cp-nano-watchdog' does not exist.
+[2025-01-13T21:06:32]    Destination md5, after the copy:
+1bc243139e9b0af090d68b2259161dc9  /etc/cp/watchdog/cp-nano-watchdog
+[2025-01-13T21:06:32]    Copy source md5:
+4e4f26afb12a89baa97ce831d20f7fd2  watchdog/wait-for-networking-inspection-modules.sh
+Copy destination md5:
+destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does not exist.
+[2025-01-13T21:06:32]    Destination md5, after the copy:
+4e4f26afb12a89baa97ce831d20f7fd2  /etc/cp/watchdog/wait-for-networking-inspection-modules.sh
+[2025-01-13T21:06:32]    Install cp-nano-agent service file
+[2025-01-13T21:06:32]    Restart cp-nano-agent service
+[2025-01-13T21:06:32]    Upgrade completed successfully
+[2025-01-13T21:10:29]    Copy cp-agent-info tool
+[2025-01-13T21:10:29]    Copy cp-nano-package-list
+[2025-01-13T21:10:29]    cp: -r not specified; omitting directory 'EULA.txt'
+[2025-01-13T21:10:29]    cp: -r not specified; omitting directory 'Licenses-for-Third-Party-Components.txt'
+[2025-01-13T21:10:29]    
+Starting upgrading of open-appsec Nano Agent [Mon Jan 13 21:10:29 UTC 2025]
+[2025-01-13T21:10:30]    ./orchestration_package.sh: line 444: /etc/cp/watchdog/cp-nano-watchdog: not found
+[2025-01-13T21:10:30]    Upgrade to latest
+[2025-01-13T21:10:30]    Copying cp-nano-agent binary file to folder: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T21:10:30]    Copy source md5:
+140d11d26751e3065bbaf5d2ae100f2d  ./bin/orchestration_comp
+Copy destination md5:
+destination '/etc/cp/orchestration/cp-nano-orchestration' does not exist.
+[2025-01-13T21:10:30]    Destination md5, after the copy:
+140d11d26751e3065bbaf5d2ae100f2d  /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T21:10:30]    Copy source md5:
+606e350a2be817f414910f44e560050f  open-appsec-cloud-mgmt
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt' does not exist.
+[2025-01-13T21:10:30]    Destination md5, after the copy:
+606e350a2be817f414910f44e560050f  /etc/cp/scripts/open-appsec-cloud-mgmt
+[2025-01-13T21:10:30]    Copy source md5:
+b30c5daa98068c49451811e28f09e30d  open-appsec-cloud-mgmt-k8s
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt-k8s' does not exist.
+[2025-01-13T21:10:30]    Destination md5, after the copy:
+b30c5daa98068c49451811e28f09e30d  /etc/cp/scripts/open-appsec-cloud-mgmt-k8s
+[2025-01-13T21:10:30]    Copy source md5:
+77237bbce924c7ae20fa8791b4fd5ed8  open-appsec-ctl.sh
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-ctl.sh' does not exist.
+[2025-01-13T21:10:30]    Destination md5, after the copy:
+77237bbce924c7ae20fa8791b4fd5ed8  /etc/cp/scripts/open-appsec-ctl.sh
+[2025-01-13T21:10:30]    ln: failed to create symbolic link '/etc/cp/conf/local_policy.yaml': File exists
+[2025-01-13T21:10:30]    Copy source md5:
+cb54f53385c4a0089ea1bcdd16cf1604  ./scripts/cp-nano-makefile-generator.sh
+Copy destination md5:
+destination '/etc/cp/scripts/cp-nano-makefile-generator.sh' does not exist.
+[2025-01-13T21:10:30]    Destination md5, after the copy:
+cb54f53385c4a0089ea1bcdd16cf1604  /etc/cp/scripts/cp-nano-makefile-generator.sh
+[2025-01-13T21:10:30]    Copy source md5:
+d740449dea568696660a62fce0fb35bd  scripts/get-cloud-metadata.sh
+Copy destination md5:
+destination '/etc/cp/scripts/get-cloud-metadata.sh' does not exist.
+[2025-01-13T21:10:30]    Destination md5, after the copy:
+d740449dea568696660a62fce0fb35bd  /etc/cp/scripts/get-cloud-metadata.sh
+[2025-01-13T21:10:30]    Installing the watchdog
+[2025-01-13T21:10:30]    Copy source md5:
+1bc243139e9b0af090d68b2259161dc9  watchdog/watchdog
+Copy destination md5:
+destination '/etc/cp/watchdog/cp-nano-watchdog' does not exist.
+[2025-01-13T21:10:30]    Destination md5, after the copy:
+1bc243139e9b0af090d68b2259161dc9  /etc/cp/watchdog/cp-nano-watchdog
+[2025-01-13T21:10:30]    Copy source md5:
+4e4f26afb12a89baa97ce831d20f7fd2  watchdog/wait-for-networking-inspection-modules.sh
+Copy destination md5:
+destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does not exist.
+[2025-01-13T21:10:30]    Destination md5, after the copy:
+4e4f26afb12a89baa97ce831d20f7fd2  /etc/cp/watchdog/wait-for-networking-inspection-modules.sh
+[2025-01-13T21:10:30]    Install cp-nano-agent service file
+[2025-01-13T21:10:30]    Restart cp-nano-agent service
+[2025-01-13T21:10:30]    Upgrade completed successfully
+[2025-01-13T22:11:42]    Copy cp-agent-info tool
+[2025-01-13T22:11:42]    Copy cp-nano-package-list
+[2025-01-13T22:11:42]    cp: -r not specified; omitting directory 'EULA.txt'
+[2025-01-13T22:11:42]    cp: -r not specified; omitting directory 'Licenses-for-Third-Party-Components.txt'
+[2025-01-13T22:11:42]    
+Starting upgrading of open-appsec Nano Agent [Mon Jan 13 22:11:42 UTC 2025]
+[2025-01-13T22:11:43]    ./orchestration_package.sh: line 444: /etc/cp/watchdog/cp-nano-watchdog: not found
+[2025-01-13T22:11:43]    Upgrade to latest
+[2025-01-13T22:11:43]    Copying cp-nano-agent binary file to folder: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T22:11:43]    Copy source md5:
+140d11d26751e3065bbaf5d2ae100f2d  ./bin/orchestration_comp
+Copy destination md5:
+destination '/etc/cp/orchestration/cp-nano-orchestration' does not exist.
+[2025-01-13T22:11:43]    Destination md5, after the copy:
+140d11d26751e3065bbaf5d2ae100f2d  /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T22:11:43]    Copy source md5:
+606e350a2be817f414910f44e560050f  open-appsec-cloud-mgmt
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt' does not exist.
+[2025-01-13T22:11:43]    Destination md5, after the copy:
+606e350a2be817f414910f44e560050f  /etc/cp/scripts/open-appsec-cloud-mgmt
+[2025-01-13T22:11:43]    Copy source md5:
+b30c5daa98068c49451811e28f09e30d  open-appsec-cloud-mgmt-k8s
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt-k8s' does not exist.
+[2025-01-13T22:11:43]    Destination md5, after the copy:
+b30c5daa98068c49451811e28f09e30d  /etc/cp/scripts/open-appsec-cloud-mgmt-k8s
+[2025-01-13T22:11:43]    Copy source md5:
+77237bbce924c7ae20fa8791b4fd5ed8  open-appsec-ctl.sh
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-ctl.sh' does not exist.
+[2025-01-13T22:11:43]    Destination md5, after the copy:
+77237bbce924c7ae20fa8791b4fd5ed8  /etc/cp/scripts/open-appsec-ctl.sh
+[2025-01-13T22:11:43]    ln: failed to create symbolic link '/etc/cp/conf/local_policy.yaml': File exists
+[2025-01-13T22:11:43]    Copy source md5:
+cb54f53385c4a0089ea1bcdd16cf1604  ./scripts/cp-nano-makefile-generator.sh
+Copy destination md5:
+destination '/etc/cp/scripts/cp-nano-makefile-generator.sh' does not exist.
+[2025-01-13T22:11:43]    Destination md5, after the copy:
+cb54f53385c4a0089ea1bcdd16cf1604  /etc/cp/scripts/cp-nano-makefile-generator.sh
+[2025-01-13T22:11:43]    Copy source md5:
+d740449dea568696660a62fce0fb35bd  scripts/get-cloud-metadata.sh
+Copy destination md5:
+destination '/etc/cp/scripts/get-cloud-metadata.sh' does not exist.
+[2025-01-13T22:11:43]    Destination md5, after the copy:
+d740449dea568696660a62fce0fb35bd  /etc/cp/scripts/get-cloud-metadata.sh
+[2025-01-13T22:11:44]    Installing the watchdog
+[2025-01-13T22:11:44]    Copy source md5:
+1bc243139e9b0af090d68b2259161dc9  watchdog/watchdog
+Copy destination md5:
+destination '/etc/cp/watchdog/cp-nano-watchdog' does not exist.
+[2025-01-13T22:11:44]    Destination md5, after the copy:
+1bc243139e9b0af090d68b2259161dc9  /etc/cp/watchdog/cp-nano-watchdog
+[2025-01-13T22:11:44]    Copy source md5:
+4e4f26afb12a89baa97ce831d20f7fd2  watchdog/wait-for-networking-inspection-modules.sh
+Copy destination md5:
+destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does not exist.
+[2025-01-13T22:11:44]    Destination md5, after the copy:
+4e4f26afb12a89baa97ce831d20f7fd2  /etc/cp/watchdog/wait-for-networking-inspection-modules.sh
+[2025-01-13T22:11:44]    Install cp-nano-agent service file
+[2025-01-13T22:11:44]    Restart cp-nano-agent service
+[2025-01-13T22:11:45]    Upgrade completed successfully
+[2025-01-13T22:17:03]    Copy cp-agent-info tool
+[2025-01-13T22:17:03]    Copy cp-nano-package-list
+[2025-01-13T22:17:03]    cp: -r not specified; omitting directory 'EULA.txt'
+[2025-01-13T22:17:03]    cp: -r not specified; omitting directory 'Licenses-for-Third-Party-Components.txt'
+[2025-01-13T22:17:03]    
+Starting upgrading of open-appsec Nano Agent [Mon Jan 13 22:17:03 UTC 2025]
+[2025-01-13T22:17:03]    ./orchestration_package.sh: line 444: /etc/cp/watchdog/cp-nano-watchdog: not found
+[2025-01-13T22:17:03]    Upgrade to latest
+[2025-01-13T22:17:03]    Copying cp-nano-agent binary file to folder: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T22:17:03]    Copy source md5:
+140d11d26751e3065bbaf5d2ae100f2d  ./bin/orchestration_comp
+Copy destination md5:
+destination '/etc/cp/orchestration/cp-nano-orchestration' does not exist.
+[2025-01-13T22:17:04]    Destination md5, after the copy:
+140d11d26751e3065bbaf5d2ae100f2d  /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T22:17:04]    Copy source md5:
+606e350a2be817f414910f44e560050f  open-appsec-cloud-mgmt
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt' does not exist.
+[2025-01-13T22:17:04]    Destination md5, after the copy:
+606e350a2be817f414910f44e560050f  /etc/cp/scripts/open-appsec-cloud-mgmt
+[2025-01-13T22:17:04]    Copy source md5:
+b30c5daa98068c49451811e28f09e30d  open-appsec-cloud-mgmt-k8s
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt-k8s' does not exist.
+[2025-01-13T22:17:04]    Destination md5, after the copy:
+b30c5daa98068c49451811e28f09e30d  /etc/cp/scripts/open-appsec-cloud-mgmt-k8s
+[2025-01-13T22:17:04]    Copy source md5:
+77237bbce924c7ae20fa8791b4fd5ed8  open-appsec-ctl.sh
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-ctl.sh' does not exist.
+[2025-01-13T22:17:04]    Destination md5, after the copy:
+77237bbce924c7ae20fa8791b4fd5ed8  /etc/cp/scripts/open-appsec-ctl.sh
+[2025-01-13T22:17:04]    ln: failed to create symbolic link '/etc/cp/conf/local_policy.yaml': File exists
+[2025-01-13T22:17:04]    Copy source md5:
+cb54f53385c4a0089ea1bcdd16cf1604  ./scripts/cp-nano-makefile-generator.sh
+Copy destination md5:
+destination '/etc/cp/scripts/cp-nano-makefile-generator.sh' does not exist.
+[2025-01-13T22:17:04]    Destination md5, after the copy:
+cb54f53385c4a0089ea1bcdd16cf1604  /etc/cp/scripts/cp-nano-makefile-generator.sh
+[2025-01-13T22:17:04]    Copy source md5:
+d740449dea568696660a62fce0fb35bd  scripts/get-cloud-metadata.sh
+Copy destination md5:
+destination '/etc/cp/scripts/get-cloud-metadata.sh' does not exist.
+[2025-01-13T22:17:04]    Destination md5, after the copy:
+d740449dea568696660a62fce0fb35bd  /etc/cp/scripts/get-cloud-metadata.sh
+[2025-01-13T22:17:04]    Installing the watchdog
+[2025-01-13T22:17:04]    Copy source md5:
+1bc243139e9b0af090d68b2259161dc9  watchdog/watchdog
+Copy destination md5:
+destination '/etc/cp/watchdog/cp-nano-watchdog' does not exist.
+[2025-01-13T22:17:04]    Destination md5, after the copy:
+1bc243139e9b0af090d68b2259161dc9  /etc/cp/watchdog/cp-nano-watchdog
+[2025-01-13T22:17:04]    Copy source md5:
+4e4f26afb12a89baa97ce831d20f7fd2  watchdog/wait-for-networking-inspection-modules.sh
+Copy destination md5:
+destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does not exist.
+[2025-01-13T22:17:04]    Destination md5, after the copy:
+4e4f26afb12a89baa97ce831d20f7fd2  /etc/cp/watchdog/wait-for-networking-inspection-modules.sh
+[2025-01-13T22:17:04]    Install cp-nano-agent service file
+[2025-01-13T22:17:04]    Restart cp-nano-agent service
+[2025-01-13T22:17:04]    Upgrade completed successfully
+[2025-01-13T22:54:22]    Copy cp-agent-info tool
+[2025-01-13T22:54:22]    Copy cp-nano-package-list
+[2025-01-13T22:54:22]    cp: -r not specified; omitting directory 'EULA.txt'
+[2025-01-13T22:54:22]    cp: -r not specified; omitting directory 'Licenses-for-Third-Party-Components.txt'
+[2025-01-13T22:54:22]    
+Starting upgrading of open-appsec Nano Agent [Mon Jan 13 22:54:22 UTC 2025]
+[2025-01-13T22:54:23]    ./orchestration_package.sh: line 444: /etc/cp/watchdog/cp-nano-watchdog: not found
+[2025-01-13T22:54:23]    Upgrade to latest
+[2025-01-13T22:54:23]    Copying cp-nano-agent binary file to folder: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T22:54:23]    Copy source md5:
+140d11d26751e3065bbaf5d2ae100f2d  ./bin/orchestration_comp
+Copy destination md5:
+destination '/etc/cp/orchestration/cp-nano-orchestration' does not exist.
+[2025-01-13T22:54:23]    Destination md5, after the copy:
+140d11d26751e3065bbaf5d2ae100f2d  /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T22:54:23]    Copy source md5:
+606e350a2be817f414910f44e560050f  open-appsec-cloud-mgmt
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt' does not exist.
+[2025-01-13T22:54:23]    Destination md5, after the copy:
+606e350a2be817f414910f44e560050f  /etc/cp/scripts/open-appsec-cloud-mgmt
+[2025-01-13T22:54:23]    Copy source md5:
+b30c5daa98068c49451811e28f09e30d  open-appsec-cloud-mgmt-k8s
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt-k8s' does not exist.
+[2025-01-13T22:54:23]    Destination md5, after the copy:
+b30c5daa98068c49451811e28f09e30d  /etc/cp/scripts/open-appsec-cloud-mgmt-k8s
+[2025-01-13T22:54:23]    Copy source md5:
+77237bbce924c7ae20fa8791b4fd5ed8  open-appsec-ctl.sh
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-ctl.sh' does not exist.
+[2025-01-13T22:54:23]    Destination md5, after the copy:
+77237bbce924c7ae20fa8791b4fd5ed8  /etc/cp/scripts/open-appsec-ctl.sh
+[2025-01-13T22:54:23]    ln: failed to create symbolic link '/etc/cp/conf/local_policy.yaml': File exists
+[2025-01-13T22:54:23]    Copy source md5:
+cb54f53385c4a0089ea1bcdd16cf1604  ./scripts/cp-nano-makefile-generator.sh
+Copy destination md5:
+destination '/etc/cp/scripts/cp-nano-makefile-generator.sh' does not exist.
+[2025-01-13T22:54:23]    Destination md5, after the copy:
+cb54f53385c4a0089ea1bcdd16cf1604  /etc/cp/scripts/cp-nano-makefile-generator.sh
+[2025-01-13T22:54:23]    Copy source md5:
+d740449dea568696660a62fce0fb35bd  scripts/get-cloud-metadata.sh
+Copy destination md5:
+destination '/etc/cp/scripts/get-cloud-metadata.sh' does not exist.
+[2025-01-13T22:54:23]    Destination md5, after the copy:
+d740449dea568696660a62fce0fb35bd  /etc/cp/scripts/get-cloud-metadata.sh
+[2025-01-13T22:54:23]    Installing the watchdog
+[2025-01-13T22:54:23]    Copy source md5:
+1bc243139e9b0af090d68b2259161dc9  watchdog/watchdog
+Copy destination md5:
+destination '/etc/cp/watchdog/cp-nano-watchdog' does not exist.
+[2025-01-13T22:54:23]    Destination md5, after the copy:
+1bc243139e9b0af090d68b2259161dc9  /etc/cp/watchdog/cp-nano-watchdog
+[2025-01-13T22:54:23]    Copy source md5:
+4e4f26afb12a89baa97ce831d20f7fd2  watchdog/wait-for-networking-inspection-modules.sh
+Copy destination md5:
+destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does not exist.
+[2025-01-13T22:54:23]    Destination md5, after the copy:
+4e4f26afb12a89baa97ce831d20f7fd2  /etc/cp/watchdog/wait-for-networking-inspection-modules.sh
+[2025-01-13T22:54:23]    Install cp-nano-agent service file
+[2025-01-13T22:54:23]    Restart cp-nano-agent service
+[2025-01-13T22:54:23]    Upgrade completed successfully
+[2025-01-13T23:11:22]    Copy cp-agent-info tool
+[2025-01-13T23:11:22]    Copy cp-nano-package-list
+[2025-01-13T23:11:22]    cp: -r not specified; omitting directory 'EULA.txt'
+[2025-01-13T23:11:22]    cp: -r not specified; omitting directory 'Licenses-for-Third-Party-Components.txt'
+[2025-01-13T23:11:22]    
+Starting upgrading of open-appsec Nano Agent [Mon Jan 13 23:11:22 UTC 2025]
+[2025-01-13T23:11:23]    ./orchestration_package.sh: line 444: /etc/cp/watchdog/cp-nano-watchdog: not found
+[2025-01-13T23:11:23]    Upgrade to latest
+[2025-01-13T23:11:23]    Copying cp-nano-agent binary file to folder: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T23:11:23]    Copy source md5:
+140d11d26751e3065bbaf5d2ae100f2d  ./bin/orchestration_comp
+Copy destination md5:
+destination '/etc/cp/orchestration/cp-nano-orchestration' does not exist.
+[2025-01-13T23:11:23]    Destination md5, after the copy:
+140d11d26751e3065bbaf5d2ae100f2d  /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T23:11:23]    Copy source md5:
+606e350a2be817f414910f44e560050f  open-appsec-cloud-mgmt
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt' does not exist.
+[2025-01-13T23:11:23]    Destination md5, after the copy:
+606e350a2be817f414910f44e560050f  /etc/cp/scripts/open-appsec-cloud-mgmt
+[2025-01-13T23:11:23]    Copy source md5:
+b30c5daa98068c49451811e28f09e30d  open-appsec-cloud-mgmt-k8s
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt-k8s' does not exist.
+[2025-01-13T23:11:23]    Destination md5, after the copy:
+b30c5daa98068c49451811e28f09e30d  /etc/cp/scripts/open-appsec-cloud-mgmt-k8s
+[2025-01-13T23:11:23]    Copy source md5:
+77237bbce924c7ae20fa8791b4fd5ed8  open-appsec-ctl.sh
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-ctl.sh' does not exist.
+[2025-01-13T23:11:23]    Destination md5, after the copy:
+77237bbce924c7ae20fa8791b4fd5ed8  /etc/cp/scripts/open-appsec-ctl.sh
+[2025-01-13T23:11:23]    ln: failed to create symbolic link '/etc/cp/conf/local_policy.yaml': File exists
+[2025-01-13T23:11:23]    Copy source md5:
+cb54f53385c4a0089ea1bcdd16cf1604  ./scripts/cp-nano-makefile-generator.sh
+Copy destination md5:
+destination '/etc/cp/scripts/cp-nano-makefile-generator.sh' does not exist.
+[2025-01-13T23:11:24]    Destination md5, after the copy:
+cb54f53385c4a0089ea1bcdd16cf1604  /etc/cp/scripts/cp-nano-makefile-generator.sh
+[2025-01-13T23:11:24]    Copy source md5:
+d740449dea568696660a62fce0fb35bd  scripts/get-cloud-metadata.sh
+Copy destination md5:
+destination '/etc/cp/scripts/get-cloud-metadata.sh' does not exist.
+[2025-01-13T23:11:24]    Destination md5, after the copy:
+d740449dea568696660a62fce0fb35bd  /etc/cp/scripts/get-cloud-metadata.sh
+[2025-01-13T23:11:24]    Installing the watchdog
+[2025-01-13T23:11:24]    Copy source md5:
+1bc243139e9b0af090d68b2259161dc9  watchdog/watchdog
+Copy destination md5:
+destination '/etc/cp/watchdog/cp-nano-watchdog' does not exist.
+[2025-01-13T23:11:24]    Destination md5, after the copy:
+1bc243139e9b0af090d68b2259161dc9  /etc/cp/watchdog/cp-nano-watchdog
+[2025-01-13T23:11:24]    Copy source md5:
+4e4f26afb12a89baa97ce831d20f7fd2  watchdog/wait-for-networking-inspection-modules.sh
+Copy destination md5:
+destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does not exist.
+[2025-01-13T23:11:24]    Destination md5, after the copy:
+4e4f26afb12a89baa97ce831d20f7fd2  /etc/cp/watchdog/wait-for-networking-inspection-modules.sh
+[2025-01-13T23:11:24]    Install cp-nano-agent service file
+[2025-01-13T23:11:24]    Restart cp-nano-agent service
+[2025-01-13T23:11:24]    Upgrade completed successfully
+[2025-01-13T23:14:31]    Copy cp-agent-info tool
+[2025-01-13T23:14:31]    Copy cp-nano-package-list
+[2025-01-13T23:14:31]    cp: -r not specified; omitting directory 'EULA.txt'
+[2025-01-13T23:14:31]    cp: -r not specified; omitting directory 'Licenses-for-Third-Party-Components.txt'
+[2025-01-13T23:14:31]    
+Starting upgrading of open-appsec Nano Agent [Mon Jan 13 23:14:31 UTC 2025]
+[2025-01-13T23:14:31]    ./orchestration_package.sh: line 444: /etc/cp/watchdog/cp-nano-watchdog: not found
+[2025-01-13T23:14:31]    Upgrade to latest
+[2025-01-13T23:14:31]    Copying cp-nano-agent binary file to folder: /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T23:14:31]    Copy source md5:
+140d11d26751e3065bbaf5d2ae100f2d  ./bin/orchestration_comp
+Copy destination md5:
+destination '/etc/cp/orchestration/cp-nano-orchestration' does not exist.
+[2025-01-13T23:14:31]    Destination md5, after the copy:
+140d11d26751e3065bbaf5d2ae100f2d  /etc/cp/orchestration/cp-nano-orchestration
+[2025-01-13T23:14:31]    Copy source md5:
+606e350a2be817f414910f44e560050f  open-appsec-cloud-mgmt
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt' does not exist.
+[2025-01-13T23:14:32]    Destination md5, after the copy:
+606e350a2be817f414910f44e560050f  /etc/cp/scripts/open-appsec-cloud-mgmt
+[2025-01-13T23:14:32]    Copy source md5:
+b30c5daa98068c49451811e28f09e30d  open-appsec-cloud-mgmt-k8s
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-cloud-mgmt-k8s' does not exist.
+[2025-01-13T23:14:32]    Destination md5, after the copy:
+b30c5daa98068c49451811e28f09e30d  /etc/cp/scripts/open-appsec-cloud-mgmt-k8s
+[2025-01-13T23:14:32]    Copy source md5:
+77237bbce924c7ae20fa8791b4fd5ed8  open-appsec-ctl.sh
+Copy destination md5:
+destination '/etc/cp/scripts/open-appsec-ctl.sh' does not exist.
+[2025-01-13T23:14:32]    Destination md5, after the copy:
+77237bbce924c7ae20fa8791b4fd5ed8  /etc/cp/scripts/open-appsec-ctl.sh
+[2025-01-13T23:14:32]    ln: failed to create symbolic link '/etc/cp/conf/local_policy.yaml': File exists
+[2025-01-13T23:14:32]    Copy source md5:
+cb54f53385c4a0089ea1bcdd16cf1604  ./scripts/cp-nano-makefile-generator.sh
+Copy destination md5:
+destination '/etc/cp/scripts/cp-nano-makefile-generator.sh' does not exist.
+[2025-01-13T23:14:32]    Destination md5, after the copy:
+cb54f53385c4a0089ea1bcdd16cf1604  /etc/cp/scripts/cp-nano-makefile-generator.sh
+[2025-01-13T23:14:32]    Copy source md5:
+d740449dea568696660a62fce0fb35bd  scripts/get-cloud-metadata.sh
+Copy destination md5:
+destination '/etc/cp/scripts/get-cloud-metadata.sh' does not exist.
+[2025-01-13T23:14:32]    Destination md5, after the copy:
+d740449dea568696660a62fce0fb35bd  /etc/cp/scripts/get-cloud-metadata.sh
+[2025-01-13T23:14:32]    Installing the watchdog
+[2025-01-13T23:14:32]    Copy source md5:
+1bc243139e9b0af090d68b2259161dc9  watchdog/watchdog
+Copy destination md5:
+destination '/etc/cp/watchdog/cp-nano-watchdog' does not exist.
+[2025-01-13T23:14:32]    Destination md5, after the copy:
+1bc243139e9b0af090d68b2259161dc9  /etc/cp/watchdog/cp-nano-watchdog
+[2025-01-13T23:14:32]    Copy source md5:
+4e4f26afb12a89baa97ce831d20f7fd2  watchdog/wait-for-networking-inspection-modules.sh
+Copy destination md5:
+destination '/etc/cp/watchdog/wait-for-networking-inspection-modules.sh' does not exist.
+[2025-01-13T23:14:32]    Destination md5, after the copy:
+4e4f26afb12a89baa97ce831d20f7fd2  /etc/cp/watchdog/wait-for-networking-inspection-modules.sh
+[2025-01-13T23:14:33]    Install cp-nano-agent service file
+[2025-01-13T23:14:33]    Restart cp-nano-agent service
+[2025-01-13T23:14:33]    Upgrade completed successfully

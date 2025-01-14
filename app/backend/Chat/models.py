@@ -32,3 +32,50 @@ class Conversation(models.Model):
 
     def __str__(self):
         return f"Conversation_id: {self.id}, between: {self.user1_id.username} and {self.user2_id.username}"
+
+
+class BlockedUser(models.Model):
+    blocker = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE,
+        related_name='blocking'
+    )
+    blocked = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE,
+        related_name='blocked_by'
+    )
+    blocked_at = models.DateTimeField(auto_now_add=True)
+    reason = models.TextField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('blocker', 'blocked')
+        indexes = [
+            models.Index(fields=['blocker']),
+            models.Index(fields=['blocked']),
+        ]
+
+    def __str__(self):
+        return f"{self.blocker.username} blocked {self.blocked.username}"
+    
+    @classmethod
+    def is_blocked(cls, user1, user2):
+        """Check if either user has blocked the other"""
+        return cls.objects.filter(
+            models.Q(blocker=user1, blocked=user2) | 
+            models.Q(blocker=user2, blocked=user1)
+        ).exists()
+
+    @classmethod
+    def get_blocked_users(cls, user):
+        """Get all users blocked by the given user"""
+        return User.objects.filter(
+            blocked_by__blocker=user
+        )
+
+    @classmethod
+    def get_blocking_users(cls, user):
+        """Get all users who have blocked the given user"""
+        return User.objects.filter(
+            blocking__blocked=user
+        )

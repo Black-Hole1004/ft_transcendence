@@ -122,3 +122,83 @@ chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
 chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
 Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
 Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Mon Jan 13 20:25:48 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Mon Jan 13 21:06:34 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Mon Jan 13 21:10:32 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Mon Jan 13 22:11:49 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Mon Jan 13 22:17:06 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Mon Jan 13 22:54:26 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Mon Jan 13 23:11:29 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
+Starting installation of Check Point HTTP Transaction Handler service [Mon Jan 13 23:14:36 UTC 2025]
+
+cp: cannot stat 'conf/cp-nano-ips-protections.json': No such file or directory
+chmod: cannot access '/etc/cp/conf/data/cp-nano-ips-protections.data': No such file or directory
+cp: cannot stat 'resources/cp-ab.js': No such file or directory
+cp: cannot stat 'resources/cp-csrf.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-ab.js': No such file or directory
+chmod: cannot access '/etc/cp/conf/waap/cp-csrf.js': No such file or directory
+Requested to restart service '/etc/cp/HttpTransactionHandler/cp-nano-http-transaction-handler', but it is not registered
+Installation completed successfully.
