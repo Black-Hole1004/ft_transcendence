@@ -6,8 +6,8 @@ COPY ./conf/logstash.yml /usr/share/logstash/config/logstash.yml
 
 COPY ./pipeline /usr/share/logstash/pipeline
 
-COPY ./fetchSecrets.sh /usr/share/elasticsearch/fetchSecrets.sh
+COPY ./fetchSecrets.sh /usr/share/logstash/fetchSecrets.sh
 USER root
-RUN chmod +x /usr/share/elasticsearch/fetchSecrets.sh
+RUN chmod +x /usr/share/logstash/fetchSecrets.sh
 
-CMD ["/usr/share/elasticsearch/fetchSecrets.sh"]
+ENTRYPOINT ["/usr/share/logstash/fetchSecrets.sh"]

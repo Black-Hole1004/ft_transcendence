@@ -468,6 +468,19 @@ class UsersListView(APIView):
 class SendFriendRequestView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def check_if_blocked(self, user, target_user_id):
+        conversation = Conversation.objects.filter(
+            (
+                (Q(user1_id_id=user.id) & Q(user2_id_id=target_user_id)) |
+                (Q(user1_id_id=target_user_id) & Q(user2_id_id=user.id))
+            )
+        ).first()
+
+        if conversation:
+            # Check if the target user has blocked the current user
+            return conversation.blocked_by == int(target_user_id) or conversation.blocked_by == int(user.id)
+        return False
+
     def post(self, request):
 
         user_from = request.user
@@ -478,6 +491,11 @@ class SendFriendRequestView(APIView):
             user_to = User.objects.get(id=user_to_id)
         except User.DoesNotExist:
             return Response({'message': 'User not found'}, status=404)
+
+        # Check if user is blocked
+        if self.check_if_blocked(user_from, user_to_id):
+            return Response({"message": "Cannot send friend request - user has blocked you"}, status=400)
+        
         if FriendShip.objects.filter(user_from=user_from, user_to=user_to).exists() or FriendShip.objects.filter(user_from=user_to, user_to=user_from).exists():
             return Response({"message": "You are already friends"}, status=400)
         if FriendShipRequest.objects.filter(user_from=user_from, user_to=user_to, status='pending').exists():
@@ -501,11 +519,29 @@ class SendFriendRequestView(APIView):
 class AcceptFriendRequestView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def check_if_blocked(self, user, target_user_id):
+        conversation = Conversation.objects.filter(
+            (
+                (Q(user1_id_id=user.id) & Q(user2_id_id=target_user_id)) |
+                (Q(user1_id_id=target_user_id) & Q(user2_id_id=user.id))
+            )
+        ).first()
+
+        if conversation:
+            # Check if the target user has blocked the current user
+            return conversation.blocked_by == int(target_user_id) or conversation.blocked_by == int(user.id)
+        return False
+
     def post(self, request, friend_request_id):
         try:
             friend_request = FriendShipRequest.objects.get(id=friend_request_id)
             if (friend_request.user_to != request.user):
                 return Response({"message": "You are not authorized to accept this friend request"}, status=403)
+
+            # Check if user is blocked
+            if self.check_if_blocked(friend_request.user_to, friend_request.user_from.id):
+                return Response({"message": "Cannot send friend request - user has blocked you"}, status=400)
+
             if friend_request.status == 'accepted':
                 return Response({"message": "Friend request already accepted"}, status=400)
 
@@ -1154,16 +1190,39 @@ def check_blocked_status(request):
     user = request.user
     user_to_check_id = request.GET.get('user_id')
 
+    print('user_id ----------->', user_to_check_id)
+    print('user ----------->', user)
+    print('user_id ----------->', user.id)
+
     if not user_to_check_id:
         return JsonResponse({'error': 'User ID not provided'}, status=400)
 
     try:
-        # Check for any conversation where the user is blocked
-        is_blocked = Conversation.objects.filter(
-            (Q(user1_id=user) & Q(user2_id_id=user_to_check_id) & Q(blocked_by=user.id)) |
-            (Q(user1_id_id=user_to_check_id) & Q(user2_id=user) & Q(blocked_by=user_to_check_id))
-        ).exists()
+        # Get the conversation and check if the target user has blocked the current user
+        conversation = Conversation.objects.filter(
+            (
+                # Case 1: Current user is user1, target user is user2
+                (Q(user1_id_id=user.id) & Q(user2_id_id=user_to_check_id)) |
+                # Case 2: Current user is user2, target user is user1
+                (Q(user1_id_id=user_to_check_id) & Q(user2_id_id=user.id))
+            )
+        ).first()
+
+        print('Found conversation:', conversation)
+        
+        is_blocked = False
+        if conversation:
+            # Check if the target user has blocked the current user
+            target_user_id = int(user_to_check_id)
+            is_blocked = conversation.blocked_by == target_user_id or conversation.blocked_by == user.id
+
+        print('Conversation details:')
+        print('- Current user ID:', user.id)
+        print('- Target user ID:', user_to_check_id)
+        print('- Blocked by:', getattr(conversation, 'blocked_by', None))
+        print('- Is blocked:', is_blocked)
 
         return JsonResponse({'is_blocked': is_blocked})
     except Exception as e:
+        print('Error:', str(e))
         return JsonResponse({'error': str(e)}, status=500)

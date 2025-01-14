@@ -95,41 +95,41 @@ services:
 
 
 ############ WAF ############
-  appsec-agent:
-      image: ghcr.io/openappsec/agent:${APPSEC_VERSION}
-      container_name: appsec-agent
-      environment:
-        - SHARED_STORAGE_HOST=appsec-shared-storage
-        - LEARNING_HOST=appsec-smartsync
-        - TUNING_HOST=appsec-tuning-svc
-        - https_proxy=${APPSEC_HTTPS_PROXY}
-        - user_email=${USER_EMAIL}
-        - autoPolicyLoad=${APPSEC_AUTO_POLICY_LOAD}
-        - registered_server="StarServe App"
-      ipc: shareable
-      volumes:
-        - ${APPSEC_CONFIG}:/etc/cp/conf
-        - ${APPSEC_DATA}:/etc/cp/data
-        - ${APPSEC_LOGS}:/var/log/nano_agent
-        - ${APPSEC_LOCALCONFIG}:/ext/appsec
-        - ${RUNNING_SCRIPT_RETRIEVE}:/ext/retrieveFromVault.sh
-        - ./app/vault/token.txt:/tmp/token.txt
-        - ${APPSEC_ADVANCED_AI}:/advanced-model/open-appsec-advanced-model.tgz:rw
-      # command: >
-      #   sh -c "
-      #     chmod +x /ext/retrieveFromVault.sh &&
-      #     sh /ext/retrieveFromVault.sh
-      #   "
-      restart: always
-      depends_on:
-        vault:
-          condition: service_healthy
-      networks:
-        - ft_transcendence_network
+  # appsec-agent:
+  #     image: ghcr.io/openappsec/agent:${APPSEC_VERSION}
+  #     container_name: appsec-agent
+  #     environment:
+  #       - SHARED_STORAGE_HOST=appsec-shared-storage
+  #       - LEARNING_HOST=appsec-smartsync
+  #       - TUNING_HOST=appsec-tuning-svc
+  #       - https_proxy=${APPSEC_HTTPS_PROXY}
+  #       - user_email=${USER_EMAIL}
+  #       - autoPolicyLoad=${APPSEC_AUTO_POLICY_LOAD}
+  #       - registered_server="StarServe App"
+  #     ipc: shareable
+  #     volumes:
+  #       - ${APPSEC_CONFIG}:/etc/cp/conf
+  #       - ${APPSEC_DATA}:/etc/cp/data
+  #       - ${APPSEC_LOGS}:/var/log/nano_agent
+  #       - ${APPSEC_LOCALCONFIG}:/ext/appsec
+  #       - ${RUNNING_SCRIPT_RETRIEVE}:/ext/retrieveFromVault.sh
+  #       - ./app/vault/token.txt:/tmp/token.txt
+  #       - ${APPSEC_ADVANCED_AI}:/advanced-model/open-appsec-advanced-model.tgz:rw
+  #     # command: >
+  #     #   sh -c "
+  #     #     chmod +x /ext/retrieveFromVault.sh &&
+  #     #     sh /ext/retrieveFromVault.sh
+  #     #   "
+  #     restart: always
+  #     depends_on:
+  #       vault:
+  #         condition: service_healthy
+  #     networks:
+  #       - ft_transcendence_network
   appsec-nginx:
     image: ghcr.io/openappsec/nginx-attachment:${APPSEC_VERSION}
     container_name: appsec-nginx
-    ipc: service:appsec-agent
+    # ipc: service:appsec-agent
     volumes:
       - ${NGINX_CONF_FILE}:/etc/nginx/conf.d/starserve.conf
       - ./app/nginx/tools/generate_ssl.sh:/app/generate_ssl.sh
@@ -150,64 +150,64 @@ services:
       # - "80:80"
       - "443:443"
 
-  appsec-smartsync:
-    profiles:
-      - standalone
-    image: ghcr.io/openappsec/smartsync:${APPSEC_VERSION}
-    container_name: appsec-smartsync
-    environment:
-      - SHARED_STORAGE_HOST=appsec-shared-storage
-    depends_on:
-      - appsec-shared-storage
-  appsec-shared-storage:
-    profiles:
-      - standalone
-    image: ghcr.io/openappsec/smartsync-shared-files:${APPSEC_VERSION}
-    container_name: appsec-shared-storage
-    ipc: service:appsec-agent
-    # user: root
-    volumes:
-      - ${SMART_SYNC_STORAGE}:/db:z
-    networks:
-      - ft_transcendence_network
-  appsec-tuning-svc:
-    profiles:
-      - standalone
-    build:
-      context: ./app/waf/appsec-tuning-svc
-      dockerfile: Dockerfile  # Path to the custom Dockerfile
-    container_name: appsec-tuning-svc
-    environment:
-      - SHARED_STORAGE_HOST=appsec-shared-storage
-      # - QUERY_DB_PASSWORD=${DB_PASSWORD}
-      # - QUERY_DB_HOST=${DB_HOST}
-      # - QUERY_DB_USER=${DB_USER}
-    volumes:
-      - ${APPSEC_CONFIG}:/etc/cp/conf
-      - ./app/vault/token.txt:/tmp/token.txt
-    depends_on:
-      - appsec-shared-storage
-      - appsec-db
-      - vault
-    networks:
-      - ft_transcendence_network
-  appsec-db:
-    profiles:
-      - standalone
-    build:
-      context: ./app/waf/appsec-db
-      dockerfile: Dockerfile  # Path to the custom Dockerfile
-    container_name: appsec-db
-    restart: always
-    volumes:
-      - ${POSTGRES_STORAGE}:/var/lib/postgresql/data
-      # - ${RUNNING_SCRIPT_FETCH}:/usr/local/bin/fetchData.sh  # Mount the script
-      - ./app/vault/token.txt:/tmp/token.txt
-    networks:
-      - ft_transcendence_network
-    depends_on:
-      vault:
-        condition: service_healthy
+  # appsec-smartsync:
+  #   profiles:
+  #     - standalone
+  #   image: ghcr.io/openappsec/smartsync:${APPSEC_VERSION}
+  #   container_name: appsec-smartsync
+  #   environment:
+  #     - SHARED_STORAGE_HOST=appsec-shared-storage
+  #   depends_on:
+  #     - appsec-shared-storage
+  # appsec-shared-storage:
+  #   profiles:
+  #     - standalone
+  #   image: ghcr.io/openappsec/smartsync-shared-files:${APPSEC_VERSION}
+  #   container_name: appsec-shared-storage
+  #   ipc: service:appsec-agent
+  #   # user: root
+  #   volumes:
+  #     - ${SMART_SYNC_STORAGE}:/db:z
+  #   networks:
+  #     - ft_transcendence_network
+  # appsec-tuning-svc:
+  #   profiles:
+  #     - standalone
+  #   build:
+  #     context: ./app/waf/appsec-tuning-svc
+  #     dockerfile: Dockerfile  # Path to the custom Dockerfile
+  #   container_name: appsec-tuning-svc
+  #   environment:
+  #     - SHARED_STORAGE_HOST=appsec-shared-storage
+  #     # - QUERY_DB_PASSWORD=${DB_PASSWORD}
+  #     # - QUERY_DB_HOST=${DB_HOST}
+  #     # - QUERY_DB_USER=${DB_USER}
+  #   volumes:
+  #     - ${APPSEC_CONFIG}:/etc/cp/conf
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   depends_on:
+  #     - appsec-shared-storage
+  #     - appsec-db
+  #     - vault
+  #   networks:
+  #     - ft_transcendence_network
+  # appsec-db:
+  #   profiles:
+  #     - standalone
+  #   build:
+  #     context: ./app/waf/appsec-db
+  #     dockerfile: Dockerfile  # Path to the custom Dockerfile
+  #   container_name: appsec-db
+  #   restart: always
+  #   volumes:
+  #     - ${POSTGRES_STORAGE}:/var/lib/postgresql/data
+  #     # - ${RUNNING_SCRIPT_FETCH}:/usr/local/bin/fetchData.sh  # Mount the script
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   networks:
+  #     - ft_transcendence_network
+  #   depends_on:
+  #     vault:
+  #       condition: service_healthy
 
 ############ VAULT ############
   vault:
@@ -237,82 +237,86 @@ services:
 
   #setup for elasticsearch
   # comment this :
-  setup:
-    container_name: setup
-    build: ./app/elk/setup/.
-    volumes:
-      - certs:/usr/share/elasticsearch/config/certs
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./app/vault/token.txt:/tmp/token.txt
-    networks:
-      - ft_transcendence_network
-    env_file:
-      - .env
-    healthcheck:
-      test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
-      interval: 1s
-      timeout: 5s
-      retries: 120
+  # setup:
+  #   container_name: setup
+  #   build: ./app/elk/setup/.
+  #   volumes:
+  #     - certs:/usr/share/elasticsearch/config/certs
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   networks:
+  #     - ft_transcendence_network
+  #   # env_file:
+  #   #   - .env
+  #   restart: always
+  #   healthcheck:
+  #     test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
+  #     interval: 1s
+  #     timeout: 5s
+  #     retries: 120
+  #   depends_on:
+  #     vault:
+  #       condition: service_healthy
   
 
-  # Elasticsearch
-  elasticsearch:
-    container_name: elasticsearch
-    depends_on:
-      setup:
-        condition: service_healthy
-    build: ./app/elk/elasticsearch/.
-    volumes:
-      - certs:/usr/share/elasticsearch/config/certs
-      - ./app/data/elasticsearch:/usr/share/elasticsearch/data
-      - ./app/vault/token.txt:/tmp/token.txt
-    ports:
-      - '9200:9200'
-    # env_file:
-    #   - .env
-    networks:
-      - ft_transcendence_network
-    mem_limit: 1g
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: always
+  # # Elasticsearch
+  # elasticsearch:
+  #   container_name: elasticsearch
+  #   depends_on:
+  #     setup:
+  #       condition: service_healthy
+  #   build: ./app/elk/elasticsearch/.
+  #   volumes:
+  #     - certs:/usr/share/elasticsearch/config/certs
+  #     - ./app/data/elasticsearch:/usr/share/elasticsearch/data
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   ports:
+  #     - '9200:9200'
+  #   # env_file:
+  #   #   - .env
+  #   networks:
+  #     - ft_transcendence_network
+  #   mem_limit: 1g
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   restart: always
 
-  # Kibana
-  kibana:
-    container_name: kibana
-    depends_on:
-      setup:
-        condition: service_healthy
-    build: ./app/elk/kibana/.
-    volumes:
-      - certs:/usr/share/kibana/config/certs
-      - ./app/data/kibana:/usr/share/kibana/data
-      - ./app/vault/token.txt:/tmp/token.txt
-    ports:
-      - '5601:5601'
-    # env_file:
-    #   - .env
-    networks:
-      - ft_transcendence_network
-    mem_limit: 1g
-    restart: always
+  # # Kibana
+  # kibana:
+  #   container_name: kibana
+  #   depends_on:
+  #     setup:
+  #       condition: service_healthy
+  #   build: ./app/elk/kibana/.
+  #   volumes:
+  #     - certs:/usr/share/kibana/config/certs
+  #     - ./app/data/kibana:/usr/share/kibana/data
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   ports:
+  #     - '5601:5601'
+  #   # env_file:
+  #   #   - .env
+  #   networks:
+  #     - ft_transcendence_network
+  #   mem_limit: 1g
+  #   restart: always
 
-  # Logstash
-  logstash:
-    container_name: logstash
-    depends_on:
-      setup:
-        condition: service_healthy
-    build: ./app/elk/logstash/.
-    volumes:
-      - certs:/usr/share/logstash/certs
-      - ./app/nginx/logs/access.log:/usr/share/logstash/nginx/access.log
-      - ./app/vault/token.txt:/tmp/token.txt
-    # env_file:
-    #   - .env
-    networks:
-      - ft_transcendence_network  
-    restart: always
+  # # Logstash
+  # logstash:
+  #   container_name: logstash
+  #   depends_on:
+  #     setup:
+  #       condition: service_healthy
+  #   build: ./app/elk/logstash/.
+  #   volumes:
+  #     - certs:/usr/share/logstash/certs
+  #     - ./app/nginx/logs/access.log:/usr/share/logstash/nginx/access.log
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   # env_file:
+  #   #   - .env
+  #   networks:
+  #     - ft_transcendence_network  
+  #   restart: always
 

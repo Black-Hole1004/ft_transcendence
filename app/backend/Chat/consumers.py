@@ -14,6 +14,7 @@ from django_redis import get_redis_connection
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .validators import ConversationValidator
+from Chat.models import BlockedUser
 
 User = get_user_model()
 
@@ -162,23 +163,58 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return new_message
 
 
+    # @database_sync_to_async
+    # def set_conversation_status(self, conversation, blocker_id):
+    #     try:
+    #         # Update block status
+    #         conversation.blocked_by = blocker_id if blocker_id > 0 else 0
+
+    #         # Remove friendship if blocked
+    #         if blocker_id > 0:
+    #             is_friend_from = FriendShip.objects.filter(user_from=self.user, user_to=self.other_participant).delete()
+    #             is_friend_to = FriendShip.objects.filter(user_from=self.other_participant, user_to=self.user).delete()
+
+    #         # Save the updated conversation
+    #         conversation.save()
+    #     except Exception as e:
+    #         print(f"Error setting block status: {e}")
+
     @database_sync_to_async
     def set_conversation_status(self, conversation, blocker_id):
         try:
             # Update block status
             conversation.blocked_by = blocker_id if blocker_id > 0 else 0
-
-            # Remove friendship if blocked
+            
             if blocker_id > 0:
-                FriendShip.objects.filter(user_from=self.user, user_to=self.other_participant).delete()
-                FriendShip.objects.filter(user_from=self.other_participant, user_to=self.user).delete()
-                FriendShipRequest.objects.filter(user_from=self.user, user_to=self.other_participant).delete()
-                FriendShipRequest.objects.filter(user_from=self.other_participant, user_to=self.user).delete()
-
+                # Handle blocking
+                # Remove friendship if blocked
+                FriendShip.objects.filter(
+                    user_from=self.user, 
+                    user_to=self.other_participant
+                ).delete()
+                
+                FriendShip.objects.filter(
+                    user_from=self.other_participant, 
+                    user_to=self.user
+                ).delete()
+                
+                # Create BlockedUser record
+                BlockedUser.objects.get_or_create(
+                    blocker=self.user if blocker_id == self.user.id else self.other_participant,
+                    blocked=self.other_participant if blocker_id == self.user.id else self.user
+                )
+            else:
+                # Handle unblocking - remove BlockedUser record
+                BlockedUser.objects.filter(
+                    Q(blocker=self.user, blocked=self.other_participant) |
+                    Q(blocker=self.other_participant, blocked=self.user)
+                ).delete()
+            
             # Save the updated conversation
             conversation.save()
         except Exception as e:
             print(f"Error setting block status: {e}")
+            raise
 
 
     async def _handle_join(self, data, conversation_key, other_participant_id):

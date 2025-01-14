@@ -36,15 +36,17 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
 				setNotifications((prevNotifications) =>
 					prevNotifications.filter((notification) => notification.id !== friendRequestId)
 				)
-				// close the notification dropdown after accepting a friend request
-				setIsNotificationOpen(false)
 				handleSubmit('success', data.message)
 			} else {
+
+				setNotifications((prevNotifications) =>
+					prevNotifications.filter((notification) => notification.id !== friendRequestId)
+				)
 				handleSubmit('error', data.message)
 			}
+			setIsNotificationOpen(false)
 		} catch (error) {
-			console.error('Error accepting friend request:', error)
-			triggerAlert('error', 'Error accepting friend request')
+			handleSubmit('error', 'Error accepting friend request')
 		}
 	}
 
@@ -64,14 +66,16 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
 				setNotifications((prevNotifications) =>
 					prevNotifications.filter((notification) => notification.id !== friendRequestId)
 				)
-				setIsNotificationOpen(false)
 				handleSubmit('success', data.message)
 			} else {
 				handleSubmit('error', data.message)
 			}
+			setIsNotificationOpen(false)
 		} catch (error) {
 			console.error('Error canceling friend request:', error)
-			triggerAlert('error', 'Error canceling friend request')
+			setIsNotificationOpen(false)
+			handleSubmit('error', 'Error canceling friend request')
+
 		}
 	}
 

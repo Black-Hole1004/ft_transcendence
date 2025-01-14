@@ -1,6 +1,6 @@
 .PHONY: all up build updetached down prune scan re
 
-HOSTNAME := localhost
+HOSTNAME := $(shell hostname)
 all: up
 
 up:
@@ -25,7 +25,7 @@ down:
 	@rm -rf ./app/data/*
 
 prune:
-	docker system prune -af --volumes --force
+	docker system prune -af --volumes
 	@rm -rf ./app/data
 	@rm -rf ./app/nginx/ssl_certificates
 	@rm -rf ./app/nginx/logs/access.log

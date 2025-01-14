@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Conversation, Message
+from .models import Conversation, Message, BlockedUser
+
 
 @admin.register(Conversation)
 class ConversationAdmin(admin.ModelAdmin):
@@ -8,3 +9,7 @@ class ConversationAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'conversation_id', 'sender_id', 'sent_datetime', 'status')
+
+@admin.register(BlockedUser)
+class BlockedUserAdmin(admin.ModelAdmin):
+    list_display = ('blocker', 'blocked', 'blocked_at', 'reason')

@@ -2,45 +2,24 @@ import Button from '../../Home/Buttons/Button'
 import useAuth from '../../../context/AuthContext'
 import { useAlert } from '../../AlertContext'
 import { useSocket } from '../../Layout/Layout'
-import { useState, useEffect } from 'react'
 
 const SEND_FRIEND_REQUEST = import.meta.env.VITE_SEND_FRIEND_REQUEST
 const BASE_URL = import.meta.env.VITE_BASE_URL
-const CHECK_BLOCKED_STATUS = import.meta.env.VITE_CHECK_BLOCKED_STATUS // Add this environment variable
 
-function UserFriendsList({ user_friend, user_profile_picture }) {
+
+
+function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
     const { getAuthHeaders } = useAuth()
     const { triggerAlert } = useAlert()
     const { socket_notification, sendGameInvite } = useSocket()
 
-    const [isBlocked, setIsBlocked] = useState(false);
 
-    useEffect(() => {
-        // Check if the user is blocked when the component mounts
-        const fetchBlockedStatus = async () => {
-            try {
-                const response = await fetch(
-                    `${CHECK_BLOCKED_STATUS}?user_id=${user_friend.id}`,
-                    {
-                        method: 'GET',
-                        headers: getAuthHeaders(),
-                    }
-                );
-                const data = await response.json();
-                console.log('Blocked status:', data);
-                setIsBlocked(data.is_blocked);
-            } catch (error) {
-                console.error('Error fetching blocked status:', error);
-            }
-        };
-        fetchBlockedStatus();
-    }, [user_friend.id]);
+    const isBlocked = blockedUsers.some((blockedUser) => (blockedUser.blocked__id === user_friend.id));
 
     const handleSubmit = (type, message) => {
         triggerAlert(type, message)
     }
-
-
+    
     const handle_add_friend = async (id) => {
         if (!id) {
             console.error('No user ID provided')
@@ -93,6 +72,7 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
         }
     };
 
+
     return (
         <div className='user-container flex items-center justify-between font-dreamscape-sans
             rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
@@ -139,7 +119,6 @@ function UserFriendsList({ user_friend, user_profile_picture }) {
                                 Invite
                             </Button>
                         )}
-                        
                     </>
                 )}
 
