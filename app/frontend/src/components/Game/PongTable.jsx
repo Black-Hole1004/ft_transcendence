@@ -27,8 +27,8 @@ const PongTable = forwardRef(
 
 		const paddleWidth = 20
 		const paddleX = 5
-		const BallInitialSpeed = 0.5
-		const BallAcceleration = 0.5 // it was 0.1
+		const BallInitialSpeed = 0.1
+		const BallAcceleration = 0.0 // it was 0.1
 		const paddleSpeed = 600
 		const MAX_BALL_SPEED = 25 // it was 10
 
@@ -104,22 +104,27 @@ const PongTable = forwardRef(
 			const canvasWidth = canvas.width
 			const canvasHeight = canvas.height
 
+			// const drawPaddle = (paddle) => {
+			// 	console.log('paddle:', paddle)
+			// 	ctx.fillStyle = paddle.color
+			// 	ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
+			// 	ctx.beginPath()
+			// 	ctx.arc(paddle.x + paddle.width / 2, paddle.y, paddle.width / 2, 0, Math.PI, true)
+			// 	ctx.arc(
+			// 		paddle.x + paddle.width / 2,
+			// 		paddle.y + paddle.height,
+			// 		paddle.width / 2,
+			// 		0,
+			// 		Math.PI,
+			// 		false
+			// 	)
+			// 	ctx.closePath()
+			// 	ctx.fill()
+			// }
+
 			const drawPaddle = (paddle) => {
-				console.log('paddle:', paddle)
 				ctx.fillStyle = paddle.color
 				ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
-				ctx.beginPath()
-				ctx.arc(paddle.x + paddle.width / 2, paddle.y, paddle.width / 2, 0, Math.PI, true)
-				ctx.arc(
-					paddle.x + paddle.width / 2,
-					paddle.y + paddle.height,
-					paddle.width / 2,
-					0,
-					Math.PI,
-					false
-				)
-				ctx.closePath()
-				ctx.fill()
 			}
 
 			const drawBall = (ball) => {
@@ -157,36 +162,6 @@ const PongTable = forwardRef(
 			// 		ballTop < paddleBottom
 			// 	)
 			// }
-			const collisionDetection = (ball, paddle) => {
-				// First check if ball is within paddle's x-range
-				const ballInXRange =
-					ball.x + ball.radius >= paddle.x &&
-					ball.x - ball.radius <= paddle.x + paddle.width
-
-				if (!ballInXRange) return false
-
-				// Check for edge hits vs surface hits
-				const distanceFromTop = Math.abs(ball.y - paddle.y)
-				const distanceFromBottom = Math.abs(ball.y - (paddle.y + paddle.height))
-
-				// Surface hit
-				if (ball.y >= paddle.y && ball.y <= paddle.y + paddle.height) {
-					return 'surface'
-				}
-
-				// Edge hit
-				if (distanceFromTop <= ball.radius || distanceFromBottom <= ball.radius) {
-					// Only count edge hits when ball moves toward paddle
-					const movingTowardsPaddle =
-						(ball.velocityX > 0 && paddle.x > 400) ||
-						(ball.velocityX < 0 && paddle.x < 400)
-					if (movingTowardsPaddle) {
-						return 'edge'
-					}
-				}
-
-				return false
-			}
 
 			// const handlePaddleCollision = (ball, paddle) => {
 			// 	ball.velocityX = -ball.velocityX
@@ -202,28 +177,66 @@ const PongTable = forwardRef(
 			// 		ball.speed = MAX_BALL_SPEED
 			// 	}
 			// }
+
+			const collisionDetection = (ball, paddle) => {
+				const paddleTop = paddle.y
+				const paddleBottom = paddle.y + paddle.height
+				const paddleLeft = paddle.x
+				const paddleRight = paddle.x + paddle.width
+
+				const ballTop = ball.y - ball.radius
+				const ballBottom = ball.y + ball.radius
+				const ballLeft = ball.x - ball.radius
+				const ballRight = ball.x + ball.radius
+
+				// First check if we're colliding at all
+				if (
+					!(
+						ballRight > paddleLeft &&
+						ballLeft < paddleRight &&
+						ballBottom > paddleTop &&
+						ballTop < paddleBottom
+					)
+				) {
+					return false
+				}
+
+				// If we are colliding, determine which surface we hit
+
+				// Check if ball's center is within the vertical bounds of the paddle
+				const withinVerticalBounds = ball.y > paddleTop && ball.y < paddleBottom
+
+				// If within vertical bounds, it's a side hit
+				if (withinVerticalBounds) {
+					return 'side'
+				}
+
+				// Otherwise it's a top/bottom hit
+				return 'topbottom'
+			}
+
 			const handlePaddleCollision = (ball, paddle) => {
 				const hitType = collisionDetection(ball, paddle)
 
-				if (hitType === 'edge') {
-					// Let ball pass through on edge hits
-					return
-				}
+				if (hitType === 'side') {
+					// Side hit - bounce back
+					ball.velocityX = -ball.velocityX
 
-				// Surface hit - bounce normally
-				ball.velocityX = -ball.velocityX
+					// Position correction
+					if (paddle.x < 400) {
+						ball.x = paddle.x + paddle.width + ball.radius
+					} else {
+						ball.x = paddle.x - ball.radius
+					}
 
-				// Position correction
-				if (paddle.x < 400) {
-					ball.x = paddle.x + paddle.width + ball.radius
-				} else {
-					ball.x = paddle.x - ball.radius
-				}
-
-				// Speed increase
-				ball.speed += BallAcceleration
-				if (ball.speed > MAX_BALL_SPEED) {
-					ball.speed = MAX_BALL_SPEED
+					// Speed increase
+					ball.speed += BallAcceleration
+					if (ball.speed > MAX_BALL_SPEED) {
+						ball.speed = MAX_BALL_SPEED
+					}
+				} else if (hitType === 'topbottom') {
+					// Top/bottom hit - just reverse vertical direction
+					ball.velocityY = -ball.velocityY
 				}
 			}
 
