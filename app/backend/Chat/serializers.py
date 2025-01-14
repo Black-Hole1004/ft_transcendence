@@ -1,6 +1,6 @@
 from UserManagement.models import User
 from rest_framework import serializers
-from Chat.models import Conversation, Message
+from Chat.models import Conversation, Message, BlockedUser
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -44,3 +44,10 @@ class SearchResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'status', 'profile_picture']
+
+class BlockedUserSerializer(serializers.ModelSerializer):
+    blocked_username = serializers.CharField(source='blocked.username', read_only=True)
+    
+    class Meta:
+        model = BlockedUser
+        fields = ['id', 'blocked_username', 'blocked_at']

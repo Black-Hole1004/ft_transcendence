@@ -7,5 +7,6 @@ urlpatterns = [
     path('', views.ConversationsList, name='chat-conversations'),
     path('<str:conversation_key>/', views.getUserInfos, name=''),
     path('status/<str:conversation_key>/', views.getFriendshipStatus, name=''),
+    path('blocked/blocked-users/', views.get_blocked_users, name='blocked-users'),
     # path('update_status/<str:conversation_key>/', views.update_conversation_status, name='update_conversation_status'),
 ]
