@@ -18,6 +18,8 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
 
 
     const isBlocked = blockedUsers.some((blockedUser) => (blockedUser.id !== user_friend.id))
+
+    
     const handle_add_friend = async (id) => {
         if (!id) {
             console.error('No user ID provided')
