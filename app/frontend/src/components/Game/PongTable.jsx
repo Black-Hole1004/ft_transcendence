@@ -139,34 +139,88 @@ const PongTable = forwardRef(
 				ballsRef.current.forEach(drawBall)
 			}
 
+			// const collisionDetection = (ball, paddle) => {
+			// 	const paddleTop = paddle.y
+			// 	const paddleBottom = paddle.y + paddle.height
+			// 	const paddleLeft = paddle.x
+			// 	const paddleRight = paddle.x + paddle.width
+
+			// 	const ballTop = ball.y - ball.radius
+			// 	const ballBottom = ball.y + ball.radius
+			// 	const ballLeft = ball.x - ball.radius
+			// 	const ballRight = ball.x + ball.radius
+
+			// 	return (
+			// 		ballRight > paddleLeft &&
+			// 		ballLeft < paddleRight &&
+			// 		ballBottom > paddleTop &&
+			// 		ballTop < paddleBottom
+			// 	)
+			// }
 			const collisionDetection = (ball, paddle) => {
-				const paddleTop = paddle.y
-				const paddleBottom = paddle.y + paddle.height
-				const paddleLeft = paddle.x
-				const paddleRight = paddle.x + paddle.width
+				// First check if ball is within paddle's x-range
+				const ballInXRange =
+					ball.x + ball.radius >= paddle.x &&
+					ball.x - ball.radius <= paddle.x + paddle.width
 
-				const ballTop = ball.y - ball.radius
-				const ballBottom = ball.y + ball.radius
-				const ballLeft = ball.x - ball.radius
-				const ballRight = ball.x + ball.radius
+				if (!ballInXRange) return false
 
-				return (
-					ballRight > paddleLeft &&
-					ballLeft < paddleRight &&
-					ballBottom > paddleTop &&
-					ballTop < paddleBottom
-				)
+				// Check for edge hits vs surface hits
+				const distanceFromTop = Math.abs(ball.y - paddle.y)
+				const distanceFromBottom = Math.abs(ball.y - (paddle.y + paddle.height))
+
+				// Surface hit
+				if (ball.y >= paddle.y && ball.y <= paddle.y + paddle.height) {
+					return 'surface'
+				}
+
+				// Edge hit
+				if (distanceFromTop <= ball.radius || distanceFromBottom <= ball.radius) {
+					// Only count edge hits when ball moves toward paddle
+					const movingTowardsPaddle =
+						(ball.velocityX > 0 && paddle.x > 400) ||
+						(ball.velocityX < 0 && paddle.x < 400)
+					if (movingTowardsPaddle) {
+						return 'edge'
+					}
+				}
+
+				return false
 			}
 
+			// const handlePaddleCollision = (ball, paddle) => {
+			// 	ball.velocityX = -ball.velocityX
+
+			// 	if (paddle.x < 400) {
+			// 		ball.x = paddle.x + paddle.width + ball.radius
+			// 	} else {
+			// 		ball.x = paddle.x - ball.radius
+			// 	}
+
+			// 	ball.speed += BallAcceleration
+			// 	if (ball.speed > MAX_BALL_SPEED) {
+			// 		ball.speed = MAX_BALL_SPEED
+			// 	}
+			// }
 			const handlePaddleCollision = (ball, paddle) => {
+				const hitType = collisionDetection(ball, paddle)
+
+				if (hitType === 'edge') {
+					// Let ball pass through on edge hits
+					return
+				}
+
+				// Surface hit - bounce normally
 				ball.velocityX = -ball.velocityX
 
+				// Position correction
 				if (paddle.x < 400) {
 					ball.x = paddle.x + paddle.width + ball.radius
 				} else {
 					ball.x = paddle.x - ball.radius
 				}
 
+				// Speed increase
 				ball.speed += BallAcceleration
 				if (ball.speed > MAX_BALL_SPEED) {
 					ball.speed = MAX_BALL_SPEED
@@ -313,12 +367,12 @@ const PongTable = forwardRef(
 					className={`relative aspect-video bg-cover bg-center border rounded
 					${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 					style={{
-					width: 'clamp(18.125rem, 40.265vw + 10.575rem, 75rem)',
-					maxWidth: `${MAX_CANVAS_WIDTH}px`,
+						width: 'clamp(18.125rem, 40.265vw + 10.575rem, 75rem)',
+						maxWidth: `${MAX_CANVAS_WIDTH}px`,
 					}}
 				>
 					<div
-						className="absolute inset-0 bg-cover bg-center rounded brightness-50"
+						className='absolute inset-0 bg-cover bg-center rounded brightness-50'
 						style={{
 							backgroundImage: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
 						}}

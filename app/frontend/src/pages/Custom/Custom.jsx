@@ -54,7 +54,7 @@ const Custom = () => {
 	const handleStart = () => {
 		if (mode === 'training') {
 			// For AI mode, go directly to AI setup
-			navigate('/ai-game-setup', { state: { backgroundId } });
+			navigate('/ai-game', { state: { backgroundId } });
 		} else {
 			// For 1vs1 mode, show the local/remote choice
 			setStep(2);

@@ -93,7 +93,7 @@ class Achievement:
                 break
         # If no interval found (xp >= 10000)
         else:
-            current_threshold = 8000
+            current_threshold = thresholds[-2]
             next_threshold = thresholds[-1]
         # Calculate progress
         progress = xp - current_threshold
@@ -129,9 +129,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     xp = models.IntegerField(default=0)
     
     # Game statistics
-    won_games_count = models.IntegerField(default=0)    # Instead of games_won
-    lost_games_count = models.IntegerField(default=0)   # Instead of games_lost
-    total_games_count = models.IntegerField(default=0)  # Track total games
+    won_games_count = models.IntegerField(default=0)
+    lost_games_count = models.IntegerField(default=0)
+    total_games_count = models.IntegerField(default=0)
     
     is_logged_with_oauth = models.BooleanField(default=False)
     is_logged_with_oauth_for_2fa = models.BooleanField(default=False)
