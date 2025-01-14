@@ -1,6 +1,6 @@
 .PHONY: all up build updetached down prune scan re
 
-HOSTNAME := $(shell hostname)
+HOSTNAME := localhost
 all: up
 
 up:

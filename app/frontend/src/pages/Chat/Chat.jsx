@@ -240,10 +240,7 @@ const Chat = () => {
 					conversationMessages={conversationMessages}
 					currentLoggedInUserId={currentLoggedInUserId}
 					setCurrentLoggedInUserId={setCurrentLoggedInUserId}
-<<<<<<< HEAD
-=======
 					badge_info={Badge_info}
->>>>>>> master
 				/>
 
 				{/* Separator */}

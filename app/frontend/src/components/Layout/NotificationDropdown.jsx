@@ -30,7 +30,7 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
 				headers: getAuthHeaders(),
 			})
 			const data = await response.json()
-			console.log('Accepted Friend Request:', data)
+
 			if (response.status === 201) {
 				// Remove notification after acceptance
 				setNotifications((prevNotifications) =>
@@ -38,7 +38,7 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
 				)
 				handleSubmit('success', data.message)
 			} else {
-
+				console.error('Error accepting friend request --->', data.message)
 				setNotifications((prevNotifications) =>
 					prevNotifications.filter((notification) => notification.id !== friendRequestId)
 				)
