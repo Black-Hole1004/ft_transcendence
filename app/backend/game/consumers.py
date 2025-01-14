@@ -18,11 +18,11 @@ CANVAS_HEIGHT = 400
 # Ball Configuration
 BALL_CONFIG = {
     'RADIUS': 12,
-    'INITIAL_SPEED': 10,
-    'VELOCITY_X': 10,
-    'VELOCITY_Y': 10, # it was 10
-    'MAX_SPEED': 20,
-    'SPEED_INCREMENT': 1.3,
+    'INITIAL_SPEED': 15,
+    'VELOCITY_X': 15,
+    'VELOCITY_Y': 15, # it was 10
+    'MAX_SPEED': 45,
+    'SPEED_INCREMENT': 2.5,
     'MIN_BOUNCE_ANGLE': -38,  # degrees
     'MAX_BOUNCE_ANGLE': 38,   # degrees
     'MAX_BOUNCE_RADIANS': math.pi/6,  # 30 degrees in radians
@@ -33,7 +33,7 @@ BALL_CONFIG = {
 PADDLE_CONFIG = {
     'WIDTH': 20,
     'HEIGHT': 110,
-    'SPEED': 457,   #Smaller steps but more frequent updates
+    'SPEED': 650,   #Smaller steps but more frequent updates
     'LEFT_X': 10,            # Left paddle X position
     'RIGHT_X': CANVAS_WIDTH - 30,  # Right paddle X position,
     'MOVEMENT_SCALE': 1.5
@@ -43,7 +43,7 @@ PADDLE_CONFIG = {
 GAME_SETTINGS = {
     'MAX_SCORE': 10,
     'INITIAL_TIME': 120,     # Game duration in seconds
-    'PAUSE_LIMIT': 3,        # Number of pauses allowed per player
+    'PAUSE_LIMIT': 150,        # Number of pauses allowed per player
     'PAUSE_TIMEOUT': 20,     # Auto-resume after 20 seconds
     'MAX_DELTA_TIME': 0.004, # Cap for time step in seconds (1/240)
     'PHYSICS_UPDATE_RATE': 120,  # Updates per second

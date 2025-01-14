@@ -98,7 +98,7 @@ class Intra42OAuth2(BaseOAuth2):
             # print('----------------- Duplicate username ------------------')
             username = generate_random_username()
         else:
-            username = user_data['username']
+            username = user_details['username']
         user, created = User.objects.get_or_create(
         email=user_details['email'],
         defaults={

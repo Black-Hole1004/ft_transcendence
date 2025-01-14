@@ -234,89 +234,90 @@ services:
       timeout: 10s
     networks:
       - ft_transcendence_network
+    restart: always
 
   #setup for elasticsearch
   # comment this :
-  # setup:
-  #   container_name: setup
-  #   build: ./app/elk/setup/.
-  #   volumes:
-  #     - certs:/usr/share/elasticsearch/config/certs
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - ./app/vault/token.txt:/tmp/token.txt
-  #   networks:
-  #     - ft_transcendence_network
-  #   # env_file:
-  #   #   - .env
-  #   restart: always
-  #   healthcheck:
-  #     test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
-  #     interval: 1s
-  #     timeout: 5s
-  #     retries: 120
-  #   depends_on:
-  #     vault:
-  #       condition: service_healthy
+  setup:
+    container_name: setup
+    build: ./app/elk/setup/.
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./app/vault/token.txt:/tmp/token.txt
+    networks:
+      - ft_transcendence_network
+    # env_file:
+    #   - .env
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
+      interval: 1s
+      timeout: 5s
+      retries: 120
+    depends_on:
+      vault:
+        condition: service_healthy
   
 
-  # # Elasticsearch
-  # elasticsearch:
-  #   container_name: elasticsearch
-  #   depends_on:
-  #     setup:
-  #       condition: service_healthy
-  #   build: ./app/elk/elasticsearch/.
-  #   volumes:
-  #     - certs:/usr/share/elasticsearch/config/certs
-  #     - ./app/data/elasticsearch:/usr/share/elasticsearch/data
-  #     - ./app/vault/token.txt:/tmp/token.txt
-  #   ports:
-  #     - '9200:9200'
-  #   # env_file:
-  #   #   - .env
-  #   networks:
-  #     - ft_transcendence_network
-  #   mem_limit: 1g
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   restart: always
+  # Elasticsearch
+  elasticsearch:
+    container_name: elasticsearch
+    depends_on:
+      setup:
+        condition: service_healthy
+    build: ./app/elk/elasticsearch/.
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - ./app/data/elasticsearch:/usr/share/elasticsearch/data
+      - ./app/vault/token.txt:/tmp/token.txt
+    ports:
+      - '9200:9200'
+    # env_file:
+    #   - .env
+    networks:
+      - ft_transcendence_network
+    mem_limit: 1g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
 
-  # # Kibana
-  # kibana:
-  #   container_name: kibana
-  #   depends_on:
-  #     setup:
-  #       condition: service_healthy
-  #   build: ./app/elk/kibana/.
-  #   volumes:
-  #     - certs:/usr/share/kibana/config/certs
-  #     - ./app/data/kibana:/usr/share/kibana/data
-  #     - ./app/vault/token.txt:/tmp/token.txt
-  #   ports:
-  #     - '5601:5601'
-  #   # env_file:
-  #   #   - .env
-  #   networks:
-  #     - ft_transcendence_network
-  #   mem_limit: 1g
-  #   restart: always
+  # Kibana
+  kibana:
+    container_name: kibana
+    depends_on:
+      setup:
+        condition: service_healthy
+    build: ./app/elk/kibana/.
+    volumes:
+      - certs:/usr/share/kibana/config/certs
+      - ./app/data/kibana:/usr/share/kibana/data
+      - ./app/vault/token.txt:/tmp/token.txt
+    ports:
+      - '5601:5601'
+    # env_file:
+    #   - .env
+    networks:
+      - ft_transcendence_network
+    mem_limit: 1g
+    restart: always
 
-  # # Logstash
-  # logstash:
-  #   container_name: logstash
-  #   depends_on:
-  #     setup:
-  #       condition: service_healthy
-  #   build: ./app/elk/logstash/.
-  #   volumes:
-  #     - certs:/usr/share/logstash/certs
-  #     - ./app/nginx/logs/access.log:/usr/share/logstash/nginx/access.log
-  #     - ./app/vault/token.txt:/tmp/token.txt
-  #   # env_file:
-  #   #   - .env
-  #   networks:
-  #     - ft_transcendence_network  
-  #   restart: always
+  # Logstash
+  logstash:
+    container_name: logstash
+    depends_on:
+      setup:
+        condition: service_healthy
+    build: ./app/elk/logstash/.
+    volumes:
+      - certs:/usr/share/logstash/certs
+      - ./app/nginx/logs/access.log:/usr/share/logstash/nginx/access.log
+      - ./app/vault/token.txt:/tmp/token.txt
+    # env_file:
+    #   - .env
+    networks:
+      - ft_transcendence_network
+    restart: always
 
