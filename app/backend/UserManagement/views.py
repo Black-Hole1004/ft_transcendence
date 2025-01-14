@@ -1,87 +1,64 @@
-from django.http import JsonResponse
-from rest_framework.decorators import api_view, permission_classes
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth import logout
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login, logout as django_logout, get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from .forms import UserCreationForm
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-from rest_framework_simplejwt.tokens import RefreshToken
-import json
-import uuid
-from rest_framework import status
-from .serializers import UserSerializer
-from django.contrib.auth import logout as django_logout
-
+from django.utils import timezone
+from django.db import transaction, connections, IntegrityError
+from django.db.models import Count, Q, Sum
+from django.db.models.functions import TruncDate, ExtractHour, ExtractMinute, ExtractSecond
+from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from rest_framework.decorators import parser_classes
-
-from django.http import HttpResponseRedirect
-from itertools import chain
-
-from django.core.files.uploadedfile import UploadedFile
-from rest_framework.permissions import AllowAny
-
-from .models import User
-import os
-import jwt
-from django.conf import settings
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
-from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import status, generics
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
-from rest_framework.exceptions import ValidationError
+from rest_framework.authtoken.models import Token
+from itertools import chain
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from channels.db import database_sync_to_async
+from datetime import datetime
+import json
+import uuid
+import os
+import jwt
+import time
+import socket
+import redis
 
-from rest_framework import generics
-
-from django.db.models import Count, Q
-from .models import Achievement
+from .forms import UserCreationForm
+from .models import (
+    User,
+    UserSession,
+    FriendShipRequest,
+    FriendShip,
+    Achievement
+)
 from game.models import GameSessions
-
-from django.utils import timezone
-
-from django.contrib.auth import get_user_model
-from UserManagement.profile_utils import notify_friends
-
+from .serializers import (
+    UserSerializer,
+    FriendRequestSerializer,
+    HealthCheckSerializer
+)
 from .profile_utils import (
     remove_profile_picture,
     update_profile_picture,
     handle_password_change,
     generate_new_tokens,
+    notify_friends
 )
 
-from .models import UserSession
-from .models import FriendShipRequest
-from .models import FriendShip
-
-from .serializers import FriendRequestSerializer
-from django.db import IntegrityError
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
-from channels.db import database_sync_to_async
-
-from django.db import transaction
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.db import connections
 from django.conf import settings
-from datetime import datetime
-import redis
-from .serializers import HealthCheckSerializer
-import time
-import socket
-from rest_framework.exceptions import ValidationError
-from django.db.models import Sum
-from django.db.models.functions import TruncDate, ExtractHour, ExtractMinute, ExtractSecond
 import pyotp
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, EmailMessage, get_connection
 from datetime import timedelta
-from django.utils import timezone
-from django.db.models import Q
 from Chat.models import Conversation
+from django.utils import timezone
+from mailersend import emails
 
 User = get_user_model()
 
@@ -110,17 +87,33 @@ class Activate2faView(APIView):
 
 # msg.track_clicks = True
 class Twofa():
-    def sendMail(otp, email):
-        try:
-            msg = EmailMultiAlternatives(
-                subject="[StarServe] OTP Verification",
-                body=f"Your OTP code is {otp}. It will expire in 5 minutes.",
-                from_email="<BlackHole@trial-7dnvo4dxpmng5r86.mlsender.net>",
-                to=[f"StarServe <{email}>"])
-            msg.send()
-            return Response({'message': 'Email sent successfully'}, status=200)
-        except Exception as e:
-            return Response({'error': str(e)}, status=500)
+    def sendMail(otp, email, username):
+        api_key = settings.MAILERSEND_API_KEY
+
+        mailer = emails.NewEmail(api_key)
+
+        # define an empty dict to populate with mail values
+        mail_body = {}
+        mail_from = {
+            "name": "starserveTeam",
+            "email": "starserveteam@starserve.me",
+        }
+
+        recipients = [
+            {
+                "name": username,
+                "email": email,
+            }
+        ]
+
+        mailer.set_mail_from(mail_from, mail_body)
+        mailer.set_mail_to(recipients, mail_body)
+        mailer.set_subject("StarServe 2fa Verification", mail_body)
+        mailer.set_html_content(f"This is your OTP: <h3>{otp}</h3>", mail_body)
+        mailer.set_plaintext_content("Have a good day !", mail_body)
+
+        # using print() will also return status code and data
+        mailer.send(mail_body)
     
     def generate_otp(user):
         try:
@@ -219,7 +212,7 @@ class Verify2faView(APIView):
 
 
 def generate_random_username():
-    prefix = 'moha_'
+    prefix = 'Guest_'
     suffix = str(uuid.uuid4())[:8]
     return prefix + suffix
 
@@ -270,7 +263,7 @@ class LoginView(APIView):
                 if user is not None and user.is_2fa_enabled:
                     # Generate and send OTP to the user's email
                     otp = Twofa.generate_otp(user)
-                    todo: Twofa.sendMail(otp=otp, email=user.email)
+                    Twofa.sendMail(otp=otp, email=user.email, username=user.username)
                     return JsonResponse({'message': f'OTP sent to your email: {user.email}', "Twofa_enabled" : True}, status=200)
                 if user is not None:
                     user.status = 'online'
@@ -810,6 +803,7 @@ def get_current_profile_stats(request):
                     'score': opponent_score
                 },
                 'result': result,
+                'start_time': game.start_time.strftime('%m/%d/%Y %H:%M')
             }
             recent_matches.append(match_data)
 
@@ -841,25 +835,75 @@ def get_current_profile_stats(request):
         }, status=500)
 
 # leaderboard-------------------------------------------------------------
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_leaderboard(request):
+#     try:
+#         # Get top 20 users ordered by XP
+#         top_users = User.objects.order_by('-xp')[:20]
+        
+#         # Prepare user data with achievements
+#         leaderboard_data = []
+#         for user in top_users:
+#             # Get user's current achievement based on XP
+#             achievement = Achievement.get_badge(user.xp)
+            
+#             leaderboard_data.append({
+#                 'id': user.id,
+#                 'username': user.username,
+#                 'xp': user.xp,
+#                 'profile_picture': user.profile_picture.url if user.profile_picture else None,
+#                 'achievement': achievement  # This already includes name and image
+#             })
+        
+#         return Response({
+#             'users': leaderboard_data
+#         })
+        
+#     except Exception as e:
+#         return Response({
+#             'error': str(e)
+#         }, status=500)
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_leaderboard(request):
     try:
-        # Get top 20 users ordered by XP
+        current_user = request.user
         top_users = User.objects.order_by('-xp')[:20]
-        
-        # Prepare user data with achievements
         leaderboard_data = []
+        current_user_in_top = False
+        
         for user in top_users:
             # Get user's current achievement based on XP
             achievement = Achievement.get_badge(user.xp)
             
-            leaderboard_data.append({
+            # Create the user data dictionary with all basic fields
+            user_data = {
                 'id': user.id,
                 'username': user.username,
                 'xp': user.xp,
                 'profile_picture': user.profile_picture.url if user.profile_picture else None,
-                'achievement': achievement  # This already includes name and image
+                'achievement': achievement
+            }
+            
+            # If this is the current user, mark it and set the flag
+            if user.id == current_user.id:
+                current_user_in_top = True
+                user_data['is_current_user'] = True  # Add the flag here for top 20 users
+            
+            leaderboard_data.append(user_data)
+        
+        # If current user isn't in top 20, add them at the end
+        if not current_user_in_top:
+            achievement = Achievement.get_badge(current_user.xp)
+            leaderboard_data.append({
+                'id': current_user.id,
+                'username': current_user.username,
+                'xp': current_user.xp,
+                'profile_picture': current_user.profile_picture.url if current_user.profile_picture else None,
+                'achievement': achievement,
+                'is_current_user': True
             })
         
         return Response({
@@ -870,7 +914,8 @@ def get_leaderboard(request):
         return Response({
             'error': str(e)
         }, status=500)
-
+        
+        
 #achievements -------------------------------------------------------------------------------
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -1107,6 +1152,7 @@ def get_profile_stats(request, username):
                     'score': opponent_score
                 },
                 'result': result,
+                'start_time': game.start_time.strftime('%m/%d/%Y %H:%M')
             }
             recent_matches.append(match_data)
 

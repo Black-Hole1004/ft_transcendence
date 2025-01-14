@@ -1,4 +1,4 @@
-function UserInfos({ recipientInfo }) {
+function UserInfos({ recipientInfo, badge_info, recipientXp }) {
 	return (
 		<div
 			className='border border-primary lg:rounded-3xl rounded-2xl lg:w-[24%] w-full
@@ -12,6 +12,9 @@ function UserInfos({ recipientInfo }) {
 							src={`${recipientInfo.profile_picture}`}
 							className='rounded-full aspect-square object-cover ring-1 ring-primary user-info-image select-none self-center'
 							alt='User image'
+							onError={(e) => {
+								e.target.src = '/assets/images/default-avatar.png'
+							}}
 						/>
 						<div className='w-full flex-1 flex flex-col font-heavy lg:gap-y-8 tb:gap-y-5 gap-y-2'>
 							<div>
@@ -25,19 +28,24 @@ function UserInfos({ recipientInfo }) {
 							</div>
 						</div>
 					</div>
-					<div className='flex flex-col justify-center items-center'>
-						<img
-							className='badge hover:scale-[1.2] transition duration-500 xl:mt-5 lg:mt-3 xl:mb-2 lg:mb-0 select-none'
-							src='/assets/images/Achievements/celestial-master.png'
-							alt='achievement badge'
-						/>
-						<div className='flex flex-col'>
-							<p className='font-dreamscape-sans text-level achievement-title leading-[1] text-center'>
-								Celestial Master
-							</p>
-							<p className='text-primary self-end xp'>10231xp</p>
+					{badge_info && (
+						<div className='flex flex-col justify-center items-center'>
+							<img
+								className='badge hover:scale-[1.2] transition duration-500 xl:mt-5 lg:mt-3 xl:mb-2 lg:mb-0 select-none'
+								src={badge_info.image}
+								alt={badge_info.name}
+								onError={(e) => {
+									e.target.src = '/assets/images/Achievements/novice-astronaut.png'
+								}}
+							/>
+							<div className='flex flex-col'>
+								<p className='font-dreamscape-sans text-level achievement-title leading-[1] text-center'>
+									{badge_info.name}
+								</p>
+								<p className='text-primary self-end xp'>{recipientXp} xp</p>
+							</div>
 						</div>
-					</div>
+					)}
 				</>
 			) : (
 				<></>

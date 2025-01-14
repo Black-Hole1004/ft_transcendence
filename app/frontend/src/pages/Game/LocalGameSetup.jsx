@@ -95,7 +95,13 @@ const LocalGameSetup = () => {
 
 	const generateRandomName = () => `Player${Math.floor(Math.random() * 1000)}`
 
-	const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`
+		const generateRandomColor = () => {
+			let hex = ''
+			while (hex.length != 6)
+				hex = Math.floor(Math.random() * 16777215).toString(16)
+			const color = '#' + hex
+			return color
+		}
 
 	const generateRandomConfigurations = () => {
 		setPlayers({

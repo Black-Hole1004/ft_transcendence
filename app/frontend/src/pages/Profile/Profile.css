@@ -89,7 +89,7 @@
 
 /* 1024 - 2560 */
 .win-rate {
-	width: clamp(8.125rem, 3.348vw + 5.982rem, 10rem);
+	width: clamp(5rem, 2.965vw + 4.444rem, 9.188rem);
 }
 
 

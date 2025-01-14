@@ -13,6 +13,8 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
+from UserManagement.views import generate_random_username
+from core.settings import HOSTNAME
 import os
 from core.settings import HOSTNAME
 
@@ -89,11 +91,19 @@ class Intra42OAuth2(BaseOAuth2):
         user_data = self.user_data(access_token)
 
         user_details = self.get_user_details(user_data)
+        print(user_details)
+        # Handle duplicate username case
+        if user_details['username'] and User.objects.filter(username=user_details['username']).exists():
+            # If the desired username already exists, generate a random one
+            # print('----------------- Duplicate username ------------------')
+            username = generate_random_username()
+        else:
+            username = user_data['username']
         user, created = User.objects.get_or_create(
         email=user_details['email'],
         defaults={
             'email': user_details['email'],
-            'username': user_details['username'],
+            'username': username,
             'first_name': user_details['first_name'],
             }
         )
@@ -116,6 +126,7 @@ class Intra42OAuth2(BaseOAuth2):
                         )
                 except Exception as e:
                     print(f'Error updating profile picture: {e}')
+
 
             user.is_logged_with_oauth = True
             user.is_logged_with_oauth_for_2fa = True

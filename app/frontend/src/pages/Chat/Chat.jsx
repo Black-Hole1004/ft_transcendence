@@ -10,7 +10,6 @@ import ChatHistory from '../../components/Chat/ChatHistory.jsx'
 import StartConversation from '../../components/Chat/StartConversation.jsx'
 import ConversationHeader from '../../components/Chat/ConversationHeader.jsx'
 
-// import { useAlert } from '../../components/AlertContext'
 import useAuth from '../../context/AuthContext.jsx'
 
 const API_CHAT = import.meta.env.VITE_API_CHAT
@@ -32,14 +31,10 @@ const Chat = () => {
 	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0)
 	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
+	const [reciver_id, setReciver_id] = useState(null)
+	const [Badge_info, setBadge_info] = useState(null)
+	const [recipientXp, setRecipientXp] = useState(null)
 
-	// const { triggerAlert } = useAlert()
-
-	// const handleSubmit = () => {
-	// 	triggerAlert('success', 'Message sent successfuly!')
-	// }
-
-	console.log('chat')
 
 	useEffect(() => {
 		const sendBlockMessage = () => {
@@ -90,7 +85,7 @@ const Chat = () => {
 			console.log('extract conversation key from url')
 			setConversationMessages([])
 			setConversationKey(uri[0])
-			setBlockerId(0)
+			// setBlockerId(0)
 			setIsConversationLoaded(true)
 		} else if (uri.length > 1) {
 			navigate('/404')
@@ -182,8 +177,11 @@ const Chat = () => {
 						Authorization: getAuthHeaders().Authorization,
 					},
 				})
-				setReceiver_id(response.data.user_infos[0].id)
+				setReciver_id(response.data.user_infos[0].id)
 				setRecipientInfo(response.data.user_infos[0])
+				setBadge_info(response.data.user_infos[0].badge) // Badge info of the recipient
+				setRecipientXp(response.data.user_infos[0].xp) // xp of the recipient
+				console.log('Badge info: ==> ', response.data.user_infos[0])
 				const messages = response.data.messages ? response.data.messages : []
 				setConversationMessages(messages)
 				setrecipientProfileImage(response.data.user_infos[0].profile_picture)
@@ -242,6 +240,10 @@ const Chat = () => {
 					conversationMessages={conversationMessages}
 					currentLoggedInUserId={currentLoggedInUserId}
 					setCurrentLoggedInUserId={setCurrentLoggedInUserId}
+<<<<<<< HEAD
+=======
+					badge_info={Badge_info}
+>>>>>>> master
 				/>
 
 				{/* Separator */}
@@ -302,7 +304,7 @@ const Chat = () => {
 			</div>
 
 			{/* User Information Sidebar */}
-			{conversationKey && <UserInfos recipientInfo={recipientInfo} />}
+			{conversationKey && <UserInfos recipientInfo={recipientInfo} badge_info={Badge_info} recipientXp={recipientXp} />}
 		</section>
 	)
 }

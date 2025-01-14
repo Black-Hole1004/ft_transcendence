@@ -17,7 +17,7 @@ const Alert = ({ type, message, onClose }) => {
 		warning: 'bg-yellow-500',
 	}
 
-	const [filled, setFilled] = useState(5000);
+	const [filled, setFilled] = useState(3000);
 
 	useEffect(() => {
 		if (filled > 0) {
@@ -39,7 +39,7 @@ const Alert = ({ type, message, onClose }) => {
 				<button className='focus:outline-none px-2' onClick={onClose}>&times;</button>
 			</div>
 			<div className={`${LoaderStyles[type]} h-0.5 rounded-r`}
-				style={{ width: `${filled / 5000 * 100}%` }}
+				style={{ width: `${filled / 3000 * 100}%` }}
 			></div>
 		</div>
 	)

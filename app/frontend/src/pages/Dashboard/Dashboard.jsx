@@ -57,6 +57,7 @@ const Dashboard = () => {
 				}
 				// Only try to parse as JSON if it's actually JSON
 				const leaderboardData = JSON.parse(responseText);
+				console.log('leaderboard data:', leaderboardData);
 				setLeaderboardData(leaderboardData.users);
 				
 
@@ -95,7 +96,7 @@ const Dashboard = () => {
 			rightside-my lg:mr-modes-right-lg lg:ml-modes-left-lg ml:ml-modes-left-ms ml:mr-modes-right-ms'>
 				<div className='lg:w-5/12 flex flex-col justify-between max-lg:mb-8 max-mtb:mb-4 max-lg:mx-2 lg:pr-cards-lg'>
 					<CongratulatoryMessage title={title} description={description} body={body} />
-					<div className='flex mtb:flex-row flex-col max-mtb:gap-y-3 gap-x-1 lg:justify-between justify-around max-mtb:pr-0'>
+					<div className='flex mtb:flex-row flex-col max-mtb:gap-y-3 lg:gap-x-1 mtb:gap-x-5 gap-x-1 lg:justify-between justify-around max-mtb:pr-0'>
 						<FriendsList />
 						<Leaderboard users={leaderboardData} />
 					</div>

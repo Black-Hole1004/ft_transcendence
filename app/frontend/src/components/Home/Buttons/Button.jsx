@@ -1,7 +1,7 @@
 import React from 'react'
 import '../../../pages/Custom/Custom.css'
 
-function Button({id, disabled, onClick, className, children}) {
+function Button({id, disabled, onClick, className, from, children}) {
 
 	return (
 		<button
@@ -10,10 +10,10 @@ function Button({id, disabled, onClick, className, children}) {
 			className={`
 			border border-border select-none ${className || ''} ${disabled ? 'brightness-75' : ''}
 			bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]`}
-			disabled={`${disabled === true ? 'disabled' : ''}`}
+			disabled={`${disabled === true && from !== 'settings' ? 'disabled' : ''}`}
 		>
 			{
-				disabled === true ? 
+				disabled === true && from !== 'settings' ?
 				<>
 					{'Blocked'}
 				</>

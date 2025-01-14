@@ -12,6 +12,7 @@ function ChatHistory({
 	conversationMessages,
 	currentLoggedInUserId,
 	setCurrentLoggedInUserId,
+	badge_info,
 }) {
 	const searchRef = useRef(null)
 	const [searchText, setSearchText] = useState('')
@@ -23,9 +24,18 @@ function ChatHistory({
 		setSmall(window.innerWidth < 768)
 	})
 
+	const handleChange = (e) => {
+		setSearchText(e.target.value)
+
+		if (e.target.value === '') {
+			setSearchResult(null)
+		}
+	}
+	
 	useEffect(() => {
 		if (searchRef.current) {
 			setSearchText('')
+			setSearchResult(null)
 			searchRef.current.value = ''
 		}
 	}, [conversationKey])
@@ -93,7 +103,7 @@ function ChatHistory({
 				<div className='flex items-center border border-border rounded-xl pl-2.5 tb:w-[85%]'>
 					<img
 						src='/assets/images/icons/search-icon.png'
-						className='search-icon select-none'
+						className='search-icon'
 						alt='search-icon'
 					/>
 					<input
@@ -101,7 +111,7 @@ function ChatHistory({
 						ref={searchRef}
 						autoComplete='off'
 						value={searchText}
-						onChange={(e) => setSearchText(e.target.value)}
+						onChange={handleChange}
 						name='search for friends'
 						placeholder='Search for friends...'
 						className='font-medium bg-transparent text-primary outline-none search
@@ -111,7 +121,7 @@ function ChatHistory({
 			</div>
 			<div
 				className={`max-tb:flex max-tb:justify-center gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
-							 ${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
+							${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				{(searchResult ? searchResult : conversations).map((conversation) => (
 					<User
@@ -122,6 +132,7 @@ function ChatHistory({
 					conversationKey={conversationKey}
 					setConversationKey={setConversationKey}
 					currentLoggedInUserId={currentLoggedInUserId}
+					badge_info={badge_info}
 					/>
 				))}
 			</div>

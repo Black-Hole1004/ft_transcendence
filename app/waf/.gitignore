@@ -1,0 +1,5 @@
+appsec-config/
+appsec-data/
+appsec-logs/
+postgres-data/
+smartsync-storage/

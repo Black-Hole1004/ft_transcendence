@@ -2,7 +2,7 @@ import json
 
 from django.db.models import Q
 from .models import Message, Conversation
-from UserManagement.models import FriendShip
+from UserManagement.models import FriendShip, FriendShipRequest
 
 import jwt
 from django.conf import settings

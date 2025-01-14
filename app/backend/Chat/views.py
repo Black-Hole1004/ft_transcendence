@@ -11,6 +11,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
 from django.db.models import F
+from UserManagement.models import Achievement
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -33,7 +35,6 @@ def ConversationsList(request):
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def getUserInfos(request, conversation_key):
-
     ids = conversation_key.split('_')
 
     if len(ids) != 2 or not all(id.isdigit() for id in ids) or request.user.id not in map(int, ids):
@@ -41,22 +42,34 @@ def getUserInfos(request, conversation_key):
 
     if int(ids[0]) > int(ids[1]):
         return Response({'detail': 'You are not a participant in this conversation.'}, status=status.HTTP_404_NOT_FOUND)
+    
     user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
 
-
+    # Get user info
     user_infos = User.objects.filter(id=user_id)
+    
+    # Get conversation messages if they exist
     conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
     if conversation:
         messages = Message.objects.filter(conversation_id=conversation.id)
         message_serializer = MessageSerializer(messages, context={'request': request}, many=True)
 
+    # Serialize user info and add badge
     user_serializer = UserInfosSerializer(user_infos, context={'request': request}, many=True)
+    user_data = user_serializer.data
+    
+    # Add badge info for each user
+    for user_info in user_data:
+        user = user_infos.get(id=user_info['id'])
+        user_info['badge'] = Achievement.get_badge(user.xp)
+        user_info['xp'] = user.xp
 
     response = {
-        'user_infos': user_serializer.data,
+        'user_infos': user_data,
     }
     if conversation:
         response['messages'] = message_serializer.data
+    
     return Response(response)
 
 

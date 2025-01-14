@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import MonteCarloAI from '../../services/MonteCarloAI'
 
 const AIPongTable = ({
 	isPaused,
@@ -7,366 +8,285 @@ const AIPongTable = ({
 	updateScore,
 	isGameOver,
 	resetParameters,
-	player1Color, // human player color
-	player2Color, // AI color
-	ballColor,
-	paddleHeight,
-	ballRadius,
-	powerups,
-	attacks,
-	aiDifficulty, // NEW: AI difficulty setting
-	aiBehavior, // NEW: AI behavior setting
-	// onBallMove, // NEW: Callback to track ball position
+	difficulty,
 }) => {
-	// Basic canvas setup
+	// Canvas setup with standard game dimensions
 	const [canvasSize] = useState({ width: 800, height: 400 })
-	const [canvasHeight] = useState(400)
 	const canvasRef = useRef(null)
 	const containerRef = useRef(null)
 	const requestRef = useRef(null)
 	const lastTimeRef = useRef(null)
+	const aiRef = useRef(null)
 
-	// Game constants
-	const paddleWidth = 20
-	const paddleX = 5
-	const BallInitialSpeed = 0.5
-	const BallAcceleration = 0.1
-	const paddleSpeed = 300
-	const MAX_BALL_SPEED = 8
-	const MAX_CANVAS_WIDTH = 1200
+	// Initialize AI with only difficulty parameter
+	if (!aiRef.current) {
+		aiRef.current = new MonteCarloAI(difficulty)
+	}
 
-	// Player and AI positions
-	const [playerY, setPlayerY] = useState(200 - paddleHeight / 2)
-	const [aiY, setAiY] = useState(200 - paddleHeight / 2)
+	// Game constants for standardized gameplay
+	const CONSTANTS = {
+		paddleWidth: 20,
+		paddleHeight: 110,
+		paddleX: 5,
+		ballRadius: 15,
+		ballInitialSpeed: 2,
+		ballAcceleration: 0.05,
+		paddleSpeed: 600,
+		maxBallSpeed: 10,
+		maxCanvasWidth: 1200,
+		playerColor: '#FFFFFF', // White for player
+		aiColor: '#FF0000', // Red for AI
+		ballColor: '#FFFFFF', // White for ball
+	}
 
-	// Player and AI states
-	const [player, setPlayer] = useState({
-		name: 'Player',
-		x: paddleX,
-		y: playerY,
-		width: paddleWidth,
-		height: paddleHeight,
-		color: player1Color || 'white',
-		powerups: powerups,
-		attacks: attacks,
-		isPowerupActive: false,
-		isAttackActive: false,
-	})
-
-	const [ai, setAi] = useState({
-		name: 'AI',
-		x: 800 - paddleWidth - paddleX,
-		y: aiY,
-		width: paddleWidth,
-		height: paddleHeight,
-		color: player2Color || 'red',
-		powerups: powerups,
-		attacks: attacks,
-		isPowerupActive: false,
-		isAttackActive: false,
-	})
-
-	// Ball state
-	const ballsRef = useRef([
-		{
-			x: 400,
-			y: 200,
-			radius: ballRadius,
-			speed: BallInitialSpeed,
-			velocityX: 5,
-			velocityY: 5,
-			color: ballColor || 'white',
-		},
-	])
-
-	// Player movement flags (only for Up/Down arrows)
+	// Paddle position states
+	const [playerY, setPlayerY] = useState(200 - CONSTANTS.paddleHeight / 2)
+	const [aiY, setAiY] = useState(200 - CONSTANTS.paddleHeight / 2)
 	const [isPlayerMovingUp, setIsPlayerMovingUp] = useState(false)
 	const [isPlayerMovingDown, setIsPlayerMovingDown] = useState(false)
 
-	// AI Movement Logic - NEW
-	const calculateAIMove = (ballPos) => {
-		const getAISpeed = () => {
-            console.log('aiDifficulty:', aiDifficulty)
-			switch (aiDifficulty) {
-				case 'easy':
-					return paddleSpeed * 0.25 // 25% of max speed, very slow
-				case 'medium':
-					return paddleSpeed * 0.4 // 40% of max speed, medium speed
-				case 'hard':
-					return paddleSpeed * 0.8 // 80% of max speed, very fast
-				default:
-					return paddleSpeed * 0.4 // Default to medium speed
-			}
-		}
-
-		// Get target position based on behavior
-        const getTargetY = () => {
-            // Calculate predicted ball position
-            const distanceToAI = ai.x - ballPos.x;
-            const timeToIntercept = distanceToAI / (ballPos.velocityX * ballPos.speed);
-            const predictedY = ballPos.y + (ballPos.velocityY * ballPos.speed * timeToIntercept);
-            
-            console.log('predictedY:', predictedY)
-            // Add behavior-specific positioning
-            switch (aiBehavior) {
-                case 'aggressive':
-                    // Move ahead of the ball and try to intercept early
-                    return predictedY - paddleHeight * 0.5 +  (ballPos.x > canvasSize.width / 2 ? 30 : -30); // Moves forward when ball approaches
-    
-                case 'defensive':
-                    // Stay back and wait for the ball
-                    return predictedY + paddleHeight * 0.3 +  (ballPos.x > canvasSize.width / 2 ? -40 : 0); // Stays back
-    
-                case 'balanced':
-                default:
-                    // Standard positioning
-                    return predictedY;
-            }
-        };
-
-        // Add difficulty-specific "mistakes"
-        const addDifficultyVariation = (targetY) => {
-            switch (aiDifficulty) {
-                case 'easy':
-                    // Large random movements and delayed reactions
-                    const randomMiss = Math.random() < 0.3; // 30% chance to make a mistake
-                    if (randomMiss) {
-                        return targetY + (Math.random() - 0.5) * 100; // Big random offset
-                    }
-                    break;
-    
-                case 'medium':
-                    // Smaller random movements
-                    return targetY + (Math.random() - 0.5) * 30; // Small random offset
-    
-                case 'hard':
-                    // Minimal randomness for slight imperfection
-                    return targetY + (Math.random() - 0.5) * 10; // Very small random offset
-            }
-            return targetY;
-        };
-
-        const clampPosition = (position) => {
-            // Keep paddle within canvas bounds
-            return Math.max(0, Math.min(canvasHeight - paddleHeight, position));
-        };
-
-		const aiSpeed = getAISpeed()
-		let targetY = getTargetY()
-        targetY = addDifficultyVariation(targetY)
-        console.log('ai behavior:', aiBehavior)
-        // Add behavior-specific movement patterns
-        switch (aiBehavior) {
-            case 'aggressive':
-                // Move more rapidly with bigger steps
-                const aggressiveMove = (targetY - ai.y) * 1.2;
-                return clampPosition(ai.y + Math.min(Math.abs(aggressiveMove), aiSpeed) * Math.sign(aggressiveMove));
-
-            case 'defensive':
-                // Move more cautiously with smaller steps
-                const defensiveMove = (targetY - ai.y) * 0.8;
-                return clampPosition(ai.y + Math.min(Math.abs(defensiveMove), aiSpeed * 0.7) * Math.sign(defensiveMove));
-
-            case 'balanced':
-            default:
-                // Standard movement
-                const move = targetY - ai.y;
-                return clampPosition(ai.y + Math.min(Math.abs(move), aiSpeed) * Math.sign(move));
-        }
-	}
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
-    
-        const background = new Image();
-        background.src = `/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}`;
-    
-        // Drawing functions stay the same
-        const drawPaddle = (paddle) => {
-            ctx.fillStyle = paddle.color;
-            ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
-            ctx.beginPath();
-            ctx.arc(paddle.x + paddle.width / 2, paddle.y, paddle.width / 2, 0, Math.PI, true);
-            ctx.arc(
-                paddle.x + paddle.width / 2,
-                paddle.y + paddle.height,
-                paddle.width / 2,
-                0,
-                Math.PI,
-                false
-            );
-            ctx.closePath();
-            ctx.fill();
-        };
-    
-        const drawBall = (ball) => {
-            ctx.beginPath();
-            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-            ctx.fillStyle = ball.color;
-            ctx.fill();
-            ctx.closePath();
-        };
-    
-        const draw = () => {
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-            if (backgroundId) {
-                ctx.drawImage(background, 0, 0, canvasWidth, canvasHeight);
-            }
-            drawPaddle(player);
-            drawPaddle(ai);
-            ballsRef.current.forEach(drawBall);
-        };
-    
-        // Collision logic stays the same
-        const collisionDetection = (ball, paddle) => {
-            const paddleTop = paddle.y;
-            const paddleBottom = paddle.y + paddle.height;
-            const paddleLeft = paddle.x;
-            const paddleRight = paddle.x + paddle.width;
-    
-            const ballTop = ball.y - ball.radius;
-            const ballBottom = ball.y + ball.radius;
-            const ballLeft = ball.x - ball.radius;
-            const ballRight = ball.x + ball.radius;
-    
-            return (
-                ballRight > paddleLeft &&
-                ballLeft < paddleRight &&
-                ballBottom > paddleTop &&
-                ballTop < paddleBottom
-            );
-        };
-    
-        const handlePaddleCollision = (ball, paddle) => {
-            ball.velocityX = -ball.velocityX;
-    
-            if (paddle.x < 400) {
-                ball.x = paddle.x + paddle.width + ball.radius;
-                // randomize ball angle a bit
-                ball.velocityY += Math.random() * 2;
-            } else {
-                ball.x = paddle.x - ball.radius;
-                // randomize ball angle a bit
-                ball.velocityY -= Math.random() * 2;
-            }
-    
-            ball.speed += BallAcceleration;
-            if (ball.speed > MAX_BALL_SPEED) {
-                ball.speed = MAX_BALL_SPEED;
-            }
-        };
-    
-        const resetBall = () => {
-            ballsRef.current = [{
-                x: canvasWidth / 2,
-                y: canvasHeight / 2,
-                radius: ballRadius,
-                speed: BallInitialSpeed,
-                // randomize starting direction
-                // velocityX: (-ballsRef.current[0].velocityX)
-                velocityX: (Math.random() > 0.5) ? 5 : -5,
-                // velocityY: ballsRef.current[0].velocityY,
-                velocityY: (Math.random() > 0.5) ? 5 : -5,
-                color: ballColor || 'white',
-            }];
-        };
-    
-        const updateGame = (time) => {
-            if (isPaused || isGameOver) return;
-    
-            const deltaTime = (time - lastTimeRef.current) / 1000;
-            lastTimeRef.current = time;
-    
-            // Update ball positions
-            ballsRef.current.forEach((ball) => {
-                const nextX = ball.x + ball.velocityX * ball.speed;
-                const nextY = ball.y + ball.velocityY * ball.speed;
-    
-                // Ball wall collisions
-                if (nextY + ball.radius > canvasHeight || nextY - ball.radius < 0) {
-                    ball.velocityY = -ball.velocityY;
-                    ball.y = nextY + ball.radius > canvasHeight 
-                        ? canvasHeight - ball.radius 
-                        : ball.radius;
-                } else {
-                    ball.y = nextY;
-                }
-    
-                // Paddle collisions
-                if (collisionDetection(ball, player)) {
-                    handlePaddleCollision(ball, player);
-                } else if (collisionDetection(ball, ai)) {
-                    handlePaddleCollision(ball, ai);
-                } else {
-                    ball.x = nextX;
-                }
-    
-                // Scoring
-                if (ball.x < 0 || ball.x > canvasWidth) {
-                    updateScore(ball.x < 0 ? 'ai' : 'player'); // Changed to use 'ai' and 'player'
-                    resetBall();
-                }
-            });
-            
-            // Update player paddle
-            if (isPlayerMovingUp) {
-                setPlayerY(prev => Math.max(prev - paddleSpeed * deltaTime, 0));
-            }
-            if (isPlayerMovingDown) {
-                setPlayerY(prev => Math.min(prev + paddleSpeed * deltaTime, canvasHeight - player.height));
-            }
-    
-            // Update AI paddle with deltaTime for smooth movement
-            const newAiY = calculateAIMove(ballsRef.current[0]);
-            setAiY(prev => {
-                const diff = newAiY - prev;
-                const movement = Math.min(Math.abs(diff), paddleSpeed * deltaTime) * Math.sign(diff);
-                return prev + movement;
-            });
-        
-            draw();
-            requestRef.current = requestAnimationFrame(updateGame);
-        };
-    
-        requestRef.current = requestAnimationFrame(updateGame);
-    
-        return () => cancelAnimationFrame(requestRef.current);
-    }, [
-        isPaused,
-        isGameOver,
-        player,
-        ai,
-        updateScore,
-        isPlayerMovingUp,
-        isPlayerMovingDown,
-        backgroundId,
-        aiDifficulty,
-        aiBehavior
-    ]);
-
+	// Initialize ball with randomized direction
+	const ballsRef = useRef([
+		{
+			x: canvasSize.width / 2,
+			y: canvasSize.height / 2,
+			radius: CONSTANTS.ballRadius,
+			speed: CONSTANTS.ballInitialSpeed,
+			velocityX: Math.random() > 0.5 ? 5 : -5,
+			velocityY: (Math.random() - 0.5) * 8,
+			color: CONSTANTS.ballColor,
+		},
+	])
 
 	useEffect(() => {
+		const canvas = canvasRef.current
+		const ctx = canvas.getContext('2d')
+		const ai = aiRef.current
+
+		// Handle ball collision with paddles
+		const handleCollision = (ball, paddle, isAI) => {
+			ball.velocityX = -ball.velocityX
+
+			if (isAI) {
+				ai.recordHit({ x: ball.x, y: ball.y }, paddle.y)
+			}
+
+			// Adjust ball position and add some randomness to vertical velocity
+			if (paddle.x < canvasSize.width / 2) {
+				ball.x = paddle.x + paddle.width + ball.radius
+				// ball.velocityY += (Math.random()) * 2
+			} else {
+				ball.x = paddle.x - ball.radius
+				// ball.velocityY += (Math.random()) * 2
+			}
+
+			// Increase ball speed with each hit
+			ball.speed = Math.min(ball.speed + CONSTANTS.ballAcceleration, CONSTANTS.maxBallSpeed)
+		}
+
+		const updateGame = (time) => {
+			if (isPaused || isGameOver) return
+
+			const deltaTime = (time - lastTimeRef.current) / 1000
+			lastTimeRef.current = time
+
+			ballsRef.current.forEach((ball) => {
+				// Update ball position
+				const nextX = ball.x + ball.velocityX * ball.speed
+				const nextY = ball.y + ball.velocityY * ball.speed
+
+				// Handle wall collisions
+				if (nextY + ball.radius > canvasSize.height || nextY - ball.radius < 0) {
+					ball.velocityY = -ball.velocityY
+					ball.y =
+						nextY + ball.radius > canvasSize.height
+							? canvasSize.height - ball.radius
+							: ball.radius
+				} else {
+					ball.y = nextY
+				}
+
+				// AI prediction and movement
+				const prediction = ai.predictBallPosition(
+					{ x: ball.x, y: ball.y },
+					{ x: ball.velocityX * ball.speed, y: ball.velocityY * ball.speed },
+					{ height: CONSTANTS.paddleHeight }
+				)
+
+
+				const aiSpeed = ai.getAdjustedSpeed(CONSTANTS.paddleSpeed) * deltaTime;
+				const targetY = prediction.y - CONSTANTS.paddleHeight / 2;
+				const currentY = aiY;
+				const distance = targetY - currentY;
+
+				// Add deadzone to prevent micro-movements
+				const deadzone = 5;
+				if (Math.abs(distance) > deadzone) {
+					const smoothing = 0.5; // Reduces jittery movement
+					const movement = Math.sign(distance) * Math.min(Math.abs(distance) * smoothing, aiSpeed);
+					
+					setAiY(prev => Math.max(0, 
+						Math.min(canvasSize.height - CONSTANTS.paddleHeight,
+							prev + movement)));
+				}
+
+
+				// Check paddle collisions
+				const playerPaddle = {
+					x: CONSTANTS.paddleX,
+					y: playerY,
+					width: CONSTANTS.paddleWidth,
+					height: CONSTANTS.paddleHeight,
+				}
+				const aiPaddle = {
+					x: canvasSize.width - CONSTANTS.paddleWidth - CONSTANTS.paddleX,
+					y: aiY,
+					width: CONSTANTS.paddleWidth,
+					height: CONSTANTS.paddleHeight,
+				}
+
+				// Handle collisions and scoring
+				if (checkCollision(ball, playerPaddle)) {
+					handleCollision(ball, playerPaddle, false)
+				} else if (checkCollision(ball, aiPaddle)) {
+					handleCollision(ball, aiPaddle, true)
+				} else {
+					ball.x = nextX
+				}
+
+				// Check for scoring
+				if (ball.x < 0 || ball.x > canvasSize.width) {
+					const scorer = ball.x < 0 ? 'ai' : 'player'
+					if (scorer === 'ai') {
+						ai.recordHit({ x: ball.x, y: ball.y }, aiY)
+					} else {
+						ai.recordMiss()
+					}
+					updateScore(scorer)
+					resetBall()
+				}
+			})
+
+			// Update player paddle position
+			if (isPlayerMovingUp) {
+				setPlayerY((prev) => Math.max(prev - CONSTANTS.paddleSpeed * deltaTime, 0))
+			}
+			if (isPlayerMovingDown) {
+				setPlayerY((prev) =>
+					Math.min(
+						prev + CONSTANTS.paddleSpeed * deltaTime,
+						canvasSize.height - CONSTANTS.paddleHeight
+					)
+				)
+			}
+
+			drawGame()
+			requestRef.current = requestAnimationFrame(updateGame)
+		}
+
+		const drawGame = () => {
+			ctx.clearRect(0, 0, canvasSize.width, canvasSize.height)
+
+			// Draw background
+			if (backgroundId) {
+				const background = new Image()
+				background.src = `/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}`
+				ctx.drawImage(background, 0, 0, canvasSize.width, canvasSize.height)
+			}
+
+			// Draw paddles
+			drawPaddle(CONSTANTS.paddleX, playerY, CONSTANTS.playerColor)
+			drawPaddle(
+				canvasSize.width - CONSTANTS.paddleWidth - CONSTANTS.paddleX,
+				aiY,
+				CONSTANTS.aiColor
+			)
+
+			// Draw ball
+			ballsRef.current.forEach(drawBall)
+		}
+
+		const drawPaddle = (x, y, color) => {
+			ctx.fillStyle = color
+			ctx.beginPath()
+			const radius = 8
+			// Draw paddle with rounded corners
+			ctx.moveTo(x + radius, y)
+			ctx.lineTo(x + CONSTANTS.paddleWidth - radius, y)
+			ctx.quadraticCurveTo(
+				x + CONSTANTS.paddleWidth,
+				y,
+				x + CONSTANTS.paddleWidth,
+				y + radius
+			)
+			ctx.lineTo(x + CONSTANTS.paddleWidth, y + CONSTANTS.paddleHeight - radius)
+			ctx.quadraticCurveTo(
+				x + CONSTANTS.paddleWidth,
+				y + CONSTANTS.paddleHeight,
+				x + CONSTANTS.paddleWidth - radius,
+				y + CONSTANTS.paddleHeight
+			)
+			ctx.lineTo(x + radius, y + CONSTANTS.paddleHeight)
+			ctx.quadraticCurveTo(
+				x,
+				y + CONSTANTS.paddleHeight,
+				x,
+				y + CONSTANTS.paddleHeight - radius
+			)
+			ctx.lineTo(x, y + radius)
+			ctx.quadraticCurveTo(x, y, x + radius, y)
+			ctx.closePath()
+			ctx.fill()
+		}
+
+		const drawBall = (ball) => {
+			ctx.beginPath()
+			ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2)
+			ctx.fillStyle = ball.color
+			ctx.fill()
+			ctx.closePath()
+		}
+
+		const checkCollision = (ball, paddle) => {
+			return (
+				ball.x + ball.radius > paddle.x &&
+				ball.x - ball.radius < paddle.x + paddle.width &&
+				ball.y + ball.radius > paddle.y &&
+				ball.y - ball.radius < paddle.y + paddle.height
+			)
+		}
+
+		const resetBall = () => {
+			const angle = ((Math.random() - 0.5) * Math.PI) / 2
+			ballsRef.current = [
+				{
+					x: canvasSize.width / 2,
+					y: canvasSize.height / 2,
+					radius: CONSTANTS.ballRadius,
+					speed: CONSTANTS.ballInitialSpeed,
+					velocityX: Math.cos(angle) * (Math.random() > 0.5 ? 1 : -1) * 5,
+					velocityY: Math.sin(angle) * 5,
+					color: CONSTANTS.ballColor,
+				},
+			]
+		}
+
+		requestRef.current = requestAnimationFrame(updateGame)
+		return () => cancelAnimationFrame(requestRef.current)
+	}, [isPaused, isGameOver, playerY, aiY, backgroundId])
+
+	// Handle keyboard controls
+	useEffect(() => {
 		const handleKeyDown = (event) => {
-            event.preventDefault();  // Prevent scrolling
-			if (event.key === 'ArrowUp') {
-				setIsPlayerMovingUp(true)
-			}
-			if (event.key === 'ArrowDown') {
-				setIsPlayerMovingDown(true)
-			}
+			event.preventDefault()
+			if (event.key === 'ArrowUp') setIsPlayerMovingUp(true)
+			if (event.key === 'ArrowDown') setIsPlayerMovingDown(true)
 		}
 
 		const handleKeyUp = (event) => {
-            event.preventDefault();  // Prevent scrolling
-			if (event.key === 'ArrowUp') {
-				setIsPlayerMovingUp(false)
-			}
-			if (event.key === 'ArrowDown') {
-				setIsPlayerMovingDown(false)
-			}
+			event.preventDefault()
+			if (event.key === 'ArrowUp') setIsPlayerMovingUp(false)
+			if (event.key === 'ArrowDown') setIsPlayerMovingDown(false)
 		}
 
 		window.addEventListener('keydown', handleKeyDown)
@@ -376,12 +296,7 @@ const AIPongTable = ({
 			window.removeEventListener('keydown', handleKeyDown)
 			window.removeEventListener('keyup', handleKeyUp)
 		}
-	}, [player, ai])
-
-    useEffect(() => {
-        setPlayer(prev => ({ ...prev, y: playerY }));
-        setAi(prev => ({ ...prev, y: aiY }));
-    }, [playerY, aiY, canvasHeight]);
+	}, [])
 
 	return (
 		<div
@@ -394,13 +309,10 @@ const AIPongTable = ({
 				height={canvasSize.height}
 				className={`game-table border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 				style={{
+					borderRadius: '25px',
 					width: '100%',
 					height: 'auto',
-					borderRadius: '25px',
-					maxWidth: `${MAX_CANVAS_WIDTH}px`,
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-					backgroundImage: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
+					maxWidth: `${CONSTANTS.maxCanvasWidth}px`,
 				}}
 			/>
 			{!isGameOver && (

@@ -25,9 +25,17 @@ function FriendsList() {
 				headers: getAuthHeaders(),
 			})
 			const data = await response.json()
+<<<<<<< HEAD
 			setUsers(data)
 		}
 		catch (error) {
+=======
+			// console.log('data =====> []', data)
+			setUsers(data)
+		}
+		catch (error) {
+			// console.log('data =====>error []')
+>>>>>>> master
 			console.error('Error:', error)
 		}
 	}
@@ -97,7 +105,7 @@ function FriendsList() {
 
 	return (
 		<div
-			className='flex flex-col items-center lg:w-fl-ldr-custom tb:w-[380px] w-full mtb:h-card h-[350px] rounded-xl border
+			className='flex flex-col items-center lg:w-fl-ldr-custom w-full mtb:h-card h-[350px] rounded-xl border
 			transition duration-300 border-[rgba(255,206,157,.2)] hover:border-[rgba(255,206,157,.4)] bg-[rgba(27,22,17,0.5)]
 			hover:drop-shadow-[0_0_20px_rgba(255,206,157,0.2)]'
 		>
@@ -117,7 +125,11 @@ function FriendsList() {
 			<div className='w-[96%] overflow-y-auto users'>
 				{
 					filterUsers.map((user) => {
+<<<<<<< HEAD
 						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} blockedUsers={blockedUsers} />
+=======
+						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} badge_image={user.badge_image} badge_name={user.badge_name} />
+>>>>>>> master
 					})
 				}
 			</div>

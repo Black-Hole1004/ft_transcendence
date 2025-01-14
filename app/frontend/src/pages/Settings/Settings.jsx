@@ -10,7 +10,7 @@ import { useAlert } from '../../components/AlertContext'
 import ConfirmationModal from '../../components/Settings/ConfirmationModal'
 import Cookies from 'js-cookie'
 
-import DeleteConfirmationModal from './DeleteConfirmationModal'
+import DeleteConfirmationModal from '../../components/Settings/DeleteConfirmationModal'
 
 const USER_API = import.meta.env.VITE_USER_API
 const DEFAULT_PROFILE_PICTURE = '/profile_pictures/avatar.jpg'
@@ -28,7 +28,7 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 				type={type}
 				placeholder={placeholder}
 				className='inputs border border-border rounded bg-[rgb(183,170,156,8%)] transition-all duration-300
-				placeholder:text-border placeholder:font-regular placeholders outline-none max-ms:w-[80%]'
+				placeholders outline-none max-ms:w-[80%] text-border'
 				onChange={onChange}
 				value={value || ''}
 			/>
@@ -271,6 +271,8 @@ const Settings = () => {
 
 	/**********************  Handle Input Change ************************/
 	const handleInputChange = (e) => {
+		console.log('here')
+		e.target.classList.replace('text-border', 'text-primary')
 		const { name, value } = e.target
 		switch (name) {
 			case 'first_name':
@@ -329,16 +331,16 @@ const Settings = () => {
 	return (
 		<>
 			<section className='flex justify-center'>
-				<div className='s max-tb:h-auto card-margin w-full border border-primary rounded-3xl'>
+				<div className='s max-tb:h-auto card-margin w-full border border-primary rounded-3xl bg-[rgba(27,22,17,0.5)]'>
 					<div className='flex items-center card-header sections-ml'>
 						<h1 className='font-dreamscape-sans text-primary leading-[1]'>Settings</h1>
 					</div>
 					<div className='h-0.5 separators'></div>
 					<div
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
-						xl:gap-[110px] lg:gap-[80px] tb:gap-[20px] max-tb:gap-y-3'
+						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start parts'>
+						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Profile Picture</p>
 							<p className='text-light'>
 								Must be JPEG, PNG, or GIF and cannot exceed 5MB.
@@ -386,7 +388,7 @@ const Settings = () => {
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start parts '>
+						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Personal Settings</p>
 							<p className='text-light'>
 								Change identifying details for your account.
@@ -439,10 +441,10 @@ const Settings = () => {
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start parts '>
+						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Profile Settings</p>
 							<p className='text-light '>
-								Edit your username , bio, and other public details.
+								Edit your username and other public details.
 							</p>
 						</div>
 						<div className='flex items-center'>
@@ -470,8 +472,8 @@ const Settings = () => {
 											id='bio'
 											placeholder={bio}
 											maxLength={'150'}
-											className='bio-input font-regular border border-border rounded-lg bg-[rgb(183,170,156,8%)]
-										max-ms:w-full outline-none placeholders placeholder:text-border transition-all duration-300'
+											className='bio-input font-regular border border-border rounded bg-[rgb(183,170,156,8%)] min-h-5
+											text-border max-ms:w-full outline-none placeholders transition-all duration-300'
 											onChange={handleInputChange}
 											value={bio}
 										></textarea>
@@ -485,11 +487,10 @@ const Settings = () => {
 						className='sections-ml flex tb:flex-row flex-col items-center picture-section
 						xl:gap-[110px] lg:gap-[50px] tb:gap-[20px] max-tb:gap-y-3'
 					>
-						<div className='font-regular sections-title tb:self-center self-start parts '>
+						<div className='font-regular sections-title tb:self-center self-start parts tb:max-w-[30%] w-full'>
 							<p className='text-primary'>Security Settings</p>
 							<p className='text-light'>
-								Update your password and enable two-factor authentication for added
-								security.
+								{`Update your password, ${!user.is_logged_with_oauth_for_2fa ? 'enable two-factor authentication (2FA), ' : ''}or delete your account.`}
 							</p>
 						</div>
 						<div className='flex flex-col lp:gap-6 gap-4'>
@@ -530,6 +531,7 @@ const Settings = () => {
 											type='submit'
 											onClick={enableDesable2FA}
 											disabled={twoFactorAuthEnabled}
+											from={'settings'}
 										>
 											Enable Two-factor Authentication
 										</Button>
@@ -549,15 +551,6 @@ const Settings = () => {
 						</div>
 					</div>
 					<div className='flex justify-end save-button my-3 tb:gap-2 gap-1'>
-						<Button
-							id={'resetButton'}
-							className={
-								'rounded border border-border font-medium buttons-text remove-button'
-							}
-							onClick={() => window.location.reload()}
-						>
-							Cancel
-						</Button>
 						<Button
 							className={
 								'rounded border border-border font-medium buttons-text remove-button'

@@ -15,6 +15,8 @@ from .profile_utils import (
 
 from .models import FriendShip
 from .models import FriendShipRequest
+from .models import Achievement
+
 
 User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
@@ -24,10 +26,14 @@ class UserSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True, required=False, min_length=8)
     profile_picture = serializers.ImageField(required=False)
     is_friend = serializers.SerializerMethodField()
+    
+    badge_name = serializers.SerializerMethodField()
+    badge_image = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth', 'is_logged_with_oauth_for_2fa', 'is_friend', 'status',
-                'username','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture', 'date_joined', 'date_joined_formatted'
+                'username','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture', 'date_joined', 'date_joined_formatted', 'badge_name', 'badge_image'
             ]
         read_only_fields = ['id', 'email']
     
@@ -42,6 +48,16 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_date_joined_formatted(self, obj):
         return obj.date_joined.strftime('%B %Y')
+    
+    def get_badge_name(self, obj):
+        # Get badge based on user's XP
+        badge = Achievement.get_badge(obj.xp)
+        return badge['name'] if badge else None
+
+    def get_badge_image(self, obj):
+        # Get badge based on user's XP
+        badge = Achievement.get_badge(obj.xp)
+        return badge['image'] if badge else None
     
 class UserSessionSerializer(serializers.ModelSerializer):
     class Meta:

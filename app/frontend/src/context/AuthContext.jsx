@@ -10,6 +10,7 @@ const API_REGISTER = import.meta.env.VITE_API_REGISTER
 const VITE_API_REFRESH = import.meta.env.VITE_API_REFRESH
 const VITE_API_LOGOUT = import.meta.env.VITE_API_LOGOUT
 const USER_API = import.meta.env.VITE_USER_API;
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
 const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL;
 export const AuthProvider = ({ children }) => {
 
@@ -20,6 +21,8 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const accessToken = Cookies.get('access_token');
     const refreshToken = Cookies.get('refresh_token');
+        
+     
 
 
     const [authTokens, setAuthTokens] = useState(() => {

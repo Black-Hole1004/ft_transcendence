@@ -78,14 +78,14 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
             rounded-md hover:bg-[rgba(183,170,156,0.2)]'>
             <div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[72%]'>
                 <img
-                    src='/assets/images/Achievements/celestial-master.png'
+                    src={user_friend.badge_image}
                     className='achievement-icon-fr select-none'
                     alt='achievement-icon'
                     loading='eager'
                 />
                 <img
                     src={user_friend.profile_picture}
-                    className='h-[76%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
+                    className='h-[70%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
                     alt='user-image'
                     loading='eager'
                 />
@@ -94,7 +94,7 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
                         {user_friend.username}
                     </p>
                     <p className='text-achievement achievement-name '> 
-                        achievement test
+                        {user_friend.badge_name}
                     </p>
                 </div>
             </div>
@@ -125,7 +125,7 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
                 {/* Add friend button for non-friends */}
                 {!user_friend.is_friend && (
                     <Button 
-                        className={'font-medium add-friend-button rounded border border-border'}
+                        className={'font-medium invite-button px-2 py-1 rounded border border-border'}
                         onClick={() => handle_add_friend(user_friend.id)}
                         disabled={isBlocked}
                     >
