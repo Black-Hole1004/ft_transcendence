@@ -198,3 +198,77 @@
 [2025-01-14T00:04:37.188631: : <36> getExceptionVerdict@http_geo_filter.cc:346            | ###] Lookup location failed for source: 172.20.0.1, Error: Maxmind db is uninitialized
 [2025-01-14T00:05:12.919597: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
 [2025-01-14T00:05:13.093544: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[Tue Jan 14 14:41:34 UTC 2025][addStream@logging.cc:107                                     | ---] Successfully added log stream. Stream type: JSON FOG stream
+[init@components_list_impl.h:126                              | ---] Initializing component: Environment
+[init@components_list_impl.h:126                              | ---] Initializing component: DebugIS
+[2025-01-14T14:41:34.686861: : init@components_list_impl.h:126                            | ---] Initializing component: Version
+[2025-01-14T14:41:34.687215: : init@components_list_impl.h:126                            | ---] Initializing component: Buffer
+[2025-01-14T14:41:34.687575: : init@components_list_impl.h:126                            | ---] Initializing component: ShellCmd
+[2025-01-14T14:41:34.687874: : init@components_list_impl.h:126                            | ---] Initializing component: GenericMetric
+[2025-01-14T14:41:34.688276: : init@components_list_impl.h:126                            | ---] Initializing component: Messaging
+[2025-01-14T14:41:34.692317: : init@components_list_impl.h:126                            | ---] Initializing component: MainloopComponent
+[2025-01-14T14:41:34.692738: : init@components_list_impl.h:126                            | ---] Initializing component: ConfigComponent
+[2025-01-14T14:41:34.693165: : init@components_list_impl.h:126                            | ---] Initializing component: InstanceAwareness
+[2025-01-14T14:41:34.693901: : init@components_list_impl.h:126                            | ---] Initializing component: IntelligenceComponentV2
+[2025-01-14T14:41:34.694314: : init@components_list_impl.h:126                            | ---] Initializing component: AgentDetails
+[2025-01-14T14:41:34.699506: : getMachineTypeFromDmiTable@agent_details.cc:354            | ###] Error. Could not decode the DMI table. Table value is empty
+[2025-01-14T14:41:34.699920: : registerMachineType@agent_details.cc:376                   | ###] Error. Machine type is unrecognized
+[2025-01-14T14:41:34.700179: : registerMachineType@agent_details.cc:381                   | ---] Setting machine type 3
+[2025-01-14T14:41:34.702254: : init@components_list_impl.h:126                            | ---] Initializing component: LoggingComp
+[2025-01-14T14:41:34.702843: : init@components_list_impl.h:126                            | ---] Initializing component: TimeProxyComponent
+[2025-01-14T14:41:34.703109: : init@components_list_impl.h:126                            | ---] Initializing component: SignalHandler
+[2025-01-14T14:41:34.703589: : init@components_list_impl.h:126                            | ---] Initializing component: RestServer
+[2025-01-14T14:41:34.703957: : init@components_list_impl.h:126                            | ---] Initializing component: Encryptor
+[2025-01-14T14:41:34.704255: : init@components_list_impl.h:126                            | ---] Initializing component: SocketIS
+[2025-01-14T14:41:34.704558: : init@components_list_impl.h:126                            | ---] Initializing component: CPUCalculator
+[2025-01-14T14:41:34.704862: : init@components_list_impl.h:126                            | ---] Initializing component: CPUManager
+[2025-01-14T14:41:34.705287: : init@components_list_impl.h:126                            | ---] Initializing component: MemoryCalculator
+[2025-01-14T14:41:34.705771: : init@components_list_impl.h:126                            | ---] Initializing component: TenantManager
+[2025-01-14T14:41:34.706137: : init@components_list_impl.h:126                            | ---] Initializing component: GenericRulebase
+[2025-01-14T14:41:34.706487: : init@components_list_impl.h:126                            | ---] Initializing component: Table
+[2025-01-14T14:41:34.707178: : init@components_list_impl.h:126                            | ---] Initializing component: NginxAttachment
+[2025-01-14T14:41:34.710630: : init@nginx_attachment.cc:263                               | ---] Successfully initialized NGINX Attachment
+[2025-01-14T14:41:34.710981: : init@components_list_impl.h:126                            | ---] Initializing component: GradualDeployment
+[2025-01-14T14:41:34.711313: : init@components_list_impl.h:126                            | ---] Initializing component: HttpManager
+[2025-01-14T14:41:34.711614: : init@components_list_impl.h:126                            | ---] Initializing component: Layer-7 Access Control
+[2025-01-14T14:41:34.712036: : init@components_list_impl.h:126                            | ---] Initializing component: RateLimit
+[2025-01-14T14:41:34.712511: : init@components_list_impl.h:126                            | ---] Initializing component: WaapComponent
+[2025-01-14T14:41:36.054309: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ScannerDetector'
+[2025-01-14T14:41:36.056752: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ConfidenceCalculator'
+[2025-01-14T14:41:36.061191: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-14T14:41:36.064144: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='ConfidenceCalculator'
+[2025-01-14T14:41:36.067531: : SerializeToLocalAndRemoteSyncBase@Serializator.cc:418      | ---] Create SerializeToLocalAndRemoteSyncBase. assetId='', owner='TrustedSourcesConfidenceCalculator'
+[2025-01-14T14:41:36.103838: : registerStaticResource@nginx_attachment.cc:364             | ###] Failed to write the static resource to the shared memory. Resource name: cp-ab.js, static resource's path: /etc/cp/conf/waap/cp-ab.js
+[2025-01-14T14:41:36.105944: : registerStaticResource@nginx_attachment.cc:364             | ###] Failed to write the static resource to the shared memory. Resource name: cp-csrf.js, static resource's path: /etc/cp/conf/waap/cp-csrf.js
+[2025-01-14T14:41:36.106735: : init@components_list_impl.h:126                            | ---] Initializing component: IPSComp
+[2025-01-14T14:41:36.107524: : init@components_list_impl.h:126                            | ---] Initializing component: KeywordComp
+[2025-01-14T14:41:36.108103: : init@components_list_impl.h:126                            | ---] Initializing component: GeoLocation
+[2025-01-14T14:41:36.109326: : initGeoDbObj@geo_location.cc:109                           | ###] maxMindDB error: Error opening the specified MaxMind DB file
+[2025-01-14T14:41:36.109934: : init@components_list_impl.h:126                            | ---] Initializing component: HttpGeoFilter
+[2025-01-14T14:41:36.110556: : run@mainloop.cc:236                                        | ---] Starting the Mainloop
+[2025-01-14T14:41:36.111203: : <14> operator()@rest_server.cc:210                         | ---] REST server started: 12000. Accepting: loopback connections
+[2025-01-14T14:41:36.142395: : <5> reportStartupEvent@mainloop.cc:224                     | ---] Startup report was successfully sent to fog
+[2025-01-14T14:41:36.143277: : <10> closeLogFile@file_stream.cc:119                       | ###] Failed in closing log file. File path: 1
+[2025-01-14T14:41:38.297311: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T14:41:39.701666: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T14:43:36.194049: : <9> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Load access token
+[2025-01-14T14:44:42.511267: : <22> run@mainloop.cc:317                                   | ###] Routine execution exceeded run time. Routine name: Metric Fog stream messaging for Nginx transaction table data
+[2025-01-14T14:51:37.163124: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-14T14:51:37.409219: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T14:59:59.219023: : <32> syncWorker@Serializator.cc:656                        | ---] Running the sync worker for assetId='', owner='TypeIndicatorFilter/ConfidenceCalculator' last modified state: 
+[2025-01-14T15:00:00.006376: : <32> syncWorker@Serializator.cc:656                        | ---] Running the sync worker for assetId='', owner='TypeIndicatorFilter/ConfidenceCalculator' last modified state: 
+[2025-01-14T15:01:36.170155: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-14T15:01:36.406803: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T15:11:34.972416: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-14T15:11:35.121887: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T15:11:35.457893: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T15:21:35.705591: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-14T15:21:35.934219: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T15:31:34.815377: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-14T15:31:35.052145: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T15:41:35.351374: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-14T15:41:35.585775: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages
+[2025-01-14T15:49:55.865274: : <3> getExecOutputAndCode@shell_cmd.cc:89                   | ###] Reached timeout while executing shell command: if [ -s /var/log/nano_agent/event_buffer//cp-nano-http-transaction-handler1.input ] && [ ! -s /var/log/nano_agent/event_buffer//cp-nano-http-transaction-handler1.output ];then mv /var/log/nano_agent/event_buffer//cp-nano-http-transaction-handler1.input /var/log/nano_agent/event_buffer//cp-nano-http-transaction-handler1.output;fi
+[2025-01-14T15:49:55.962917: : <3> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: A-sync messaging routine
+[2025-01-14T15:51:34.185635: : <4> receiveData@connection.cc:582                          | ###] Connection closed by peer
+[2025-01-14T15:51:34.435802: : <4> run@mainloop.cc:317                                    | ###] Routine execution exceeded run time. Routine name: Handling in-memory messages

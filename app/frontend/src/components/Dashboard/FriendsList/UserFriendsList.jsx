@@ -2,11 +2,9 @@ import Button from '../../Home/Buttons/Button'
 import useAuth from '../../../context/AuthContext'
 import { useAlert } from '../../AlertContext'
 import { useSocket } from '../../Layout/Layout'
-import { useState, useEffect } from 'react'
 
 const SEND_FRIEND_REQUEST = import.meta.env.VITE_SEND_FRIEND_REQUEST
 const BASE_URL = import.meta.env.VITE_BASE_URL
-const CHECK_BLOCKED_STATUS = import.meta.env.VITE_CHECK_BLOCKED_STATUS // Add this environment variable
 
 
 
@@ -16,9 +14,11 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
     const { socket_notification, sendGameInvite } = useSocket()
 
 
+    const isBlocked = blockedUsers.some((blockedUser) => (blockedUser.blocked__id === user_friend.id));
 
-    const isBlocked = blockedUsers.some((blockedUser) => (blockedUser.id !== user_friend.id))
-
+    const handleSubmit = (type, message) => {
+        triggerAlert(type, message)
+    }
     
     const handle_add_friend = async (id) => {
         if (!id) {

@@ -25,11 +25,9 @@ function FriendsList() {
 				headers: getAuthHeaders(),
 			})
 			const data = await response.json()
-			console.log('data =====> []', data)
 			setUsers(data)
 		}
 		catch (error) {
-			console.log('data =====>error []')
 			console.error('Error:', error)
 		}
 	}
