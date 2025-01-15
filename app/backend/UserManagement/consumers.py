@@ -113,16 +113,38 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             }
         )
     
+    @database_sync_to_async
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return None
+    
+    @database_sync_to_async
+    def get_blocked_status_user(self, user1, user2):
+        """Synchronous method to check block status"""
+        from Chat.models import BlockedUser
+        return BlockedUser.objects.filter(
+            models.Q(blocker_id=user1.id, blocked_id=user2.id) |
+            models.Q(blocker_id=user2.id, blocked_id=user1.id)
+        ).exists()
+    
     async def handle_game_invite(self, data):
         try:
             receiver_id = data.get('receiver_id')
             receiver_status = await self.get_receiver_status(receiver_id)
             sender_tab_id = data.get('senderTabId')  # Add this line
+            
 
+            # Fetch the game invitation
+            user1 = await self.get_user(self.user.id)
+            user2 = await self.get_user(receiver_id)
+        
             # Check blocked status
             try:
-                is_blocked = await self.get_blocked_status(self.user.id, receiver_id)
+                is_blocked = await self.get_blocked_status_user(user1, user2)
                 if is_blocked:
+                    
                     await self.channel_layer.group_send(
                         f'friend_request_{self.user.id}',
                         {
@@ -136,6 +158,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                     return
             except Exception as e:
                 print(f"Error checking blocked statusssss in SENDING: {e}")
+            
             
             if receiver_status != 'online':
                 await self.channel_layer.group_send(
