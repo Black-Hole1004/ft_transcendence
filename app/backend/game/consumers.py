@@ -47,7 +47,7 @@ GAME_SETTINGS = {
     'PAUSE_TIMEOUT': 20,     # Auto-resume after 20 seconds
     'MAX_DELTA_TIME': 0.004, # Cap for time step in seconds (1/240)
     'PHYSICS_UPDATE_RATE': 120,  # Updates per second
-    'BROADCAST_RATE': 50,       # Broadcasts per second
+    'BROADCAST_RATE': 170,       # Broadcasts per second
 }
 
 class GamePhysics:

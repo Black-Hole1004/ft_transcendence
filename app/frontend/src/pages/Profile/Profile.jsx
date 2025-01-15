@@ -66,8 +66,9 @@ const UserProfile = () => {
 			setAchievement(data.achievement);
 			setMatchHistory(data.match_history);
 		} catch (error) {
+			
 			setError(error.message);
-			navigate(`/users/${profile_name}/not_found`);
+			navigate(`/profile/${profile_name}/not_found`);
 		}
 	};
 
@@ -80,8 +81,9 @@ const UserProfile = () => {
 			const data = await response.json();
 			setUser(data);
 		} catch (error) {
+			console.log('here')
 			setError(error.message);
-			navigate(`/users/${profile_name}/not_found`);
+			navigate(`/profile/${profile_name}/not_found`);
 		}
 	};
 
