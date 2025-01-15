@@ -32,7 +32,6 @@ const UserProfile = () => {
 		email: '',
 		mobile_number: '',
 		username: '',
-		display_name: '',
 		bio: '',
 		profile_picture: '',
 		date_joined_formatted: '',

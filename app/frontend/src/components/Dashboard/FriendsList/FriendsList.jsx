@@ -5,9 +5,10 @@ import { useSocket } from '../../Layout/Layout'
 import { use } from 'react'
 // import HOSTNAME FROM .env from frontend/.env
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
+const BLOCKED_USERS = import.meta.env.VITE_BLOCKED_USERS
 
 
-const BLOCKED_USERS = 'https://localhost/api/chat/blocked/blocked-users/'
+
 function FriendsList() {
 	const [users, setUsers] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
