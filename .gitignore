@@ -1,7 +1,5 @@
 ./app/postgres_datos
-./app/db/postgres
 ./app/db/postgres/*
-app/db/postgres/
 app/db/postgres/*
 __pycache__/
 *.pyc

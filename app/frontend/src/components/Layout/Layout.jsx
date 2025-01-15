@@ -298,6 +298,10 @@ function Layout() {
 							)
 						)
 					}
+					else {
+						triggerAlert('error', data.message)
+					}
+					
 					break
 
 				default:

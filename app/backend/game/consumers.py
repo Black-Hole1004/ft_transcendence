@@ -18,11 +18,11 @@ CANVAS_HEIGHT = 400
 # Ball Configuration
 BALL_CONFIG = {
     'RADIUS': 12,
-    'INITIAL_SPEED': 10,
-    'VELOCITY_X': 10,
-    'VELOCITY_Y': 10, # it was 10
-    'MAX_SPEED': 20,
-    'SPEED_INCREMENT': 1.3,
+    'INITIAL_SPEED': 11,
+    'VELOCITY_X': 11,
+    'VELOCITY_Y': 11, # it was 11
+    'MAX_SPEED': 27,
+    'SPEED_INCREMENT': 1.15,
     'MIN_BOUNCE_ANGLE': -38,  # degrees
     'MAX_BOUNCE_ANGLE': 38,   # degrees
     'MAX_BOUNCE_RADIANS': math.pi/6,  # 30 degrees in radians
@@ -45,9 +45,9 @@ GAME_SETTINGS = {
     'INITIAL_TIME': 120,     # Game duration in seconds
     'PAUSE_LIMIT': 3,        # Number of pauses allowed per player
     'PAUSE_TIMEOUT': 20,     # Auto-resume after 20 seconds
-    'MAX_DELTA_TIME': 0.004, # Cap for time step in seconds (1/240)
-    'PHYSICS_UPDATE_RATE': 120,  # Updates per second
-    'BROADCAST_RATE': 50,       # Broadcasts per second
+    'MAX_DELTA_TIME': 0.008 , # Cap for time step in seconds (1/240)
+    'PHYSICS_UPDATE_RATE': 500,  # Updates per second
+    'BROADCAST_RATE': 500       # Broadcasts per second
 }
 
 class GamePhysics:
@@ -303,39 +303,6 @@ class GameConsumer(AsyncWebsocketConsumer):
             
             await self.accept()
             
-            # # Check if this is a reconnection
-            # if (self.game_state and 
-            #     self.game_state.disconnected_player == self.player_number and 
-            #     self.game_state.disconnect_time is not None and  # Add this check
-            #     time.time() - self.game_state.disconnect_time < self.RECONNECT_TIMEOUT):
-                
-            #     print(f"Player {self.player_number} reconnected successfully : resuming game")
-                
-            #     # Clear disconnect state
-            #     self.game_state.disconnect_time = None
-            #     self.game_state.disconnected_player = None
-                
-            #     # Restore player connection
-            #     if self.player_number == 1:
-            #         self.game_state.player1_paddle['connected'] = True
-            #     else:
-            #         self.game_state.player2_paddle['connected'] = True
-                    
-            #     self.game_state.connected_players += 1
-                
-            #     # Resume game if both players are connected
-            #     if self.game_state.connected_players == 2:
-            #         self.game_state.is_paused = False
-                
-            #     # Notify about reconnection
-            #     await self.channel_layer.group_send(
-            #         self.room_group_name,
-            #         {
-            #             'type': 'player_reconnected',
-            #             'player': self.player_number
-            #         }
-            #     )
-            
             # Join room group
             await self.channel_layer.group_add(
                 self.room_group_name,
@@ -475,34 +442,6 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'type': 'error',
                 'message': str(e)
             }))
-
-    # async def handle_player_number_init(self, data):
-    #     """Handle player number initialization"""
-    #     try:
-    #         self.player_number = data.get('player_number')
-    #         print(f"player number initialization after reconnect: XORN {self.player_number}")
-    #         player_id = data.get('player_id') # player id (user id) from the matchmaking service (frontend)
-    #         print(f"Player number initialized: {self.player_number} and player_id: {player_id}")
-    #         if self.player_number == 1:
-    #             self.game_state.player1_id = player_id
-    #             self.game_state.player1_paddle['connected'] = True
-    #         else:
-    #             self.game_state.player2_id = player_id
-    #             self.game_state.player2_paddle['connected'] = True
-            
-    #         self.game_state.connected_players += 1
-            
-    #         # Just confirm player number was set
-    #         await self.send(json.dumps({
-    #             'type': 'player_number_confirmed',
-    #             'player_number': self.player_number
-    #         }))
-            
-    #     except Exception as e:
-    #         await self.send(json.dumps({
-    #             'type': 'error',
-    #             'message': f'Error initializing player number: {str(e)}'
-    #         }))
     
     async def handle_player_number_init(self, data):
         """Handle player number initialization"""
@@ -590,7 +529,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         """Handle paddle direction changes with immediate response"""
         try:
             # Early return checks
-            if self.game_state is None or self.game_state.game_over:
+            if self.game_state is None or self.game_state.game_over or self.game_state.is_paused:
                 return
             
             action = data.get('action')
