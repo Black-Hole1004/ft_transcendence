@@ -24,7 +24,6 @@ const Chat = () => {
 
 	const [blockerId, setBlockerId] = useState(null)
 	const [areFriends, setAreFriends] = useState(false)
-	const [receiver_id, setReceiver_id] = useState(null)
 	const [recipientInfo, setRecipientInfo] = useState(null)
 	const [conversationKey, setConversationKey] = useState(null)
 	const [conversationMessages, setConversationMessages] = useState([])
@@ -42,6 +41,7 @@ const Chat = () => {
 				JSON.stringify({
 					message_type: 'block',
 					blocker_id: blockerId,
+					blocker: currentLoggedInUserId,
 					conversation_key: conversationKey,
 				})
 			)
@@ -81,10 +81,13 @@ const Chat = () => {
 		// Extract conversation key from URL
 		const uri = window.location.pathname.split('/').slice(2, 4)
 		if (uri.length === 1) {
+			const ids = uri[0].split('_')
+			if (ids.length === 2 && ids[0] > ids[1])
+				navigate('/404')
 			console.log('extract conversation key from url')
 			setConversationMessages([])
 			setConversationKey(uri[0])
-			// setBlockerId(0)
+			setBlockerId(0)
 			setIsConversationLoaded(true)
 		} else if (uri.length > 1) {
 			navigate('/404')
@@ -176,7 +179,6 @@ const Chat = () => {
 						Authorization: getAuthHeaders().Authorization,
 					},
 				})
-				setReceiver_id(response.data.user_infos[0].id)
 				setRecipientInfo(response.data.user_infos[0])
 				setBadge_info(response.data.user_infos[0].badge) // Badge info of the recipient
 				setRecipientXp(response.data.user_infos[0].xp) // xp of the recipient
@@ -261,7 +263,6 @@ const Chat = () => {
 								recipientInfo={recipientInfo}
 								currentLoggedInUserId={currentLoggedInUserId}
 								recipientProfileImage={recipientProfileImage}
-								receiver_id={receiver_id}
 							/>
 
 							{/* Chat Messages */}

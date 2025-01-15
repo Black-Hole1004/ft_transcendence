@@ -145,7 +145,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 								className='font-heavy text-primary py-3 border border-border rounded flex-1
 								bg-[rgb(183,170,156,12%)] transition-all duration-300 ease-in-out hover:bg-[rgb(183,170,156,30%)]'
 							>
-								Return to Base
+								Return to Home
 							</button>
 						</div>
 					</div>
