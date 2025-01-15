@@ -117,7 +117,7 @@ function FriendsList() {
 			<div className='w-[96%] overflow-y-auto users'>
 				{
 					filterUsers.map((user) => {
-						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} badge_image={user.badge_image} badge_name={user.badge_name} blockedUsers={blockedUsers}/>
+						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} badge_image={user.badge_image} badge_name={user.badge_name} blockedUsers={blockedUsers} />
 					})
 				}
 			</div>

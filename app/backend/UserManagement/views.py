@@ -540,7 +540,7 @@ class AcceptFriendRequestView(APIView):
 
             # Check if user is blocked
             if self.check_if_blocked(friend_request.user_to, friend_request.user_from.id):
-                return Response({"message": "Cannot send friend request - user has blocked you"}, status=400)
+                return Response({"message": "Cannot accept friend request - user has blocked you"}, status=400)
 
             if friend_request.status == 'accepted':
                 return Response({"message": "Friend request already accepted"}, status=400)
