@@ -27,8 +27,8 @@ const PongTable = forwardRef(
 
 		const paddleWidth = 20
 		const paddleX = 5
-		const BallInitialSpeed = 0.5
-		const BallAcceleration = 0.5 // it was 0.1
+		const BallInitialSpeed = 0.1
+		const BallAcceleration = 0.0 // it was 0.1
 		const paddleSpeed = 600
 		const MAX_BALL_SPEED = 25 // it was 10
 
@@ -104,22 +104,27 @@ const PongTable = forwardRef(
 			const canvasWidth = canvas.width
 			const canvasHeight = canvas.height
 
+			// const drawPaddle = (paddle) => {
+			// 	console.log('paddle:', paddle)
+			// 	ctx.fillStyle = paddle.color
+			// 	ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
+			// 	ctx.beginPath()
+			// 	ctx.arc(paddle.x + paddle.width / 2, paddle.y, paddle.width / 2, 0, Math.PI, true)
+			// 	ctx.arc(
+			// 		paddle.x + paddle.width / 2,
+			// 		paddle.y + paddle.height,
+			// 		paddle.width / 2,
+			// 		0,
+			// 		Math.PI,
+			// 		false
+			// 	)
+			// 	ctx.closePath()
+			// 	ctx.fill()
+			// }
+
 			const drawPaddle = (paddle) => {
-				console.log('paddle:', paddle)
 				ctx.fillStyle = paddle.color
 				ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
-				ctx.beginPath()
-				ctx.arc(paddle.x + paddle.width / 2, paddle.y, paddle.width / 2, 0, Math.PI, true)
-				ctx.arc(
-					paddle.x + paddle.width / 2,
-					paddle.y + paddle.height,
-					paddle.width / 2,
-					0,
-					Math.PI,
-					false
-				)
-				ctx.closePath()
-				ctx.fill()
 			}
 
 			const drawBall = (ball) => {
@@ -139,6 +144,40 @@ const PongTable = forwardRef(
 				ballsRef.current.forEach(drawBall)
 			}
 
+			// const collisionDetection = (ball, paddle) => {
+			// 	const paddleTop = paddle.y
+			// 	const paddleBottom = paddle.y + paddle.height
+			// 	const paddleLeft = paddle.x
+			// 	const paddleRight = paddle.x + paddle.width
+
+			// 	const ballTop = ball.y - ball.radius
+			// 	const ballBottom = ball.y + ball.radius
+			// 	const ballLeft = ball.x - ball.radius
+			// 	const ballRight = ball.x + ball.radius
+
+			// 	return (
+			// 		ballRight > paddleLeft &&
+			// 		ballLeft < paddleRight &&
+			// 		ballBottom > paddleTop &&
+			// 		ballTop < paddleBottom
+			// 	)
+			// }
+
+			// const handlePaddleCollision = (ball, paddle) => {
+			// 	ball.velocityX = -ball.velocityX
+
+			// 	if (paddle.x < 400) {
+			// 		ball.x = paddle.x + paddle.width + ball.radius
+			// 	} else {
+			// 		ball.x = paddle.x - ball.radius
+			// 	}
+
+			// 	ball.speed += BallAcceleration
+			// 	if (ball.speed > MAX_BALL_SPEED) {
+			// 		ball.speed = MAX_BALL_SPEED
+			// 	}
+			// }
+
 			const collisionDetection = (ball, paddle) => {
 				const paddleTop = paddle.y
 				const paddleBottom = paddle.y + paddle.height
@@ -150,26 +189,54 @@ const PongTable = forwardRef(
 				const ballLeft = ball.x - ball.radius
 				const ballRight = ball.x + ball.radius
 
-				return (
-					ballRight > paddleLeft &&
-					ballLeft < paddleRight &&
-					ballBottom > paddleTop &&
-					ballTop < paddleBottom
-				)
+				// First check if we're colliding at all
+				if (
+					!(
+						ballRight > paddleLeft &&
+						ballLeft < paddleRight &&
+						ballBottom > paddleTop &&
+						ballTop < paddleBottom
+					)
+				) {
+					return false
+				}
+
+				// If we are colliding, determine which surface we hit
+
+				// Check if ball's center is within the vertical bounds of the paddle
+				const withinVerticalBounds = ball.y > paddleTop && ball.y < paddleBottom
+
+				// If within vertical bounds, it's a side hit
+				if (withinVerticalBounds) {
+					return 'side'
+				}
+
+				// Otherwise it's a top/bottom hit
+				return 'topbottom'
 			}
 
 			const handlePaddleCollision = (ball, paddle) => {
-				ball.velocityX = -ball.velocityX
+				const hitType = collisionDetection(ball, paddle)
 
-				if (paddle.x < 400) {
-					ball.x = paddle.x + paddle.width + ball.radius
-				} else {
-					ball.x = paddle.x - ball.radius
-				}
+				if (hitType === 'side') {
+					// Side hit - bounce back
+					ball.velocityX = -ball.velocityX
 
-				ball.speed += BallAcceleration
-				if (ball.speed > MAX_BALL_SPEED) {
-					ball.speed = MAX_BALL_SPEED
+					// Position correction
+					if (paddle.x < 400) {
+						ball.x = paddle.x + paddle.width + ball.radius
+					} else {
+						ball.x = paddle.x - ball.radius
+					}
+
+					// Speed increase
+					ball.speed += BallAcceleration
+					if (ball.speed > MAX_BALL_SPEED) {
+						ball.speed = MAX_BALL_SPEED
+					}
+				} else if (hitType === 'topbottom') {
+					// Top/bottom hit - just reverse vertical direction
+					ball.velocityY = -ball.velocityY
 				}
 			}
 
@@ -313,12 +380,12 @@ const PongTable = forwardRef(
 					className={`relative aspect-video bg-cover bg-center border rounded
 					${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 					style={{
-					width: 'clamp(18.125rem, 40.265vw + 10.575rem, 75rem)',
-					maxWidth: `${MAX_CANVAS_WIDTH}px`,
+						width: 'clamp(18.125rem, 40.265vw + 10.575rem, 75rem)',
+						maxWidth: `${MAX_CANVAS_WIDTH}px`,
 					}}
 				>
 					<div
-						className="absolute inset-0 bg-cover bg-center rounded brightness-50"
+						className='absolute inset-0 bg-cover bg-center rounded brightness-50'
 						style={{
 							backgroundImage: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
 						}}
