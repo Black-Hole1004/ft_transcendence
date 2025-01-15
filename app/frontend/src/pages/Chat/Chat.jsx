@@ -31,7 +31,6 @@ const Chat = () => {
 	const [currentLoggedInUserId, setCurrentLoggedInUserId] = useState(0)
 	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
-	const [reciver_id, setReciver_id] = useState(null)
 	const [Badge_info, setBadge_info] = useState(null)
 	const [recipientXp, setRecipientXp] = useState(null)
 
@@ -177,7 +176,7 @@ const Chat = () => {
 						Authorization: getAuthHeaders().Authorization,
 					},
 				})
-				setReciver_id(response.data.user_infos[0].id)
+				setReceiver_id(response.data.user_infos[0].id)
 				setRecipientInfo(response.data.user_infos[0])
 				setBadge_info(response.data.user_infos[0].badge) // Badge info of the recipient
 				setRecipientXp(response.data.user_infos[0].xp) // xp of the recipient
