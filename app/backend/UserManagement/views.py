@@ -224,7 +224,7 @@ class RegisterView(APIView):
             data = json.loads(request.body)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
-        dummy = generate_random_username()
+        dummy = generate_random_username().lower()
         if len(dummy) > 10:
             dummy = dummy[:10]
         data.update({'username': dummy})

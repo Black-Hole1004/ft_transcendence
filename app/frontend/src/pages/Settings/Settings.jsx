@@ -210,7 +210,7 @@ const Settings = () => {
 		userProfileData.append('last_name', last_name.length > 10 ? last_name.slice(0, 10) : last_name || '')
 		userProfileData.append('email', email || '')
 		userProfileData.append('mobile_number', mobile_number || '')
-		userProfileData.append('username', username.length > 10 ? username.slice(0, 10) : username || '')
+		userProfileData.append('username', username.length > 10 ? username.slice(0, 10).toLowerCase() : username.toLowerCase() || '')
 		userProfileData.append('bio', bio || '')
 		userProfileData.append('password', password || '')
 		userProfileData.append('new_password', new_password || '')
