@@ -25,8 +25,8 @@ function ChatHistory({
 	})
 
 	const handleChange = (e) => {
-		setSearchText(e.target.value)
-
+		setSearchText(e.target.value.toLowerCase())
+		console.log(searchText)
 		if (e.target.value === '') {
 			setSearchResult(null)
 		}
@@ -78,6 +78,7 @@ function ChatHistory({
 						},
 					})
 					if (response.data.search_result.length > 0) {
+						console.log('result: ', response.data.search_result)
 						setSearchResult(response.data.search_result)
 					} else {
 						setSearchResult(null)

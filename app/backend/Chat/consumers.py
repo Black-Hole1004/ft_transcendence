@@ -250,40 +250,44 @@ class ChatConsumer(AsyncWebsocketConsumer):
             other_participant_id
         )
         if not conversation.blocked_by:
-            saved_message = await self.save_message(
-                conversation = conversation,
-                sender_id = data['sender'],
-                content = data['message']
-            )
+            if len(data['message']) <= 2000:
+                saved_message = await self.save_message(
+                    conversation = conversation,
+                    sender_id = data['sender'],
+                    content = data['message']
+                )
 
-            # Broadcast message to group
-            await self.channel_layer.group_send(
-                self.chat_room_name, {
-                    'type': 'chat.message',
-                    'event': 'message',
-                    'message': data['message'],
-                    'sender': data['sender'],
-                    'id': saved_message.id,
-                    'timestamp': saved_message.sent_datetime.isoformat(),
-                }
-            )
+                # Broadcast message to group
+                await self.channel_layer.group_send(
+                    self.chat_room_name, {
+                        'type': 'chat.message',
+                        'event': 'message',
+                        'message': data['message'],
+                        'sender': data['sender'],
+                        'id': saved_message.id,
+                        'timestamp': saved_message.sent_datetime.isoformat(),
+                    }
+                )
 
 
     async def _handle_block(self, data, conversation_key, other_participant_id):
-        conversation = await self.check_conversation_existed(
-            conversation_key,
-            other_participant_id
-        )
+        if data['blocker'] == self.userid:
+            print('heeeeelloooo')
+            print('blocker id: ', data['blocker_id'])
+            conversation = await self.check_conversation_existed(
+                conversation_key,
+                other_participant_id
+            )
 
-        await self.set_conversation_status(conversation, data['blocker_id'])
+            await self.set_conversation_status(conversation, data['blocker_id'])
 
-        await self.channel_layer.group_send(
-            self.chat_room_name, {
-                'type': 'block.message',
-                'event': 'block',
-                'blocker_id': data['blocker_id'],
-            }
-        )
+            await self.channel_layer.group_send(
+                self.chat_room_name, {
+                    'type': 'block.message',
+                    'event': 'block',
+                    'blocker_id': data['blocker_id'],
+                }
+            )
 
 
     async def block_message(self, event):

@@ -114,7 +114,7 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         )
     
     @database_sync_to_async
-    def get_user(self, user_id):
+    def get_user_by_id(self, user_id):
         try:
             return User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -136,11 +136,11 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             sender_tab_id = data.get('senderTabId')  # Add this line
             
 
-            # Fetch the game invitation
-            user1 = await self.get_user(self.user.id)
-            user2 = await self.get_user(receiver_id)
+            # Fetch the two users involved in the invitation
+            user1 = await self.get_user_by_id(self.user.id)
+            user2 = await self.get_user_by_id(receiver_id)
         
-            # Check blocked status
+            # Check if one of them has blocked the other
             try:
                 is_blocked = await self.get_blocked_status_user(user1, user2)
                 if is_blocked:

@@ -30,7 +30,6 @@ const ConversationHeader = ({
 	recipientInfo,
 	currentLoggedInUserId,
 	recipientProfileImage,
-	receiver_id,
 }) => {
 
 	const navigate = useNavigate()
@@ -63,12 +62,7 @@ const ConversationHeader = ({
 	const handleSubmit = (type, message) => {
 		triggerAlert(type, message)
 	}
-	useEffect(() => {
-		// console.log('Receiver ID has changed:', receiver_id);
-		if (receiver_id) {
-			console.log('Receiver ID has changed:', receiver_id);
-		}
-	}, [receiver_id])
+
 
 	const handle_add_friend = async (id) => {
 		if (!id) {
@@ -154,8 +148,8 @@ return (
 			)}
 			{(blockerId === 0) &&
 				(areFriends
-				? <Button onClick={() => handleInviteToGame(receiver_id)}>Invite to Game</Button>
-				: <Button onClick={() => handle_add_friend(receiver_id)}>Add Friend</Button>
+				? <Button onClick={() => handleInviteToGame(recipientInfo.id)}>Invite to Game</Button>
+				: <Button onClick={() => handle_add_friend(recipientInfo.id)}>Add Friend</Button>
 			)}
 			{(blockerId === 0) && (
 				<Button onClick={handleBlock}>Block user</Button>
