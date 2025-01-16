@@ -52,47 +52,51 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 		navigate(`/chat/${conversation_key}`)
 	}
 
+	console.log('conversation: ', conversation)
+
 	return (
-		<div
-			id={user_id}
-			onClick={handleConversationSelect}
-			className={`flex max-tb:flex-col max-tb:justify-around items-center gap-2
-			tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg tb:px-user-div-px-tb cursor-pointer
+		(conversation.last_message || search) && (
+			<div
+				id={user_id}
+				onClick={handleConversationSelect}
+				className={`flex max-tb:flex-col max-tb:justify-around items-center gap-2
+				tb:h-user-tb h-[100px] max-tb:w-[100px] rounded-lg tb:px-user-div-px-tb cursor-pointer
 				${search ? '' : selectedUserId === user_id ? 'bg-[rgba(183,170,156,0.3)]' : ''} hover:bg-[rgba(183,170,156,0.3)]`}
-		>
-			<img
-				src={
-					profile_picture?.startsWith('http')
-						? profile_picture
-						: BASE_URL + profile_picture
-				}
-				className='chat-history-image aspect-square rounded-full object-cover ring-1 ring-primary select-none'
-				alt='user image'
-			/>
-			<div className='font-medium tb:w-[80%]'>
-				<p className='user-nickname text-primary max-tb:w-[100px] truncate max-tb:text-center'>
-					{username}
-				</p>
-				{search ? (
-					<p className='text-level last-message max-tb:hidden'>{badge_info?.name}</p>
-				) : (
-					conversation.last_message &&
-					<div className='flex text-light max-tb:hidden last-message'>
-						{user_id !== conversation?.last_message?.sender_id && (
-							<pre className='font-medium'>You: </pre>
-						)}
-						<p className='truncate'>{conversation?.last_message?.content}</p>
-						<pre className='font-medium'> &middot; {getTimePassed()}</pre>
-					</div>
+				>
+				<img
+					src={
+						profile_picture?.startsWith('http')
+							? profile_picture
+							: BASE_URL + profile_picture
+					}
+					className='chat-history-image aspect-square rounded-full object-cover ring-1 ring-primary select-none'
+					alt='user image'
+				/>
+				<div className='font-medium tb:w-[80%]'>
+					<p className='user-nickname text-primary max-tb:w-[100px] truncate max-tb:text-center'>
+						{username}
+					</p>
+					{search ? (
+						<p className='text-level last-message max-tb:hidden'>{badge_info?.name}</p>
+					) : (
+						conversation.last_message &&
+						<div className='flex text-light max-tb:hidden last-message'>
+							{user_id !== conversation?.last_message?.sender_id && (
+								<pre className='font-medium'>You: </pre>
+							)}
+							<p className='truncate'>{conversation?.last_message?.content}</p>
+							<pre className='font-medium'> &middot; {getTimePassed()}</pre>
+						</div>
+					)}
+				</div>
+				{search && badge_info?.image && (
+					<img
+					src={badge_info.image}
+						className='select-none aspect-square object-cover search-badge max-tb:hidden'
+					/>
 				)}
 			</div>
-			{search && (
-				<img
-					src={badge_info?.image}
-					className='select-none aspect-square object-cover search-badge max-tb:hidden'
-				/>
-			)}
-		</div>
+		)
 	)
 }
 
