@@ -45,15 +45,9 @@ GAME_SETTINGS = {
     'INITIAL_TIME': 120,     # Game duration in seconds
     'PAUSE_LIMIT': 3,        # Number of pauses allowed per player
     'PAUSE_TIMEOUT': 20,     # Auto-resume after 20 seconds
-<<<<<<< HEAD
-    'MAX_DELTA_TIME': 0.008 , # Cap for time step in seconds (1/240)
-    'PHYSICS_UPDATE_RATE': 500,  # Updates per second
-    'BROADCAST_RATE': 500       # Broadcasts per second
-=======
     'MAX_DELTA_TIME': 0.004, # Cap for time step in seconds (1/240)
     'PHYSICS_UPDATE_RATE': 120,  # Updates per second
     'BROADCAST_RATE': 170,       # Broadcasts per second
->>>>>>> 64b0a02da570bf2a7639459b99fa0a71a46e2ce4
 }
 
 class GamePhysics:
