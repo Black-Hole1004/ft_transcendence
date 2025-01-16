@@ -26,10 +26,9 @@ down:
 
 prune:
 	docker system prune -af --volumes
-	@rm -rf ./app/data
-	@rm -rf ./app/nginx/ssl_certificates
-	@rm -rf ./app/nginx/logs/access.log
-	@rm -rf ./app/nginx/logs/error.log
+	@rm -rf ./app/db/postgres
+	@find . -path "/migrations/.py" -not -name "init.py" -delete
+	@find . -path "/migrations/.pyc" -delete
 
 scan: build
 	docker scan ft_transcendence-pingpong
