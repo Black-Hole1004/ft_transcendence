@@ -54,4 +54,6 @@ channels_redis
 pyotp
 
 hvac
-mailersend
+google-api-python-client
+google_auth_oauthlib
+cryptography
