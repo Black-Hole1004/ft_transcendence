@@ -315,6 +315,7 @@ ALLOWED_HOSTS = [
     'localhost',
     f'{HOSTNAME}',
     f'{HOSTNAME}:{PORT}',
+    'e2r9p7.1337.ma'
 ]
 
 AUTHENTICATION_BACKENDS = (

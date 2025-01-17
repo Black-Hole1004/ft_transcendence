@@ -68,7 +68,7 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                 # Handle duplicate username case
                 if user_data.get('username') and User.objects.filter(username=user_data['username']).exists():
                     # If the desired username already exists, generate a random one
-                    temp_username = generate_random_username()
+                    temp_username = generate_random_username().lower()
                     setattr(user, 'username', temp_username)
                     # user.has_custom_username = False  # Mark it as a temp username
                 # Set OAuth flag and status

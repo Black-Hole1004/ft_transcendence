@@ -32,4 +32,4 @@ export KIBANA_PASSWORD=$KIBANA_PASSWORD
 echo "Starting the application..."
 # change user to 1000:0
 # getent passwd | grep ':1000:'
-su - elasticsearch -c "ELASTIC_PASSWORD=$ELASTIC_PASSWORD KIBANA_PASSWORD=$KIBANA_PASSWORD /bin/tini -s -- /usr/local/bin/docker-entrypoint.sh"
+su - elasticsearch -c "ELASTIC_PASSWORD=$ELASTIC_PASSWORD KIBANA_PASSWORD=$KIBANA_PASSWORD /bin/tini -s -- /usr/local/bin/docker-entrypoint.sh eswrapper"
