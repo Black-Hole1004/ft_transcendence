@@ -3,8 +3,8 @@
 /app/db/postgres/*
 app/db/postgres/
 app/db/postgres/*
-__pycache__/
-*.pyc
+pycache/
+.pyc
 /app/nginx/logs/
 /app/nginx/ssl_certificates/
 /app/data/

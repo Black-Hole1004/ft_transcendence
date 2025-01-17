@@ -66,11 +66,12 @@ const MatchFoundDisplay = ({ matchData, countdown, statement }) => {
 					{/* VS  and Countdown */}
 					<div className='flex flex-col items-center'>
 						<h1 className='font-dreamscape text-primary'>VS</h1>
-						{countdown && (
+						{countdown ? (
 							<div className='countdown text-9xl font-bold text-light animate-pulse'>
 								{countdown}
 							</div>
-						)}
+						) : <></>
+						}
 					</div>
 					
 					{/* Player 2 */}

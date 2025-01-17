@@ -315,6 +315,7 @@ ALLOWED_HOSTS = [
     'localhost',
     f'{HOSTNAME}',
     f'{HOSTNAME}:{PORT}',
+    'e2r9p7.1337.ma'
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -382,7 +383,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 
 CORS_ALLOW_ALL_ORIGINS = False  # Don't use this in production
 CORS_ALLOWED_ORIGINS = [
-    f"https://{HOSTNAME}:{PORT}",
+    f"https://{HOSTNAME}",
     f"http://{HOSTNAME}:{PORT}",
     f"http://{HOSTNAME}:5173",
     f"https://{HOSTNAME}:5173",
