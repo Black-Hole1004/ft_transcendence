@@ -127,8 +127,7 @@ services:
     # ipc: service:appsec-agent
     volumes:
       - ${NGINX_CONF_FILE}:/etc/nginx/conf.d/starserve.conf
-      - ./app/nginx/tools/generate_ssl.sh:/app/generate_ssl.sh
-      - ./app/nginx/logs/access.log:/var/log/nginx/access.log
+      - ./app/nginx/tools/generate_ssl.sh:/app/generate_ssl.shg
     user: root
     command: >
       sh -c "
