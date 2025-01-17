@@ -7,7 +7,7 @@ import { use } from 'react'
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
 
 
-const BLOCKED_USERS = 'https://localhost/api/chat/blocked/blocked-users/'
+const BLOCKED_USERS = `${VITE_BASE_URL}/api/chat/blocked/blocked-users/`
 function FriendsList() {
 	const [users, setUsers] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
