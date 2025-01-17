@@ -88,7 +88,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = get_vault_secret(root_token, 'django')['SOCIAL_A
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = get_vault_secret(root_token, 'django')['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
 SOCIAL_AUTH_INTRA42_KEY = get_vault_secret(root_token, 'django')['SOCIAL_AUTH_INTRA42_KEY']
 SOCIAL_AUTH_INTRA42_SECRET = get_vault_secret(root_token, 'django')['SOCIAL_AUTH_INTRA42_SECRET']
-SOCIAL_AUTH_INTRA42_REDIRECT_URI = f'https://{HOSTNAME}:{PORT}/api/social-auth/complete/intra42/'
+SOCIAL_AUTH_INTRA42_REDIRECT_URI = f'https://{HOSTNAME}/api/social-auth/complete/intra42/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -392,10 +392,10 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
 
-MAILERSEND_SMTP_USERNAME = get_vault_secret(root_token, 'smtp')['SMTP_USER']
-MAILERSEND_API_KEY=get_vault_secret(root_token, 'emails')['EMAIL_API_KEY']
-# MAILERSEND_SMTP_PASSWORD = get_vault_secret(root_token, 'smtp')['SMTP_PASSWORD']
-MAILERSEND_SMTP_HOST = get_vault_secret(root_token, 'smtp')['SMTP_HOST']
-MAILERSEND_SMTP_PORT = 587
-### testing email sending
-EMAIL_BACKEND = "anymail.backends.mailersend.EmailBackend"
+# MAILERSEND_SMTP_USERNAME = get_vault_secret(root_token, 'smtp')['SMTP_USER']
+# MAILERSEND_API_KEY=get_vault_secret(root_token, 'emails')['EMAIL_API_KEY']
+# # MAILERSEND_SMTP_PASSWORD = get_vault_secret(root_token, 'smtp')['SMTP_PASSWORD']
+# MAILERSEND_SMTP_HOST = get_vault_secret(root_token, 'smtp')['SMTP_HOST']
+# MAILERSEND_SMTP_PORT = 587
+# ### testing email sending
+# EMAIL_BACKEND = "anymail.backends.mailersend.EmailBackend"

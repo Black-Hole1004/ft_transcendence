@@ -35,4 +35,4 @@ export KIBANA_PASSWORD=$KIBANA_PASSWORD
 echo "Starting the application..."
 # getent passwd | grep ':1000:'
 # change user to 1000:0
-ELASTIC_PASSWORD=$ELASTIC_PASSWORD KIBANA_PASSWORD=$KIBANA_PASSWORD exec /bin/tini -- /usr/local/bin/kibana-docker --allow-root \"$@\"
+ELASTIC_PASSWORD=$ELASTIC_PASSWORD KIBANA_PASSWORD=$KIBANA_PASSWORD exec /bin/tini -s -- /usr/local/bin/kibana-docker --allow-root \"$@\"

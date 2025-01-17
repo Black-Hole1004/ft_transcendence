@@ -54,8 +54,8 @@ vault kv put --mount=secret waf_api_key AGENT_TOKEN=$WAF_API_KEY
 vault kv put --mount=secret postgres POSTGRES_DB=$POSTGRES_DB POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_HOST=$POSTGRES_HOST POSTGRES_PORT=$POSTGRES_PORT
 vault kv put --mount=secret elasticsearch ELASTIC_PASSWORD=$ELASTIC_PASSWORD KIBANA_PASSWORD=$KIBANA_PASSWORD
 vault kv put --mount=secret appsec APPSEC_DB_PASSWORD=$APPSEC_DB_PASSWORD APPSEC_DB_USER=$APPSEC_DB_USER APPSEC_DB_HOST=$APPSEC_DB_HOST
-vault kv put --mount=secret emails EMAIL_API_KEY=$EMAIL_API_KEY
-vault kv put --mount=secret smtp SMTP_HOST=$SMTP_HOST SMTP_USER=$SMTP_USER SMTP_PASSWORD=$SMTP_PASSWORD
+# vault kv put --mount=secret emails EMAIL_API_KEY=$EMAIL_API_KEY
+# vault kv put --mount=secret smtp SMTP_HOST=$SMTP_HOST SMTP_USER=$SMTP_USER SMTP_PASSWORD=$SMTP_PASSWORD
 # Kill the Vault server running in the background (it was started earlier in nohup)
 # pkill vault
 echo $ROOT_TOKEN > /tmp/token.txt

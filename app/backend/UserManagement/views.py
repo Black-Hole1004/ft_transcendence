@@ -58,7 +58,14 @@ from django.core.mail import EmailMultiAlternatives, EmailMessage, get_connectio
 from datetime import timedelta
 from Chat.models import Conversation
 from django.utils import timezone
-from mailersend import emails
+
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from email.mime.text import MIMEText
+import base64
+import pickle
+from google.auth.transport.requests import Request
+
 
 User = get_user_model()
 
@@ -84,36 +91,45 @@ class Activate2faView(APIView):
             user.save()
         return Response({'message': '2fa status updated successfully'}, status=200)
 
-
-# msg.track_clicks = True
 class Twofa():
-    def sendMail(otp, email, username):
-        api_key = settings.MAILERSEND_API_KEY
+    #todo: this logic will be changed in production
+    SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+    def sendMail(otp, email, username, type):
+        creds = None
 
-        mailer = emails.NewEmail(api_key)
+        try:
+            with open('token.pickle', 'rb') as token:
+                creds = pickle.load(token)
+        except Exception as e:
+            print(f"Error loading creds: {e}")
 
-        # define an empty dict to populate with mail values
-        mail_body = {}
-        mail_from = {
-            "name": "starserveTeam",
-            "email": "starserveteam@starserve.me",
-        }
+        if not creds:
+            print("Creds file not found")
+            return
 
-        recipients = [
-            {
-                "name": username,
-                "email": email,
-            }
-        ]
+        # Build the Gmail service
+        if type == '2fa':
+            service = build('gmail', 'v1', credentials=creds)
+            subject = '🔐 Your StarServe 2FA OTP Code'
+            with open('templates/2fa.html', 'r') as f:
+                body = f.read()
+                body = body.replace('OTP_OTP', str(otp))
+                body = body.replace('USERNAME', username)
+        elif type == 'deleteAccount':
+            service = build('gmail', 'v1', credentials=creds)
+            subject = 'Account deletion'
+            with open('templates/deleteAccount.html', 'r') as f:
+                body = f.read()
+                body = body.replace('USERNAME', username)
+        message = MIMEText(body, 'html')
+        message['to'] = email
+        message['subject'] = subject
+        raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
 
-        mailer.set_mail_from(mail_from, mail_body)
-        mailer.set_mail_to(recipients, mail_body)
-        mailer.set_subject("StarServe 2fa Verification", mail_body)
-        mailer.set_html_content(f"This is your OTP: <h3>{otp}</h3>", mail_body)
-        mailer.set_plaintext_content("Have a good day !", mail_body)
+        message = {'raw': raw_message}
+        service.users().messages().send(userId='me', body=message).execute()
+        print("Email sent successfully!")
 
-        # using print() will also return status code and data
-        mailer.send(mail_body)
     
     def generate_otp(user):
         try:
@@ -263,7 +279,7 @@ class LoginView(APIView):
                 if user is not None and user.is_2fa_enabled:
                     # Generate and send OTP to the user's email
                     otp = Twofa.generate_otp(user)
-                    Twofa.sendMail(otp=otp, email=user.email, username=user.username)
+                    Twofa.sendMail(otp=otp, email=user.email, username=user.username, type='2fa')
                     return JsonResponse({'message': f'OTP sent to your email: {user.email}', "Twofa_enabled" : True}, status=200)
                 if user is not None:
                     user.status = 'online'
@@ -1029,6 +1045,7 @@ def get_user_data_by_id(request, user_id):
 def delete_user(request):
     user = request.user
     user.delete()
+    Twofa.sendMail(otp=0, email=user.email, username=user.username, type='deleteAccount')
     return JsonResponse({'message': 'User deleted successfully'})
 
 class GetUserByUserName(APIView):

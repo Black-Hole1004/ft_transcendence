@@ -19,12 +19,11 @@ from collections import defaultdict
 from django.core.exceptions import ValidationError
 import asyncio
 
+from django.db import models
+
 import logging as log
 
 User = get_user_model()
-
-# keep a list of all connected users (online users)
-connected_users = {} # connected_users[<user_id>] = <channel_name>
 
 class FriendRequestConsumer(AsyncWebsocketConsumer):
 
@@ -72,12 +71,10 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
             
             if message_type == 'game_invite':
                 # Handle game invite
-                print(f"XGame invite from: {self.user.username} | {data.get('receiver_id')}")
                 await self.handle_game_invite(data)
                 
             elif message_type == 'game_invite_response':
                 # Handle invite response
-                print(f"XGame invite response from {self.user.username}: {data.get('response')}")
                 await self.handle_game_invite_response(data)
                 
             else:
@@ -115,13 +112,54 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
                 'receiver_id': receiver_id,
             }
         )
-                
+    
+    @database_sync_to_async
+    def get_user_by_id(self, user_id):
+        try:
+            return User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return None
+    
+    @database_sync_to_async
+    def get_blocked_status_user(self, user1, user2):
+        """Synchronous method to check block status"""
+        from Chat.models import BlockedUser
+        return BlockedUser.objects.filter(
+            models.Q(blocker_id=user1.id, blocked_id=user2.id) |
+            models.Q(blocker_id=user2.id, blocked_id=user1.id)
+        ).exists()
+    
     async def handle_game_invite(self, data):
         try:
             receiver_id = data.get('receiver_id')
             receiver_status = await self.get_receiver_status(receiver_id)
             sender_tab_id = data.get('senderTabId')  # Add this line
+            
 
+            # Fetch the two users involved in the invitation
+            user1 = await self.get_user_by_id(self.user.id)
+            user2 = await self.get_user_by_id(receiver_id)
+        
+            # Check if one of them has blocked the other
+            try:
+                is_blocked = await self.get_blocked_status_user(user1, user2)
+                if is_blocked:
+                    
+                    await self.channel_layer.group_send(
+                        f'friend_request_{self.user.id}',
+                        {
+                            'type': 'game_invite_notification',
+                            'data': {
+                                'type': 'invite_failed',
+                                'message': 'You cannot send game invite - You are not friends with this user'
+                            }
+                        }
+                    )
+                    return
+            except Exception as e:
+                print(f"Error checking blocked statusssss in SENDING: {e}")
+            
+            
             if receiver_status != 'online':
                 await self.channel_layer.group_send(
                     f'friend_request_{self.user.id}',
@@ -219,6 +257,15 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         }
 
     @database_sync_to_async
+    def get_blocked_status(self, invitation):
+        """Synchronous method to check block status"""
+        from Chat.models import BlockedUser
+        return BlockedUser.objects.filter(
+            models.Q(blocker_id=invitation.sender_id, blocked_id=invitation.receiver_id) |
+            models.Q(blocker_id=invitation.receiver_id, blocked_id=invitation.sender_id)
+        ).exists()
+        
+    @database_sync_to_async
     def get_receiver_status(self, receiver_id):
         try:
             receiver = User.objects.get(id=receiver_id)
@@ -240,7 +287,27 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         response = data.get('response')
         accepting_tab_id = data.get('acceptingTabId')  # Get from request
         
+        # Fetch the game invitation
         invitation = await self.get_game_invitation(invitation_id)
+        if not invitation:
+            await self.send(text_data=json.dumps({
+                'type': 'error',
+                'message': 'Invitation not found or has been deleted.'
+            }))
+            return
+
+        # Check blocked status
+        try:
+            is_blocked = await self.get_blocked_status(invitation)
+            if is_blocked:
+                await self.send(text_data=json.dumps({
+                    'type': 'error',
+                    'message': 'You cannot respond to this invite - You are not friends with this user'
+                }))
+                return
+        except Exception as e:
+            print(f"Error checking blocked statusssss in RESPONSE: {e}")
+    
         if response == 'accept':
             await self.handle_invitation_acceptance(invitation, accepting_tab_id)
         else:
@@ -262,10 +329,23 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         
 
     # database_sync_to_async related methods -------------------------------------------------------------
+    # @database_sync_to_async
+    # def get_game_invitation(self, invitation_id):
+    #     """Fetch game invitation from database"""
+    #     return GameInvitations.objects.get(id=invitation_id)
+    
+    
     @database_sync_to_async
     def get_game_invitation(self, invitation_id):
         """Fetch game invitation from database"""
-        return GameInvitations.objects.get(id=invitation_id)
+        try:
+            return GameInvitations.objects.get(id=invitation_id)
+        except GameInvitations.DoesNotExist:
+            log.error(f"Game invitation with id {invitation_id} not found")
+            return None
+        except Exception as e:
+            log.error(f"Error fetching game invitation: {e}")
+            return None
 
 
     @database_sync_to_async
@@ -605,8 +685,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             try:
                 # Store group name before triggering signals
                 self.group_name = f'user_{self.user.id}'
-                # Add user to connected users list
-                # connected_users[self.user.id] = self.channel_name
                 
                 # Add to group first
                 await self.channel_layer.group_add(
@@ -639,8 +717,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         if hasattr(self, 'user') and self.user:
             try:
                 # Remove user from connected users list
-                # if self.user.id in connected_users:
-                #     del connected_users[self.user.id]\
     
                 # Trigger the user_logged_out signal
                 await database_sync_to_async(user_logged_out.send)(
