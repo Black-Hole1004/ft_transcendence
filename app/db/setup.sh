@@ -23,7 +23,6 @@ if [ -z "$USER" ] || [ -z "$PASS" ] || [ -z "$POSTGRES_DB" ]; then
   echo "Error: Could not retrieve PostgreSQL credentials from Vault"
   exit 1
 fi
-
 # Set the environment variables
 export POSTGRES_PASSWORD=$PASS
 # export POSTGRES_USER=$USER
