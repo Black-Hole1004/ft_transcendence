@@ -1,16 +1,23 @@
 cluster.name: docker-cluster
 node.name: elasticsearch
-network.host: 0.0.0.0
-bootstrap.memory_lock: true
+network.host: 0.0.0.0 #This setting enables Elasticsearch to listen on all network interfaces.
+bootstrap.memory_lock: true #Locks memory to improve performance and stability.
 cluster.initial_master_nodes: elasticsearch
-xpack.security.enabled: true
+xpack.security.enabled: true #Provides user authentication, role-based access control, encryption, and auditing.
 xpack.security.http.ssl.enabled: true
-xpack.security.http.ssl.key: certs/elasticsearch/elasticsearch.key
-xpack.security.http.ssl.certificate: certs/elasticsearch/elasticsearch.crt
-xpack.security.http.ssl.certificate_authorities: certs/ca/ca.crt
-xpack.security.transport.ssl.enabled: true
-xpack.security.transport.ssl.key: certs/elasticsearch/elasticsearch.key
-xpack.security.transport.ssl.certificate: certs/elasticsearch/elasticsearch.crt
-xpack.security.transport.ssl.certificate_authorities: certs/ca/ca.crt
-xpack.security.transport.ssl.verification_mode: certificate
-xpack.license.self_generated.type: basic
+xpack.security.http.ssl.key: certs/elasticsearch/elasticsearch.key #The private key is used in conjunction with the SSL certificate to establish secure HTTPS connections.
+xpack.security.http.ssl.certificate: certs/elasticsearch/elasticsearch.crt #The SSL certificate is used to establish secure HTTPS connections.
+xpack.security.http.ssl.certificate_authorities: certs/ca/ca.crt #The CA validates client and server certificates, ensuring they are trusted.
+xpack.security.transport.ssl.enabled: true #Enables SSL/TLS for communication between Elasticsearch nodes
+xpack.security.transport.ssl.key: certs/elasticsearch/elasticsearch.key #Specifies the path to the private key for transport-layer security.
+xpack.security.transport.ssl.certificate: certs/elasticsearch/elasticsearch.crt #Specifies the path to the SSL certificate for transport-layer security.
+xpack.security.transport.ssl.certificate_authorities: certs/ca/ca.crt #Specifies the path to the CA file for transport-layer security.
+xpack.security.transport.ssl.verification_mode: certificate #Configures how certificates are verified for transport-layer security.
+xpack.license.self_generated.type: basic #Specifies the license type for Elasticsearch.
+
+#Summary
+#This configuration:
+  #- Sets up a secure Elasticsearch cluster with HTTPS for client communication and TLS for inter-node traffic.
+  #- Configures the cluster and node names.
+  #- Ensures security by enabling SSL/TLS and using CA-based certificate validation.
+  #- Locks memory to improve performance and stability.

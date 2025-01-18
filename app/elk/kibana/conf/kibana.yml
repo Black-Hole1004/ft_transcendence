@@ -2,9 +2,10 @@ server.name: "kibana"
 server.host: "kibana"
 server.ssl.enabled: true
 server.ssl.certificate: config/certs/ca/ca.crt
-server.ssl.key: config/certs/ca/ca.key
-monitoring.ui.container.elasticsearch.enabled: true
+server.ssl.key: config/certs/ca/ca.key #The private key is used in conjunction with the SSL certificate to establish secure HTTPS connections.
+monitoring.ui.container.elasticsearch.enabled: true #When set to true, Kibana will display monitoring data from containerized Elasticsearch nodes.
 elasticsearch.hosts: ["https://elasticsearch:9200"]
 elasticsearch.username: "kibana_system"
 elasticsearch.password: "${KIBANA_PASSWORD}"
-elasticsearch.ssl.certificateAuthorities: ["config/certs/ca/ca.crt"]
+elasticsearch.ssl.certificateAuthorities: ["config/certs/ca/ca.crt"] #The CA file is used to validate the SSL certificate presented by Elasticsearch.
+#This ensures that Kibana connects only to trusted Elasticsearch instances.
