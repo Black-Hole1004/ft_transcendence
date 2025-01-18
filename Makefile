@@ -1,6 +1,6 @@
 .PHONY: all up build updetached down prune scan re
 
-HOSTNAME := $(shell hostname)
+HOSTNAME := localhost
 PWD = $(shell pwd)
 all: up
 
@@ -29,6 +29,7 @@ down:
 prune:
 	docker system prune -af --volumes
 	@rm -rf ./app/db/postgres
+	@rm -rf ./app/data/*
 	@find . -path "/migrations/.py" -not -name "init.py" -delete
 	@find . -path "/migrations/.pyc" -delete
 

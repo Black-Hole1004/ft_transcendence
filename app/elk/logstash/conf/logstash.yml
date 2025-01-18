@@ -1,4 +1,5 @@
 http.host: "logstash"
 http.port: 9600
-xpack.monitoring.enabled: #false is an extension for the Elastic Stack that provides additional features like security, alerting, and monitoring.
+xpack.monitoring.enabled: false
+#is an extension for the Elastic Stack that provides additional features like security, alerting, and monitoring.
 #Disables X-Pack monitoring, preventing Logstash from sending its performance data to Elasticsearch/Kibana.
