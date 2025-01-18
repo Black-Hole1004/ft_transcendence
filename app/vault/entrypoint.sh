@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Start Vault server in the background (without the need to wait)
-# apt-get update
-# apt-get install -y jq curl
+apk update
+apk install jq curl
 export VAULT_TOKEN=root
 mkdir -p /vault/data
 nohup vault server -config=/etc/vault.d/vault-config.hcl &
