@@ -2,7 +2,7 @@
 
 # Start Vault server in the background (without the need to wait)
 apk update
-apk install jq curl
+apk add jq curl
 export VAULT_TOKEN=root
 mkdir -p /vault/data
 nohup vault server -config=/etc/vault.d/vault-config.hcl &
