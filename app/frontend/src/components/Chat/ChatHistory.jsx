@@ -26,7 +26,6 @@ function ChatHistory({
 
 	const handleChange = (e) => {
 		setSearchText(e.target.value.toLowerCase())
-		console.log(searchText)
 		if (e.target.value === '') {
 			setSearchResult(null)
 		}
@@ -43,7 +42,6 @@ function ChatHistory({
 	const { getAuthHeaders } = useAuth()
 
 	useEffect(() => {
-		console.log('get conversations')
 		const getConversations = async () => {
 			try {
 				const response = await axios.get(API_CHAT, {
@@ -68,7 +66,6 @@ function ChatHistory({
 
 	useEffect(() => {
 		const getUsers = async () => {
-			console.log('search')
 			try {
 				if (searchText.length > 0) {
 					const response = await axios.get(`${API_CHAT}search/${searchText}/`, {
@@ -78,7 +75,6 @@ function ChatHistory({
 						},
 					})
 					if (response.data.search_result.length > 0) {
-						console.log('result: ', response.data.search_result)
 						setSearchResult(response.data.search_result)
 					} else {
 						setSearchResult(null)

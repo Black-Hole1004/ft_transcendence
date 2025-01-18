@@ -18,7 +18,6 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
-      # - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - ft_transcendence_network
     healthcheck:
@@ -129,7 +128,7 @@ services:
     container_name: appsec-nginx
     ipc: service:appsec-agent
     volumes:
-      - ${NGINX_CONF_FILE}:/etc/nginx/conf.d/starserve.conf
+      - ${NGINX_CONF_FILE}:/etc/nginx/conf.d/default.conf
       - ./app/nginx/tools/generate_ssl.sh:/app/generate_ssl.sh
     user: root
     command: >
@@ -145,7 +144,7 @@ services:
       - backend
       - frontend
     ports:
-      # - "80:80"
+      - "80:80"
       - "443:443"
 
   appsec-smartsync:
@@ -163,7 +162,6 @@ services:
     image: ghcr.io/openappsec/smartsync-shared-files:${APPSEC_VERSION}
     container_name: appsec-shared-storage
     ipc: service:appsec-agent
-    # user: root
     volumes:
       - ${SMART_SYNC_STORAGE}:/db:z
     networks:
@@ -173,7 +171,7 @@ services:
       - standalone
     build:
       context: ./app/waf/appsec-tuning-svc
-      dockerfile: Dockerfile  # Path to the custom Dockerfile
+      dockerfile: Dockerfile
     container_name: appsec-tuning-svc
     environment:
       - SHARED_STORAGE_HOST=appsec-shared-storage
@@ -191,12 +189,11 @@ services:
       - standalone
     build:
       context: ./app/waf/appsec-db
-      dockerfile: Dockerfile  # Path to the custom Dockerfile
+      dockerfile: Dockerfile
     container_name: appsec-db
     restart: always
     volumes:
       - ${POSTGRES_STORAGE}:/var/lib/postgresql/data
-      # - ${RUNNING_SCRIPT_FETCH}:/usr/local/bin/fetchData.sh  # Mount the script
       - ./app/vault/token.txt:/tmp/token.txt
     networks:
       - ft_transcendence_network
@@ -208,9 +205,6 @@ services:
   vault:
     container_name: vault
     build: ./app/vault/.
-    # ports:
-    #   - "8200:8200"
-    #   - "8201:8201"
     volumes:
       - ./app/vault/token.txt:/tmp/token.txt
       - ./app/vault/unseal_key1.txt:/tmp/unseal_key1.txt
@@ -291,8 +285,6 @@ services:
       - ./app/vault/token.txt:/tmp/token.txt
     ports:
       - '5601:5601'
-    # env_file:
-    #   - .env
     networks:
       - ft_transcendence_network
     mem_limit: 1g
@@ -309,8 +301,6 @@ services:
       - certs:/usr/share/logstash/certs
       - ./app/waf/appsec-logs/:/usr/share/logstash/starserve-logs/
       - ./app/vault/token.txt:/tmp/token.txt
-    # env_file:
-    #   - .env
     networks:
       - ft_transcendence_network  
     restart: always

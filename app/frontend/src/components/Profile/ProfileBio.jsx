@@ -1,6 +1,5 @@
 function ProfileBio({src, bio}) {
 
-	console.log(src);
 	return (
 		<div className='flex items-center max-mtb:flex-col'>
 			<img

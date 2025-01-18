@@ -597,12 +597,29 @@ class AcceptFriendRequestView(APIView):
 
 class CancelFriendRequestView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def check_if_blocked(self, user, target_user_id):
+        conversation = Conversation.objects.filter(
+            (
+                (Q(user1_id_id=user.id) & Q(user2_id_id=target_user_id)) |
+                (Q(user1_id_id=target_user_id) & Q(user2_id_id=user.id))
+            )
+        ).first()
+
+        if conversation:
+            # Check if the target user has blocked the current user
+            return conversation.blocked_by == int(target_user_id) or conversation.blocked_by == int(user.id)
+        return False
     
     def post(self, request, friend_request_id):
         try:
             friend_request = FriendShipRequest.objects.get(id=friend_request_id)
             if (friend_request.user_to != request.user):
                 return Response({"message": "You are not authorized to accept this friend request"}, status=403)
+            
+            # Check if user is blocked
+            if self.check_if_blocked(friend_request.user_to, friend_request.user_from.id):
+                return Response({"message": "Cannot cancel friend request - user has blocked you"}, status=400)
 
             if friend_request.status == 'rejected':
                 return Response({"message": "Friend request already rejected"}, status=400)

@@ -19,7 +19,7 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
     const handleSubmit = (type, message) => {
         triggerAlert(type, message)
     }
-    
+
     const handle_add_friend = async (id) => {
         if (!id) {
             console.error('No user ID provided')
@@ -37,9 +37,7 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
                 headers: getAuthHeaders(),
             })
             const data = await response.json()
-            console.log('Response =>', data)
             if (response.status === 201) {
-                console.log('response ->', data);
                 const from_user = data.from_user;
                 const sender_id = data.sender_id;
                 const friend_request_id = data.id;
@@ -93,7 +91,7 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
                     <p className='text-primary nickname-size leading-none truncate mr-1'>
                         {user_friend.username}
                     </p>
-                    <p className='text-achievement achievement-name '> 
+                    <p className='text-achievement achievement-name '>
                         {user_friend.badge_name}
                     </p>
                 </div>
@@ -103,13 +101,13 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
                 {user_friend.is_friend && (
                     <>
                         <p className={`
-                            ${user_friend.status === 'online' ? 'text-online' : 
-                            user_friend.status === 'offline' ? 'text-offline' : 
-                            'text-defeat'} achievement-name`}
+                            ${user_friend.status === 'online' ? 'text-online' :
+                                user_friend.status === 'offline' ? 'text-offline' :
+                                    'text-defeat'} achievement-name`}
                         >
                             {user_friend.status}
                         </p>
-                        
+
                         {/* Invite button only shown for online friends */}
                         {user_friend.status === 'online' && (
                             <Button
@@ -124,7 +122,7 @@ function UserFriendsList({ user_friend, user_profile_picture, blockedUsers }) {
 
                 {/* Add friend button for non-friends */}
                 {!user_friend.is_friend && (
-                    <Button 
+                    <Button
                         className={'font-medium invite-button px-2 py-1 rounded border border-border'}
                         onClick={() => handle_add_friend(user_friend.id)}
                         disabled={isBlocked}

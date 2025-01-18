@@ -9,6 +9,7 @@ const BLOCKED_USERS = import.meta.env.VITE_BLOCKED_USERS
 
 
 
+
 function FriendsList() {
 	const [users, setUsers] = useState([])
 	const [searchQuery, setSearchQuery] = useState('')
@@ -38,23 +39,23 @@ function FriendsList() {
 	}, [])
 
 	useEffect(() => {
-        const fetchBlockedStatus = async () => {
-            try {
-                const response = await fetch(BLOCKED_USERS, {
-                    method: 'GET',
-                    headers: getAuthHeaders(),
-                });
-                const data = await response.json();
+		const fetchBlockedStatus = async () => {
+			try {
+				const response = await fetch(BLOCKED_USERS, {
+					method: 'GET',
+					headers: getAuthHeaders(),
+				});
+				const data = await response.json();
 				console.log('blocked users --------------->', data.blocked_users);
-                setBlockedUsers(data.blocked_users);
-            } catch (error) {
-                console.error('Error fetching blocked status:', error);
-            }
-        };
-        fetchBlockedStatus();
-    }, []);
+				setBlockedUsers(data.blocked_users);
+			} catch (error) {
+				console.error('Error fetching blocked status:', error);
+			}
+		};
+		fetchBlockedStatus();
+	}, []);
 
-	const filterUsers = users?.filter((user) => 
+	const filterUsers = users?.filter((user) =>
 		user.username.toLowerCase().startsWith(searchQuery.toLowerCase())
 	) || [];
 
@@ -65,7 +66,7 @@ function FriendsList() {
 		const original_onmessage = socket_friends.onmessage;
 		socket_friends.onmessage = (event) => {
 			const data = JSON.parse(event.data);
-			if (data.type === 'friend_request_accepted' ) {
+			if (data.type === 'friend_request_accepted') {
 				get_all_users();
 			}
 			if (original_onmessage) {
@@ -118,7 +119,7 @@ function FriendsList() {
 			<div className='w-[96%] overflow-y-auto users'>
 				{
 					filterUsers.map((user) => {
-						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture = {profile_picture} badge_image={user.badge_image} badge_name={user.badge_name} blockedUsers={blockedUsers} />
+						return <UserFriendsList key={user.id} user_friend={user} user_profile_picture={profile_picture} badge_image={user.badge_image} badge_name={user.badge_name} blockedUsers={blockedUsers} />
 					})
 				}
 			</div>

@@ -126,7 +126,7 @@
 
 // 				// Set up event handlers before connecting
 // 				socket.on('connect', () => {
-// 					console.log('Connected to game server')
+// 					og('Connected to game server')
 // 					socket.send({
 // 						type: 'player_ready',
 // 						playerId: playerId,
@@ -380,7 +380,7 @@ const RemoteGameTest = () => {
     // Utility functions
     const addMessage = (direction, data) => {
         setMessages(prev => [
-            ...prev, 
+            ...prev,
             {
                 time: new Date().toLocaleTimeString(),
                 direction,
@@ -403,7 +403,7 @@ const RemoteGameTest = () => {
     const updateDebugInfo = () => {
         const now = Date.now();
         const timeSinceLastUpdate = now - debugInfo.lastUpdate;
-        
+
         setDebugInfo(prev => ({
             lastUpdate: now,
             updateCount: prev.updateCount + 1,
@@ -425,7 +425,7 @@ const RemoteGameTest = () => {
             y: newY
         });
         addMessage('sent', { type: 'paddle_move', y: newY });
-        
+
         setGameStats(prev => ({
             ...prev,
             paddleMoves: prev.paddleMoves + 1
@@ -631,8 +631,8 @@ const RemoteGameTest = () => {
                     <div className="col-span-8 space-y-4">
                         {/* Game Canvas */}
                         <div className="bg-black rounded-lg p-4">
-                            <GameStateMonitor 
-                                gameState={gameState} 
+                            <GameStateMonitor
+                                gameState={gameState}
                                 showTrails={showDebugPanel}
                             />
                             {showDebugPanel && <GameDebugPanel gameState={gameState} />}
@@ -709,14 +709,13 @@ const RemoteGameTest = () => {
                             <h3 className="text-lg font-bold mb-2">Event Log</h3>
                             <div className="bg-black bg-opacity-20 p-4 rounded overflow-auto max-h-96">
                                 {eventLog.map((entry, index) => (
-                                    <div 
-                                        key={index} 
-                                        className={`mb-2 ${
-                                            entry.type === 'error' ? 'text-red-400' :
-                                            entry.type === 'warning' ? 'text-yellow-400' :
-                                            entry.type === 'success' ? 'text-green-400' :
-                                            'text-white'
-                                        }`}
+                                    <div
+                                        key={index}
+                                        className={`mb-2 ${entry.type === 'error' ? 'text-red-400' :
+                                                entry.type === 'warning' ? 'text-yellow-400' :
+                                                    entry.type === 'success' ? 'text-green-400' :
+                                                        'text-white'
+                                            }`}
                                     >
                                         <span className="text-gray-400">{entry.time}</span>
                                         <span className="ml-2">{entry.message}</span>
@@ -728,7 +727,7 @@ const RemoteGameTest = () => {
                         {/* Testing Controls */}
                         <div className="bg-backdrop-80 rounded-lg p-4">
                             <h3 className="text-lg font-bold mb-2">Testing Controls</h3>
-                            <GameTestingControls 
+                            <GameTestingControls
                                 onTest={(type, data) => {
                                     if (gameSocketRef.current?.isSocketConnected()) {
                                         gameSocketRef.current.send({ type, ...data });

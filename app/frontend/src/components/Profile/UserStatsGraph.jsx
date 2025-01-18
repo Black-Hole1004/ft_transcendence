@@ -54,7 +54,6 @@ function UserStatsGraph() {
 					setUserData(mergedData)
 				} else {
 					console.log('Failed to fetch user data')
-					// logout()
 				}
 			} catch (error) {
 				console.error('Error:', error)
