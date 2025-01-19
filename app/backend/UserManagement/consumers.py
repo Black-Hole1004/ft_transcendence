@@ -1,3 +1,4 @@
+from Chat.models import BlockedUser
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth import get_user_model
 import json
@@ -123,7 +124,6 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_blocked_status_user(self, user1, user2):
         """Synchronous method to check block status"""
-        from Chat.models import BlockedUser
         return BlockedUser.objects.filter(
             models.Q(blocker_id=user1.id, blocked_id=user2.id) |
             models.Q(blocker_id=user2.id, blocked_id=user1.id)
@@ -259,7 +259,6 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_blocked_status(self, invitation):
         """Synchronous method to check block status"""
-        from Chat.models import BlockedUser
         return BlockedUser.objects.filter(
             models.Q(blocker_id=invitation.sender_id, blocked_id=invitation.receiver_id) |
             models.Q(blocker_id=invitation.receiver_id, blocked_id=invitation.sender_id)

@@ -216,9 +216,10 @@ services:
       test: >
         curl --silent --fail http://vault:8200/v1/sys/seal-status | grep '"sealed":false'
       interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
     restart: on-failure
     networks:
       - ft_transcendence_network

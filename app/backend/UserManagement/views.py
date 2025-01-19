@@ -57,7 +57,6 @@ import pyotp
 from django.core.mail import EmailMultiAlternatives, EmailMessage, get_connection
 from datetime import timedelta
 from Chat.models import Conversation
-from django.utils import timezone
 
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build

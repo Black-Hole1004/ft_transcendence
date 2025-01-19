@@ -14,7 +14,6 @@ from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
 from UserManagement.views import generate_random_username
-from core.settings import HOSTNAME
 import os
 from core.settings import HOSTNAME
 from UserManagement.views import Twofa

@@ -8,7 +8,7 @@ ENV CONSUL_ADDR=http://127.0.0.1:8500
 #todo: remove it when using docker-compose
 
 COPY vault-config.hcl /etc/vault.d/vault-config.hcl
-
+RUN apk add bash
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
