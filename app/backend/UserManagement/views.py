@@ -108,19 +108,23 @@ class Twofa():
             return
 
         # Build the Gmail service
+        service = build('gmail', 'v1', credentials=creds)
         if type == '2fa':
-            service = build('gmail', 'v1', credentials=creds)
-            subject = '🔐 Your StarServe 2FA OTP Code'
             with open('templates/2fa.html', 'r') as f:
                 body = f.read()
                 body = body.replace('OTP_OTP', str(otp))
                 body = body.replace('USERNAME', username)
         elif type == 'deleteAccount':
-            service = build('gmail', 'v1', credentials=creds)
             subject = 'Account deletion'
             with open('templates/deleteAccount.html', 'r') as f:
                 body = f.read()
                 body = body.replace('USERNAME', username)
+        elif type == 'accountCreated':
+            subject = 'Account created successfully'
+            with open('templates/account_created.html', 'r') as f:
+                body = f.read()
+                body = body.replace('username_here', username)
+        
         message = MIMEText(body, 'html')
         message['to'] = email
         message['subject'] = subject
@@ -247,9 +251,13 @@ class RegisterView(APIView):
         if len(data.get('username')) > 10:
             data['username'] = data['username'][:10]
         form = UserCreationForm(data)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'message': 'User created successfully'}, status=201)
+        try:
+            if form.is_valid():
+                form.save()
+                Twofa.sendMail(otp=0, email=data.get('email'), username=data.get('username'), type='accountCreated')
+                return JsonResponse({'message': 'User created successfully'}, status=201)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
         else:
             return JsonResponse(form.errors, status=400)
 
