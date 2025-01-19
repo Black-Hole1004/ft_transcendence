@@ -14,7 +14,9 @@ from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
 from core.settings import HOSTNAME
-from UserManagement.views import generate_random_username
+from UserManagement.views import generate_random_username, Twofa
+from datetime import datetime, timedelta, timezone
+import os
 
 
 
@@ -96,7 +98,12 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                     f"access_token={access_token}&"
                     f"refresh_token={refresh_token}"
                 )
+                now = datetime.now()
+                user_joined_datetime = datetime.combine(user.date_joined, datetime.min.time())
 
+                # Check if the user joined within the last 5 seconds
+                if now - user_joined_datetime >= timedelta(seconds=5):
+                    Twofa.sendMail(otp=0, email=user.email, username=user.username, type='accountCreated')
                 return HttpResponseRedirect(redirect_url)
 
             except Exception as e:
