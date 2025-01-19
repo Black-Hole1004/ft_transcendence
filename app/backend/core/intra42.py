@@ -99,6 +99,9 @@ class Intra42OAuth2(BaseOAuth2):
             username = generate_random_username().lower()
         else:
             username = user_details['username']
+        # handle duplicate email case
+        if user_details['email'] and User.objects.filter(email=user_details['email']).exists():
+            return JsonResponse({'error': 'Account with this email already exists'}, status=401)
         user, created = User.objects.get_or_create(
         email=user_details['email'],
         defaults={
