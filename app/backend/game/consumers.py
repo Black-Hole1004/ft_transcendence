@@ -9,7 +9,6 @@ from django.utils import timezone
 from .models import GameSessions
 from asgiref.sync import sync_to_async
 from UserManagement.models import Achievement
-import math
 
 # Canvas/Game Area
 CANVAS_WIDTH = 800
@@ -646,7 +645,6 @@ class GameConsumer(AsyncWebsocketConsumer):
                 
         except Exception as e:
             print(f"Error in game loop: {str(e)}")
-            import traceback
             print(traceback.format_exc())
 
     
