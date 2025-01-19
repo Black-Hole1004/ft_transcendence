@@ -110,6 +110,7 @@ class Twofa():
         # Build the Gmail service
         service = build('gmail', 'v1', credentials=creds)
         if type == '2fa':
+            subject = '🔐 Your StarServe 2FA OTP Code'
             with open('templates/2fa.html', 'r') as f:
                 body = f.read()
                 body = body.replace('OTP_OTP', str(otp))
