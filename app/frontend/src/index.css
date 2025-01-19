@@ -69,5 +69,8 @@ body {
 
 img {
 	-webkit-user-drag: none;
-  }
-  
+}
+
+input[type = 'search']::-webkit-search-cancel-button{
+	cursor: pointer;
+}

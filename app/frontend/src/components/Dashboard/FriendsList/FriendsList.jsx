@@ -108,7 +108,7 @@ function FriendsList() {
 			<div className='flex items-center border border-border rounded-lg pl-2.5 w-[90%]'>
 				<img src='/assets/images/icons/search-icon.png' className='search-icon select-none' alt='' />
 				<input
-					type='text'
+					type='search'
 					name='search for friends'
 					placeholder='Search for friends...'
 					className='flex-1 font-medium bg-transparent text-primary outline-none search-input p-2.5 placeholder:text-border overflow-hidden'

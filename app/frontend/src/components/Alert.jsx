@@ -2,7 +2,7 @@ import './Alert.css'
 
 import { useState, useEffect } from 'react'
 
-const Alert = ({ type, message, onClose }) => {
+const Alert = ({ layout, type, message, onClose }) => {
 	const AlertsStyles = {
 		info: 'bg-blue-500 bg-opacity-10 border-blue-500 text-blue-100',
 		error: 'bg-red-500 bg-opacity-10 border-red-500 text-red-100',
@@ -27,7 +27,7 @@ const Alert = ({ type, message, onClose }) => {
 
 	return (
 		<div
-			className={`alert absolute z-20 top-full right-2 backdrop-brightness-0 font-medium border-l-4
+			className={`alert absolute z-20 ${!layout ? '' : 'top-full'} right-2 backdrop-brightness-0 font-medium border-l-4
 			flex flex-col border alert rounded ${AlertsStyles[type]}`}
 			role='alert'
 		>

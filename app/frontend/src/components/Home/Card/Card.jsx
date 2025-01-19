@@ -24,6 +24,10 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	const { login, register, setEmail, setPassword, setConfirmPassword } = useAuth()
 	// --------------------------- moudrib code -------------------------------------------
 	useEffect(() => {
+		Array.from(document.getElementsByTagName('input')).map(element => element.value = '')
+	}, [isSigningIn])
+
+	useEffect(() => {
 		const handleOutsideClick = (e) => {
 			const dialogDimensions = dialogRef.current.getBoundingClientRect()
 

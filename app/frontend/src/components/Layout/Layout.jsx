@@ -396,7 +396,7 @@ function Layout() {
 	)
 }
 
-export const AlertWrapper = () => {
+export const AlertWrapper = ({ layout }) => {
 	const { showAlert, alertType, alertMessage, dismissAlert } = useAlert()
 
 	useEffect(() => {
@@ -408,7 +408,7 @@ export const AlertWrapper = () => {
 		}
 	}, [showAlert, dismissAlert])
 
-	return showAlert && <Alert type={alertType} message={alertMessage} onClose={dismissAlert} />
+	return showAlert && <Alert layout={layout} type={alertType} message={alertMessage} onClose={dismissAlert} />
 }
 
 export default Layout

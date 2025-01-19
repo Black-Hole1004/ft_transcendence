@@ -104,15 +104,14 @@ function ChatHistory({
 						alt='search-icon'
 					/>
 					<input
-						type='text'
+						type='search'
 						ref={searchRef}
 						autoComplete='off'
 						value={searchText}
 						onChange={handleChange}
 						name='search for friends'
 						placeholder='Search for friends...'
-						className='font-medium bg-transparent text-primary outline-none search
-									lg:w-input-lg ms:w-input-ms w-[80%] placeholder:text-border'
+						className='font-medium bg-transparent text-primary outline-none search w-full placeholder:text-border'
 					/>
 				</div>
 			</div>

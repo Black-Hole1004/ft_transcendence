@@ -34,11 +34,6 @@
 	width: clamp(0.938rem, 1.106vw + 0.73rem, 2.5rem);
 }
 
-.game-table {
-	/* width: clamp(37.5rem, 37.611vw + 30.448rem, 90.625rem); */
-	/* height: clamp(18.75rem, 19.912vw + 15.017rem, 46.875rem); */
-}
-
 .glow {
 	text-shadow:
 		0 0 10px #be794a,
@@ -130,4 +125,8 @@ button {
 
 .gameoverpopup img {
 	width: clamp(2.5rem, 1.327vw + 2.251rem, 4.375rem);
+}
+
+.match-user-image {
+	width: clamp(6rem, 3.496vw + 5.345rem, 10.938rem);
 }

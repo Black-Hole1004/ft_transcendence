@@ -99,8 +99,8 @@ const TwoFactorAuth = () => {
 
 	return (
 		<>
-			<AlertWrapper />
 			<section className='relative w-full h-screen text-primary backdrop-blur-md backdrop-brightness-50'>
+				<AlertWrapper layout={false} />
 				<div
 					className={`flex flex-col absolute container top-1/2 left-1/2 text-center text-primary`}
 				>

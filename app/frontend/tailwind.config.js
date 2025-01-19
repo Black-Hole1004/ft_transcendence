@@ -52,9 +52,6 @@ export default {
 				'card-custom': 'clamp(26.875rem, 26.0227rem + 4.5455vw, 33.125rem)',
 				'fl-ldr-custom': 'clamp(18rem, 15.283vw + 4.245rem, 28.125rem)',
 
-				'input-lg': 'clamp(8.125rem, 12.277vw + 2.232rem, 21.875rem)',
-				'input-ms': 'clamp(15rem, 34.261vw + 8.576rem, 25rem)',
-
 				'user-div': 'clamp(4.125rem, 7.281vw + 2.76rem, 6.25rem)',
 
 				'select-table': 'clamp(28.875rem, 22.462vw + 20.312rem, 56.25rem)',
