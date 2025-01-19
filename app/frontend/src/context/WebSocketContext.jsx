@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext, useRef } from 'react';
 import  useAuth  from './AuthContext';
 import Cookies from 'js-cookie';
+const HOSTNAME = import.meta.env.HOSTNAME;
 
 // Create a context for WebSocket notifications
 const WebSocketContext = createContext();
@@ -36,7 +37,8 @@ export const WebSocketProvider = ({ children }) => {
 
         const access_token = Cookies.get('access_token');
         // console.log('Access token:', access_token);
-		const socket = new WebSocket('ws://127.0.0.1:8000/ws/friend_request/?access_token=' + access_token);
+        const endpoint_friend_request = `wss://${HOSTNAME}/ws/friend_request/?access_token=${access_token}`;
+		const socket = new WebSocket(endpoint_friend_request);
         // console.log('WebSocket connection from WebSocketContext:', socket);
 
         socket.onopen = () => console.log('WebSocket connection established');
