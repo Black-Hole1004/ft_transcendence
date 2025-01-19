@@ -21,6 +21,10 @@ sleep 5
 echo "Initializing Vault..."
 vault operator init -key-shares=3 -key-threshold=3 > /tmp/vault-init.log
 
+if [ $? -ne 0 ]; then
+  echo "Failed to initialize Vault. Exiting..."
+  exit 1
+fi
 # Capture the unseal key and root token from the initialization output
 UNSEAL_KEY1=$(grep 'Key 1:' /tmp/vault-init.log | awk '{print $NF}')
 UNSEAL_KEY2=$(grep 'Key 2:' /tmp/vault-init.log | awk '{print $NF}')
