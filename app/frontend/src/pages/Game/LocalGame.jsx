@@ -10,7 +10,7 @@ import Loader from '../../components/Loader/Loader'
 
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<>
-		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
+		<div className='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
 		<div
 			className='absolute top-[44%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20
 			flex flex-col justify-center items-center gameoverpopup'

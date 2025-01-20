@@ -373,7 +373,7 @@ const PongTable = forwardRef(
 				className='relative flex flex-col items-center lp:gap-7 gap-3 max-lg:w-full'
 			>
 				<div
-					className={`relative aspect-video bg-cover bg-center border rounded
+					className={`relative aspect-video bg-cover bg-center border rounded-2xl
 					${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
 					style={{
 						width: 'clamp(18.125rem, 40.265vw + 10.575rem, 75rem)',
@@ -381,7 +381,7 @@ const PongTable = forwardRef(
 					}}
 				>
 					<div
-						className='absolute inset-0 bg-cover bg-center rounded brightness-50'
+						className='absolute inset-0 bg-cover bg-center brightness-50 rounded-2xl'
 						style={{
 							backgroundImage: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
 						}}
@@ -391,7 +391,7 @@ const PongTable = forwardRef(
 						ref={canvasRef}
 						width={canvasSize.width}
 						height={canvasSize.height}
-						className='absolute top-0 left-0 rounded'
+						className='absolute top-0 left-0 rounded-2xl'
 						style={{
 							width: '100%',
 							height: '100%',
