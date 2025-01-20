@@ -27,10 +27,10 @@ const PongTable = forwardRef(
 
 		const paddleWidth = 20
 		const paddleX = 5
-		const BallInitialSpeed = 0.2
-		const BallAcceleration = 0.0 // it was 0.1
+		const BallInitialSpeed = 1
+		const BallAcceleration = 0.3 // it was 0.1
 		const paddleSpeed = 600
-		const MAX_BALL_SPEED = 25 // it was 10
+		const MAX_BALL_SPEED = 20 // it was 10
 
 		const [playerY, setPlayerY] = useState(200 - paddleSize / 2)
 		const [aiY, setAiY] = useState(200 - paddleSize / 2)
@@ -104,28 +104,25 @@ const PongTable = forwardRef(
 			const canvasWidth = canvas.width
 			const canvasHeight = canvas.height
 
-			// const drawPaddle = (paddle) => {
-			// 	console.log('paddle:', paddle)
-			// 	ctx.fillStyle = paddle.color
-			// 	ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
-			// 	ctx.beginPath()
-			// 	ctx.arc(paddle.x + paddle.width / 2, paddle.y, paddle.width / 2, 0, Math.PI, true)
-			// 	ctx.arc(
-			// 		paddle.x + paddle.width / 2,
-			// 		paddle.y + paddle.height,
-			// 		paddle.width / 2,
-			// 		0,
-			// 		Math.PI,
-			// 		false
-			// 	)
-			// 	ctx.closePath()
-			// 	ctx.fill()
-			// }
-
 			const drawPaddle = (paddle) => {
+				console.log('paddle:', paddle)
 				ctx.fillStyle = paddle.color
 				ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
+				ctx.beginPath()
+				ctx.arc(paddle.x + paddle.width / 2, paddle.y, paddle.width / 2, 0, Math.PI, true)
+				ctx.arc(
+					paddle.x + paddle.width / 2,
+					paddle.y + paddle.height,
+					paddle.width / 2,
+					0,
+					Math.PI,
+					false
+				)
+				ctx.closePath()
+				ctx.fill()
 			}
+
+
 
 			const drawBall = (ball) => {
 				ctx.beginPath()
