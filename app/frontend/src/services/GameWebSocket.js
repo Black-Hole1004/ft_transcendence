@@ -157,83 +157,67 @@ class GameWebSocket {
 
     // Message type handlers
     handleGameInfo(data) {
-        console.log('Handling game info:', data);
         this.callbacks.game_info?.(data);
     }
 
 
     handleGameStateUpdate(data) {
-        console.log('Handling game state update:', data);
         this.callbacks.game_state_update?.(data);
     }
 
     handlePaddlesUpdate(data) {
-        console.log('Handling paddle update:', data);
         this.callbacks.paddles_update?.(data);
     }
     
     handleBallUpdate(data) {
-        console.log('Handling ball update:', data);
         this.callbacks.ball_update?.(data);
     }
 
     handleScoreUpdate(data) {
-        console.log('Handling score update:', data);
         this.callbacks.score_update?.(data);
     }
 
     handleGameEnded(data) {
-        console.log('Handling game ended:', data);
         this.callbacks.game_ended?.(data);
     }
 
     handleGameStarted(data) {
-        console.log('Handling game started:', data);
         this.callbacks.game_started?.(data);
     }
 
     handleGamePaused(data) {
-        console.log('Handling game paused:', data);
         this.callbacks.game_paused?.(data);
     }
 
     handleGameResumed(data) {
-        console.log('Handling game resumed:', data);
         this.callbacks.game_resumed?.(data);
     }
 
     handleGameRestarted(data) {
-        console.log('Handling game restarted:', data);
         this.callbacks.game_restarted?.(data);
     }
 
     handlePlayerDisconnected(data) {
-        console.log('Handling player disconnected:', data);
         this.callbacks.player_disconnected?.(data);
     }
 
     handleWaitingForPlayer(data) {
-        console.log('Handling waiting for player:', data);
         this.callbacks.waiting_for_player?.(data);
     }
 
     handleServerError(data) {
-        console.log('Handling server error:', data);
         this.callbacks.error?.(new Error(data.message));
     }
 
     handlePauseTimeoutWarning(data) {
-        console.log('Handling pause timeout warning:', data);
         this.callbacks.pause_timeout_warning?.(data);
     }
     
     handleTemporaryDisconnect(data) {
-        console.log('Handling temporary disconnect:', data);
         this.callbacks.player_temporary_disconnect?.(data);
     }
     
     handlePlayerReconnected(data) {
-        console.log('Handling player reconnected:', data);
         this.callbacks.player_reconnected?.(data);
     }
 
@@ -245,7 +229,6 @@ class GameWebSocket {
         }
 
         try {
-            console.log('Sending message:', data);
             this.socket.send(JSON.stringify(data));
         } catch (error) {
             console.error('Error sending message:', error);

@@ -94,23 +94,29 @@ def getSearchedUsers(request, user):
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def getFriendshipStatus(request, conversation_key):
-    ids = conversation_key.split('_')
-    other_user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
-    user1 = User.objects.get(id=request.user.id)
-    user2 = User.objects.get(id=other_user_id)
+    try:
+        ids = conversation_key.split('_')
+        other_user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
+        user1 = User.objects.get(id=request.user.id)
+        user2 = User.objects.get(id=other_user_id)
 
-    is_friend_from = FriendShip.objects.filter(user_from=user1, user_to=user2).exists()
-    is_friend_to = FriendShip.objects.filter(user_from=user2, user_to=user1).exists()
+        is_friend_from = FriendShip.objects.filter(user_from=user1, user_to=user2).exists()
+        is_friend_to = FriendShip.objects.filter(user_from=user2, user_to=user1).exists()
 
-    status = is_friend_to or is_friend_from
+        status = is_friend_to or is_friend_from
 
-    conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
-    response = {
-        'status': status,
-    }
-    if conversation:
-        response['blocked_by'] = conversation.blocked_by
-    return Response(response)
+        conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
+        response = {
+            'status': status,
+        }
+        if conversation:
+            response['blocked_by'] = conversation.blocked_by
+        return Response(response)
+    except Exception as e:
+        return Response({
+            'status': 'error',
+            'message': str(e)
+        }, status=404)
 
 
 @api_view(['GET'])

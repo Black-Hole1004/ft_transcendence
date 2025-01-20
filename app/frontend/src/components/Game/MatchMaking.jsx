@@ -103,7 +103,7 @@ const Matchmaking = () => {
 			if (data.should_navigate) {
 				const backgroundId = location.state?.backgroundId || 3
 				// Backup navigation trigger in case something fails
-				navigationTimeout = setTimeout(() => {
+				setTimeout(() => {
 					console.log('Backup navigation triggered')
 					navigate('/remote-game', {
 						state: {

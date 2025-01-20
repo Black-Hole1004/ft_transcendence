@@ -34,7 +34,25 @@ const Chat = () => {
 	const [Badge_info, setBadge_info] = useState(null)
 	const [recipientXp, setRecipientXp] = useState(null)
 
-
+	useEffect(() => {
+		// Extract conversation key from URL
+		const uri = window.location.pathname.split('/').slice(2, 4)
+		if (uri.length === 1) {
+			const ids = uri[0].split('_')
+			if (ids.length === 2 && ids[0] > ids[1])
+				navigate('/404')
+			setConversationMessages([])
+			setConversationKey(uri[0])
+			// setBlockerId(0)
+			setIsConversationLoaded(true)
+		} else if (uri.length > 1) {
+			navigate('/404')
+		} else {
+			setIsConversationLoaded(false)
+		}
+		
+	}, [currentLocation.pathname])
+	
 	useEffect(() => {
 		const sendBlockMessage = () => {
 			webSocketRef.current?.send(
@@ -66,7 +84,7 @@ const Chat = () => {
 				setAreFriends(response.data.status)
 				setBlockerId(blocker)
 			} catch (error) {
-				console.error('Error fetching friendship status:', error)
+				navigate('/404')
 			}
 		}
 		
@@ -74,26 +92,6 @@ const Chat = () => {
 			friendshipStatus()
 		}
 	}, [conversationKey])
-
-	
-	useEffect(() => {
-		// Extract conversation key from URL
-		const uri = window.location.pathname.split('/').slice(2, 4)
-		if (uri.length === 1) {
-			const ids = uri[0].split('_')
-			if (ids.length === 2 && ids[0] > ids[1])
-				navigate('/404')
-			setConversationMessages([])
-			setConversationKey(uri[0])
-			// setBlockerId(0)
-			setIsConversationLoaded(true)
-		} else if (uri.length > 1) {
-			navigate('/404')
-		} else {
-			setIsConversationLoaded(false)
-		}
-
-	}, [currentLocation.pathname])
 
 
 	useEffect(() => {
@@ -114,7 +112,6 @@ const Chat = () => {
 		}
 		
 		const onWebSocketMessage = (e) => {
-			console.log('WebSocket message received')
 			const data = JSON.parse(e.data)
 			if (data.event === 'message') {
 				setConversationMessages((prevMessages) => [
@@ -153,7 +150,8 @@ const Chat = () => {
 				ws.removeEventListener('close', onWebSocketClose)
 				ws.removeEventListener('message', onWebSocketMessage)
 
-				ws.close()
+				if (webSocketRef.current.readyState === WebSocket.OPEN)
+					ws.close()
 				webSocketRef.current = null
 			}
 		}
@@ -170,13 +168,12 @@ const Chat = () => {
 					},
 				})
 				setRecipientInfo(response.data.user_infos[0])
-				setBadge_info(response.data.user_infos[0].badge) // Badge info of the recipient
-				setRecipientXp(response.data.user_infos[0].xp) // xp of the recipient
+				setRecipientXp(response.data.user_infos[0]?.xp)
+				setBadge_info(response.data.user_infos[0]?.badge)
 				const messages = response.data.messages ? response.data.messages : []
 				setConversationMessages(messages)
-				setrecipientProfileImage(response.data.user_infos[0].profile_picture)
+				setrecipientProfileImage(response.data.user_infos[0]?.profile_picture)
 			} catch (error) {
-				console.error('Error fetching user infos:', error)
 				navigate('/404')
 			}
 		}

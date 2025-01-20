@@ -128,7 +128,6 @@ function Layout() {
 		}
 		newSocket.onmessage = (event) => {
 			const data = JSON.parse(event.data)
-			// console.log('WebSocket data:', data)
 		}
 
 		newSocket.onclose = (event) => {
@@ -142,7 +141,8 @@ function Layout() {
 		setSocketNotify(newSocket)
 
 		return () => {
-			newSocket.close()
+			if (newSocket.readyState === WebSocket.OPEN)
+				newSocket.close()
 		}
 	}, [authTokens?.access_token])
 
@@ -154,7 +154,6 @@ function Layout() {
 		}
 		newSocket.onmessage = (event) => {
 			const data = JSON.parse(event.data)
-			console.log('WebSocket data:', data)
 		}
 
 		newSocket.onclose = (event) => {
@@ -168,7 +167,8 @@ function Layout() {
 		setSocketFriends(newSocket)
 
 		return () => {
-			newSocket.close()
+			if (newSocket.readyState === WebSocket.OPEN)
+				newSocket.close()
 		}
 	}, [authTokens?.access_token])
 
@@ -215,15 +215,6 @@ function Layout() {
 						// Get the stored sender tab ID if this is the sender
 						const storedSenderTabId = localStorage.getItem('gameSenderTab');
 						const isSenderTab = is_sender && (storedSenderTabId === activeGameTabId);
-					
-						console.log('Navigation check:', {
-							is_sender,
-							isAcceptingTab,
-							isSenderTab,
-							activeGameTabId,
-							storedSenderTabId,
-							acceptingTabId: data.acceptingTabId
-						});
 					
 						// Status checks
 						if (data.sender.status === 'offline') {
@@ -304,7 +295,6 @@ function Layout() {
 
 				default:
 					// Your existing notification handling
-					console.log('Other notification:', data)
 					setNotifications((prevNotifications) => [
 						...prevNotifications,
 						{
@@ -329,7 +319,8 @@ function Layout() {
 		setSocketNotification(newSocket)
 
 		return () => {
-			newSocket.close()
+			if (newSocket.readyState === WebSocket.OPEN)
+				newSocket.close()
 		}
 	}, [authTokens?.access_token])
 

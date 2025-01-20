@@ -323,7 +323,7 @@ const AIPongTable = ({
 					onClick={handlePause}
 					className='pause flex items-center gap-3 brightness-[1] leading-[0.95]'
 				>
-					<img src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`} alt='' />
+					<img src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`} alt='pause icon' />
 					<p className='align-middle'>{isPaused ? 'resume' : 'pause'}</p>
 				</button>
 			)}
