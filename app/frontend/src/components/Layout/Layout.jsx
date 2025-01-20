@@ -68,7 +68,6 @@ function Layout() {
 			})
 			const data = await response.json()
 			if (response.ok) {
-				console.log('Successfully fetched user data')
 				return data
 			} else {
 				Cookies.remove('access_token')

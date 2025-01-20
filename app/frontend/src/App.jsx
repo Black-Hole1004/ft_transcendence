@@ -8,8 +8,6 @@ import { TournamentProvider } from './context/TournamentContext'
 import Loader from './components/Loader/Loader'
 
 function App() {
-
-
 	return (
 		<Router
 			future={{

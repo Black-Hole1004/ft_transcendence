@@ -428,7 +428,7 @@ class UserProfileView(APIView):
             return Response(response_data, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': str(e)}, status=400)
     
     def reauthenticate_and_generate_tokens(self, user, new_password):
         """Reauthenticate the user using the new password and generate new JWT tokens."""
@@ -873,38 +873,10 @@ def get_current_profile_stats(request):
         print(f"Error in get_profile_stats: {str(e)}")
         return Response({
             'error': str(e)
-        }, status=500)
+        }, status=400)
 
 # leaderboard-------------------------------------------------------------
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def get_leaderboard(request):
-#     try:
-#         # Get top 20 users ordered by XP
-#         top_users = User.objects.order_by('-xp')[:20]
-        
-#         # Prepare user data with achievements
-#         leaderboard_data = []
-#         for user in top_users:
-#             # Get user's current achievement based on XP
-#             achievement = Achievement.get_badge(user.xp)
-            
-#             leaderboard_data.append({
-#                 'id': user.id,
-#                 'username': user.username,
-#                 'xp': user.xp,
-#                 'profile_picture': user.profile_picture.url if user.profile_picture else None,
-#                 'achievement': achievement  # This already includes name and image
-#             })
-        
-#         return Response({
-#             'users': leaderboard_data
-#         })
-        
-#     except Exception as e:
-#         return Response({
-#             'error': str(e)
-#         }, status=500)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -954,7 +926,7 @@ def get_leaderboard(request):
     except Exception as e:
         return Response({
             'error': str(e)
-        }, status=500)
+        }, status=400)
         
         
 #achievements -------------------------------------------------------------------------------
@@ -1024,7 +996,7 @@ def get_achievements(request):
     except Exception as e:
         return Response({
             'error': str(e)
-        }, status=500)
+        }, status=400)
         
 # get current logged in user data
 # UserManagement/views.py
@@ -1043,7 +1015,7 @@ def get_user_data(request):
             'badge': Achievement.get_badge(user.xp)
         })
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({'error': str(e)}, status=400)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -1061,7 +1033,7 @@ def get_user_data_by_id(request, user_id):
     except User.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({'error': str(e)}, status=400)
 
 
 # delete user data
@@ -1223,7 +1195,7 @@ def get_profile_stats(request, username):
         print(f"Error in get_profile_stats: {str(e)}")
         return Response({
             'error': str(e)
-        }, status=500)
+        }, status=400)
 
 
 @api_view(['GET'])
@@ -1267,4 +1239,4 @@ def check_blocked_status(request):
         return JsonResponse({'is_blocked': is_blocked})
     except Exception as e:
         print('Error:', str(e))
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({'error': str(e)}, status=400)

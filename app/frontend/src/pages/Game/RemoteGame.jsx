@@ -8,6 +8,7 @@ import Timer from '../../components/Game/Timer'
 import Confetti from 'react-confetti'
 import GameWebSocket from '../../services/GameWebSocket'
 import GameOverPopup from '../../components/Game/GameOverPopup'
+import Loader from '../../components/Loader/Loader'
 
 const RemoteGame = () => {
 	const navigate = useNavigate()
@@ -16,6 +17,19 @@ const RemoteGame = () => {
 
 	// Location state data
 	const { gameId, playerNumber, opponent, currentUser, backgroundId } = location.state || {}
+
+	useEffect(() => {
+        // Protect against direct access to the game
+        if (!gameId || !playerNumber || !opponent || !currentUser || !backgroundId) {
+			console.log("Redirecting to dashboard...");
+			navigate('/dashboard', { replace: true }); // Using replace to prevent back button issues
+		}
+	}, [gameId, playerNumber, opponent, currentUser, backgroundId, navigate]);
+    
+    // Return a placeholder or loading state while navigating
+    if (!gameId || !playerNumber || !opponent || !currentUser || !backgroundId) {
+		return <Loader />;
+	}
 
 	// Determine which player info to show on each side
 	const rightPlayer = currentUser // Current player always on right
