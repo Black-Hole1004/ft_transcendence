@@ -37,6 +37,7 @@ function Input({ id, type, label, placeholder, value, onChange }) {
 }
 
 const Settings = () => {
+
 	const { refreshUserData, fetchUser } = useSocket()
 
 	const dialogRef = useRef(null)
