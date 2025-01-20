@@ -1,7 +1,6 @@
 import React from "react"
 import { Routes, Route, Navigate } from 'react-router-dom';
 import useAuth from "../context/AuthContext"
-//app/frontend/src/pages/Game/GameTester.jsx
 import PrivateRoute from './PrivateRoute';
 
 const Loader = React.lazy(() => import('../components/Loader/Loader'))
@@ -13,23 +12,19 @@ const Profile = React.lazy(() => import('../pages/Profile/Profile'))
 const Settings = React.lazy(() => import('../pages/Settings/Settings'))
 const Dashboard = React.lazy(() => import('../pages/Dashboard/Dashboard'))
 const Tournament = React.lazy(() => import('../pages/Tournament/Tournament'))
-const TournamentAhaloui = React.lazy(() => import('../pages/Tournament/Tournament-ahaloui'))
 const NotFound = React.lazy(() => import('../pages/NotFound/NotFound'))
 const Layout = React.lazy(() => import('../components/Layout/Layout'))
 const TwoFactorAuth = React.lazy(() => import('../pages/TwoFactorAuth/TwoFactorAuth'))
-
 const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
 const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
 const AiGame = React.lazy(() => import('../pages/Game/AiGame'))
 const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
 const AiGameSetup = React.lazy(() => import('../pages/Game/AiGameSetup'))
 const SearchingAnimation = React.lazy(() => import('../components/Game/Remote/SearchingAnimation'))
-
 const MatchMaking = React.lazy(() => import('../components/Game/MatchMaking'))
 const CustomTournament = React.lazy(() => import('../pages/CustomTournament/CustomTournament'))
 const TournamentSetup = React.lazy(() => import('../pages/TournametSetup/TournametSetup'))
 const LocalGameTour = React.lazy(() => import('../pages/Game/LocalGameTour'))
-
 const Match = React.lazy(() => import('../components/Game/Match'))
 
 const ComponentPath = () => {
@@ -39,30 +34,22 @@ const ComponentPath = () => {
 			<Routes>
 				{/* Redirect to /Dashboard if authenticated on the home path */}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
-				
 					<Route path="/searching" element={<SearchingAnimation />} />
 				{/* Layout wrapping all private routes */}
 				<Route element={<PrivateRoute><Layout /></PrivateRoute>}>
 					<Route path="/Game" element={<Game />} />
 					<Route path="/loader" element={<Loader />} />
 					<Route path="/Chat" element={<Chat />} />
-					{/* <Route path="/Profile" element={<Profile />} /> */}
 					<Route path="/Settings" element={<Settings />} />
 					<Route path="/Dashboard" element={<Dashboard />} />
 					<Route path="/chat/:conversation_key" element={<Chat />} />
-
 					<Route path="/profile/:profile_name" element={<Profile />} />
-					
 					<Route path="/Tournament" element={<Tournament />} />
-					<Route path="/TournamentAhaloui" element={<TournamentAhaloui />} />
 					<Route path="/CustomTournament" element={<CustomTournament />} />
 					<Route path="/TournamentSetup" element={<TournamentSetup />} />
 					<Route path='/local-game-tour' element={<LocalGameTour />} />
 					<Route path='/match' element={<Match />} />
-
-
 					<Route path='/chat/:conversation_id/:user_id' element={<Chat />} />
-
 					<Route path="/Custom" element={<Custom />} />
 					<Route path='/local-game' element={<LocalGame />} />
 					<Route path='/ai-game' element={<AiGame />} />
@@ -70,12 +57,9 @@ const ComponentPath = () => {
 \					<Route path='/local-game-setup' element={<LocalGameSetup />} />
 					<Route path='/ai-game-setup' element={<AiGameSetup />} />
 					<Route path='/matchmaking' element={<MatchMaking />} />
-
-
 				</Route>
 				<Route path="/2fa" element={<TwoFactorAuth />} />
 				<Route path="*" element={<NotFound />} />
-				
 			</Routes>
 
 	);
