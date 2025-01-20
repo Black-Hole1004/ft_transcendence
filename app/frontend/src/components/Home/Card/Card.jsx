@@ -87,7 +87,6 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 	]
 
 	const handleOauth = (provider) => {
-		console.log('provider', provider)
 		const API_URLS = {
 			"google": API_GOOGLE,
 			'42': API_42,

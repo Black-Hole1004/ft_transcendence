@@ -32,7 +32,6 @@ class GameWebSocket {
 
         try {
             const wsUrl = `wss://${HOSTNAME}/ws/game/${gameId}/`;
-            console.log('Attempting to connect to:', wsUrl);
 
             if (this.socket) {
                 this.socket.close();
@@ -48,12 +47,7 @@ class GameWebSocket {
         }
     }
 
-    sendPlayerNumber() {
-        console.log('initializing player : ', {
-            playerNumber: this.playerNumber,
-            userId: this.userId
-        });
-    
+    sendPlayerNumber() {    
         this.send({
             type: 'player_number_init',
             player_number: this.playerNumber,
@@ -63,7 +57,6 @@ class GameWebSocket {
 
     // Add handler for confirmation
     handlePlayerNumberConfirmed(data) {
-        console.log('Player number confirmed:', data.player_number);
         this.callbacks.player_number_confirmed?.(data);
     }
 

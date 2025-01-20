@@ -61,19 +61,16 @@ const Matchmaking = () => {
 		})
 
 		matchmakingService.on('inGame', (data) => {
-			console.log('User already in game:', data)
 			setStatus('inGame')
 			setErrorMessage(data.message)
 		})
 
 		matchmakingService.on('alreadySearching', (data) => {
-			console.log('Already searching:', data)
 			setStatus('searching') // Keep showing searching animation
 			setErrorMessage(data.message)
 		})
 
 		matchmakingService.on('timeout', (data) => {
-			console.log('Search timeout:', data)
 			setStatus('timeout')
 		})
 
@@ -104,7 +101,6 @@ const Matchmaking = () => {
 				const backgroundId = location.state?.backgroundId || 3
 				// Backup navigation trigger in case something fails
 				setTimeout(() => {
-					console.log('Backup navigation triggered')
 					navigate('/remote-game', {
 						state: {
 							playerNumber: data.player_number,
@@ -157,7 +153,6 @@ const Matchmaking = () => {
 	}, [location.state]) // Trigger the effect whenever the location state changes
 
 	const handleCancel = () => {
-		console.log('Cancelling search')
 		matchmakingService.cancelSearch()
 		navigate('/custom')
 	}
