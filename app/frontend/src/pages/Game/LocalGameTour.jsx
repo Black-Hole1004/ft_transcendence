@@ -7,8 +7,8 @@ import Timer from '../../components/Game/Timer'
 import Player from '../../components/Game/Player'
 import GameScore from '../../components/Game/GameScore'
 import PongTable from '../../components/Game/PongTable'
-
 import { useTournament } from '../../context/TournamentContext'
+import Loader from '../../components/Loader/Loader'
 
 const SuddenDeathMessage = () => (
 	<div className='fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse'>
@@ -68,8 +68,7 @@ const GameOverPopup = ({ winner, onQuit, onProceed }) => (
 const LocalGame = () => {
 	const navigate = useNavigate()
 	// code ahaloui added
-	const { setSemiFinal1winner, setSemiFinal2winner, setFinalWinner, setTournamentState, resetTournament, setTournamentData, tournamentScores, setTournamentScores } =
-		useTournament()
+	const { setSemiFinal1winner, setSemiFinal2winner, setFinalWinner, setTournamentState, resetTournament, setTournamentData, tournamentScores, setTournamentScores } = useTournament()
 	const [isSuddenDeath, setIsSuddenDeath] = useState(false)
 
 	const [isPaused, setIsPaused] = useState(false)
@@ -91,6 +90,19 @@ const LocalGame = () => {
 		ballSize,
 		tournamentRound,
 	} = location.state || {}
+
+	useEffect(() => {
+        // Protect against direct access to the game
+        if (!mode || !player1 || !player2 || !ballColor || !backgroundId || !paddleSize || !ballSize || !duration || !tournamentRound) {
+            console.log("Redirecting to dashboard...");
+            navigate('/dashboard', { replace: true }); // Using replace to prevent back button issues
+        }
+    }, [mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize, navigate, tournamentRound]);
+    
+    // Return a placeholder or loading state while navigating
+    if (!mode || !player1 || !player2 || !ballColor || !backgroundId || !paddleSize || !ballSize || !duration || !tournamentRound) {
+        return <Loader />;
+    }
 
 	const [timeRemaining, setTimeRemaining] = useState(duration || 60)
 	const [showRestartPopup, setShowProceedPopup] = useState(false)

@@ -93,8 +93,7 @@ class GamePhysics:
             # If ball is very close to top or bottom edge
             elif distance_from_top <= ball['radius'] or distance_from_bottom <= ball['radius']:
                 # Only count as edge hit if ball is moving towards paddle
-                moving_towards_paddle = ((ball['velocityX'] > 0 and paddle['x'] > CANVAS_WIDTH/2) or
-                                    (ball['velocityX'] < 0 and paddle['x'] < CANVAS_WIDTH/2))
+                moving_towards_paddle = ((ball['velocityX'] > 0 and paddle['x'] > CANVAS_WIDTH/2) or (ball['velocityX'] < 0 and paddle['x'] < CANVAS_WIDTH/2))
                 if moving_towards_paddle:
                     return "edge"
         

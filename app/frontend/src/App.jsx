@@ -9,13 +9,6 @@ import Loader from './components/Loader/Loader'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 function App() {
-	// const navigate = useNavigate();
-
-	// useEffect(() => {
-	// 	if (game_accepted) {
-	// 		navigate('/matchmaking.jsx', { state: { data } });
-	// 	}
-	// }, [navigate]);
 
 	return (
 		<Router

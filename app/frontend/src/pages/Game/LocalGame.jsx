@@ -6,6 +6,7 @@ import Timer from '../../components/Game/Timer'
 import Player from '../../components/Game/Player'
 import GameScore from '../../components/Game/GameScore'
 import PongTable from '../../components/Game/PongTable'
+import Loader from '../../components/Loader/Loader'
 
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<>
@@ -66,6 +67,19 @@ const LocalGame = () => {
     const location = useLocation()
     const { mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize } = location.state || {}
 
+    useEffect(() => {
+        // Protect against direct access to the game
+        if (!mode || !player1 || !player2 || !ballColor || !backgroundId || !paddleSize || !ballSize || !duration) {
+            console.log("Redirecting to dashboard...");
+            navigate('/dashboard', { replace: true }); // Using replace to prevent back button issues
+        }
+    }, [mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize, navigate]);
+    
+    // Return a placeholder or loading state while navigating
+    if (!mode || !player1 || !player2 || !ballColor || !backgroundId || !paddleSize || !ballSize || !duration) {
+        return <Loader />;
+    }
+    
     const [timeRemaining, setTimeRemaining] = useState(duration || 60)
     const [showRestartPopup, setShowRestartPopup] = useState(false)
     const [resetParameters, setResetParameters] = useState(false)
