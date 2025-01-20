@@ -126,8 +126,7 @@ const AIPongTable = ({
 					const movement = Math.sign(distance) * Math.min(Math.abs(distance) * smoothing, aiSpeed);
 					
 					setAiY(prev => Math.max(0, 
-						Math.min(canvasSize.height - CONSTANTS.paddleHeight,
-							prev + movement)));
+						Math.min(canvasSize.height - CONSTANTS.paddleHeight, prev + movement)));
 				}
 
 

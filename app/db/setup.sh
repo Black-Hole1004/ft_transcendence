@@ -24,10 +24,6 @@ if [ -z "$USER" ] || [ -z "$PASS" ] || [ -z "$POSTGRES_DB" ]; then
   exit 1
 fi
 
-if [ -d "/var/lib/postgresql/data" ]; then
-  echo "Cleaning up existing PostgreSQL data..."
-  rm -rf /var/lib/postgresql/data/*
-fi
 # Set the environment variables
 export POSTGRES_PASSWORD=$PASS
 # export POSTGRES_USER=$USER

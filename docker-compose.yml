@@ -27,7 +27,7 @@ services:
       timeout: 30s
     restart: always
     volumes:
-      - ./app/db/postgres:/var/lib/postgresql/data
+      # - ./app/db/postgres:/var/lib/postgresql/data
       - ./app/vault/token.txt:/tmp/token.txt
       - ./app/vault/unseal_key1.txt:/tmp/unseal_key1.txt
     depends_on:
