@@ -1,7 +1,31 @@
 import { MuiColorInput } from 'mui-color-input'
+import { useState } from 'react'
 
 const Inputs = ({ id, value, duration, setDuration, setValue }) => {
-	const onChange = id === 'Ball' ? (e) => setDuration(e.target.value) : (e) => setValue('name', e.target.value)
+	const [error, setError] = useState('')
+
+	const onChange =
+		id === 'Ball'
+			? (e) => {
+					const value = parseInt(e.target.value)
+					if (value < 0) {
+						setError('Duration cannot be negative')
+					} else if (value > 600) {
+						setError('Duration cannot exceed 10 minutes')
+					} else {
+						setError('')
+						setDuration(value)
+					}
+				}
+			: (e) => {
+					const value = e.target.value
+					if (value.length > 20) {
+						setError('Name cannot exceed 20 characters')
+					} else {
+						setError('')
+						setValue('name', value)
+					}
+				}
 	return (
 		<div className='flex-1 flex flex-col gap-2'>
 			<h2 className='font-heavy labels text-primary'>{id}</h2>
@@ -12,7 +36,7 @@ const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 					</label>
 					<input
 						id={id}
-						type='text'
+						type={id === 'Ball' ? 'number' : 'text'}
 						onChange={onChange}
 						value={`${id === 'Ball' ? duration : value.name}`}
 						placeholder={`${id === 'Ball' ? 'Game duration (seconds)' : 'Player Name'}`}
@@ -20,7 +44,10 @@ const Inputs = ({ id, value, duration, setDuration, setValue }) => {
 						text-primary placeholder:font-regular placeholders outline-none w-[90%] transition-all duration-300'
 						required
 						maxLength='15'
+						min={id === 'Ball' ? '10' : undefined} // 10 seconds minimum
+						max={id === 'Ball' ? '600' : undefined} // 10 minutes = 600 seconds maximum
 					/>
+					{error && <span className='text-red-500 text-sm mt-1'>{error}</span>}
 				</div>
 				<div className='flex flex-col ml:w-[30%] w-[50%] max-ml:ml-2'>
 					<label className='font-regular text-light labels' htmlFor={id + 'Color'}>
