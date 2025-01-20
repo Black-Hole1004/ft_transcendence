@@ -61,12 +61,10 @@ const RemoteGame = () => {
 		socketRef.current = ws
 
 		// Connect to game
-		// console.log('Connecting to game:', gameId, 'as player', playerNumber, 'with user_id', currentUser.id)
 		ws.connect(gameId, playerNumber, currentUser.id)
 
 		// Event handlers
 		ws.on('game_info', (data) => {
-			// console.log('Received initial game state:', data)
 			setGameState(data.state)
 			// sleep one second before sending ready
 			setTimeout(() => handleReady(), 1000)
@@ -75,7 +73,6 @@ const RemoteGame = () => {
 		})
 
 		ws.on('game_state_update', (data) => {
-			// console.log('Received game state update: => ' , data)
 			// Update game state
 			setGameState((prev) => ({
 				...prev,
@@ -119,7 +116,6 @@ const RemoteGame = () => {
 		ws.on('game_started', () => setIsPaused(false))
 
 		ws.on('game_ended', (data) => {
-			// console.log('Game ended: data received => ', data)
 			setIsGameOver(true)
 			setShowRestartPopup(true)
 

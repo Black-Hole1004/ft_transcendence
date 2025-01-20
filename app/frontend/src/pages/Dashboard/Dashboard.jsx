@@ -36,7 +36,6 @@ const Dashboard = () => {
 				}
 				const userJson = await userResponse.json();
 				setUserData(userJson);
-				console.log('user data:', userJson);
 
 				setCurrentAchievement(userJson.badge)
 				setTitle(userJson.badge.title);
@@ -57,7 +56,6 @@ const Dashboard = () => {
 				}
 				// Only try to parse as JSON if it's actually JSON
 				const leaderboardData = JSON.parse(responseText);
-				console.log('leaderboard data:', leaderboardData);
 				setLeaderboardData(leaderboardData.users);
 				
 

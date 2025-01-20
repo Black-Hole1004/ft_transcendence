@@ -52,7 +52,6 @@ const TwoFactorAuth = () => {
 
 
 	const verifyOtp = async () => {
-		console.log('here')
 		try {
 			let otp = ''
 			const inputs = document.getElementsByTagName('input')
@@ -76,7 +75,6 @@ const TwoFactorAuth = () => {
 			const data = await response.json()
 
 			if (response.ok) {
-				console.log('---------->', data.access_token)
 				setAuthTokens(data)
                 setUser(jwtDecode(data.access_token))
                 
@@ -85,11 +83,8 @@ const TwoFactorAuth = () => {
                 Cookies.set('refresh_token', refresh_token, { sameSite: 'None', secure: true });
                 Cookies.set('access_token', access_token, { sameSite: 'None', secure: true });
                 navigate('/dashboard')
-				console.log("===============> ", data)
 			} else {
-				console.log('Login failed----------->', data)
 				handleSubmit('error', 'Something went wrong')
-				console.log('Login failed----------->', data)
 			}
 		}
 		catch (error) {
@@ -99,8 +94,8 @@ const TwoFactorAuth = () => {
 
 	return (
 		<>
-			<AlertWrapper />
 			<section className='relative w-full h-screen text-primary backdrop-blur-md backdrop-brightness-50'>
+				<AlertWrapper layout={false} />
 				<div
 					className={`flex flex-col absolute container top-1/2 left-1/2 text-center text-primary`}
 				>

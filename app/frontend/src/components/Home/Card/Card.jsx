@@ -1,15 +1,10 @@
 import './Card.css'
 import Input from '../Input'
 import CardButton from '../Buttons/CardButton'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-// import { useNavigate } from 'react-router-dom'
-import Alert from '@mui/material/Alert'
+import { useEffect } from 'react'
 
 import useAuth from '../../../context/AuthContext'
 
-const API_LOGIN = import.meta.env.VITE_API_LOGIN
-const API_REGISTER = import.meta.env.VITE_API_REGISTER
 const API_42 = import.meta.env.VITE_API_42
 const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 
@@ -17,31 +12,45 @@ const API_GOOGLE = import.meta.env.VITE_API_GOOGLE
 
 
 function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
-	const handleClick = () => setIsSigningIn(!isSigningIn)
-
 	const { email, password, confirmPassword} = useAuth()
 
 	const { login, register, setEmail, setPassword, setConfirmPassword } = useAuth()
-	// --------------------------- moudrib code -------------------------------------------
+
+	const clearInputs = () => {
+		setEmail('')
+		setPassword('')
+		setConfirmPassword('')
+	}
+
+	const handleClick = () => {
+		setIsSigningIn(!isSigningIn)
+	}
+
+	useEffect(() => {
+		clearInputs()
+	}, [isSigningIn])
+
 	useEffect(() => {
 		const handleOutsideClick = (e) => {
 			const dialogDimensions = dialogRef.current.getBoundingClientRect()
 
 			if (
+				e.clientY < dialogDimensions.top ||
 				e.clientX < dialogDimensions.left ||
 				e.clientX > dialogDimensions.right ||
-				e.clientY < dialogDimensions.top ||
 				e.clientY > dialogDimensions.bottom
-			)
+			) {
+				clearInputs()
 				dialogRef.current.close()
+			}
 		}
 		if (dialogRef.current) {
-			dialogRef.current.addEventListener('click', handleOutsideClick)
+			dialogRef.current.addEventListener('mousedown', handleOutsideClick)
 		}
 
 		return () => {
 			if (dialogRef.current)
-				dialogRef.current.removeEventListener('click', handleOutsideClick)
+				dialogRef.current.removeEventListener('mousedown', handleOutsideClick)
 		}
 	}, [])
 	const inputs = [
@@ -76,9 +85,7 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 			content: 'Continue with 42 Intra',
 		},
 	]
-	// --------------------------------------------------------------------------------------------
 
-	// --------------------------- moudrib code -------------------------------------------
 	const handleOauth = (provider) => {
 		console.log('provider', provider)
 		const API_URLS = {
@@ -98,7 +105,6 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 		e.preventDefault()
 		isSigningIn ? login() : register()
 	}
-	// --------------------------------------------------------------------------------------------
 
 	return (
 		<dialog
@@ -198,7 +204,10 @@ function Card({ dialogRef, closeDialog, isSigningIn, setIsSigningIn }) {
 								className={`
 									text-secondary bg-primary flex flex-row items-center justify-center gap-2 rounded hover:scale-[1.03]
 								`}
-								onClick={() => handleOauth(button.id)}
+								onClick={() => {
+									clearInputs()
+									handleOauth(button.id)
+								}}
 							>
 								<img
 									src={`/assets/images/icons/${button.iconPath}.png`}

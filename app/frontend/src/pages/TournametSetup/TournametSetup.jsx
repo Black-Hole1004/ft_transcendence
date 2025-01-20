@@ -63,7 +63,6 @@ const TournamentSetup = () => {
 	const { backgroundId } = location.state || {}
 
 	const updatePlayerConfig = (playerId, field, value) => {
-		// console.log('value: ', value)
 		setPlayers((prev) => ({
 			...prev,
 			[playerId]: {
@@ -82,10 +81,7 @@ const TournamentSetup = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log('ballColor: ', gameConfig.ball.color)
 		if (players.player1.name && players.player2.name && players.player3.name && players.player4.name) {
-			console.log('player1: ', players.player1.name)
-			console.log('player2: ', players.player2.name)
 			// navigate('/TournamentAhaloui', {
 			navigate('/Tournament', {
 				state: {
@@ -171,8 +167,6 @@ const TournamentSetup = () => {
 			isBackgroundVisible: true,
 		})
 	}
-
-	console.log('players: ==========>', players)
 
 	return (
 		<section className='flex justify-center'>

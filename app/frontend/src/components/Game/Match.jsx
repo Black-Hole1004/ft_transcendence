@@ -23,7 +23,6 @@ const Match = ({ matchData, countdown, statement }) => {
 								alt={currentUser.username}
 								className='object-cover rounded-full'
 								onError={(e) => {
-									console.log('Profile image load error:', e);
 									e.target.src = '/assets/images/default-avatar.png';
 								}}
 							/>

@@ -71,7 +71,6 @@ function Layout() {
 				console.log('Successfully fetched user data')
 				return data
 			} else {
-				console.log('Failed to fetch user data')
 				Cookies.remove('access_token')
 				Cookies.remove('refresh_token')
 				window.location.href = '/'; // Redirect to /
@@ -396,7 +395,7 @@ function Layout() {
 	)
 }
 
-export const AlertWrapper = () => {
+export const AlertWrapper = ({ layout }) => {
 	const { showAlert, alertType, alertMessage, dismissAlert } = useAlert()
 
 	useEffect(() => {
@@ -408,7 +407,7 @@ export const AlertWrapper = () => {
 		}
 	}, [showAlert, dismissAlert])
 
-	return showAlert && <Alert type={alertType} message={alertMessage} onClose={dismissAlert} />
+	return showAlert && <Alert layout={layout} type={alertType} message={alertMessage} onClose={dismissAlert} />
 }
 
 export default Layout

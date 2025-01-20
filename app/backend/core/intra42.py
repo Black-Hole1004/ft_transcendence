@@ -14,9 +14,9 @@ from channels.layers import get_channel_layer
 from UserManagement.models import FriendShip
 from channels.db import database_sync_to_async
 from UserManagement.views import generate_random_username
-from core.settings import HOSTNAME
 import os
 from core.settings import HOSTNAME
+from UserManagement.views import Twofa
 
 class Intra42OAuth2(BaseOAuth2):
     
@@ -101,7 +101,12 @@ class Intra42OAuth2(BaseOAuth2):
             username = user_details['username']
         # handle duplicate email case
         if user_details['email'] and User.objects.filter(email=user_details['email']).exists():
-            return JsonResponse({'error': 'Account with this email already exists'}, status=401)
+            # check if the user that is duplicated is logged with oauth
+            user = User.objects.get(email=user_details['email'])
+            if not user.is_logged_with_oauth:
+                return JsonResponse({'error': 'Account with this email already exists'}, status=401)
+        else:
+            Twofa.sendMail(otp=0, email=user_details['email'], username=username, type='accountCreated')
         user, created = User.objects.get_or_create(
         email=user_details['email'],
         defaults={

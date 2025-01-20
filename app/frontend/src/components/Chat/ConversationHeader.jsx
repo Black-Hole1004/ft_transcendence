@@ -76,7 +76,6 @@ const ConversationHeader = ({
 				headers: getAuthHeaders(),
 			})
 			const data = await response.json()
-			console.log('Response =>', data)
 			if (response.status === 201) {
 				const from_user = data.from_user;
 				const sender_id = data.sender_id;

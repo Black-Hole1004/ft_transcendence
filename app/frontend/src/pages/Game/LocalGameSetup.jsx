@@ -53,7 +53,6 @@ const LocalGameSetup = () => {
 	const { backgroundId = defaultBackgroundId } = location.state || {}
 
 	const updatePlayerConfig = (playerId, field, value) => {
-		// console.log('value: ', value)
 		setPlayers((prev) => ({
 			...prev,
 			[playerId]: {
@@ -69,10 +68,6 @@ const LocalGameSetup = () => {
 			[field]: value,
 		}))
 	}
-	console.log('paddle height: ', calculatePaddleHeight(gameConfig.paddle.size))
-	console.log('paddle height BEFORE: ', gameConfig.paddle.size)
-	console.log('ball radius: ', calculateBallRadius(gameConfig.ball.size))
-	console.log('ball radius BEFORE: ', gameConfig.ball.size)
 
 	const handleSubmit = (e) => {
 		e.preventDefault()

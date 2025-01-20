@@ -46,7 +46,6 @@ function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture, isCu
 					alt={achievement}
 					className='h-[60%] select-none'
 					onError={(e) => {
-						console.log('Failed to load achievement image:', e)
 						e.target.style.display = 'none'
 					}}
 				/>

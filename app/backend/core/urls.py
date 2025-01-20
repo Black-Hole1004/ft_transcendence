@@ -18,8 +18,6 @@ from UserManagement.views import GetTimeSpentByUserName
 from UserManagement.views import Activate2faView
 from UserManagement.views import Verify2faView
 
-from django.contrib import admin
-from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 

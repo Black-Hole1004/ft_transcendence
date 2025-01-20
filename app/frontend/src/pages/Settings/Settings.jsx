@@ -168,7 +168,6 @@ const Settings = () => {
 			.then((response) => {
 				if (response.status === 200) {
 					// sleep 1 second
-					console.log('response ----->', response.data)
 					// trigger alert wait for 1 second --> clear cookies --> redirect to /
 					triggerAlert('success', 'Account deleted successfully')
 					setTimeout(() => {
@@ -240,7 +239,6 @@ const Settings = () => {
 			})
 			.then((response) => {
 				if (response.status === 200) {
-					console.log('response ----->', response.data)
 					setUser(response.data)
 					setSelectedFile(null)
 					setPreview(null)
@@ -271,7 +269,6 @@ const Settings = () => {
 
 	/**********************  Handle Input Change ************************/
 	const handleInputChange = (e) => {
-		console.log('here')
 		e.target.classList.replace('text-border', 'text-primary')
 		const { name, value } = e.target
 		switch (name) {
@@ -325,8 +322,6 @@ const Settings = () => {
 		setProfile_picture(DEFAULT_PROFILE_PICTURE)
 		setRemoveImage(true)
 	}
-
-	console.log('user ----->', user)
 
 	return (
 		<>
@@ -402,7 +397,6 @@ const Settings = () => {
 										id={'first_name'}
 										type={'text'}
 										label={'First Name'}
-										placeholder={first_name}
 										onChange={handleInputChange}
 										value={first_name}
 									/>
@@ -410,7 +404,6 @@ const Settings = () => {
 										id={'last_name'}
 										type={'text'}
 										label={'Last Name'}
-										placeholder={last_name}
 										onChange={handleInputChange}
 										value={last_name}
 									/>
@@ -421,14 +414,12 @@ const Settings = () => {
 										type={'email'}
 										label={'Email'}
 										onChange={handleInputChange}
-										placeholder={email}
 										value={email}
 									/>
 									<Input
 										id={'mobile_number'}
 										type={'text'}
 										label={'Phone Number'}
-										placeholder={mobile_number}
 										onChange={handleInputChange}
 										value={mobile_number}
 									/>
@@ -455,7 +446,6 @@ const Settings = () => {
 											id={'username'}
 											type={'text'}
 											label={'Username'}
-											placeholder={username}
 											onChange={handleInputChange}
 											value={username}
 										/>
@@ -470,7 +460,6 @@ const Settings = () => {
 										<textarea
 											name='bio'
 											id='bio'
-											placeholder={bio}
 											maxLength={'150'}
 											className='bio-input font-regular border border-border rounded bg-[rgb(183,170,156,8%)] min-h-5
 											text-border max-ms:w-full outline-none placeholders transition-all duration-300'

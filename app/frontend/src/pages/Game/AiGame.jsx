@@ -8,7 +8,7 @@ import Confetti from 'react-confetti'
 
 const GameOverPopup = ({ winner, onRestart, onClose }) => (
 	<>
-		<div class='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
+		<div className='fixed inset-0 bg-black bg-opacity-90 z-10'></div>
 		<div
 			className='absolute top-[44%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 lp:px-10 px-3 z-20
 			flex flex-col justify-center items-center gameoverpopup'
@@ -136,16 +136,14 @@ const AIGame = () => {
 	}
 
 	return (
-		<div
-			className={`backdrop-blur-sm text-primary ${isPaused ? 'bg-backdrop-80' : 'bg-backdrop-40'}`}
-		>
-			<section className='flex'>
+		<>
+			<section className={`relative flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}>
 				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
 					<GameScore
 						player1Score={playerScore}
 						player2Score={aiScore}
 						isPaused={isPaused}
-					/>
+						/>
 					<Timer isPaused={isPaused} timeRemaining={timeRemaining} />
 					<div className='flex-1 w-full flex max-lg:flex-wrap max-lg:justify-around justify-between font-dreamscape-sans'>
 						<AiPongTable
@@ -166,7 +164,7 @@ const AIGame = () => {
 				<GameOverPopup winner={winner} onRestart={restartGame} onClose={handleClose} />
 			)}
 			{showConfetti && <Confetti recycle={false} numberOfPieces={200} />}
-		</div>
+		</>
 	)
 }
 

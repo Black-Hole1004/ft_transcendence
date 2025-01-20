@@ -10,7 +10,7 @@ function CongratulatoryMessage(props) {
 				{props.description}.
 			</p> */}
 			<p className='message-body font-medium'>
-				{props.body}.
+				{props.body}
 			</p>
 		</div>
 	)

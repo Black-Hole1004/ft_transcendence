@@ -31,14 +31,12 @@ const Chat = () => {
 	const [isConversationLoaded, setIsConversationLoaded] = useState(false)
 	const [recipientProfileImage, setrecipientProfileImage] = useState(null)
 
-	const [receiver_id, setReceiver_id] = useState(null)
 	const [Badge_info, setBadge_info] = useState(null)
 	const [recipientXp, setRecipientXp] = useState(null)
 
 
 	useEffect(() => {
 		const sendBlockMessage = () => {
-			console.log('send block message')
 			webSocketRef.current?.send(
 				JSON.stringify({
 					message_type: 'block',
@@ -58,7 +56,6 @@ const Chat = () => {
 		
 		const friendshipStatus = async () => {
 			try {
-				console.log('get friendship status')
 				const response = await axios.get(`${API_CHAT}status/${conversationKey}/`, {
 					headers: {
 						'Content-Type': 'application/json',
@@ -86,10 +83,9 @@ const Chat = () => {
 			const ids = uri[0].split('_')
 			if (ids.length === 2 && ids[0] > ids[1])
 				navigate('/404')
-			console.log('extract conversation key from url')
 			setConversationMessages([])
 			setConversationKey(uri[0])
-			setBlockerId(0)
+			// setBlockerId(0)
 			setIsConversationLoaded(true)
 		} else if (uri.length > 1) {
 			navigate('/404')
@@ -102,7 +98,6 @@ const Chat = () => {
 
 	useEffect(() => {
 		const onWebSocketOpen = () => {
-			// console.log('WebSocket connected')
 			if (isConversationLoaded) {
 				webSocketRef.current?.send(
 					JSON.stringify({
@@ -114,7 +109,6 @@ const Chat = () => {
 		}
 
 		const onWebSocketClose = () => {
-			// console.log('WebSocket disconnected')
 			webSocketRef.current = null
 			setTimeout(initializeWebSocket, 1000)
 		}
@@ -122,7 +116,6 @@ const Chat = () => {
 		const onWebSocketMessage = (e) => {
 			console.log('WebSocket message received')
 			const data = JSON.parse(e.data)
-			// console.log(data.event)
 			if (data.event === 'message') {
 				setConversationMessages((prevMessages) => [
 					...prevMessages,
@@ -133,7 +126,6 @@ const Chat = () => {
 					},
 				])
 			} else if (data.event === 'block') {
-				// console.log('socket: ', data.blocker_id)
 				setBlockerId(data.blocker_id)
 				if (data.blocker_id)
 					setAreFriends(false)
@@ -142,8 +134,6 @@ const Chat = () => {
 
 		const initializeWebSocket = () => {
 			if (!webSocketRef.current) {
-				console.log('initialize Websocket')
-				// console.log(window.location.protocol)
 				const ws = new WebSocket(`wss://${window.location.hostname}/ws/chat/`)
 				webSocketRef.current = ws
 
@@ -157,7 +147,6 @@ const Chat = () => {
 
 		return () => {
 			if (webSocketRef.current) {
-				// console.log('cleanup running')
 				const ws = webSocketRef.current
 
 				ws.removeEventListener('open', onWebSocketOpen)
@@ -173,7 +162,6 @@ const Chat = () => {
 	useEffect(() => {
 		
 		const fetchConversationDetails = async () => {
-			console.log('fetch conversation messages')
 			try {
 				const response = await axios.get(`${API_CHAT}${conversationKey}/`, {
 					headers: {
@@ -181,11 +169,9 @@ const Chat = () => {
 						Authorization: getAuthHeaders().Authorization,
 					},
 				})
-				setReceiver_id(response.data.user_infos[0].id)
 				setRecipientInfo(response.data.user_infos[0])
 				setBadge_info(response.data.user_infos[0].badge) // Badge info of the recipient
 				setRecipientXp(response.data.user_infos[0].xp) // xp of the recipient
-				console.log('Badge info: ==> ', response.data.user_infos[0])
 				const messages = response.data.messages ? response.data.messages : []
 				setConversationMessages(messages)
 				setrecipientProfileImage(response.data.user_infos[0].profile_picture)
@@ -213,7 +199,6 @@ const Chat = () => {
 			const value = messageInputRef.current.value.trim()
 			
 			if (value !== '') {
-				console.log('send message')
 				ws.send(
 					JSON.stringify({
 						sender: currentLoggedInUserId,

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import User
-from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from .models import UserSession

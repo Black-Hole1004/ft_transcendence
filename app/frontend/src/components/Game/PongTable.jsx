@@ -105,7 +105,6 @@ const PongTable = forwardRef(
 			const canvasHeight = canvas.height
 
 			const drawPaddle = (paddle) => {
-				console.log('paddle:', paddle)
 				ctx.fillStyle = paddle.color
 				ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
 				ctx.beginPath()
@@ -135,9 +134,7 @@ const PongTable = forwardRef(
 			const draw = () => {
 				ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 				drawPaddle(player)
-				console.log('Drawing Ai paddle')
 				drawPaddle(ai)
-				console.log('Drawing Ball')
 				ballsRef.current.forEach(drawBall)
 			}
 
