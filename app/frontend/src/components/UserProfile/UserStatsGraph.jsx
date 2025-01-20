@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { useState } from 'react'
 import useAuth from '../../context/AuthContext'
-const API_TIME_SPENT = import.meta.env.VITE_API_TIME_SPENT
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 
@@ -20,11 +19,9 @@ function UserStatsGraph(user) {
 				})
 				const result = await response.json()
 
-				console.log(result)
 
 				if (response.ok && Array.isArray(result.data)) {
 					// Default data for all days of the week
-					console.log('result.data ------->', result.data)
 					const allDays = [
 						{ name: 'Mon', min: 0 },
 						{ name: 'Tue', min: 0 },
@@ -41,8 +38,6 @@ function UserStatsGraph(user) {
 						const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }) // "Mon", "Tue", etc.
 						const minutes = item.total_time_spent_seconds ? Math.round(item.total_time_spent_seconds / 60) : 0
 
-						console.log('dayName:', dayName)
-						console.log('minutes:', minutes)
 						return {
 							name: dayName,
 							min: minutes
@@ -57,11 +52,9 @@ function UserStatsGraph(user) {
 							min: dayData ? dayData.min : day.min
 						}
 					})
-					console.log('mergedData ------->', mergedData)
 					setUserData(mergedData)
 				} else {
 					console.log('Failed to fetch user data')
-					// logout()
 				}
 			} catch (error) {
 				console.error('Error:', error)

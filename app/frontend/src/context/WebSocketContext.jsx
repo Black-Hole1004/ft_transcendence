@@ -36,10 +36,8 @@ export const WebSocketProvider = ({ children }) => {
         fetchNotifications();
 
         const access_token = Cookies.get('access_token');
-        // console.log('Access token:', access_token);
         const endpoint_friend_request = `wss://${HOSTNAME}/ws/friend_request/?access_token=${access_token}`;
 		const socket = new WebSocket(endpoint_friend_request);
-        // console.log('WebSocket connection from WebSocketContext:', socket);
 
         socket.onopen = () => console.log('WebSocket connection established');
         

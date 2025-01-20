@@ -48,7 +48,6 @@ const Custom = () => {
 	const mode = location.state?.mode; // Get the mode from the location state
 
 	const [step, setStep] = useState(1)
-	const xp = 6231
 	const navigate = useNavigate()
 
 	const handleStart = () => {
@@ -63,8 +62,6 @@ const Custom = () => {
 
 	// Handle click for background selection
 	const handleClick = (id) => {
-		console.log('id: ', id)
-		// Only allow click if background is unlocked
 		setBackgroundId(id)
 	}
 
@@ -98,7 +95,6 @@ const Custom = () => {
 		}
 	}
 
-	console.log('backgroundId: ', backgroundId)
 	return (
 		<section className='flex flex-col'>
 			{step === 1 && (
@@ -136,16 +132,7 @@ const Custom = () => {
 									background: `url(/assets/images/tables/table${id}.${id > 6 ? 'gif' : 'webp'})`,
 									backgroundSize: 'cover',
 								}}
-								// disabled={xp / 1000 < id && id > 1 ? true : false}
 							>
-								{/* Overlay to show locked backgrounds */}
-								{/* <div
-									className={`h-full w-full flex justify-center items-center ${xp / 1000 < id && id > 1 ? 'bg-backdrop-80' : ''}`}
-								>
-									{xp / 1000 < id && id > 1 && (
-										<img src='/assets/images/icons/Lock.svg' alt='Locked' />
-									)}
-								</div> */}
 							</button>
 						))}
 					</div>

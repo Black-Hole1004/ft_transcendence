@@ -176,7 +176,6 @@ const Tournament = () => {
 
 	useEffect(() => {
 		// Check and store tournament data
-		console.log(location.state)
 		if (location.state && !tournamentData) {
 			console.log('Setting tournament data from location state...')
 			setTournamentData(location.state)
@@ -196,8 +195,6 @@ const Tournament = () => {
 	if (!tournamentData) {
 		return <Loader />
 	}
-	console.log('semifinal1 winner', semiFinal1winner?.name)
-	console.log('semifinal2 winner', semiFinal2winner?.name)
 
 	return (
 		<section className='flex-1 parent tournament self-center w-[96%] max-lp:flex max-lp:flex-col max-lp:gap-10'>

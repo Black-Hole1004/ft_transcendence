@@ -19,7 +19,6 @@ function UserStatsGraph() {
 
 				if (response.ok && Array.isArray(result.data)) {
 					// Default data for all days of the week
-					console.log('result.data ------->', result.data)
 					const allDays = [
 						{ name: 'Mon', min: 0 },
 						{ name: 'Tue', min: 0 },

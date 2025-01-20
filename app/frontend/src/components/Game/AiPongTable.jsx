@@ -313,6 +313,9 @@ const AIPongTable = ({
 					width: '100%',
 					height: 'auto',
 					maxWidth: `${CONSTANTS.maxCanvasWidth}px`,
+					backgroundSize: 'cover',
+					backgroundImage: `url('/assets/images/tables/table1.webp')`,
+
 				}}
 			/>
 			{!isGameOver && (

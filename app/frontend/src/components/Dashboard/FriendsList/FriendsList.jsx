@@ -46,7 +46,6 @@ function FriendsList() {
 					headers: getAuthHeaders(),
 				});
 				const data = await response.json();
-				console.log('blocked users --------------->', data.blocked_users);
 				setBlockedUsers(data.blocked_users);
 			} catch (error) {
 				console.error('Error fetching blocked status:', error);

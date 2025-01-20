@@ -46,11 +46,9 @@ const Matchmaking = () => {
 			setStatus('connected')
 
 			if (isDirectMatch) {
-				console.log('Starting direct match CURRENT USER:', currentUser)
 				matchmakingService.initiateDirectMatch(invitationId, currentUserId)
 				setStatus('waiting for opponent')
 			} else {
-				console.log('Starting random matchmaking')
 				matchmakingService.findMatch()
 				setStatus('searching')
 			}

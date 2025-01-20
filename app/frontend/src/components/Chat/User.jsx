@@ -5,14 +5,10 @@ const BASE_URL = import.meta.env.VITE_BASE_URL
 function User({ setBlockerId, currentLoggedInUserId, search, conversation, conversationKey, setConversationKey, badge_info }) {
 	const navigate = useNavigate()
 
-	// console.log(currentLoggedInUserId)
-	// console.log(conversationKey)
 	let user_id = search ? conversation.id : conversation.other_user.id
 	const ids = conversationKey?.split('_').map((id) => parseInt(id))
-	// console.log('ids: ', ids)
 	let selectedUserId = null
 	if (ids) selectedUserId = ids[0] === currentLoggedInUserId ? ids[1] : ids[0]
-	// console.log(selectedUserId)
 
 	let username = search ? conversation.username : conversation.other_user.username
 	let profile_picture = search
@@ -41,7 +37,6 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 	}
 
 	const handleConversationSelect = () => {
-		console.log('user')
 		let conversation_key = `${Math.min(currentLoggedInUserId, user_id)}_${Math.max(currentLoggedInUserId, user_id)}`
 
 		setBlockerId(0)
@@ -52,7 +47,6 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 		navigate(`/chat/${conversation_key}`)
 	}
 
-	console.log('conversation: ', conversation)
 
 	return (
 		(conversation.last_message || search) && (

@@ -168,7 +168,6 @@ const Settings = () => {
 			.then((response) => {
 				if (response.status === 200) {
 					// sleep 1 second
-					console.log('response ----->', response.data)
 					// trigger alert wait for 1 second --> clear cookies --> redirect to /
 					triggerAlert('success', 'Account deleted successfully')
 					setTimeout(() => {
@@ -240,7 +239,6 @@ const Settings = () => {
 			})
 			.then((response) => {
 				if (response.status === 200) {
-					console.log('response ----->', response.data)
 					setUser(response.data)
 					setSelectedFile(null)
 					setPreview(null)
@@ -271,7 +269,6 @@ const Settings = () => {
 
 	/**********************  Handle Input Change ************************/
 	const handleInputChange = (e) => {
-		console.log('here')
 		e.target.classList.replace('text-border', 'text-primary')
 		const { name, value } = e.target
 		switch (name) {
@@ -325,8 +322,6 @@ const Settings = () => {
 		setProfile_picture(DEFAULT_PROFILE_PICTURE)
 		setRemoveImage(true)
 	}
-
-	console.log('user ----->', user)
 
 	return (
 		<>

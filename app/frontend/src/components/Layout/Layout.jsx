@@ -71,7 +71,6 @@ function Layout() {
 				console.log('Successfully fetched user data')
 				return data
 			} else {
-				console.log('Failed to fetch user data')
 				Cookies.remove('access_token')
 				Cookies.remove('refresh_token')
 				window.location.href = '/'; // Redirect to /

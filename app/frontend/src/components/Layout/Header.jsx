@@ -62,7 +62,7 @@ function Header({ user_data, notifications, setNotifications }) {
 			className='relative flex items-center justify-between text-primary header-margin font-medium
 			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end z-50'
 		>
-			<AlertWrapper />
+			<AlertWrapper layout={true}/>
 			<Link to={'/dashboard'} aria-label='Go to Dashboard'>
 				<img
 					alt='logo'

@@ -80,7 +80,6 @@ const UserProfile = () => {
 			const data = await response.json();
 			setUser(data);
 		} catch (error) {
-			console.log('here')
 			setError(error.message);
 			navigate(`/profile/${profile_name}/not_found`);
 		}
