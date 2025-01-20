@@ -25,10 +25,10 @@ const AIPongTable = ({
 
 	// Game constants for standardized gameplay
 	const CONSTANTS = {
-		paddleWidth: 20,
-		paddleHeight: 110,
+		paddleWidth: 16,
+		paddleHeight: 80,
 		paddleX: 5,
-		ballRadius: 15,
+		ballRadius: 10,
 		ballInitialSpeed: 2,
 		ballAcceleration: 0.05,
 		paddleSpeed: 600,
