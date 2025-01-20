@@ -598,7 +598,7 @@ class AcceptFriendRequestView(APIView):
                     "message": f"You are now friends with {friend_request.user_from.username}.",
                 }
             )
-            return Response({"message": "Friend request accepted and friendship created"}, status=201)
+            return Response({"message": "You are now friends"}, status=201)
 
         except FriendShipRequest.DoesNotExist:
             return Response({"message": "Friend request not found"}, status=404)

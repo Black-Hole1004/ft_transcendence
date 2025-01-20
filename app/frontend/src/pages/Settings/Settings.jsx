@@ -64,18 +64,14 @@ const Settings = () => {
 			})
 			.catch((error) => {
 				if (error.response) {
-					console.log('Error:', error.response.data)
 					const errorMessage = error.response.data?.error || 'Failed to enable 2FA'
 					triggerAlert('error', errorMessage)
-					console.error('Error:', errorMessage)
 				} else if (error.request) {
 					// Request was made but no response received
 					triggerAlert('error', 'No response from the server')
-					console.error('Error: No response from the server')
 				} else {
 					// Something happened while setting up the request
 					triggerAlert('error', error.message)
-					console.error('Error:', error.message)
 				}
 			})
 	}
@@ -95,10 +91,8 @@ const Settings = () => {
 	const enableDesable2FA = () => {
 		if (!twoFactorAuthEnabled) {
 			setTwoFactorAuthEnabled(true)
-			// do axios call to enable 2FA `api/users/2fa/` using post request with json body {"2fa_status": true}
 			send2faAxiosRequest(true);
 		} else {
-			// console.log(twoFactorAuthEnabled)
 			openDialog()
 		}
 	}
@@ -181,6 +175,10 @@ const Settings = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const fetchedData = await fetchUser()
+			if (fetchedData?.is_2fa_enabled)
+				setTwoFactorAuthEnabled(true)
+			else
+				setTwoFactorAuthEnabled(false)
 			if (fetchedData) setUser(fetchedData)
 		}
 		fetchData()
@@ -226,10 +224,8 @@ const Settings = () => {
 		return userProfileData
 	}
 	const update_user = async () => {
-		console.log('--- update_user ---')
 		const userProfileData = create_form_data(user, selectedFile)
 		if (!userProfileData) return
-		console.log('userProfileData ----->', userProfileData)
 		axios
 			.put(USER_API, userProfileData, {
 				headers: {
@@ -243,25 +239,20 @@ const Settings = () => {
 					setSelectedFile(null)
 					setPreview(null)
 					setRemoveImage(false)
-					console.log('User data updated successfully')
 					triggerAlert('success', 'User data updated successfully')
 					refreshUserData()
 				}
 			})
 			.catch((error) => {
 				if (error.response) {
-					console.log('Error:', error.response.data)
 					const errorMessage = error.response.data?.error || 'Failed to update user data'
 					triggerAlert('error', errorMessage)
-					console.error('Error:', errorMessage)
 				} else if (error.request) {
 					// Request was made but no response received
 					triggerAlert('error', 'No response from the server')
-					console.error('Error: No response from the server')
 				} else {
 					// Something happened while setting up the request
 					triggerAlert('error', error.message)
-					console.error('Error:', error.message)
 				}
 			})
 	}

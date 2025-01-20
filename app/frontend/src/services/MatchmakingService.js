@@ -110,7 +110,6 @@ class MatchmakingService {
 
 	send(data) {
 		if (this.socket?.readyState === WebSocket.OPEN) {
-			console.log('Sending message:', data)
 			this.socket.send(JSON.stringify(data))
 		} else {
 			console.error('Socket is not open')

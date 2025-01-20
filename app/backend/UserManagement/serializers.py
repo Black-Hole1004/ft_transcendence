@@ -32,7 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'email', 'mobile_number', 'is_logged_with_oauth', 'is_logged_with_oauth_for_2fa', 'is_friend', 'status',
-                'username','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture', 'date_joined', 'date_joined_formatted', 'badge_name', 'badge_image'
+                'username','bio', 'password' ,'new_password', 'confirm_password', 'profile_picture', 'date_joined', 'date_joined_formatted', 'badge_name', 'badge_image', 'is_2fa_enabled'
             ]
         read_only_fields = ['id', 'email']
     
