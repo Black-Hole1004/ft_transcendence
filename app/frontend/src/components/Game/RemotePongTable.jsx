@@ -39,8 +39,8 @@ const RemotePongTable = ({
 
 		// Draw a single paddle
 		const drawPaddle = (ctx, x, y, color) => {
-			const width = 20;   // paddle width
-			const height = 110; // paddle height
+			const width = 16;   // paddle width
+			const height = 80; // paddle height
 			const radius = 8.6;  // corner radius
 
 			// Add glow effect
@@ -79,7 +79,7 @@ const RemotePongTable = ({
 			ctx.arc(
 				ballX,
 				ball.y,
-				12, // ball radius 
+				10, // ball radius 
 				0,
 				Math.PI * 2
 			);
@@ -93,8 +93,8 @@ const RemotePongTable = ({
 		const drawPaddles = (ctx, gameState, playerNumber) => {
 			if (!gameState.player1 || !gameState.player2) return;
 
-			const PADDLE_RIGHT_X = canvasSize.width - 30; // Right side position
-			const PADDLE_LEFT_X = 10;    // Left side position
+			const PADDLE_RIGHT_X = canvasSize.width - 16 - 5; // Right side position
+			const PADDLE_LEFT_X = 5;    // Left side position
 
 			if (playerNumber === 1) {
 				// Player 1's view - current player on right

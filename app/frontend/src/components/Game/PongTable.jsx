@@ -25,10 +25,10 @@ const PongTable = forwardRef(
 		const requestRef = useRef(null)
 		const lastTimeRef = useRef(null)
 
-		const paddleWidth = 20
+		const paddleWidth = 16
 		const paddleX = 5
 		const BallInitialSpeed = 1
-		const BallAcceleration = 0.3 // it was 0.1
+		const BallAcceleration = 0.18 // it was 0.1
 		const paddleSpeed = 600
 		const MAX_BALL_SPEED = 20 // it was 10
 
@@ -105,6 +105,8 @@ const PongTable = forwardRef(
 			const canvasHeight = canvas.height
 
 			const drawPaddle = (paddle) => {
+				const width = 16;   // paddle width
+				const radius = 8.6;  // corner radius
 				ctx.fillStyle = paddle.color
 				ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height)
 				ctx.beginPath()

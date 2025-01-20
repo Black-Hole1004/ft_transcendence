@@ -16,7 +16,7 @@ CANVAS_HEIGHT = 400
 
 # Ball Configuration
 BALL_CONFIG = {
-    'RADIUS': 12,
+    'RADIUS': 10,
     'INITIAL_SPEED': 11,
     'VELOCITY_X': 11,
     'VELOCITY_Y': 11, # it was 11
@@ -30,11 +30,11 @@ BALL_CONFIG = {
 
 # Paddle Configuration
 PADDLE_CONFIG = {
-    'WIDTH': 20,
-    'HEIGHT': 110,
+    'WIDTH': 16,
+    'HEIGHT': 80,
     'SPEED': 500,   #Smaller steps but more frequent updates
-    'LEFT_X': 10,            # Left paddle X position
-    'RIGHT_X': CANVAS_WIDTH - 30,  # Right paddle X position,
+    'LEFT_X': 5,            # Left paddle X position
+    'RIGHT_X': CANVAS_WIDTH - 16 - 5,  # Right paddle X position,
     'MOVEMENT_SCALE': 1.5
 }
 
