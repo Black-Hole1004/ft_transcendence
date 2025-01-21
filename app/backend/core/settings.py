@@ -273,11 +273,11 @@ BADGES_URL = "/badges/"  # Custom URL prefix for badges
 BADGES_DIR = BASE_DIR / "badges" # Path to your badges directory
 
 
-TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
-# Add a new setting for tables
-TABLES_STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/public/assets/images/tables'),
-]
+# TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
+# # Add a new setting for tables
+# TABLES_STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'frontend/public/assets/images/tables'),
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -303,10 +303,6 @@ SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
 
 CORS_ALLOW_CREDENTIALS = True
-
-
-
-
 
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = [
@@ -342,10 +338,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-
-# SOCIAL_AUTH_INTRA42_KEY='u-s4t2ud-872f8a9cf89c265c8218ceaaa21de65f3b6b1cadf6d0e816c010c02d3aadc711'
-# SOCIAL_AUTH_INTRA42_SECRET='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'
-# SOCIAL_AUTH_INTRA42_REDIRECT_URI='https://{HOSTNAME}/api/social-auth/complete/intra42/'
 
 # Optional: You can configure scopes or permissions as needed
 SOCIAL_AUTH_INTRA42_SCOPE = ['public']
@@ -391,11 +383,3 @@ CORS_ALLOWED_ORIGINS = [
 ] # todo: to be changed in production
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
-
-# MAILERSEND_SMTP_USERNAME = get_vault_secret(root_token, 'smtp')['SMTP_USER']
-# MAILERSEND_API_KEY=get_vault_secret(root_token, 'emails')['EMAIL_API_KEY']
-# # MAILERSEND_SMTP_PASSWORD = get_vault_secret(root_token, 'smtp')['SMTP_PASSWORD']
-# MAILERSEND_SMTP_HOST = get_vault_secret(root_token, 'smtp')['SMTP_HOST']
-# MAILERSEND_SMTP_PORT = 587
-# ### testing email sending
-# EMAIL_BACKEND = "anymail.backends.mailersend.EmailBackend"

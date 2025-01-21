@@ -280,13 +280,11 @@ const AIPongTable = ({
 	// Handle keyboard controls
 	useEffect(() => {
 		const handleKeyDown = (event) => {
-			event.preventDefault()
 			if (event.key === 'ArrowUp') setIsPlayerMovingUp(true)
 			if (event.key === 'ArrowDown') setIsPlayerMovingDown(true)
 		}
 
 		const handleKeyUp = (event) => {
-			event.preventDefault()
 			if (event.key === 'ArrowUp') setIsPlayerMovingUp(false)
 			if (event.key === 'ArrowDown') setIsPlayerMovingDown(false)
 		}
@@ -305,21 +303,42 @@ const AIPongTable = ({
 			ref={containerRef}
 			className='flex flex-col items-center gap-7 max-lg:order-first max-lg:w-full'
 		>
-			<canvas
-				ref={canvasRef}
-				width={canvasSize.width}
-				height={canvasSize.height}
-				className={`game-table border ${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
-				style={{
-					borderRadius: '25px',
-					width: '100%',
-					height: 'auto',
-					maxWidth: `${CONSTANTS.maxCanvasWidth}px`,
-					backgroundSize: 'cover',
-					backgroundImage: `url('/assets/images/tables/table1.webp')`,
+							<div
+					className={`relative aspect-video bg-cover bg-center border rounded-2xl overflow-hidden
+					${isPaused ? 'brightness-[20%]' : 'brightness-[1]'}`}
+					style={{
+						width: 'clamp(18.125rem, 40.265vw + 10.575rem, 75rem)',
+						maxWidth: `${CONSTANTS.maxCanvasWidth}px`,
+					}}
+				>
+					<div
+						className='absolute inset-0 bg-cover bg-center brightness-50 rounded-2xl'
+						style={{
+							backgroundImage: `url('/assets/images/tables/table${backgroundId}.${backgroundId > 6 ? 'gif' : 'webp'}')`,
+						}}
+					/>
 
-				}}
-			/>
+					<canvas
+						ref={canvasRef}
+						width={canvasSize.width}
+						height={canvasSize.height}
+						className='absolute top-0 left-0 rounded-2xl'
+						style={{
+							width: '100%',
+							height: '100%',
+						}}
+					/>
+				</div>
+				{isPaused && (
+					<div>
+						<p
+							className='text-[100px] font-dreamscape text-center leading-[1.01] game-paused
+							absolute transform top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+						>
+							GAME PAUSED
+						</p>
+					</div>
+				)}
 			{!isGameOver && (
 				<button
 					onClick={handlePause}

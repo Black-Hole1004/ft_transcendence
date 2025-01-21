@@ -47,12 +47,7 @@ class GameWebSocket {
         }
     }
 
-    sendPlayerNumber() {
-        console.log('initializing player : ', {
-            playerNumber: this.playerNumber,
-            userId: this.userId
-        });
-    
+    sendPlayerNumber() {    
         this.send({
             type: 'player_number_init',
             player_number: this.playerNumber,
@@ -62,7 +57,6 @@ class GameWebSocket {
 
     // Add handler for confirmation
     handlePlayerNumberConfirmed(data) {
-        console.log('Player number confirmed:', data.player_number);
         this.callbacks.player_number_confirmed?.(data);
     }
 

@@ -246,7 +246,7 @@ function NotificationDropdown({ notifications, setNotifications, setIsNotificati
 					<div className='flex items-center gap-2'>
 						<img
 							src={notification.profile_picture}
-							className='mtb:border border-0.7 border-primary rounded-full notification-img'
+							className='mtb:border object-cover aspect-square border-0.7 border-primary rounded-full notification-img'
 							alt='User Avatar'
 						/>
 						{notification.flag ? (

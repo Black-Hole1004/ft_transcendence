@@ -23,5 +23,5 @@ pycache/
 /app/vault/unseal_key3.txt
 test.py
 client_secret.json
-/app/backend/UserManagement/token.pickle
+/app/backend/token.pickle
 /app/backend/profile_pictures/

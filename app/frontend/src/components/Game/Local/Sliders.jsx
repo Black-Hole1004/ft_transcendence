@@ -24,7 +24,7 @@ const Sliders = ({ id, size, minSize, maxSize, setSize }) => {
 	return (
 		<div className='flex flex-col gap-5 max-w-[80%]'>
 			<label className='font-regular text-light labels' htmlFor={id}>
-				{id === 'paddle' ? 'Paddle' : 'Ball'} Size: {size}% ({actualSize}px)
+				{id === 'paddle' ? 'Paddle' : 'Ball'} Size: {size}%
 			</label>
 			<div className='pl-8'>
 				<Slider

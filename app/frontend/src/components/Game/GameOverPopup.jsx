@@ -39,7 +39,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 
 					<h1 className={`font-dreamscape text-6xl tracking-wider ${
 						isDraw 
-							? 'text-border drop-shadow-[0_2px_10px_rgba(128,128,128,0.8)]'
+							? 'text-yellow-400 drop-shadow-[0_2px_10px_rgba(250,204,21,0.8)]'
 							: isWinner 
 								? 'text-online drop-shadow-[0_2px_10px_rgba(70,233,210,0.8)]'
 								: 'text-defeat drop-shadow-[0_2px_10px_rgba(245,78,98,0.8)]'
