@@ -183,10 +183,7 @@ class GamePhysics:
         ball['velocityY'] = BALL_CONFIG['VELOCITY_Y']
         
         # generate a random angle between MIN_BOUNCE_ANGLE and MAX_BOUNCE_ANGLE
-        angle = random.uniform(
-            BALL_CONFIG['MIN_BOUNCE_ANGLE'],
-            BALL_CONFIG['MAX_BOUNCE_ANGLE']
-        ) * math.pi / 180
+        angle = random.uniform( BALL_CONFIG['MIN_BOUNCE_ANGLE'], BALL_CONFIG['MAX_BOUNCE_ANGLE'] ) * math.pi / 180
         
         # Set velocities with proper scaling
         ball['velocityX'] = math.cos(angle) * ball['speed'] * direction # Randomize direction

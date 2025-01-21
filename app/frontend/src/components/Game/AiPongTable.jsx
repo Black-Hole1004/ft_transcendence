@@ -120,6 +120,7 @@ const AIPongTable = ({
 				const distance = targetY - currentY;
 
 				// Add deadzone to prevent micro-movements
+				// Only move if we need to move more than 5 pixels (deadzone)
 				const deadzone = 5;
 				if (Math.abs(distance) > deadzone) {
 					const smoothing = 0.5; // Reduces jittery movement
@@ -146,9 +147,9 @@ const AIPongTable = ({
 
 				// Handle collisions and scoring
 				if (checkCollision(ball, playerPaddle)) {
-					handleCollision(ball, playerPaddle, false)
+					handleCollision(ball, playerPaddle, false) // FALSE INDICATES PLAYER PADDLE
 				} else if (checkCollision(ball, aiPaddle)) {
-					handleCollision(ball, aiPaddle, true)
+					handleCollision(ball, aiPaddle, true) // TRUE INDICATES AI PADDLE
 				} else {
 					ball.x = nextX
 				}
@@ -157,8 +158,10 @@ const AIPongTable = ({
 				if (ball.x < 0 || ball.x > canvasSize.width) {
 					const scorer = ball.x < 0 ? 'ai' : 'player'
 					if (scorer === 'ai') {
+						// AI scored, record successfull position
 						ai.recordHit({ x: ball.x, y: ball.y }, aiY)
 					} else {
+						 // AI missed, record failure
 						ai.recordMiss()
 					}
 					updateScore(scorer)

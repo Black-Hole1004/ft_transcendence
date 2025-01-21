@@ -32,7 +32,6 @@ class GameWebSocket {
 
         try {
             const wsUrl = `wss://${HOSTNAME}/ws/game/${gameId}/`;
-            console.log('Attempting to connect to:', wsUrl);
 
             if (this.socket) {
                 this.socket.close();

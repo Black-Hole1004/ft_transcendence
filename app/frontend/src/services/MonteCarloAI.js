@@ -40,7 +40,7 @@ class MonteCarloAI {
 	}
 
 	predictBallPosition(ballPosition, ballVelocity, paddle) {
-		let predictions = [] // Store 100 different predictions
+		let predictions = [] // Store 100 different predictions (x, y) for the ball position
 		// Get the top 3 most successful hit positions from memory
 		const hitPatterns = Array.from(this.successfulMovePatterns.entries())
 			.sort((a, b) => b[1] - a[1]) // Sort by number of successful hits
