@@ -1,6 +1,6 @@
 .PHONY: all up build updetached down prune scan re
 
-HOSTNAME := e3r1p5.1337.ma
+HOSTNAME := localhost
 PWD = $(shell pwd)
 all: up
 

@@ -77,7 +77,7 @@ def get_vault_secret(token, secret_path):
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-HOSTNAME = os.environ.get('HOSTNAME_ENV', 'e3r1p5.1337.ma')
+HOSTNAME = os.environ.get('HOSTNAME_ENV', 'localhost')
 PORT = os.environ.get('PORT_ENV', '443')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -308,7 +308,7 @@ CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = [
     f'{HOSTNAME}:{PORT}',
     '127.0.0.1',
-    'e3r1p5.1337.ma',
+    'localhost',
     f'{HOSTNAME}',
     f'{HOSTNAME}:{PORT}',
     'e2r9p7.1337.ma'
