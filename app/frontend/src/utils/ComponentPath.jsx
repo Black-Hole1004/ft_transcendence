@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import useAuth from "../context/AuthContext"
 import PrivateRoute from './PrivateRoute';
 
-const Loader = React.lazy(() => import('../components/Loader/Loader'))
 const Home = React.lazy(() => import('../pages/Home/Home'))
 const Chat = React.lazy(() => import('../pages/Chat/Chat'))
 const Custom = React.lazy(() => import('../pages/Custom/Custom'))
@@ -18,7 +17,6 @@ const LocalGameSetup = React.lazy(() => import('../pages/Game/LocalGameSetup'))
 const LocalGame = React.lazy(() => import('../pages/Game/LocalGame'))
 const AiGame = React.lazy(() => import('../pages/Game/AiGame'))
 const RemoteGame = React.lazy(() => import('../pages/Game/RemoteGame'))
-const SearchingAnimation = React.lazy(() => import('../components/Game/Remote/SearchingAnimation'))
 const MatchMaking = React.lazy(() => import('../components/Game/MatchMaking'))
 const CustomTournament = React.lazy(() => import('../pages/CustomTournament/CustomTournament'))
 const TournamentSetup = React.lazy(() => import('../pages/TournametSetup/TournametSetup'))
@@ -31,10 +29,8 @@ const ComponentPath = () => {
 			<Routes>
 				{/* Redirect to /Dashboard if authenticated on the home path */}
 				<Route path="/" element={authTokens && authTokens.access_token ? <Navigate to="/dashboard" replace /> : <Home />} />
-					<Route path="/searching" element={<SearchingAnimation />} />
 				{/* Layout wrapping all private routes */}
 				<Route element={<PrivateRoute><Layout /></PrivateRoute>}>
-					<Route path="/loader" element={<Loader />} />
 					<Route path="/Chat" element={<Chat />} />
 					<Route path="/Settings" element={<Settings />} />
 					<Route path="/Dashboard" element={<Dashboard />} />
