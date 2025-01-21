@@ -6,7 +6,6 @@ import PrivateRoute from './PrivateRoute';
 const Loader = React.lazy(() => import('../components/Loader/Loader'))
 const Home = React.lazy(() => import('../pages/Home/Home'))
 const Chat = React.lazy(() => import('../pages/Chat/Chat'))
-const Game = React.lazy(() => import('../pages/Game/Game'))
 const Custom = React.lazy(() => import('../pages/Custom/Custom'))
 const Profile = React.lazy(() => import('../pages/Profile/Profile'))
 const Settings = React.lazy(() => import('../pages/Settings/Settings'))
@@ -24,7 +23,6 @@ const MatchMaking = React.lazy(() => import('../components/Game/MatchMaking'))
 const CustomTournament = React.lazy(() => import('../pages/CustomTournament/CustomTournament'))
 const TournamentSetup = React.lazy(() => import('../pages/TournametSetup/TournametSetup'))
 const LocalGameTour = React.lazy(() => import('../pages/Game/LocalGameTour'))
-const Match = React.lazy(() => import('../components/Game/Match'))
 
 const ComponentPath = () => {
 	const { authTokens } = useAuth();

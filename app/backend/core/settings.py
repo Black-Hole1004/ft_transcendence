@@ -77,7 +77,7 @@ def get_vault_secret(token, secret_path):
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-HOSTNAME = os.environ.get('HOSTNAME_ENV', 'localhost')
+HOSTNAME = os.environ.get('HOSTNAME_ENV', 'e3r1p5.1337.ma')
 PORT = os.environ.get('PORT_ENV', '443')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -91,7 +91,7 @@ SOCIAL_AUTH_INTRA42_SECRET = get_vault_secret(root_token, 'django')['SOCIAL_AUTH
 SOCIAL_AUTH_INTRA42_REDIRECT_URI = f'https://{HOSTNAME}/api/social-auth/complete/intra42/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Application definition
 INSTALLED_APPS = [
@@ -273,11 +273,11 @@ BADGES_URL = "/badges/"  # Custom URL prefix for badges
 BADGES_DIR = BASE_DIR / "badges" # Path to your badges directory
 
 
-TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
-# Add a new setting for tables
-TABLES_STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/public/assets/images/tables'),
-]
+# TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
+# # Add a new setting for tables
+# TABLES_STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'frontend/public/assets/images/tables'),
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -304,15 +304,11 @@ CSRF_COOKIE_SAMESITE = 'None'
 
 CORS_ALLOW_CREDENTIALS = True
 
-
-
-
-
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = [
     f'{HOSTNAME}:{PORT}',
     '127.0.0.1',
-    'localhost',
+    'e3r1p5.1337.ma',
     f'{HOSTNAME}',
     f'{HOSTNAME}:{PORT}',
     'e2r9p7.1337.ma'
