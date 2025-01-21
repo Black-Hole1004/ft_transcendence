@@ -10,12 +10,6 @@ import PongTable from '../../components/Game/PongTable'
 import { useTournament } from '../../context/TournamentContext'
 import Loader from '../../components/Loader/Loader'
 
-const SuddenDeathMessage = () => (
-	<div className='fixed top-24 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded text-center z-50 animate-pulse'>
-		<span className='font-heavy'>SUDDEN DEATH!</span>
-		<span className='font-medium ml-2'>First PLayer To Score Wins!</span>
-	</div>
-)
 
 // --smoky-black: #0E0B0Aff;
 const GameOverPopup = ({ winner, onQuit, onProceed }) => (
@@ -268,10 +262,7 @@ const LocalGame = () => {
 					<Timer
 						isPaused={isPaused}
 						timeRemaining={timeRemaining}
-						isSuddenDeath={isSuddenDeath}
 					/>
-					{/* Add the sudden death message here */}
-					{isSuddenDeath && <SuddenDeathMessage />}
 				</div>
 				<div className='relative w-full flex justify-center font-dreamscape-sans'>
 					<Player

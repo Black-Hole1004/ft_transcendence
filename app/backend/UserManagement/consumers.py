@@ -24,6 +24,7 @@ from django.db import models
 
 import logging as log
 
+
 User = get_user_model()
 
 class FriendRequestConsumer(AsyncWebsocketConsumer):
@@ -655,6 +656,8 @@ class AcceptFriendRequestConsumer(AsyncWebsocketConsumer):
 #------------------------------------------------------------------------------------
 class NotificationConsumer(AsyncWebsocketConsumer):
 
+    connected_users = defaultdict(int)
+
     async def connect(self):
         # Add debug logging
         print("Starting connection attempt...")
@@ -690,6 +693,10 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                     self.group_name,
                     self.channel_name
                 )
+
+                # Increment the user's active tab count
+                self.connected_users[self.user.id] += 1
+                print(f"\n\n\nConnected users -------> {self.connected_users}\n\n\n")
                 
                 # Accept connection before triggering signals
                 await self.accept()
@@ -700,6 +707,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                     request=self.scope.get('request', None),
                     user=self.user
                 )
+
                 
                 await self.set_user_status('online')
                 await self.notify_friends('online')
@@ -715,26 +723,33 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
         if hasattr(self, 'user') and self.user:
             try:
-                # Remove user from connected users list
-    
-                # Trigger the user_logged_out signal
-                await database_sync_to_async(user_logged_out.send)(
-                    sender=self.__class__, 
-                    request=self.scope.get('request', None),
-                    user=self.user
-                )
-                await self.set_user_status('offline')
-                await self.notify_friends('offline')
+                # Decrement the user's active tab count
+                self.connected_users[self.user.id] -= 1
+                print(f"Active tabs for {self.user.username}: {self.connected_users[self.user.id]}")
+                
+                # If all tabs are closed, set the user status to offline
+                if self.connected_users[self.user.id] == 0:
+                    await self.set_user_status('offline')
+                    await self.notify_friends('offline')
+                    
+                    # Trigger the user_logged_out signal
+                    await database_sync_to_async(user_logged_out.send)(
+                        sender=self.__class__, 
+                        request=self.scope.get('request', None),
+                        user=self.user
+                    )
+                    
+                # Remove from the group
+                if hasattr(self, 'group_name'):
+                    await self.channel_layer.group_discard(
+                        self.group_name,
+                        self.channel_name
+                    )
+                    
             except Exception as e:
                 print(f"Error setting user offline: {e}")
         else:
             print("No user found during disconnect")
-
-        if hasattr(self, 'group_name'):
-            await self.channel_layer.group_discard(
-                self.group_name,
-                self.channel_name
-            )
 
     async def notify_friends(self, status):
         """Notify friends about user's status change (online/offline)"""

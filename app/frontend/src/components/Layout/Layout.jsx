@@ -124,14 +124,14 @@ function Layout() {
 		const newSocket = new WebSocket(WP_NOTIFY + '?access_token=' + access_token)
 
 		newSocket.onopen = () => {
-			// console.log('---- WebSocket Connected from Notify Consumer ----')
+			console.log('---- WebSocket Connected from Notify Consumer ----')
 		}
 		newSocket.onmessage = (event) => {
 			const data = JSON.parse(event.data)
 		}
 
 		newSocket.onclose = (event) => {
-			// console.log('WebSocket Closed form Notify Consumer:', event)
+			console.log('WebSocket Closed form Notify Consumer:', event)
 		}
 
 		newSocket.onerror = (error) => {
