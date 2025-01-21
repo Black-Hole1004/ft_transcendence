@@ -8,5 +8,7 @@ echo "Starting entry point script..."
 # echo "Running migrations..."
 python manage.py makemigrations && python manage.py migrate
 
+# python manage.py collectstatic  --clear --no-input
+
 echo "Starting Django server..."
 python manage.py runserver 0.0.0.0:8000

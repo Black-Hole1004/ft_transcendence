@@ -11,6 +11,9 @@ RUN npm install
 COPY . .
 
 EXPOSE 5173
-#sleep infinity
-# CMD [ "sleep", "infinity" ]
+
+# RUN npm run build
+
+# CMD ["npm", "run", "preview", "--", "--port", "5173"]
+
 CMD ["npm", "run", "dev"]

@@ -91,7 +91,7 @@ SOCIAL_AUTH_INTRA42_SECRET = get_vault_secret(root_token, 'django')['SOCIAL_AUTH
 SOCIAL_AUTH_INTRA42_REDIRECT_URI = f'https://{HOSTNAME}/api/social-auth/complete/intra42/'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 INSTALLED_APPS = [
@@ -133,8 +133,8 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
@@ -261,23 +261,35 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-# for  profile pictures
-STATIC_URL = "profile_pictures/" # URL prefix for your profile pictures
+# # for  profile pictures
+# STATIC_URL = "profile_pictures/" # URL prefix for your profile pictures
 
+# STATICFILES_DIRS = [
+#     BASE_DIR / "profile_pictures", # Path to your profile pictures directory
+# ]
+
+# # for badges
+# BADGES_URL = "/badges/"  # Custom URL prefix for badges
+# BADGES_DIR = BASE_DIR / "badges" # Path to your badges directory
+
+
+
+
+
+
+# Base settingsS
+STATIC_URL = '/static/'  # Base URL for all static files
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Where collectstatic will put files
+
+# Your specific static directories
 STATICFILES_DIRS = [
-    BASE_DIR / "profile_pictures", # Path to your profile pictures directory
+    ('badges', BASE_DIR / 'badges'),           # This will create /static/badges/
+    ('profile_pictures', BASE_DIR / 'profile_pictures')  # This will create /static/profile_pictures/
 ]
 
-# for badges
-BADGES_URL = "/badges/"  # Custom URL prefix for badges
-BADGES_DIR = BASE_DIR / "badges" # Path to your badges directory
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 
-# TABLES_STATIC_URL = "game_tables/" # URL prefix for your game table background images
-# # Add a new setting for tables
-# TABLES_STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'frontend/public/assets/images/tables'),
-# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

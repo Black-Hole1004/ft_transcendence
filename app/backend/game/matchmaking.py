@@ -136,7 +136,6 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                 # Store and start search
                 self.matchmaking_queue[self.channel_name]['searching'] = True
                 self.search_task = asyncio.create_task(self.find_opponent())
-                # await self.find_opponent()
             
             elif data['type'] == 'direct_match':
                 # Check if user is searching in queue

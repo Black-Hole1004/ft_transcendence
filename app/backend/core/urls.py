@@ -42,7 +42,6 @@ urlpatterns = [
     path('api/user/2fa/verify/', Verify2faView.as_view(), name='2fa-verify'),
 
     path('api/social-auth/', include('social_django.urls', namespace='social')),
-    # added by tabi3a : check user existence
     path('api/check-user/', views.check_user_exists, name='check-user'),
     
     path('api/game/', include('game.urls')),
@@ -63,6 +62,5 @@ urlpatterns = [
     path('api/check-blocked-status/', views.check_blocked_status, name='check-blocked-status'),
 ]
 
-# Add this to serve badges specifically
-if settings.DEBUG:  # Serve only in development mode
-    urlpatterns += static(settings.BADGES_URL, document_root=settings.BADGES_DIR)
+# # Add this to serve badges specifically
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

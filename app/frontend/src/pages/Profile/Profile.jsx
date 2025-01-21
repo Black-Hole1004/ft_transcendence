@@ -115,7 +115,7 @@ const UserProfile = () => {
 					<div className='font-dreamscape text-primary cards-title text-center relative'>
 						<Link to={'/dashboard'}>
 							<img
-								src='../../../dist/assets/images/icons/arrow.svg'
+								src='../../../dist/assets/images/icons/Arrow.png'
 								className='arrow absolute left-[4%]'
 								alt='arrow icon'
 							/>
