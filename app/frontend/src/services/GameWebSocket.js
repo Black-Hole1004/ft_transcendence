@@ -138,8 +138,6 @@ class GameWebSocket {
             const handler = handlers[data.type];
             if (handler) {
                 handler(data);
-            } else {
-                console.warn('Unknown message type:', data.type);
             }
 
         } catch (error) {

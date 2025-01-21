@@ -15,18 +15,14 @@ function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture, isCu
 	const containerClasses = `user-container flex items-center justify-between font-dreamscape-sans
 		rounded-md transition-all duration-300
 		${isCurrentUser 
-			? 'bg-[#BE794A]/15 hover:bg-[#BE794A]/30' // Using 20% opacity, increasing to 30% on hover
+			? 'bg-[rgba(183,170,156,0.2)] hover:bg-[rgba(183,170,156,0.4)]'
 			: 'hover:bg-[rgba(183,170,156,0.2)]'
 		}`;
-
-	const textClasses = `text-primary nickname-size leading-[1] truncate mr-1 ${isCurrentUser ? 'text-[#E6DDC6]' : ''}`
-
-	const profilePicClasses = `h-[76%] aspect-square object-cover rounded-full select-none ${isCurrentUser ? 'ring-2 ring-[#E6DDC6]' : 'ring-1 ring-primary'}`
 
 	return (
 		<div className={containerClasses}>
 			<div className='h-full flex items-center xl:gap-3 tb:gap-2 gap-1 w-[68%]'>
-				<p className={`nickname-size ${isCurrentUser ? 'text-[#E6DDC6]' : ''}`}>#{rank}</p>
+				<p className={`nickname-size`}>#{rank}</p>
 				<img
 					src={getProfilePicture(profilePicture)}
 					alt={nickname}
@@ -50,7 +46,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture, isCu
 					}}
 				/>
 				<span
-					className={`achievements-titles-font ${isCurrentUser ? 'text-[#E6DDC6]' : ''}`}
+					className={`achievements-titles-font`}
 				>
 					{`${xp.toLocaleString()}XP`}
 				</span>

@@ -11,9 +11,9 @@ import { useTournament } from '../../context/TournamentContext'
 import Loader from '../../components/Loader/Loader'
 
 const SuddenDeathMessage = () => (
-	<div className='fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-pulse'>
-		<span className='font-bold'>SUDDEN DEATH!</span>
-		<span className='ml-2'>First PLayer To Score Wins !!</span>
+	<div className='fixed top-24 left-1/2 transform -translate-x-1/2 bg-red-600/90 text-white px-6 py-3 rounded text-center z-50 animate-pulse'>
+		<span className='font-heavy'>SUDDEN DEATH!</span>
+		<span className='font-medium ml-2'>First PLayer To Score Wins!</span>
 	</div>
 )
 

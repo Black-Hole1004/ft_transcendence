@@ -6,7 +6,7 @@ import { useTournament } from '../../context/TournamentContext'
 import MatchWarning from '../../components/Tournament/MatchWarning'
 import ChampionCelebration from '../../components/Tournament/ChampionCelebration'
 
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom' // Make sure this is included
 import Loader from '../../components/Loader/Loader'
 
@@ -254,7 +254,7 @@ const Tournament = () => {
 
 			{/* Tournament History */}
 			<div className='tournament-history flex flex-col items-center gap-5 max-lp:order-last'>
-				<h3 className='font-dreamscape-sans text-light round shadow'>SEMIFINAL</h3>
+				<h3 className='font-dreamscape-sans text-light round'>SEMIFINAL</h3>
 				{/* {Match 1 } */}
 				<Match
 					player1={player1?.name}
@@ -268,7 +268,7 @@ const Tournament = () => {
 					score1={tournamentScores.semifinal2.player1Score}
 					score2={tournamentScores.semifinal2.player2Score}
 				/>
-				<h3 className='font-dreamscape-sans text-light round shadow'>FINAL</h3>
+				<h3 className='font-dreamscape-sans text-light round'>FINAL</h3>
 				<Match
 					player1={semiFinal1winner?.name}
 					player2={semiFinal2winner?.name}
@@ -461,7 +461,7 @@ const Match = ({ player1, player2, score1, score2 }) => {
 			</div>
 
 			<div className='absolute flex items-center w-px rotate-12 h-full bg-border left-1/2 transform -translate-x-1/2'>
-				<p className='vs text-light absolute left-1/2 transform -translate-x-1/2 font-dreamscape -rotate-12 z-10 shadow'>VS</p>
+				<p className='vs text-light absolute left-1/2 transform -translate-x-1/2 font-dreamscape -rotate-12 z-10'>VS</p>
 			</div>
 		</div>
 	)

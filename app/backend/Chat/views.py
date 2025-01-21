@@ -18,18 +18,24 @@ from UserManagement.models import Achievement
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def ConversationsList(request):
-    conversations = (
-        Conversation.objects.filter(user1_id=request.user.id) |
-        Conversation.objects.filter(user2_id=request.user.id)
-    ).annotate(
-    last_sent_datetime=F('last_message__sent_datetime')
-    ).order_by('-last_sent_datetime')
+    try:
+        conversations = (
+            Conversation.objects.filter(user1_id=request.user.id) |
+            Conversation.objects.filter(user2_id=request.user.id)
+        ).annotate(
+        last_sent_datetime=F('last_message__sent_datetime')
+        ).order_by('-last_sent_datetime')
 
 
-    serializer = ConversationSerializer(conversations, context={'request': request}, many=True)
-    return Response({'id': request.user.id,
-                    'conversations': serializer.data
-                    })
+        serializer = ConversationSerializer(conversations, context={'request': request}, many=True)
+        return Response({'id': request.user.id,
+                        'conversations': serializer.data
+                        })
+    except Exception as e:
+        return Response({
+            'status': 'error',
+            'message': str(e)
+        }, status=400)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -45,33 +51,38 @@ def getUserInfos(request, conversation_key):
     
     user_id = int(ids[0]) if int(ids[0]) != request.user.id else int(ids[1])
 
-    # Get user info
-    user_infos = User.objects.filter(id=user_id)
-    
-    # Get conversation messages if they exist
-    conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
-    if conversation:
-        messages = Message.objects.filter(conversation_id=conversation.id)
-        message_serializer = MessageSerializer(messages, context={'request': request}, many=True)
+    try:
+        # Get user info
+        user_infos = User.objects.filter(id=user_id)
+        
+        # Get conversation messages if they exist
+        conversation = Conversation.objects.filter(conversation_key=conversation_key).first()
+        if conversation:
+            messages = Message.objects.filter(conversation_id=conversation.id)
+            message_serializer = MessageSerializer(messages, context={'request': request}, many=True)
 
-    # Serialize user info and add badge
-    user_serializer = UserInfosSerializer(user_infos, context={'request': request}, many=True)
-    user_data = user_serializer.data
-    
-    # Add badge info for each user
-    for user_info in user_data:
-        user = user_infos.get(id=user_info['id'])
-        user_info['badge'] = Achievement.get_badge(user.xp)
-        user_info['xp'] = user.xp
+        # Serialize user info and add badge
+        user_serializer = UserInfosSerializer(user_infos, context={'request': request}, many=True)
+        user_data = user_serializer.data
+        
+        # Add badge info for each user
+        for user_info in user_data:
+            user = user_infos.get(id=user_info['id'])
+            user_info['badge'] = Achievement.get_badge(user.xp)
+            user_info['xp'] = user.xp
 
-    response = {
-        'user_infos': user_data,
-    }
-    if conversation:
-        response['messages'] = message_serializer.data
-    
-    return Response(response)
-
+        response = {
+            'user_infos': user_data,
+        }
+        if conversation:
+            response['messages'] = message_serializer.data
+        
+        return Response(response)
+    except Exception as e:
+        return Response({
+            'status': 'error',
+            'message': str(e)
+        }, status=400)
 
 
 
@@ -81,13 +92,19 @@ def getUserInfos(request, conversation_key):
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 def getSearchedUsers(request, user):
-    users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)[:10]
+    try:
+        users = User.objects.filter(username__startswith=user).exclude(id=request.user.id)[:10]
 
-    search_serializer = SearchResultSerializer(users, context={'request': request}, many=True)
+        search_serializer = SearchResultSerializer(users, context={'request': request}, many=True)
 
-    return Response({
-        'search_result': search_serializer.data
-    })
+        return Response({
+            'search_result': search_serializer.data
+        })
+    except Exception as e:
+        return Response({
+            'status': 'error',
+            'message': str(e)
+        }, status=400)
 
 
 @api_view(['GET'])
@@ -116,7 +133,7 @@ def getFriendshipStatus(request, conversation_key):
         return Response({
             'status': 'error',
             'message': str(e)
-        }, status=404)
+        }, status=400)
 
 
 @api_view(['GET'])

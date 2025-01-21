@@ -1,5 +1,0 @@
-import{j as a}from"./index-B4bz0GvT.js";import{B as i}from"./Button-DzeJS1SW.js";const l=({handleCancel:r,opponentFound:e})=>a.jsx(a.Fragment,{children:a.jsxs("div",{className:`animation-container absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2
-				flex text-primary font-dreamscape select-none z-20`,children:[["S","E","A","R","C","H","I","N","G",".",".","."].map((t,n)=>a.jsx("marquee",{direction:"down",scrollamount:20+Math.ceil(Math.random()*10%10),style:{transitionDelay:`${n*50}ms`},className:`char ${t==="I"||t==="."?"marquee-sm":"marquee-lg"}
-						searching-animation transition-opacity duration-300 ${e?"opacity-0":"opacity-100"}`,children:a.jsx("div",{children:t})},n)),a.jsx("div",{className:`animation-container absolute char searching-animation
-						transition-opacity duration-1000 ${e?"opacity-100":"opacity-0"}`,children:"SEARCHING..."}),a.jsx(i,{className:`rounded border border-border font-medium cancel-button
-						absolute left-1/2 top-full mt-10 transform -translate-x-1/2`,type:"submit",onClick:r,children:"Cancel"})]})});export{l as default};

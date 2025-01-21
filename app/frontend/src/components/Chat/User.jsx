@@ -85,7 +85,7 @@ function User({ setBlockerId, currentLoggedInUserId, search, conversation, conve
 				</div>
 				{search && badge_info?.image && (
 					<img
-					src={badge_info.image}
+						src={badge_info.image}
 						className='select-none aspect-square object-cover search-badge max-tb:hidden'
 					/>
 				)}

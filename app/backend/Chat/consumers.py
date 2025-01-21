@@ -272,8 +272,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def _handle_block(self, data, conversation_key, other_participant_id):
         if data['blocker'] == self.userid:
-            print('heeeeelloooo')
-            print('blocker id: ', data['blocker_id'])
             conversation = await self.check_conversation_existed(
                 conversation_key,
                 other_participant_id

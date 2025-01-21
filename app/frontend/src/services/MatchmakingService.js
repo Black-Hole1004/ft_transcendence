@@ -49,7 +49,6 @@ class MatchmakingService {
 	handleMessage(event) {
 		try {
 			const data = JSON.parse(event.data)
-			console.log('Received message:', data)
 
 			switch (data.type) {
 				case 'status':
@@ -112,7 +111,7 @@ class MatchmakingService {
 		if (this.socket?.readyState === WebSocket.OPEN) {
 			this.socket.send(JSON.stringify(data))
 		} else {
-			console.error('Socket is not open')
+			// console.error('Socket is not open')
 			this.callbacks.onError?.({
 				type: 'error',
 				message: 'Connection lost. Please refresh the page.',
