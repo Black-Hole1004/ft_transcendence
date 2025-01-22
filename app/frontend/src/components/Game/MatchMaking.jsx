@@ -19,13 +19,22 @@ const Matchmaking = () => {
 	const [statement, setStatement] = useState('')
 
 	useEffect(() => {
+		// Handle refresh - simple redirect
+		const handleBeforeUnload = () => {
+			navigate('/dashboard', { replace: true })
+		}
+
+		window.addEventListener('beforeunload', handleBeforeUnload)
+		return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+	}, [])
+
+	useEffect(() => {
 		const currentUser = location.state?.currentUser
 		const currentUserId = currentUser?.id
 		const isDirectMatch = location.state?.isDirectMatch
 		const invitationId = location.state?.invitationId
 
-		if (!currentUser || !currentUserId) {
-			console.error('No user data available. Redirecting to dashboard...')
+		if (!currentUser || !currentUserId) {	
 			navigate('/dashboard', { replace: true }) // Using replace to prevent back button issues
 			return
 		}
@@ -38,7 +47,6 @@ const Matchmaking = () => {
 
 		// Cancel any ongoing matchmaking before starting new one
 		matchmakingService.cancelSearch() // CAUSES ERROR
-
 
 		matchmakingService.connect(currentUserId)
 
@@ -107,7 +115,7 @@ const Matchmaking = () => {
 							gameId: data.game_id,
 							opponent: data.opponent,
 							currentUser: data.current_user,
-                            backgroundId: backgroundId,
+							backgroundId: backgroundId,
 						},
 					})
 				}, 1000) // Wait 1 second before backup navigation
@@ -161,18 +169,18 @@ const Matchmaking = () => {
 		switch (status) {
 			case 'other_tab_active':
 				return (
-					<div className="w-full flex flex-col items-center gap-8 bg-backdrop-80 p-12 rounded-lg shadow-xl">
-						<h2 className="text-3xl font-bold">Matchmaking In Progress</h2>
+					<div className='w-full flex flex-col items-center gap-8 bg-backdrop-80 p-12 rounded-lg shadow-xl'>
+						<h2 className='text-3xl font-bold'>Matchmaking In Progress</h2>
 						<p>This game is being handled in another tab</p>
 						<p>Please switch to that tab or close this one</p>
-						<button 
+						<button
 							onClick={handleCancel}
-							className="px-8 py-3 bg-primary text-backdrop-80 rounded-lg"
+							className='px-8 py-3 bg-primary text-backdrop-80 rounded-lg'
 						>
 							Back to Menu
 						</button>
 					</div>
-				);
+				)
 			case 'match_found':
 				return (
 					<MatchFoundDisplay

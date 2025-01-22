@@ -177,12 +177,10 @@ const Tournament = () => {
 	useEffect(() => {
 		// Check and store tournament data
 		if (location.state && !tournamentData) {
-			console.log('Setting tournament data from location state...')
 			setTournamentData(location.state)
 		}
 		// Handle navigation if no data is available
 		else if (!location.state && !tournamentData && tournamentState === 'not_started') {
-			console.log('No tournament data found, navigating to setup...')
 			navigate('/CustomTournament')
 		}
 	}, [location.state, tournamentData, setTournamentData, navigate, tournamentState])

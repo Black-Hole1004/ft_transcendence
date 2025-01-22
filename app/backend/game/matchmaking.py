@@ -7,59 +7,71 @@ from UserManagement.models import Achievement
 from django.core.cache import cache
 import time
 from django.contrib.auth import get_user_model
+from Chat.models import BlockedUser
+from django.db import models
 
 User = get_user_model()
 
 class MatchmakingConsumer(AsyncWebsocketConsumer):
     matchmaking_queue = {}
     direct_match_pairs = {}  # Store invitation_id -> first_user_data mapping
+    countdown_tasks = {}  # Store countdown tasks by game_id
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.search_task = None  # this to track the search task (solved the issue with disconnect doesn't get called)
+        self.search_task = None  # this to track the search task (solved the issue with disconnect doesn't get called when the user disconnects)
     
     async def send_countdown(self, channel_name, match_data):
         """Send synchronized countdown before match starts"""
-        countdown_start = 5
-        
-        for i in range(countdown_start, 0, -1):
-            # Use JSON dumps consistently for both players
-            message = json.dumps({
+        game_id = match_data['game_id']
+        # Store the task
+        self.countdown_tasks[game_id] = asyncio.current_task()
+        try:
+            
+            countdown_start = 5
+            
+            for i in range(countdown_start, 0, -1):
+                # Use JSON dumps consistently for both players
+                message = json.dumps({
+                    **match_data,
+                    'countdown': i
+                })
+                
+                if channel_name == self.channel_name:
+                    # Current user - use send directly
+                    await self.send(text_data=message)
+                else:
+                    # Other player - use channel layer
+                    await self.channel_layer.send(
+                        channel_name,
+                        {
+                            'type': 'match_notification',
+                            'data': message
+                        }
+                    )
+                await asyncio.sleep(1)
+                
+            # Send final navigation message
+            final_message = json.dumps({
                 **match_data,
-                'countdown': i
+                'countdown': 0,
+                'should_navigate': True
             })
             
             if channel_name == self.channel_name:
-                # Current user - use send directly
-                await self.send(text_data=message)
+                await self.send(text_data=final_message)
             else:
-                # Other player - use channel layer
                 await self.channel_layer.send(
                     channel_name,
                     {
                         'type': 'match_notification',
-                        'data': message
+                        'data': final_message
                     }
                 )
-            await asyncio.sleep(1)
-            
-        # Send final navigation message
-        final_message = json.dumps({
-            **match_data,
-            'countdown': 0,
-            'should_navigate': True
-        })
-        
-        if channel_name == self.channel_name:
-            await self.send(text_data=final_message)
-        else:
-            await self.channel_layer.send(
-                channel_name,
-                {
-                    'type': 'match_notification',
-                    'data': final_message
-                }
-            )
+        finally:
+            # Remove the task
+            if game_id in self.countdown_tasks:
+                del self.countdown_tasks[game_id]
     
     async def connect(self):
         """Handle new WebSocket connection"""
@@ -169,9 +181,15 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
         """Handle WebSocket disconnection."""
         print("Disconnecting from matchmaking service")
         try:
+            # for game_id, match_info in self.active_matches.items():
+            #     if self.user_id in match_info['player_ids']:
+            #         if game_id in self.countdown_tasks:
+            #             self.countdown_tasks[game_id].cancel()
+            #         break
             # Cancel the search task if it exists
             if self.search_task:
                 self.search_task.cancel()
+            # clean up from matchmaking queue
             if self.channel_name in self.matchmaking_queue:
                 player_info = self.matchmaking_queue[self.channel_name]
                 print(f"User {player_info['username']} disconnecting from matchmaking service")
@@ -195,6 +213,14 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
         """Get fresh user data from database"""
         user = User.objects.get(id=user_id)
         return user
+
+    @database_sync_to_async
+    def check_blocked_status(self, user1, user2):
+        """Check if either user has blocked the other"""
+        return BlockedUser.objects.filter(
+            models.Q(blocker_id=user1.id, blocked_id=user2.id) |
+            models.Q(blocker_id=user2.id, blocked_id=user1.id)
+        ).exists()
 
     #find opponent
     async def find_opponent(self):
@@ -237,6 +263,11 @@ class MatchmakingConsumer(AsyncWebsocketConsumer):
                         if opponent_data['searching']:
                             # Get fresh opponent data
                             opponent_user = await self.get_user_data(opponent_data['user_id'])
+                            # Check if either user has blocked the other
+                            is_blocked = await self.check_blocked_status(current_user, opponent_user)
+                            if is_blocked:
+                                print(f"Skipping blocked match between {current_user.username} and {opponent_user.username}")
+                                continue  # Skip this opponent and look for another
                             
                             try:
                                 # Create game session

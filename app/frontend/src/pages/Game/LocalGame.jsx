@@ -70,7 +70,6 @@ const LocalGame = () => {
     useEffect(() => {
         // Protect against direct access to the game
         if (!mode || !player1 || !player2 || !ballColor || !backgroundId || !paddleSize || !ballSize || !duration) {
-            console.log("Redirecting to dashboard...");
             navigate('/dashboard', { replace: true }); // Using replace to prevent back button issues
         }
     }, [mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize, navigate]);

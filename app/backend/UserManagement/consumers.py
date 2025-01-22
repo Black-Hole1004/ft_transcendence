@@ -13,16 +13,14 @@ from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.dispatch import Signal
 from django.contrib.auth.signals import user_logged_out
 from django.contrib.auth.signals import user_logged_in
-
 from .models import FriendShip
 from game.models import GameInvitations
 from collections import defaultdict
 from django.core.exceptions import ValidationError
 import asyncio
-
 from django.db import models
-
 import logging as log
+
 
 
 User = get_user_model()

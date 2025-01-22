@@ -199,7 +199,7 @@ class GameState:
         self.disconnect_time = None          # Will store the timestamp when a player disconnects
         self.disconnected_player = None      # Will store which player number disconnected (1 or 2)
 
-        
+        self.forfeit_flag = False # flag to indicate if a player has forfeited the game ==> means the player has left the game 
         # pause/resume  management system
         GAME_SETTINGS['PAUSE_LIMIT'] = 3 # number of pauses allowed for player
         self.player1_pauses_remaining = GAME_SETTINGS['PAUSE_LIMIT']
@@ -261,6 +261,7 @@ class GameConsumer(AsyncWebsocketConsumer):
     # Class variable to store game states
     game_states = {}
     RECONNECT_TIMEOUT = 10
+    
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -290,7 +291,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         try:
             self.game_id = self.scope['url_route']['kwargs']['game_id']
             self.room_group_name = f'game_{self.game_id}'
-                        
+
             # Initialize game state if it doesn't exist
             if not self.game_state:
                 print("Creating new game state")
@@ -319,7 +320,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             traceback.print_exc()
             await self.close()
-
+        
     async def disconnect(self, close_code):
         """Handle WebSocket disconnection"""
         try:
@@ -379,6 +380,15 @@ class GameConsumer(AsyncWebsocketConsumer):
                 # If not reconnected, end the game
                 self.game_state.game_over = True
                 self.game_state.winner = 1 if self.player_number == 2 else 2
+                print(f"Sending game over with winner: {self.game_state.winner} due to disconnect")
+                self.game_state.forfeit_flag = True
+                
+                if self.player_number == 2:  # Player 2 disconnected, Player 1 wins
+                    self.game_state.player1_paddle['score'] = 3
+                    self.game_state.player2_paddle['score'] = 0
+                else:  # Player 1 disconnected, Player 2 wins
+                    self.game_state.player1_paddle['score'] = 0
+                    self.game_state.player2_paddle['score'] = 3
                 await self.handle_game_over()
                 
         except Exception as e:
@@ -403,7 +413,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             'is_paused': self.game_state.is_paused,
             'game_over': self.game_state.game_over,
             'winner': self.game_state.winner,
-            'time_remaining': self.game_state.time_remaining
+            'time_remaining': self.game_state.time_remaining,
         }
 
     async def receive(self, text_data):
@@ -421,6 +431,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'pause_game': self.handle_pause_game,
                 'resume_game': self.handle_resume_game,
                 'start_game': self.handle_start_game,
+                'check_ready_players': self.check_ready_players,
             }
             
             handler = handlers.get(message_type)
@@ -437,6 +448,15 @@ class GameConsumer(AsyncWebsocketConsumer):
                 'type': 'error',
                 'message': str(e)
             }))
+    
+    async def check_ready_players(self, data):
+        """send the frontend the number of ready players"""
+        await self.send(json.dumps({
+            'type': 'ready_players_count',
+            'ready_count': len( self.game_state.players_ready),
+            'connected_count': self.game_state.connected_players
+        }))
+        
     
     async def handle_player_number_init(self, data):
         """Handle player number initialization"""
@@ -919,30 +939,37 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(self.room_group_name, message)
 
     async def handle_game_over(self):
-        """Handle game over state"""        
-        reason = 'time_up' if self.game_state.time_remaining <= 0 else 'score_limit'
-        
-        winner_number = self.game_state.winner
-        
-        if winner_number == 1 or winner_number == 0: # i won or draw
-            winner_id = self.game_state.player1_id
-            loser_id = self.game_state.player2_id
-        elif winner_number == 2: # opponent won
-            winner_id = self.game_state.player2_id
-            loser_id = self.game_state.player1_id
-        
-        winner_score = self.game_state.player1_paddle['score'] if winner_number == 1 else self.game_state.player2_paddle['score']
-        loser_score = self.game_state.player2_paddle['score'] if winner_number == 1 else self.game_state.player1_paddle['score']
-        
-        # update the the database, winner and loser score, game status to completed, winner and loser users with the appropriate xp points
-        print(f"Winner: {winner_id}, Loser: {loser_id}, Scores: {winner_score} - {loser_score}")
-        print(f"Game over reason: {reason} ----- Updating game results -----")
-        await self.update_game_results (
-            winner_id=winner_id,
-            loser_id=loser_id,
-            winner_score=winner_score,
-            loser_score=loser_score
-        )
+        """Handle game over state"""
+        try:
+            if self.game_state.forfeit_flag:
+                reason = 'forfeit'
+            else:
+                reason = 'time_up' if self.game_state.time_remaining <= 0 else 'score_limit'
+            
+            winner_number = self.game_state.winner
+            
+            if winner_number == 1 or winner_number == 0: # i won or draw
+                winner_id = self.game_state.player1_id
+                loser_id = self.game_state.player2_id
+            elif winner_number == 2: # opponent won
+                winner_id = self.game_state.player2_id
+                loser_id = self.game_state.player1_id
+            
+            winner_score = self.game_state.player1_paddle['score'] if winner_number == 1 else self.game_state.player2_paddle['score']
+            loser_score = self.game_state.player2_paddle['score'] if winner_number == 1 else self.game_state.player1_paddle['score']
+            
+            # update the the database, winner and loser score, game status to completed, winner and loser users with the appropriate xp points
+            print(f"Winner: {winner_id}, Loser: {loser_id}, Scores: {winner_score} - {loser_score}")
+            print(f"Game over reason: {reason} ----- Updating game results -----")
+            await self.update_game_results (
+                winner_id=winner_id,
+                loser_id=loser_id,
+                winner_score=winner_score,
+                loser_score=loser_score
+            )
+        except Exception as e:
+            print(f"Error in handle_game_over: {str(e)}")
+            # traceback.print_exc()
 
     def calculate_xp_changes(self, winner_score, loser_score):
         """Calculate XP changes based on score difference"""

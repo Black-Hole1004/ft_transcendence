@@ -42,7 +42,6 @@ const MatchFoundDisplay = ({ matchData, countdown, statement }) => {
 								alt={currentUser.username}
 								className='match-user-image aspect-square object-cover rounded-full'
 								onError={(e) => {
-									console.log('Profile image load error:', e);
 									e.target.src = '/assets/images/default-avatar.png';
 								}}
 							/>
@@ -83,7 +82,6 @@ const MatchFoundDisplay = ({ matchData, countdown, statement }) => {
 								alt={opponent.username}
 								className='match-user-image aspect-square object-cover rounded-full'
 								onError={(e) => {
-									console.log('Profile image load error:', e);
 									e.target.src = '/assets/images/default-avatar.png';
 								}}
 							/>

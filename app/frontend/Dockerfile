@@ -12,8 +12,8 @@ COPY . .
 
 EXPOSE 5173
 
-# RUN npm run build
+RUN npm run build
 
-# CMD ["npm", "run", "preview", "--", "--port", "5173"]
+CMD ["npm", "run", "preview", "--", "--port", "5173"]
 
-CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "dev"]

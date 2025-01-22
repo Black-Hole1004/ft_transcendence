@@ -39,10 +39,11 @@ export const WebSocketProvider = ({ children }) => {
         const endpoint_friend_request = `wss://${HOSTNAME}/ws/friend_request/?access_token=${access_token}`;
 		const socket = new WebSocket(endpoint_friend_request);
 
-        socket.onopen = () => console.log('WebSocket connection established');
+        socket.onopen = () => {
+
+        }
         
         socket.onmessage = (event) => {
-            console.log('WebSocket message received:', event.data);
             const data = JSON.parse(event.data);
             if (data.receiver_id === user.user_id) {
                 setNotifications((prevNotifications) => [

@@ -1,21 +1,18 @@
-import json
-
 from django.db.models import Q
 from .models import Message, Conversation
 from UserManagement.models import FriendShip, FriendShipRequest
-
-import jwt
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from channels.db import database_sync_to_async
-
 from django.core.cache import cache
 from django_redis import get_redis_connection
 from channels.generic.websocket import AsyncWebsocketConsumer
-
 from .validators import ConversationValidator
 from Chat.models import BlockedUser
 
+
+import jwt
+import json
 User = get_user_model()
 
 def extract_access_token(headers):

@@ -30,7 +30,6 @@ function Layout() {
 	const navigate = useNavigate()
 
 	const refreshUserData = () => {
-		// console.log('------- Refreshing user data -------')
 		setRefreshData((prev) => prev + 1)
 	}
 
@@ -124,18 +123,18 @@ function Layout() {
 		const newSocket = new WebSocket(WP_NOTIFY + '?access_token=' + access_token)
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from Notify Consumer ----')
+			
 		}
 		newSocket.onmessage = (event) => {
 			const data = JSON.parse(event.data)
 		}
 
 		newSocket.onclose = (event) => {
-			console.log('WebSocket Closed form Notify Consumer:', event)
+
 		}
 
 		newSocket.onerror = (error) => {
-			console.error('WebSocket Error:', error)
+
 		}
 
 		setSocketNotify(newSocket)
@@ -150,18 +149,18 @@ function Layout() {
 		const newSocket = new WebSocket(WP_FRINEDS + '?access_token=' + access_token)
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from AcceptFriendsRequest Consumer ----')
+
 		}
 		newSocket.onmessage = (event) => {
 			const data = JSON.parse(event.data)
 		}
 
 		newSocket.onclose = (event) => {
-			console.log('WebSocket Closed form AcceptFriendsRequest Consumer:', event)
+
 		}
 
 		newSocket.onerror = (error) => {
-			console.error('WebSocket Error:', error)
+
 		}
 
 		setSocketFriends(newSocket)
@@ -178,11 +177,10 @@ function Layout() {
 		const newSocket = new WebSocket(WP_NOTIFICATIONS + '?access_token=' + access_token)
 
 		newSocket.onopen = () => {
-			console.log('---- WebSocket Connected from Notifications Consumer ----')
+
 		}
 
 		newSocket.onmessage = (event) => {
-			console.log('WebSocket message received:x', event.data)
 			const data = JSON.parse(event.data)
 
 			// Add new handling for game invites
@@ -251,8 +249,6 @@ function Layout() {
 									invitationId: data.invitation_id,
 								},
 							});
-						} else {
-							console.log('Not navigating in this tab');
 						}
 						break;
 
@@ -309,7 +305,7 @@ function Layout() {
 		}
 
 		newSocket.onclose = (event) => {
-			console.log('WebSocket Closed form Notifications Consumer:', event)
+
 		}
 
 		newSocket.onerror = (error) => {

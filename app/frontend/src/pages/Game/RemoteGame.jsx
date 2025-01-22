@@ -9,11 +9,13 @@ import Confetti from 'react-confetti'
 import GameWebSocket from '../../services/GameWebSocket'
 import GameOverPopup from '../../components/Game/GameOverPopup'
 import Loader from '../../components/Loader/Loader'
+import { useAlert } from '../../components/AlertContext'
 
 const RemoteGame = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	const socketRef = useRef(null)
+	const { triggerAlert } = useAlert()
 
 	// Location state data
 	const { gameId, playerNumber, opponent, currentUser, backgroundId } = location.state || {}
@@ -21,7 +23,6 @@ const RemoteGame = () => {
 	useEffect(() => {
         // Protect against direct access to the game
         if (!gameId || !playerNumber || !opponent || !currentUser || !backgroundId) {
-			console.log("Redirecting to dashboard...");
 			navigate('/dashboard', { replace: true }); // Using replace to prevent back button issues
 		}
 	}, [gameId, playerNumber, opponent, currentUser, backgroundId, navigate]);
@@ -173,8 +174,34 @@ const RemoteGame = () => {
 			}
 		})
 
+
 		return () => ws.disconnect()
 	}, [gameId])
+
+
+	useEffect(() => {
+		// Check ready players after 6 seconds
+		const timeoutId = setTimeout(() => {
+			socketRef.current?.send({ type: 'check_ready_players' })
+		}, 11000); // 11 seconds
+	
+		// Listen for server response about ready players
+		if (socketRef.current) {
+			socketRef.current.on('ready_players_count', (data) => {
+				if (data.ready_count === 1) {
+					triggerAlert('error', 'Opponent did not join the game');
+					navigate('/dashboard');
+				}
+			});
+		}
+	
+		return () => {
+			clearTimeout(timeoutId);
+			if (socketRef.current) {
+				socketRef.current.off('ready_players_count');
+			}
+		};
+	}, []);
 
 	// Send paddle move to server (up or down)
 	const handlePaddleMove = (action) => {
@@ -186,18 +213,15 @@ const RemoteGame = () => {
 		if (!socketRef.current || !playerNumber) return
 
 		if (isGameOver) {
-			// console.log('Game is over, cannot pause')
 			return
 		}
 
 		// Check if can pause
 		if (!isPaused && pausesRemaining[playerNumber] <= 0) {
-			// console.log('No more pauses remaining')
 			return
 		}
 		// Check if can resume
 		if (isPaused && pausingPlayer !== playerNumber) {
-			// console.log('Only the pausing player can resume the game')
 			return
 		}
 

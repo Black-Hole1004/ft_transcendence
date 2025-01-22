@@ -51,7 +51,6 @@ const RemotePlayer = (props) => {
 					alt='user photo'
 					className='match-user-image aspect-square object-cover rounded-full'
 					onError={(e) => {
-						console.log('Profile image load error:', e);
 						e.target.src = '/assets/images/default-avatar.png';
 					}}
 				/>

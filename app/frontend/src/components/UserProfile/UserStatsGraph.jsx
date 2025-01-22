@@ -12,7 +12,6 @@ function UserStatsGraph(user) {
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				console.log('API URL:', `${BASE_URL}/api/users/${user.profile_name}/time-spent/`);
 				const response = await fetch(`${BASE_URL}/api/users/${user.profile_name}/time-spent/`, {
 					method: 'GET',
 					headers: getAuthHeaders(),

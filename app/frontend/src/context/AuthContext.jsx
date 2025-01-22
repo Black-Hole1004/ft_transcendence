@@ -70,7 +70,6 @@ export const AuthProvider = ({ children }) => {
             })
             const data = await response.json()
             if (response.ok) {
-                console.log('Login successful', data)
                 if (data.Twofa_enabled === true) {
                     navigate('/2fa', { state: { email: email, password: password } })
                     return ;
@@ -85,7 +84,6 @@ export const AuthProvider = ({ children }) => {
                 navigate('/dashboard')
             }
             else {
-                console.log('Login failed', data)
                 handleSubmit('error', data.detail || data.email || data.password || data.error)
             }
         } catch (error) {
@@ -111,10 +109,8 @@ export const AuthProvider = ({ children }) => {
             })
             const data = await response.json();
             if (response.ok) {
-                console.log('registration successful', data)
                 handleSubmit('success', 'Registration successful')
             } else {
-                console.log('registartion failed', data)
                 handleSubmit('error', data.password2 || data.email)
             }
         } catch (error) {
@@ -157,7 +153,6 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json()
             if (response.ok) {
                 navigate('/')
-                console.log('Logout successful', data)
                 Cookies.remove('access_token')
                 Cookies.remove('refresh_token')
                 setAuthTokens(null)

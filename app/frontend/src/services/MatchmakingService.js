@@ -32,13 +32,11 @@ class MatchmakingService {
 		this.socket = new WebSocket(`wss://${HOSTNAME}/ws/matchmaking/?user_id=${userId}`)
 
 		this.socket.onopen = () => {
-			console.log('Connected to matchmaking service')
 			this.callbacks.onConnect?.()
 		}
 
 		this.socket.onmessage = this.handleMessage
 		this.socket.onclose = () => {
-			console.log('Disconnected from matchmaking service')
 			this.callbacks.onDisconnect?.()
 			// Clear the stored user ID on disconnect
 			this.currentUserId = null

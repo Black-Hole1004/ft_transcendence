@@ -10,7 +10,6 @@ function UserStatsGraph() {
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
-				console.log(API_TIME_SPENT)
 				const response = await fetch(API_TIME_SPENT, {
 					method: 'GET',
 					headers: getAuthHeaders(),

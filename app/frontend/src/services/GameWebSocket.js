@@ -16,7 +16,6 @@ class GameWebSocket {
 
     connect(gameId, playerNumber, userId) {
         if (!gameId || !userId) {
-            console.error('No game ID or user ID provided');
             return;
         }
         
@@ -42,7 +41,6 @@ class GameWebSocket {
             this.setupEventHandlers();
 
         } catch (error) {
-            console.error('Error creating WebSocket:', error);
             this.handleError(error);
         }
     }
@@ -68,7 +66,6 @@ class GameWebSocket {
     }
 
     handleOpen() {
-        console.log(`Connected to game ${this.gameId} through WebSocket successfully`);
         this.isConnected = true;
         this.connectionAttempts = 0;
         this.callbacks.connect?.();
@@ -79,28 +76,16 @@ class GameWebSocket {
 
     handleClose(event) {
         this.isConnected = false;
-        console.log(`Disconnected from game ${this.gameId}`, {
-            wasClean: event.wasClean,
-            code: event.code,
-            reason: event.reason,
-            connectionAttempts: this.connectionAttempts
-        });
 
         if (!event.wasClean && this.connectionAttempts < this.maxRetries) {
-            console.log(`Attempting reconnect ${this.connectionAttempts + 1}/${this.maxRetries}`);
             this.connectionAttempts++;
             this.reconnectTimeout = setTimeout(() => this.connect(this.gameId), 1000);
         } else {
-            console.log('Not attempting reconnect:', {
-                wasClean: event.wasClean,
-                maxRetriesReached: this.connectionAttempts >= this.maxRetries
-            });
             this.callbacks.disconnect?.();
         }
     }
 
     handleError(error) {
-        console.error(`WebSocket error for game ${this.gameId}:`, error);
         this.callbacks.error?.(error);
     }
 
@@ -123,6 +108,7 @@ class GameWebSocket {
                 game_started: this.handleGameStarted.bind(this),
                 game_paused: this.handleGamePaused.bind(this),
                 game_resumed: this.handleGameResumed.bind(this),
+                ready_players_count: this.handleReadyPlayersCount.bind(this),
                 
                 pause_timeout_warning: this.handlePauseTimeoutWarning.bind(this),
                 player_temporary_disconnect: this.handleTemporaryDisconnect.bind(this),
@@ -141,7 +127,6 @@ class GameWebSocket {
             }
 
         } catch (error) {
-            console.error('Error handling message:', error);
             this.handleError(error);
         }
     }
@@ -192,6 +177,10 @@ class GameWebSocket {
         this.callbacks.player_disconnected?.(data);
     }
 
+    handleReadyPlayersCount(data) {
+        this.callbacks.ready_players_count?.(data);
+    }
+
     handleWaitingForPlayer(data) {
         this.callbacks.waiting_for_player?.(data);
     }
@@ -215,14 +204,12 @@ class GameWebSocket {
     // Send methods
     send(data) {
         if (!this.isSocketConnected()) {
-            console.error('Cannot send message: socket is not connected');
             return;
         }
 
         try {
             this.socket.send(JSON.stringify(data));
         } catch (error) {
-            console.error('Error sending message:', error);
             this.handleError(error);
         }
     }
@@ -236,21 +223,18 @@ class GameWebSocket {
     }
 
     sendPlayerReady() {
-        console.log('Sending player ready');
         this.send({
             type: 'player_ready'
         });
     }
 
     sendStartGame() {
-        console.log('Sending start game');
         this.send({ 
             type: 'start_game' 
         });
     }
 
     sendRestartGame() {
-        console.log('Sending restart game');
         this.send({ 
             type: 'restart_game' 
         });
@@ -259,15 +243,18 @@ class GameWebSocket {
     // Utility methods
     on(event, callback) {
         if (typeof callback !== 'function') {
-            console.error('Callback must be a function');
             return;
         }
-        console.log('Registering callback for event:', event);
         this.callbacks[event] = callback;
     }
 
+    off(event) {
+        if (this.callbacks[event]) {
+            delete this.callbacks[event];
+        }
+    }
+
     disconnect() {
-        console.log('Disconnecting WebSocket');
         this.maxRetries = 0; // Prevent reconnection attempts
         if (this.reconnectTimeout) {
             clearTimeout(this.reconnectTimeout);
