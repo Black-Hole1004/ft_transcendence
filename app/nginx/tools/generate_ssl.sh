@@ -15,3 +15,10 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 # cat $path/certif.crt
 # echo "here is the key"
 # cat $path/certif.key
+
+# run python3 server to serve static files
+# instal python3 if not installed using apk
+apk add python3
+
+cd /app/staticfiles/
+python3 -m http.server 8000 &

@@ -80,8 +80,8 @@ const TwoFactorAuth = () => {
                 
                 const access_token = JSON.stringify(data.access_token)
                 const refresh_token = JSON.stringify(data.refresh_token)
-                Cookies.set('refresh_token', refresh_token, { sameSite: 'None', secure: true });
-                Cookies.set('access_token', access_token, { sameSite: 'None', secure: true });
+                Cookies.set('refresh_token', refresh_token, { sameSite: 'Lax', secure: true });
+                Cookies.set('access_token', access_token, { sameSite: 'Lax', secure: true });
                 navigate('/dashboard')
 			} else {
 				handleSubmit('error', 'Something went wrong')
