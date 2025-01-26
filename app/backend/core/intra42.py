@@ -71,85 +71,88 @@ class Intra42OAuth2(BaseOAuth2):
         if response.status_code == 200:
             return response.json()
         else:
-            raise Exception(f"Failed to obtain access token: {response.status_code}, {response.text}")
+            response.raise_for_status()
 
     def auth_complete(self, *args, **kwargs):
         """
         Complete the OAuth2 authorization process by exchanging the authorization
         code for an access token, then fetching user data.
         """
+        try:
+            request = kwargs.get('request')
+            if not request:
+                return JsonResponse({'error': 'Request not found'}, status=401)
+            code = self.data.get('code')
+            if not code:
+                return JsonResponse({'error': 'Authorization code not found'}, status=401)
 
-        request = kwargs.get('request')
-        if not request:
-            raise Exception("Request object not found.")
-        code = self.data.get('code')
-        if not code:
-            raise Exception("Authorization code not found.")
+            token_data = self.request_access_token(code)
+            access_token = token_data['access_token']
+            user_data = self.user_data(access_token)
 
-        token_data = self.request_access_token(code)
-        access_token = token_data['access_token']
-        user_data = self.user_data(access_token)
+            user_details = self.get_user_details(user_data)
+            print(user_details)
+            # Handle duplicate username case
+            if user_details['username'] and User.objects.filter(username=user_details['username']).exists():
+                # If the desired username already exists, generate a random one
+                # print('----------------- Duplicate username ------------------')
+                username = generate_random_username().lower()
+            else:
+                username = user_details['username']
+            # handle duplicate email case
+            if user_details['email'] and User.objects.filter(email=user_details['email']).exists():
+                # check if the user that is duplicated is logged with oauth
+                user = User.objects.get(email=user_details['email'])
+                if not user.is_logged_with_oauth:
+                    return JsonResponse({'error': 'Account with this email already exists'}, status=401)
+            else:
+                Twofa.sendMail(otp=0, email=user_details['email'], username=username, type='accountCreated')
+            user, created = User.objects.get_or_create(
+            email=user_details['email'],
+            defaults={
+                'email': user_details['email'],
+                'username': username,
+                'first_name': user_details['first_name'],
+                }
+            )
 
-        user_details = self.get_user_details(user_data)
-        print(user_details)
-        # Handle duplicate username case
-        if user_details['username'] and User.objects.filter(username=user_details['username']).exists():
-            # If the desired username already exists, generate a random one
-            # print('----------------- Duplicate username ------------------')
-            username = generate_random_username().lower()
-        else:
-            username = user_details['username']
-        # handle duplicate email case
-        if user_details['email'] and User.objects.filter(email=user_details['email']).exists():
-            # check if the user that is duplicated is logged with oauth
-            user = User.objects.get(email=user_details['email'])
-            if not user.is_logged_with_oauth:
-                return JsonResponse({'error': 'Account with this email already exists'}, status=401)
-        else:
-            Twofa.sendMail(otp=0, email=user_details['email'], username=username, type='accountCreated')
-        user, created = User.objects.get_or_create(
-        email=user_details['email'],
-        defaults={
-            'email': user_details['email'],
-            'username': username,
-            'first_name': user_details['first_name'],
-            }
-        )
-
-        if user:
-            profile_image_url = user_details.get('profile_image_url')
-            if profile_image_url and not user.has_custom_profile_picture:
-                try:
-                    image_response = requests.get(profile_image_url)
-                    if image_response.status_code == 200:
-                        if user.profile_picture and 'avatar.jpg' not in user.profile_picture.name:
-                            if os.path.isfile(user.profile_picture.path):
-                                os.remove(user.profile_picture.path)
-                        
-                        # Save new profile picture
-                        user.profile_picture.save(
-                            f"{user.username}_profile.jpg",
-                            ContentFile(image_response.content),
-                            save=True
-                        )
-                except Exception as e:
-                    print(f'Error updating profile picture: {e}')
+            if user:
+                profile_image_url = user_details.get('profile_image_url')
+                if profile_image_url and not user.has_custom_profile_picture:
+                    try:
+                        image_response = requests.get(profile_image_url)
+                        if image_response.status_code == 200:
+                            if user.profile_picture and 'avatar.jpg' not in user.profile_picture.name:
+                                if os.path.isfile(user.profile_picture.path):
+                                    os.remove(user.profile_picture.path)
+                            
+                            # Save new profile picture
+                            user.profile_picture.save(
+                                f"{user.username}_profile.jpg",
+                                ContentFile(image_response.content),
+                                save=True
+                            )
+                    except Exception as e:
+                        print(f'Error updating profile picture: {e}')
 
 
-            user.is_logged_with_oauth = True
-            user.is_logged_with_oauth_for_2fa = True
-            user.status = 'online'
-            user.save()
-            friends = async_to_sync(self.get_user_friends)(user)
-            notify_friends(user, friends)
-            login(request, user, backend='Intra42OAuth2')
-            refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)
-            refresh_token = str(refresh)
-            redirect_url = f"https://{HOSTNAME}/dashboard?access_token={access_token}&refresh_token={refresh_token}"
-            return HttpResponseRedirect(redirect_url)
+                user.is_logged_with_oauth = True
+                user.is_logged_with_oauth_for_2fa = True
+                user.status = 'online'
+                user.save()
+                friends = async_to_sync(self.get_user_friends)(user)
+                notify_friends(user, friends)
+                login(request, user, backend='Intra42OAuth2')
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+                redirect_url = f"https://{HOSTNAME}/dashboard?access_token={access_token}&refresh_token={refresh_token}"
+                return HttpResponseRedirect(redirect_url)
 
-        else:
+            else:
+                return JsonResponse({'error': 'User authentication failed'}, status=401)
+        except Exception as e:
+            print(f"Error completing authentication: {e}")
             return JsonResponse({'error': 'User authentication failed'}, status=401)
 
     def get_redirect_uri(self, state=None):
