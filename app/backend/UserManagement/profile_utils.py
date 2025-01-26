@@ -31,18 +31,12 @@ def handle_password_change(user, user_data):
     new_password = user_data.get('new_password')
     confirm_password = user_data.get('confirm_password')
 
-    if user.is_logged_with_oauth and any([password, new_password, confirm_password]):
+    if user.is_logged_with_oauth:
         print('User is logged with OAuth')
-        if all ([new_password, confirm_password]) and new_password == confirm_password and new_password != password:
-            user.set_password(new_password)
-            user.is_logged_with_oauth = False
-            print(f'--->> user:---------> {user}')
-            user.save()
-        else:
-            return Response(
-                {'error': 'The new password and confirm password must match and be different from the current password.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        return Response(
+            {'error': 'User is logged with OAuth and cannot change password.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
     elif any([password, new_password, confirm_password]):
         print('User is not logged with OAuth')
         if not user.is_logged_with_oauth:

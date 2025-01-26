@@ -395,3 +395,19 @@ CORS_ALLOWED_ORIGINS = [
 ] # todo: to be changed in production
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
+
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        },
+    },
+    {
+        'NAME': 'core.validators.MaximumLengthValidator',
+        'OPTIONS': {
+            'max_length': 128,
+        },
+    },
+]
