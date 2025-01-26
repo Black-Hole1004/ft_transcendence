@@ -12,7 +12,7 @@ const MatchFoundDisplay = ({ matchData, countdown, statement }) => {
 
     const getImageUrl = (path, type = 'profile') => {
         if (!path) {
-            return '/assets/images/default-avatar.png';
+            return '/assets/images/avatar.jpg';
         }    
         if (path.startsWith('http')) {
             return path;
@@ -42,7 +42,7 @@ const MatchFoundDisplay = ({ matchData, countdown, statement }) => {
 								alt={currentUser.username}
 								className='match-user-image aspect-square object-cover rounded-full'
 								onError={(e) => {
-									e.target.src = '/assets/images/default-avatar.png';
+									e.target.src = '/assets/images/avatar.jpg';
 								}}
 							/>
 							{currentUser.badge && (
@@ -82,7 +82,7 @@ const MatchFoundDisplay = ({ matchData, countdown, statement }) => {
 								alt={opponent.username}
 								className='match-user-image aspect-square object-cover rounded-full'
 								onError={(e) => {
-									e.target.src = '/assets/images/default-avatar.png';
+									e.target.src = '/assets/images/avatar.jpg';
 								}}
 							/>
 							{opponent.badge && (

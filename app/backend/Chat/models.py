@@ -3,17 +3,11 @@ from UserManagement.models import User
 
 class Message(models.Model):
 
-    status_choices = [
-        ('sent', 'Sent'),
-        ('delivered', 'Delivered'),
-        ('read', 'Read'),
-    ]
 
     conversation_id = models.ForeignKey('Conversation', on_delete=models.CASCADE, related_name='messages')
     sender_id = models.ForeignKey(User, on_delete=models.CASCADE)
     sent_datetime = models.DateTimeField(auto_now_add=True)
     content = models.TextField(max_length=2000)
-    status = models.CharField(max_length=10, choices=status_choices, default='sent') # remove
 
     class Meta:
         indexes = [

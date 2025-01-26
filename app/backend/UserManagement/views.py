@@ -153,6 +153,7 @@ class Twofa():
             print(f"Storing OTP Secret: {otp}")
             user.otp_verified = False
             user.otp_secret = otp
+            user.otp_attempts = 0 
             print(f"OTP: {otp}")
             user.otp_expiry = otp_expiry
             user.save()
@@ -195,10 +196,19 @@ class Twofa():
 class Verify2faView(APIView):
     def post(self, request):
         try:
-            data = json.loads(request.body)
+            try:
+                data = json.loads(request.body)
+            except json.JSONDecodeError:
+                return JsonResponse({'error': 'Invalid JSON in request body'}, status=400)
+        
             email = data.get('email')
             password = data.get('password')
-            otp = int(data.get('otp'))
+            if not email or not password:
+                return JsonResponse({'error': 'Please provide email and password'}, status=400)
+            try:
+                otp = int(data.get('otp'))
+            except ValueError:
+                return JsonResponse({'error': 'Please Provide valid otp !'}, status=400)
             user = authenticate(request, email=email, password=password)
             if not user:
                 return JsonResponse({'error': 'not user False'}, status=400)
@@ -226,8 +236,8 @@ class Verify2faView(APIView):
                 return response
             else:
                 return JsonResponse({'error': 'False'}, status=400)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except e as Exception:
+            return JsonResponse({'error': str(e)}, status=400)
 
 
 

@@ -5,7 +5,7 @@ const RemotePlayer = (props) => {
 	// Create getImageUrl as a memoized function
 	const getImageUrl = useCallback((path, type = 'profile') => {
 		if (!path) {
-			return '/assets/images/default-avatar.png'
+			return '/assets/images/avatar.jpg'
 		}
 
 		if (path.startsWith('http')) {
@@ -51,7 +51,7 @@ const RemotePlayer = (props) => {
 					alt='user photo'
 					className='match-user-image aspect-square object-cover rounded-full'
 					onError={(e) => {
-						e.target.src = '/assets/images/default-avatar.png';
+						e.target.src = '/assets/images/avatar.jpg';
 					}}
 				/>
 				<img

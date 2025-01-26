@@ -1,6 +1,6 @@
 function MatchStats({ currentPlayer, opponent, result, startTime }) {
 	const getFullImageUrl = (path) => {
-		if (!path) return '/assets/images/default-avatar.png';
+		if (!path) return '/assets/images/avatar.jpg';
 		if (path.startsWith('http')) return path;
 		return `${import.meta.env.VITE_BASE_URL}${path}`;
 	};

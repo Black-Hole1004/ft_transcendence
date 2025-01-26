@@ -8,7 +8,7 @@ class ConversationAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'conversation_id', 'sender_id', 'sent_datetime', 'status')
+    list_display = ('id', 'conversation_id', 'sender_id', 'sent_datetime')
 
 @admin.register(BlockedUser)
 class BlockedUserAdmin(admin.ModelAdmin):

@@ -10,7 +10,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 	const currentPlayerStats = isWinner ? winner : loser
 
 	const getFullImageUrl = (path) => {
-		if (!path) return '/assets/images/default-avatar.png'
+		if (!path) return '/assets/images/avatar.jpg'
 		if (path.startsWith('http')) return path
 		const PathComplete = `${import.meta.env.VITE_BASE_URL}${path}`
 		return PathComplete
@@ -57,7 +57,7 @@ const GameOverPopup = ({ winner, loser, currentPlayerId, onRestart, onClose }) =
 								alt={currentPlayerStats?.username}
 								className='rounded-full ring-1 ring-primary aspect-square object-cover'
 								onError={(e) => {
-									e.target.src = '/assets/images/default-avatar.png'
+									e.target.src = '/assets/images/avatar.jpg'
 								}}
 							/>
 							<div className='flex flex-col items-start'>

@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ['id', 'sender_id', 'sent_datetime', 'content', 'status']
+        fields = ['id', 'sender_id', 'sent_datetime', 'content']
 
 class ConversationSerializer(serializers.ModelSerializer):
     last_message = MessageSerializer()

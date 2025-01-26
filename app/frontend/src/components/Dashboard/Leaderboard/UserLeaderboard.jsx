@@ -7,7 +7,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture, isCu
 	}
 
 	const getProfilePicture = (path) => {
-		if (!path) return '/assets/images/default-avatar.png'
+		if (!path) return '/assets/images/avatar.jpg'
 		if (path.startsWith('http')) return path
 		return `${import.meta.env.VITE_BASE_URL}${path}`
 	}
@@ -28,7 +28,7 @@ function UserLeaderboard({ rank, nickname, achievement, xp, profilePicture, isCu
 					alt={nickname}
 					className='h-[70%] aspect-square object-cover rounded-full ring-1 ring-primary select-none'
 					onError={(e) => {
-						e.target.src = '/assets/images/default-avatar.png'
+						e.target.src = '/assets/images/avatar.jpg'
 					}}
 				/>
 				<div className='flex flex-wrap items-center overflow-hidden'>
