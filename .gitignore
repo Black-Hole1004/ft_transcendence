@@ -14,6 +14,8 @@ pycache/
 /app/waf/postgres-data/
 /app/waf/smartsync-storage/
 /app/vault/.env
+/app/backend/.env
+/app/frontend/.env
 /app/db/postgres/
 /app/backend/UserManagement/migrations/000*
 !/app/backend/UserManagement/migrations/0001*
@@ -25,3 +27,5 @@ test.py
 client_secret.json
 /app/backend/token.pickle
 /app/backend/profile_pictures/
+.env
+/app/backend/token.pickle
