@@ -39,29 +39,33 @@ def handle_password_change(user, user_data):
         )
     elif any([password, new_password, confirm_password]):
         print('User is not logged with OAuth')
-        if not user.is_logged_with_oauth:
-            if not all ([password, new_password, confirm_password]):
-                return Response(
-                    {'error': 'All password fields (password, new_password, confirm_password) are required'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            if not user.check_password(password):
-                return Response(
-                    {'error': 'The current password is incorrect.'}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            if new_password != confirm_password:
-                return Response(
-                    {'error': 'The new password and confirm password do not match.'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            if new_password == password:
-                return Response(
-                    {'error': 'The new password must be different from the current password.'},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            user.set_password(new_password)
-            user.save()
+        if not all ([password, new_password, confirm_password]):
+            return Response(
+                {'error': 'All password fields (password, new_password, confirm_password) are required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if not user.check_password(password):
+            return Response(
+                {'error': 'The current password is incorrect.'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if new_password != confirm_password:
+            return Response(
+                {'error': 'The new password and confirm password do not match.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if new_password == password:
+            return Response(
+                {'error': 'The new password must be different from the current password.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        if len(new_password) < 8 or len(new_password) > 128:
+            return Response(
+                {'error': 'The new password must be between 8 and 128 characters.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        user.set_password(new_password)
+        user.save()
 
     return True
 
