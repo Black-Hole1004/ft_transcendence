@@ -368,7 +368,7 @@ class UserProfileView(APIView):
     def get(self, request):
         try:
             user = request.user
-            user = User.objects.get(id=user.id);
+            user = User.objects.get(id=user.id)
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user)

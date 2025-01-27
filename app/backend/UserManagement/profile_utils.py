@@ -31,7 +31,7 @@ def handle_password_change(user, user_data):
     new_password = user_data.get('new_password')
     confirm_password = user_data.get('confirm_password')
 
-    if user.is_logged_with_oauth:
+    if user.is_logged_with_oauth and any([password, new_password, confirm_password]):
         print('User is logged with OAuth')
         return Response(
             {'error': 'User is logged with OAuth and cannot change password.'},
