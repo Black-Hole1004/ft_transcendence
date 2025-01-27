@@ -27,5 +27,6 @@ test.py
 client_secret.json
 /app/backend/token.pickle
 /app/backend/profile_pictures/
+!/app/backend/profile_pictures/avatar.jpg
 .env
 /app/backend/token.pickle
