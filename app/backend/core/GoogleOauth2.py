@@ -103,8 +103,8 @@ class CustomGoogleOAuth2(GoogleOAuth2):
                     user_joined_datetime = datetime.combine(user.date_joined, datetime.min.time())
 
                     # Check if the user joined within the last 5 seconds
-                    if now - user_joined_datetime >= timedelta(seconds=5):
-                        Twofa.sendMail(otp=0, email=user.email, username=user.username, type='accountCreated')
+                    # if now - user_joined_datetime >= timedelta(seconds=5):
+                    #     Twofa.sendMail(otp=0, email=user.email, username=user.username, type='accountCreated')
                     return HttpResponseRedirect(redirect_url)
 
                 except Exception as e:

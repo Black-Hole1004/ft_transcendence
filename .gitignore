@@ -16,6 +16,7 @@ pycache/
 /app/vault/.env
 /app/backend/.env
 /app/frontend/.env
+/app/frontend/dist
 /app/db/postgres/
 /app/backend/UserManagement/migrations/000*
 !/app/backend/UserManagement/migrations/0001*
@@ -30,3 +31,6 @@ client_secret.json
 !/app/backend/profile_pictures/avatar.jpg
 .env
 /app/backend/token.pickle
+/app/nginx/ssl/starserve.me/
+/lib
+/lib64

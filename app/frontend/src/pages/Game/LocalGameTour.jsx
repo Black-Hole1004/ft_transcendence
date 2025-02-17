@@ -87,13 +87,13 @@ const LocalGame = () => {
 
 	useEffect(() => {
         // Protect against direct access to the game
-        if (!mode || !player1 || !player2 || !ballColor || !backgroundId || !paddleSize || !ballSize || !duration || !tournamentRound) {
+        if (!mode || !player1 || !player2 || !ballColor || !paddleSize || !ballSize || !duration || !tournamentRound) {
             navigate('/dashboard', { replace: true }); // Using replace to prevent back button issues
         }
-    }, [mode, player1, player2, ballColor, duration, backgroundId, paddleSize, ballSize, navigate, tournamentRound]);
+    }, [mode, player1, player2, ballColor, duration, paddleSize, ballSize, navigate, tournamentRound]);
     
     // Return a placeholder or loading state while navigating
-    if (!mode || !player1 || !player2 || !ballColor || !backgroundId || !paddleSize || !ballSize || !duration || !tournamentRound) {
+    if (!mode || !player1 || !player2 || !ballColor || !paddleSize || !ballSize || !duration || !tournamentRound) {
         return <Loader />;
     }
 

@@ -30,7 +30,7 @@ const Home = () => {
 	}
 
 	const body = document.getElementsByTagName('body')[0]
-	body.classList.toggle('overflow-y-hidden')
+	body.classList.toggle('overflow-y-auto')
 
 	return (
 		<>

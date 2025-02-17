@@ -261,6 +261,7 @@ const PongTable = forwardRef(
 
 		useEffect(() => {
 			const handleKeyDown = (event) => {
+				event.preventDefault()
 				if (event.key === 'w' || event.key === 'W') {
 					setIsLeftPlayerMovingUp(true)
 				}
@@ -276,6 +277,7 @@ const PongTable = forwardRef(
 			}
 
 			const handleKeyUp = (event) => {
+				event.preventDefault()
 				if (event.key === 'w' || event.key === 'W') {
 					setIsLeftPlayerMovingUp(false)
 				}

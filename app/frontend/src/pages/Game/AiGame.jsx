@@ -138,7 +138,7 @@ const AIGame = () => {
 	return (
 		<>
 			<section className={`relative flex-1 margin-page flex flex-col items-center gap-8 ${isPaused ? 'bg-backdrop-40' : ''}`}>
-				<div className='flex-1 margin-page flex flex-col items-center gap-8'>
+				<div className='flex-1 margin-page flex flex-col items-center'>
 					<GameScore
 						player1Score={playerScore}
 						player2Score={aiScore}

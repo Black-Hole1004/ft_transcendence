@@ -116,7 +116,7 @@ function ChatHistory({
 				</div>
 			</div>
 			<div
-				className={`max-tb:flex max-tb:justify-center gap-1 users-container h-users-div scroll max-tb:ml-1 tb:mb-2
+				className={`max-tb:flex max-tb:justify-center gap-1 users-container h-users-div scroll max-tb:px-10 max-tb:ml-1 tb:mb-2
 							${small ? 'overflow-x-scroll' : 'overflow-x-hidden'}`}
 			>
 				{(searchResult ? searchResult : conversations).map((conversation) => (

@@ -17,6 +17,7 @@ const AIPongTable = ({
 	const requestRef = useRef(null)
 	const lastTimeRef = useRef(null)
 	const aiRef = useRef(null)
+	const [width, setWidth] = useState(window.innerWidth);
 
 	// Initialize AI with only difficulty parameter
 	if (!aiRef.current) {
@@ -120,7 +121,6 @@ const AIPongTable = ({
 				const distance = targetY - currentY;
 
 				// Add deadzone to prevent micro-movements
-				// Only move if we need to move more than 5 pixels (deadzone)
 				const deadzone = 5;
 				if (Math.abs(distance) > deadzone) {
 					const smoothing = 0.5; // Reduces jittery movement
@@ -147,9 +147,9 @@ const AIPongTable = ({
 
 				// Handle collisions and scoring
 				if (checkCollision(ball, playerPaddle)) {
-					handleCollision(ball, playerPaddle, false) // FALSE INDICATES PLAYER PADDLE
+					handleCollision(ball, playerPaddle, false)
 				} else if (checkCollision(ball, aiPaddle)) {
-					handleCollision(ball, aiPaddle, true) // TRUE INDICATES AI PADDLE
+					handleCollision(ball, aiPaddle, true)
 				} else {
 					ball.x = nextX
 				}
@@ -158,10 +158,8 @@ const AIPongTable = ({
 				if (ball.x < 0 || ball.x > canvasSize.width) {
 					const scorer = ball.x < 0 ? 'ai' : 'player'
 					if (scorer === 'ai') {
-						// AI scored, record successfull position
 						ai.recordHit({ x: ball.x, y: ball.y }, aiY)
 					} else {
-						 // AI missed, record failure
 						ai.recordMiss()
 					}
 					updateScore(scorer)
@@ -277,17 +275,24 @@ const AIPongTable = ({
 		return () => cancelAnimationFrame(requestRef.current)
 	}, [isPaused, isGameOver, playerY, aiY, backgroundId])
 
+	const handleKeyDown = (e) => {
+		e.preventDefault()
+		if ((e.type === 'pointerdown' || e.type === 'mousedown') && e.target.id === '1') setIsPlayerMovingUp(true)
+		if ((e.type === 'pointerdown' || e.type === 'mousedown') && e.target.id === '2') setIsPlayerMovingDown(true)
+		if (e.key === 'ArrowUp') setIsPlayerMovingUp(true)
+		if (e.key === 'ArrowDown') setIsPlayerMovingDown(true)
+	}
+				
+	const handleKeyUp = (e) => {
+		e.preventDefault()
+		if ((e.type === 'pointerup' || e.type === 'mouseup') && e.target.id === '1') setIsPlayerMovingUp(false)
+		if ((e.type === 'pointerup' || e.type === 'mouseup') && e.target.id === '2') setIsPlayerMovingDown(false)
+		if (e.key === 'ArrowUp') setIsPlayerMovingUp(false)
+		if (e.key === 'ArrowDown') setIsPlayerMovingDown(false)
+	}
+
 	// Handle keyboard controls
 	useEffect(() => {
-		const handleKeyDown = (event) => {
-			if (event.key === 'ArrowUp') setIsPlayerMovingUp(true)
-			if (event.key === 'ArrowDown') setIsPlayerMovingDown(true)
-		}
-
-		const handleKeyUp = (event) => {
-			if (event.key === 'ArrowUp') setIsPlayerMovingUp(false)
-			if (event.key === 'ArrowDown') setIsPlayerMovingDown(false)
-		}
 
 		window.addEventListener('keydown', handleKeyDown)
 		window.addEventListener('keyup', handleKeyUp)
@@ -297,6 +302,10 @@ const AIPongTable = ({
 			window.removeEventListener('keyup', handleKeyUp)
 		}
 	}, [])
+
+	window.addEventListener('resize', () => {
+		setWidth(window.innerWidth)
+	})
 
 	return (
 		<div
@@ -344,9 +353,19 @@ const AIPongTable = ({
 					onClick={handlePause}
 					className='pause flex items-center gap-3 brightness-[1] leading-[0.95]'
 				>
-					<img src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`} alt='pause icon' />
+					<img onContextMenu={(e) => e.preventDefault()} src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`} alt='pause icon' />
 					<p className='align-middle'>{isPaused ? 'resume' : 'pause'}</p>
 				</button>
+			)}
+			{width <= 768 && (
+				<div className='w-[86%] flex justify-between'>
+					<button className='w-[15%]' onContextMenu={(e) => e.preventDefault()} onPointerUp={handleKeyUp} onPointerDown={handleKeyDown}>
+						<img src='/assets/images/icons/up.svg' id='1' />
+					</button>
+					<button className='w-[15%]' onContextMenu={(e) => e.preventDefault()} onPointerUp={handleKeyUp} onPointerDown={handleKeyDown}>
+						<img src='/assets/images/icons/down.svg' id='2' />					
+					</button>
+				</div>
 			)}
 		</div>
 	)

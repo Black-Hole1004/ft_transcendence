@@ -264,7 +264,7 @@ class RegisterView(APIView):
         try:
             if form.is_valid():
                 form.save()
-                Twofa.sendMail(otp=0, email=data.get('email'), username=data.get('username'), type='accountCreated')
+                # Twofa.sendMail(otp=0, email=data.get('email'), username=data.get('username'), type='accountCreated')
                 return JsonResponse({'message': 'User created successfully'}, status=201)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
@@ -1052,7 +1052,7 @@ def get_user_data_by_id(request, user_id):
 def delete_user(request):
     user = request.user
     user.delete()
-    Twofa.sendMail(otp=0, email=user.email, username=user.username, type='deleteAccount')
+    # Twofa.sendMail(otp=0, email=user.email, username=user.username, type='deleteAccount')
     return JsonResponse({'message': 'User deleted successfully'})
 
 class GetUserByUserName(APIView):

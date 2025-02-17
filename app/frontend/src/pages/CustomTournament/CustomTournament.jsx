@@ -34,7 +34,7 @@ const CustomTournament = () => {
 							<div className='absolute right-3 paddles bg-primary rounded-full right-paddle'></div>
 							<button
 								onClick={handleGameModeSelect}
-								className='font-dreamscape start-button animation-pulse'
+								className='font-dreamscape start-button animate-bounce'
 							>
 								Start
 							</button>

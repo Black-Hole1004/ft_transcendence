@@ -59,8 +59,8 @@ function Header({ user_data, notifications, setNotifications }) {
 
 	return (
 		<header
-			className='relative flex items-center justify-between text-primary header-margin font-medium
-			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end z-50'
+			className='sticky top-0 flex items-center justify-between text-primary header-margin font-medium
+			lp:border-b-2 border-b-[1px] border-white header-border header-height max-ms:justify-end z-50 bg-black/90'
 		>
 			<AlertWrapper layout={true}/>
 			<Link to={'/dashboard'} aria-label='Go to Dashboard'>

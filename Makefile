@@ -1,20 +1,20 @@
 .PHONY: all up build updetached down prune scan re
 
-HOSTNAME := localhost
+HOSTNAME := starserve.me
 PWD = $(shell pwd)
 all: up
 
 up:
 	echo $(HOSTNAME)
-	sed -i '' 's#://[^/]*#://$(HOSTNAME)#g' app/frontend/.env
-	sed -i '' 's#HOSTNAME_ENV=.*#HOSTNAME_ENV=$(HOSTNAME)#g' app/backend/.env
-	sed -i '' 's#device: .*#devicde: $(PWD)/app/vault#g' docker-compose.yml
+	sed -i 's#://[^/]*#://$(HOSTNAME)#g' app/frontend/.env
+	sed -i 's#HOSTNAME_ENV=.*#HOSTNAME_ENV=$(HOSTNAME)#g' app/backend/.env
+	sed -i 's#device: .*#devicde: $(PWD)/app/vault#g' docker-compose.yml
 	echo "Creating vault files"
 	touch app/vault/token.txt app/vault/unseal_key{1..3}.txt
 	@# cat app/frontend/.env
-	@rm -rf $(ls app/waf/ | grep -Ev 'local|advanced|tuning|tools|db' | sed 's|^|app/waf/|')
-	@rm -rf ./app/db/postgres
-	@rm -rf $(ls app/backend/UserManagement/migrations/ | grep -Ev '0001_initial.py' | sed 's|^|app/backend/UserManagement/migrations/|')
+# @rm -rf $(ls app/waf/ | grep -Ev 'local|advanced|tuning|tools|db' | sed 's|^|app/waf/|')
+# @rm -rf ./app/db/postgres
+#@rm -rf $(ls app/backend/UserManagement/migrations/ | grep -Ev '0001_initial.py' | sed 's|^|app/backend/UserManagement/migrations/|')
 	docker-compose up --build
 
 re: down up

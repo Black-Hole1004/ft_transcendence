@@ -113,17 +113,23 @@ const Chat = () => {
 		
 		const onWebSocketMessage = (e) => {
 			const data = JSON.parse(e.data)
+			const participants = conversationKey?.split('_')
 			if (data.event === 'message') {
-				setConversationMessages((prevMessages) => [
-					...prevMessages,
-					{
-						sender_id: data.sender,
-						content: data.message,
-						sent_datetime: data.timestamp,
-					},
-				])
+				if (participants && (data.sender === parseInt(participants[0]) || data.sender === parseInt(participants[1]))) {
+					setConversationMessages((prevMessages) => [
+						...prevMessages,
+						{
+							sender_id: data.sender,
+							content: data.message,
+							sent_datetime: data.timestamp,
+						},
+					])
+				} else {
+					setConversationMessages((prevMessages) => [...prevMessages])
+				}
 			} else if (data.event === 'block') {
-				setBlockerId(data.blocker_id)
+				if (data.blocker_id === parseInt(participants[0]) || data.blocker_id === parseInt(participants[1]) || data.blocker_id === 0)
+					setBlockerId(data.blocker_id)
 				if (data.blocker_id)
 					setAreFriends(false)
 			}

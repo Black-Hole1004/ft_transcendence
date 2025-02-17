@@ -137,6 +137,7 @@ const Settings = () => {
 	const [password, setPassword] = useState('')
 	const [new_password, setNewPassword] = useState('')
 	const [confirm_password, setConfirmPassword] = useState('')
+	const [change, setChange] = useState(false)
 
 	const { getAuthHeaders } = useAuth()
 	const { triggerAlert } = useAlert()
@@ -226,7 +227,7 @@ const Settings = () => {
 	}
 	const update_user = async () => {
 		const userProfileData = create_form_data(user, selectedFile)
-		if (!userProfileData) return
+		if (!userProfileData || change === false) return
 		axios
 			.put(USER_API, userProfileData, {
 				headers: {
@@ -256,11 +257,13 @@ const Settings = () => {
 					triggerAlert('error', error.message)
 				}
 			})
+			setChange(false)
 	}
 	/**********************  Update User Data ************************/
 
 	/**********************  Handle Input Change ************************/
 	const handleInputChange = (e) => {
+		setChange(true)
 		e.target.classList.replace('text-border', 'text-primary')
 		const { name, value } = e.target
 		switch (name) {
@@ -297,10 +300,12 @@ const Settings = () => {
 	}
 
 	const handleUploadClick = (e) => {
+		setChange(true)
 		document.getElementById('profile_picture').click()
 	}
 
 	const handleImageChange = (e) => {
+		setChange(true)
 		const file = e.target.files[0]
 		if (file) {
 			setPreview(URL.createObjectURL(file))
@@ -309,6 +314,7 @@ const Settings = () => {
 		}
 	}
 	function handleRemoveImage() {
+		setChange(true)
 		setPreview(null)
 		setSelectedFile(null)
 		setProfile_picture(DEFAULT_PROFILE_PICTURE)
@@ -405,7 +411,7 @@ const Settings = () => {
 										id={'email'}
 										type={'email'}
 										label={'Email'}
-										onChange={handleInputChange}
+										onChange={() => pass}
 										value={email}
 									/>
 									<Input

@@ -89,25 +89,23 @@ const Dashboard = () => {
 	if (loading) return <Loader />;
 
 	return (
-		<>
-			<section className='flex lg:flex-row flex-col lg:pl-section-lg
-			rightside-my lg:mr-modes-right-lg lg:ml-modes-left-lg ml:ml-modes-left-ms ml:mr-modes-right-ms'>
-				<div className='lg:w-5/12 flex flex-col justify-between max-lg:mb-8 max-mtb:mb-4 max-lg:mx-2 lg:pr-cards-lg'>
-					<CongratulatoryMessage title={title} description={description} body={body} />
-					<div className='flex mtb:flex-row flex-col max-mtb:gap-y-3 lg:gap-x-1 mtb:gap-x-5 gap-x-1 lg:justify-between justify-around max-mtb:pr-0'>
-						<FriendsList />
-						<Leaderboard users={leaderboardData} />
-					</div>
+		<section className='flex lg:flex-row flex-col lg:pl-section-lg relative
+		rightside-my lg:mr-modes-right-lg lg:ml-modes-left-lg ml:ml-modes-left-ms ml:mr-modes-right-ms'>
+			<div className='lg:w-5/12 flex flex-col justify-between max-lg:mb-8 max-mtb:mb-4 max-lg:mx-2 lg:pr-cards-lg max-lg:order-last'>
+				<CongratulatoryMessage title={title} description={description} body={body} />
+				<div className='flex mtb:flex-row flex-col max-mtb:gap-y-3 lg:gap-x-1 mtb:gap-x-5 gap-x-1 lg:justify-between justify-around max-mtb:pr-0 max-lg:mt-5'>
+					<FriendsList />
+					<Leaderboard users={leaderboardData} />
 				</div>
-				<div className='flex flex-col flex-1 justify-between max-ml:p-1'>
-					<GameModes />
-					<Achievements 
-						achievements={achievements}
-						currentXp={userData?.xp || 0}
-					/>
-				</div>
-			</section>
-		</>
+			</div>
+			<div className='flex flex-col flex-1 justify-between max-ml:p-1 max-lg:mt-32'>
+				<GameModes />
+				<Achievements 
+					achievements={achievements}
+					currentXp={userData?.xp || 0}
+				/>
+			</div>
+		</section>
 	)
 }
 

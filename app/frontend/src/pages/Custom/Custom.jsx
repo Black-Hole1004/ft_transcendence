@@ -112,7 +112,7 @@ const Custom = () => {
 							<div className='w-full h-full flex justify-center items-center bg-backdrop-40'>
 								<div className='absolute left-3 paddles bg-primary rounded-full left-paddle'></div>
 								<div className='absolute right-3 paddles bg-primary rounded-full right-paddle'></div>
-								<button onClick={handleStart} className='font-dreamscape start-button animation-pulse'>Start</button>
+								<button onClick={handleStart} className='font-dreamscape start-button animate-bounce'>Start</button>
 							</div>
 						</div>
 					</div>

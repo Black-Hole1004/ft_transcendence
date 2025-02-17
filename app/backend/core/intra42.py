@@ -105,8 +105,7 @@ class Intra42OAuth2(BaseOAuth2):
                 user = User.objects.get(email=user_details['email'])
                 if not user.is_logged_with_oauth:
                     return JsonResponse({'error': 'Account with this email already exists'}, status=401)
-            else:
-                Twofa.sendMail(otp=0, email=user_details['email'], username=username, type='accountCreated')
+
             user, created = User.objects.get_or_create(
             email=user_details['email'],
             defaults={

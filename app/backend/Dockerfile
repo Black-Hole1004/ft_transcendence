@@ -1,7 +1,7 @@
 FROM python:3.10
 
 WORKDIR /app/backend
-
+RUN apt-get update && apt-get install -y netcat-openbsd
 RUN pip install --upgrade pip
 
 COPY requirements.txt .
@@ -16,4 +16,4 @@ RUN chmod +x entry_point.sh
 
 EXPOSE 8000
 
-CMD ["./entry_point.sh"]
+ENTRYPOINT ["bash", "./entry_point.sh"]

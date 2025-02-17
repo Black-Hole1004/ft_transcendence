@@ -15,6 +15,7 @@ const RemotePongTable = ({
 	const canvasRef = useRef(null);
 	const containerRef = useRef(null);
 	const requestRef = useRef(null);
+	const [width, setWidth] = useState(window.innerWidth);
 
 	// Canvas size state
 	const [canvasSize, setCanvasSize] = useState({ width: 800, height: 400 });
@@ -137,30 +138,26 @@ const RemotePongTable = ({
 		};
 	}, [gameState, canvasSize.width, canvasSize.height]);
 
+	const handleKeyDown = (e) => {
+		e.preventDefault();
+		if ((e.type === 'pointerdown' || e.type === 'mousedown') && e.target.id === '1') onPaddleMove('startUp')
+		if ((e.type === 'pointerdown' || e.type === 'mousedown') && e.target.id === '2') onPaddleMove('startDown')
+		if (e.key === 'ArrowUp') onPaddleMove('startUp')
+		if (e.key === 'ArrowDown') onPaddleMove('startDown')
+	};
+	
+	const handleKeyUp = (e) => {
+		e.preventDefault();
+		if ((e.type === 'pointerup' || e.type === 'mouseup') && e.target.id === '1') onPaddleMove('stopUp')
+		if ((e.type === 'pointerup' || e.type === 'mouseup') && e.target.id === '2') onPaddleMove('stopDown')
+		if (e.type === 'mouseup' && e.target.id === '1') onPaddleMove('stopUp');
+		if (e.type === 'mouseup' && e.target.id === '2') onPaddleMove('stopDown');
+		if (e.key === 'ArrowUp') onPaddleMove('stopUp');
+		if (e.key === 'ArrowDown') onPaddleMove('stopDown');
+	};
+
 	// Handle keyboard input for paddle movement
 	useEffect(() => {
-		const handleKeyDown = (e) => {            
-			if (e.key === 'ArrowUp') {
-				e.preventDefault();
-				onPaddleMove('startUp');
-			}
-			if (e.key === 'ArrowDown') {
-				e.preventDefault();
-				onPaddleMove('startDown');
-			}
-		};
-		
-		const handleKeyUp = (e) => {
-			if (e.key === 'ArrowUp') {
-				e.preventDefault();
-				onPaddleMove('stopUp');
-			}
-			if (e.key === 'ArrowDown') {
-				e.preventDefault();
-				onPaddleMove('stopDown');
-			}
-		};
-
 		window.addEventListener('keydown', handleKeyDown);
 		window.addEventListener('keyup', handleKeyUp);
 
@@ -187,6 +184,10 @@ const RemotePongTable = ({
 
 		return () => clearInterval(intervalId);
 	}, [isPaused, isUpPressed, isDownPressed, onPaddleMove]);
+
+	window.addEventListener('resize', () => {
+		setWidth(window.innerWidth)
+	})
 
 	return (
 		<div ref={containerRef} className="relative flex flex-col items-center lp:gap-7 gap-3 max-lp:w-full">
@@ -229,7 +230,8 @@ const RemotePongTable = ({
 							: ''
 					}`}
 				>
-					<img 
+					<img
+						onContextMenu={(e) => e.preventDefault()}
 						src={`/assets/images/icons/${isPaused ? 'play' : 'pause'}.svg`} 
 						alt="" 
 					/>
@@ -237,6 +239,16 @@ const RemotePongTable = ({
 						{isPaused ? 'resume' : `pause (${pausesRemaining[playerNumber]} left)`}
 					</p>
 				</button>
+			)}
+			{width <= 768 && (
+				<div className='w-[86%] flex justify-between mb-4'>
+					<button className='w-[15%]' onContextMenu={(e) => e.preventDefault()} onPointerUp={handleKeyUp} onPointerDown={handleKeyDown}>
+						<img src='/assets/images/icons/up.svg' id='1' />
+					</button>
+					<button className='w-[15%]' onContextMenu={(e) => e.preventDefault()} onPointerUp={handleKeyUp} onPointerDown={handleKeyDown}>
+						<img src='/assets/images/icons/down.svg' id='2' />					
+					</button>
+				</div>
 			)}
 		</div>
 	);

@@ -27,7 +27,7 @@ services:
       timeout: 30s
     restart: always
     volumes:
-      # - ./app/db/postgres:/var/lib/postgresql/data
+      - ./app/db/postgres:/var/lib/postgresql/data
       - ./app/vault/token.txt:/tmp/token.txt
       - ./app/vault/unseal_key1.txt:/tmp/unseal_key1.txt
     depends_on:
@@ -47,6 +47,8 @@ services:
     depends_on:
       ft_transcendence_db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
       vault:
         condition: service_healthy
     networks:
@@ -56,7 +58,7 @@ services:
       - ./app/vault/token.txt:/tmp/token.txt
       - ./app/vault/unseal_key2.txt:/tmp/unseal_key2.txt
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://${HOSTNAME}:8000/api/health/"]
+      test: ["CMD", "nc", "-z", "localhost", "8000"]
       start_period: 45s
       interval: 10s
       timeout: 30s
@@ -74,6 +76,11 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "nc", "-z", "frontend", "5173"]
+      start_period: 45s
+      interval: 10s
+      timeout: 30s
     restart: always
 
   # Redis
@@ -84,9 +91,13 @@ services:
       - ft_transcendence_network
     volumes:
       - ./app/data/redis:/data
-    depends_on:
-      backend:
-        condition: service_healthy
+    command: >
+      sh -c "apt update && apt install -y netcat-openbsd & redis-server"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "redis", "6379"]
+      start_period: 45s
+      interval: 10s
+      timeout: 30s
     restart: always
 
 
@@ -132,6 +143,8 @@ services:
       - ./app/backend/badges/:/app/staticfiles/badges/
       - ${NGINX_CONF_FILE}:/etc/nginx/conf.d/default.conf
       - ./app/nginx/tools/generate_ssl.sh:/app/generate_ssl.sh
+      - ./app/nginx/ssl/starserve.me/fullchain.pem:/etc/nginx/ssl/certif.crt
+      - ./app/nginx/ssl/starserve.me/privkey.pem:/etc/nginx/ssl/certif.key
     user: root
     command: >
       sh -c "
@@ -143,8 +156,10 @@ services:
     networks:
       - ft_transcendence_network
     depends_on:
-      - backend
-      - frontend
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
     ports:
       - "80:80"
       - "443:443"
@@ -227,77 +242,77 @@ services:
       - ft_transcendence_network
 
   #setup for elasticsearch
-  setup:
-    container_name: setup
-    build: ./app/elk/setup/.
-    volumes:
-      - certs:/usr/share/elasticsearch/config/certs
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./app/vault/token.txt:/tmp/token.txt
-    networks:
-      - ft_transcendence_network
-    healthcheck:
-      test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
-      interval: 1s
-      timeout: 5s
-      retries: 120
-    depends_on:
-      vault:
-        condition: service_healthy
+  # setup:
+  #   container_name: setup
+  #   build: ./app/elk/setup/.
+  #   volumes:
+  #     - certs:/usr/share/elasticsearch/config/certs
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   networks:
+  #     - ft_transcendence_network
+  #   healthcheck:
+  #     test: ['CMD-SHELL', '[ -f /usr/share/elasticsearch/config/certs/elasticsearch/elasticsearch.crt ]']
+  #     interval: 1s
+  #     timeout: 5s
+  #     retries: 120
+  #   depends_on:
+  #     vault:
+  #       condition: service_healthy
   
 
-  # Elasticsearch
-  elasticsearch:
-    container_name: elasticsearch
-    depends_on:
-      setup:
-        condition: service_healthy
-    build: ./app/elk/elasticsearch/.
-    volumes:
-      - certs:/usr/share/elasticsearch/config/certs
-      - ./app/data/elasticsearch:/usr/share/elasticsearch/data
-      - ./app/vault/token.txt:/tmp/token.txt
-    ports:
-      - '9200:9200'
-    networks:
-      - ft_transcendence_network
-    mem_limit: 1g
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: always
+  # # Elasticsearch
+  # elasticsearch:
+  #   container_name: elasticsearch
+  #   depends_on:
+  #     setup:
+  #       condition: service_healthy
+  #   build: ./app/elk/elasticsearch/.
+  #   volumes:
+  #     - certs:/usr/share/elasticsearch/config/certs
+  #     - ./app/data/elasticsearch:/usr/share/elasticsearch/data
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   ports:
+  #     - '9200:9200'
+  #   networks:
+  #     - ft_transcendence_network
+  #   mem_limit: 1g
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   restart: always
 
-  # Kibana
-  kibana:
-    container_name: kibana
-    depends_on:
-      setup:
-        condition: service_healthy
-    build: ./app/elk/kibana/.
-    volumes:
-      - certs:/usr/share/kibana/config/certs
-      - ./app/data/kibana:/usr/share/kibana/data
-      - ./app/vault/token.txt:/tmp/token.txt
-    ports:
-      - '5601:5601'
-    networks:
-      - ft_transcendence_network
-    mem_limit: 1g
-    restart: always
+  # # Kibana
+  # kibana:
+  #   container_name: kibana
+  #   depends_on:
+  #     setup:
+  #       condition: service_healthy
+  #   build: ./app/elk/kibana/.
+  #   volumes:
+  #     - certs:/usr/share/kibana/config/certs
+  #     - ./app/data/kibana:/usr/share/kibana/data
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   ports:
+  #     - '5601:5601'
+  #   networks:
+  #     - ft_transcendence_network
+  #   mem_limit: 1g
+  #   restart: always
 
-  # Logstash
-  logstash:
-    container_name: logstash
-    depends_on:
-      setup:
-        condition: service_healthy
-    build: ./app/elk/logstash/.
-    volumes:
-      - certs:/usr/share/logstash/certs
-      - ./app/waf/appsec-logs/:/usr/share/logstash/starserve-logs/
-      - ./app/vault/token.txt:/tmp/token.txt
-    networks:
-      - ft_transcendence_network  
-    restart: always
+  # # Logstash
+  # logstash:
+  #   container_name: logstash
+  #   depends_on:
+  #     setup:
+  #       condition: service_healthy
+  #   build: ./app/elk/logstash/.
+  #   volumes:
+  #     - certs:/usr/share/logstash/certs
+  #     - ./app/waf/appsec-logs/:/usr/share/logstash/starserve-logs/
+  #     - ./app/vault/token.txt:/tmp/token.txt
+  #   networks:
+  #     - ft_transcendence_network  
+  #   restart: always
 

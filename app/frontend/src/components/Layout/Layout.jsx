@@ -369,7 +369,7 @@ function Layout() {
 
 	return (
 		<SocketContext.Provider value={sockets}>
-			<div className='relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary overflow-hidden'>
+			<div className='relative flex flex-col min-h-screen backdrop-blur-sm bg-backdrop-40 text-primary '>
 				<Header
 					user_data={user_data}
 					notifications={notifications}
